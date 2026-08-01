@@ -193,8 +193,11 @@ const state = {
     knightFreed: false,
     knightAllyUsed: false,
     hasIronShield: false,
+    level: 1,
     goblinHp: 35,
     dragonHp: 120,
+    trollHp: 60,
+    wilderness: null,
     location: "village"
 };
 
@@ -202,6 +205,34 @@ const state = {
 function mitigate(damage) {
     return state.hasIronShield ? Math.max(1, damage - 5) : damage;
 }
+
+const LEVEL_SCORE_STEP = 200;
+const CRIT_CHANCE = 0.15;
+
+function checkLevelUp() {
+    const newLevel = 1 + Math.floor(state.score / LEVEL_SCORE_STEP);
+    while (state.level < newLevel) {
+        state.level++;
+        state.maxHp += 10;
+        state.hp += 10;
+        addLog(`⭐ LEVEL UP! You are now Level ${state.level}! (Max HP +10 -> ${state.maxHp})`, "event");
+    }
+}
+
+// Rolls player weapon damage: base roll + level bonus, with a chance to crit
+function rollAttack(low, high) {
+    let dmg = Math.floor(Math.random() * (high - low + 1)) + low + (state.level - 1) * 2;
+    const crit = Math.random() < CRIT_CHANCE;
+    if (crit) dmg *= 2;
+    return { dmg, crit };
+}
+
+const ENEMY_POOL = [
+    { name: "Bandit", hp: 30, dmgLow: 6, dmgHigh: 12 },
+    { name: "Dire Wolf", hp: 25, dmgLow: 8, dmgHigh: 14 },
+    { name: "Skeleton Warrior", hp: 40, dmgLow: 5, dmgHigh: 10 },
+    { name: "Orc Marauder", hp: 50, dmgLow: 9, dmgHigh: 15 },
+];
 
 // Image assets mapping
 const sceneImages = {
@@ -218,6 +249,7 @@ const sceneImages = {
 
 // UI Elements
 const heroNameEl = document.getElementById("hero-name");
+const levelTextEl = document.getElementById("level-text");
 const hpBarEl = document.getElementById("hp-bar-inner");
 const hpTextEl = document.getElementById("hp-text");
 const scoreTextEl = document.getElementById("score-text");
@@ -252,6 +284,7 @@ function addScore(points) {
     state.score += points;
     addLog(`★ +${points} Points! (Total: ${state.score} PTS)`, "event");
     sfx.playItem();
+    checkLevelUp();
     updateHUD();
 }
 
@@ -264,6 +297,7 @@ function healPlayer(amount) {
 
 function updateHUD() {
     heroNameEl.textContent = state.name;
+    if (levelTextEl) levelTextEl.textContent = state.level;
     const hpPct = Math.max(0, (state.hp / state.maxHp) * 100);
     hpBarEl.style.width = `${hpPct}%`;
     hpTextEl.textContent = `${state.hp}/${state.maxHp}`;
@@ -300,7 +334,8 @@ function renderVillage() {
         { text: "2. Enter Whispering Forest (West)", action: goForest },
         { text: "3. Venture to Rocky Mountains (East)", action: goMountain },
         { text: "4. Rest at Tavern (+20 HP)", action: restTavern },
-        { text: "5. Visit the Blacksmith", action: goBlacksmith }
+        { text: "5. Visit the Blacksmith", action: goBlacksmith },
+        { text: "6. Venture into the Wilderness Trail (repeatable)", action: goWilderness }
     ]);
 }
 
@@ -493,9 +528,14 @@ function renderGoblinTurn() {
 
 function attackGoblin() {
     sfx.playSlash();
-    const dmg = state.hasSword ? Math.floor(Math.random() * 11) + 20 : Math.floor(Math.random() * 8) + 10;
+    const [low, high] = state.hasSword ? [15, 25] : [8, 15];
+    const { dmg, crit } = rollAttack(low, high);
     state.goblinHp -= dmg;
-    addLog(`You strike the Goblin for ${dmg} damage!`, "event");
+    if (crit) {
+        addLog(`💥 CRITICAL HIT! You strike the Goblin for ${dmg} damage!`, "victory");
+    } else {
+        addLog(`You strike the Goblin for ${dmg} damage!`, "event");
+    }
 
     if (state.goblinHp <= 0) {
         addLog("🎉 You defeated the Goblin Rogue!", "victory");
@@ -604,13 +644,166 @@ function freeKnight() {
 function searchCave() {
     sfx.playClick();
     if (!state.caveSearched) {
-        addLog("You explore the cave and find an Elixir of Life!");
+        renderMountainCave();
+    } else {
+        addLog("The cave has been scavenged.");
+    }
+}
+
+function renderMountainCave() {
+    state.location = "cave";
+    setScene("mountain", "🕳️ MOUNTAIN CAVE");
+    clearLog();
+    addLog("A Cave Troll blocks the entrance, guarding a chest of glittering treasure!", "alert");
+
+    renderChoices([
+        { text: "1. Fight the Cave Troll", action: startTrollFight },
+        { text: "2. Sneak past while it's distracted", action: sneakPastTroll },
+        { text: "3. Retreat to the Mountain Pass", action: renderMountain }
+    ]);
+}
+
+function sneakPastTroll() {
+    sfx.playClick();
+    addLog("You slip past the dozing Troll and find a sturdy Elven Shield & Elixir of Life!", "event");
+    state.caveSearched = true;
+    state.inventory.push("Elixir of Life");
+    healPlayer(50);
+    addScore(100);
+    renderChoices([{ text: "Return to Mountain Pass", action: renderMountain }]);
+}
+
+function startTrollFight() {
+    sfx.playClick();
+    sfx.playMusic("battle");
+    addLog("The Cave Troll roars and swings its massive club!", "alert");
+    state.trollHp = 60;
+    renderTrollTurn();
+}
+
+function renderTrollTurn() {
+    addLog(`Troll HP: ${state.trollHp} | Your HP: ${state.hp}`);
+    renderChoices([
+        { text: "1. Attack Troll with weapon", action: attackTroll },
+        { text: "2. Drink Healing Potion", action: usePotionTroll },
+        { text: "3. Flee to Mountain Pass", action: renderMountain }
+    ]);
+}
+
+function attackTroll() {
+    sfx.playSlash();
+    const [low, high] = state.hasSword ? [15, 25] : [8, 15];
+    const { dmg, crit } = rollAttack(low, high);
+    state.trollHp -= dmg;
+    if (crit) {
+        addLog(`💥 CRITICAL HIT! You strike the Troll for ${dmg} damage!`, "victory");
+    } else {
+        addLog(`You strike the Troll for ${dmg} damage!`, "event");
+    }
+
+    if (state.trollHp <= 0) {
+        addLog("🎉 You defeated the Cave Troll!", "victory");
         state.caveSearched = true;
         state.inventory.push("Elixir of Life");
         healPlayer(50);
-        addScore(100);
+        addScore(250);
+        renderChoices([{ text: "Return to Mountain Pass", action: renderMountain }]);
+        return;
+    }
+
+    const tDmg = mitigate(Math.floor(Math.random() * 9) + 10);
+    state.hp -= tDmg;
+    addLog(`The Troll clubs you for ${tDmg} damage!`, "alert");
+    updateHUD();
+
+    if (state.hp <= 0) {
+        gameOver("You were crushed by the Cave Troll in the mountain cave.");
+        return;
+    }
+
+    renderTrollTurn();
+}
+
+function usePotionTroll() {
+    const idx = state.inventory.indexOf("Healing Potion");
+    if (idx !== -1) {
+        state.inventory.splice(idx, 1);
+        healPlayer(40);
+        renderTrollTurn();
     } else {
-        addLog("The cave has been scavenged.");
+        addLog("No Healing Potions in inventory!", "alert");
+    }
+}
+
+function goWilderness() {
+    sfx.playClick();
+    const base = ENEMY_POOL[Math.floor(Math.random() * ENEMY_POOL.length)];
+    const levelBonus = state.level - 1;
+    state.wilderness = {
+        name: base.name,
+        hp: base.hp + levelBonus * 6,
+        dmgLow: base.dmgLow + levelBonus,
+        dmgHigh: base.dmgHigh + levelBonus,
+        reward: 60 + levelBonus * 8,
+    };
+
+    setScene("forest", "🌾 WILDERNESS TRAIL");
+    sfx.playMusic("battle");
+    clearLog();
+    addLog(`A ${state.wilderness.name} emerges from the tall grass, ready to fight!`, "alert");
+    renderWildernessTurn();
+}
+
+function renderWildernessTurn() {
+    const w = state.wilderness;
+    addLog(`${w.name} HP: ${w.hp} | Your HP: ${state.hp}`);
+    renderChoices([
+        { text: "1. Attack with weapon", action: attackWilderness },
+        { text: "2. Use Healing Potion", action: usePotionWilderness },
+        { text: "3. Flee back to the Village", action: renderVillage }
+    ]);
+}
+
+function attackWilderness() {
+    sfx.playSlash();
+    const w = state.wilderness;
+    const [low, high] = state.hasSword ? [15, 25] : [8, 15];
+    const { dmg, crit } = rollAttack(low, high);
+    w.hp -= dmg;
+    if (crit) {
+        addLog(`💥 CRITICAL HIT! You strike the ${w.name} for ${dmg} damage!`, "victory");
+    } else {
+        addLog(`You strike the ${w.name} for ${dmg} damage!`, "event");
+    }
+
+    if (w.hp <= 0) {
+        addLog(`🎉 You defeated the ${w.name}!`, "victory");
+        addScore(w.reward);
+        renderChoices([{ text: "Continue on the Trail", action: renderVillage }]);
+        return;
+    }
+
+    const eDmg = mitigate(Math.floor(Math.random() * (w.dmgHigh - w.dmgLow + 1)) + w.dmgLow);
+    state.hp -= eDmg;
+    addLog(`The ${w.name} strikes back for ${eDmg} damage!`, "alert");
+    updateHUD();
+
+    if (state.hp <= 0) {
+        gameOver(`You were slain by a ${w.name} on the Wilderness Trail.`);
+        return;
+    }
+
+    renderWildernessTurn();
+}
+
+function usePotionWilderness() {
+    const idx = state.inventory.indexOf("Healing Potion");
+    if (idx !== -1) {
+        state.inventory.splice(idx, 1);
+        healPlayer(40);
+        renderWildernessTurn();
+    } else {
+        addLog("No Healing Potions in inventory!", "alert");
     }
 }
 
@@ -662,11 +855,21 @@ function attackDragon() {
     sfx.playSlash();
     let dmg = 0;
     if (state.hasSword) {
-        dmg = Math.floor(Math.random() * 16) + 35;
-        addLog(`💥 The Sunblade cuts through the dragon's scales for ${dmg} CRITICAL DAMAGE!`, "victory");
+        const rolled = rollAttack(35, 50);
+        dmg = rolled.dmg;
+        if (rolled.crit) {
+            addLog(`💥⚔️ CRITICAL HIT! The Sunblade cleaves through the dragon's scales for ${dmg} massive damage!`, "victory");
+        } else {
+            addLog(`💥 The Sunblade cuts through the dragon's scales for ${dmg} CRITICAL DAMAGE!`, "victory");
+        }
     } else {
-        dmg = Math.floor(Math.random() * 5) + 1;
-        addLog(`Your attack bounces harmlessly off the dragon's thick armor for only ${dmg} damage!`, "alert");
+        const rolled = rollAttack(1, 5);
+        dmg = rolled.dmg;
+        if (rolled.crit) {
+            addLog(`💥 CRITICAL HIT! Your attack finds a chink in the dragon's armor for ${dmg} damage!`, "victory");
+        } else {
+            addLog(`Your attack bounces harmlessly off the dragon's thick armor for only ${dmg} damage!`, "alert");
+        }
     }
 
     state.dragonHp -= dmg;
@@ -776,8 +979,11 @@ function restartGame() {
     state.knightFreed = false;
     state.knightAllyUsed = false;
     state.hasIronShield = false;
+    state.level = 1;
     state.goblinHp = 35;
     state.dragonHp = 120;
+    state.trollHp = 60;
+    state.wilderness = null;
     updateHUD();
     renderVillage();
 }
@@ -811,7 +1017,7 @@ if (musicBtnEl) {
         if (!sfx.musicEnabled) {
             sfx.stopMusic();
         } else {
-            const trackMap = { village: "village", forest: "forest", temple: "forest", mountain: "forest", goblin: "battle", lair: "battle", watchtower: "forest", blacksmith: "village" };
+            const trackMap = { village: "village", forest: "forest", temple: "forest", mountain: "forest", goblin: "battle", lair: "battle", watchtower: "forest", blacksmith: "village", cave: "battle" };
             sfx.playMusic(trackMap[state.location] || "village");
         }
     });

@@ -40,6 +40,81 @@ def mitigate(damage, player):
         return max(1, damage - 5)
     return damage
 
+LEVEL_SCORE_STEP = 200
+CRIT_CHANCE = 0.15
+
+def check_level_up(player):
+    """Levels up the player (score-derived) and grows max HP to match."""
+    new_level = 1 + player.score // LEVEL_SCORE_STEP
+    while player.level < new_level:
+        player.level += 1
+        player.max_hp += 10
+        player.hp += 10
+        print(f"{YELLOW}⭐ LEVEL UP! You are now Level {player.level}! (Max HP +10 -> {player.max_hp}){RESET}")
+
+def roll_attack(low, high, player):
+    """Rolls player weapon damage: base roll + level bonus, with a chance to crit."""
+    damage = random.randint(low, high) + (player.level - 1) * 2
+    crit = random.random() < CRIT_CHANCE
+    if crit:
+        damage *= 2
+    return damage, crit
+
+ENEMY_POOL = [
+    {"name": "Bandit", "hp": 30, "dmg_low": 6, "dmg_high": 12},
+    {"name": "Dire Wolf", "hp": 25, "dmg_low": 8, "dmg_high": 14},
+    {"name": "Skeleton Warrior", "hp": 40, "dmg_low": 5, "dmg_high": 10},
+    {"name": "Orc Marauder", "hp": 50, "dmg_low": 9, "dmg_high": 15},
+]
+
+def wilderness_trail(player):
+    enemy = random.choice(ENEMY_POOL)
+    level_bonus = player.level - 1
+    enemy_hp = enemy["hp"] + level_bonus * 6
+    dmg_low = enemy["dmg_low"] + level_bonus
+    dmg_high = enemy["dmg_high"] + level_bonus
+    reward = 60 + level_bonus * 8
+
+    slow_print(f"\n🌾 WILDERNESS TRAIL")
+    slow_print(f"A {enemy['name']} emerges from the tall grass, ready to fight!")
+
+    while enemy_hp > 0 and player.hp > 0:
+        print(f"\n{enemy['name']} HP: {enemy_hp} | Your HP: {player.hp}")
+        print("1. Attack with weapon")
+        print("2. Use Healing Potion")
+        print("3. Flee back to the Village")
+
+        c = input("Action (1-3): ").strip()
+        if c == "1":
+            low, high = (15, 25) if player.has_sword else (8, 15)
+            damage, crit = roll_attack(low, high, player)
+            enemy_hp -= damage
+            if crit:
+                print(f"{YELLOW}💥 CRITICAL HIT!{RESET} You strike the {enemy['name']} for {damage} damage!")
+            else:
+                print(f"You strike the {enemy['name']} for {damage} damage!")
+            if enemy_hp > 0:
+                e_dmg = mitigate(random.randint(dmg_low, dmg_high), player)
+                player.hp -= e_dmg
+                print(f"The {enemy['name']} strikes back for {e_dmg} damage!")
+        elif c == "2":
+            if "Healing Potion" in player.inventory:
+                player.inventory.remove("Healing Potion")
+                player.heal(40)
+            else:
+                print("No Healing Potions in inventory!")
+        elif c == "3":
+            slow_print("You flee back to the safety of the Village.")
+            return
+        else:
+            print("Invalid option!")
+
+    if player.hp <= 0:
+        game_over(f"You were slain by a {enemy['name']} on the Wilderness Trail...", player)
+    else:
+        slow_print(f"\n{GREEN}You defeated the {enemy['name']}!{RESET}")
+        player.add_score(reward)
+
 class Player:
     def __init__(self):
         self.name = "Hero"
@@ -57,15 +132,17 @@ class Player:
         self.knight_freed = False
         self.knight_ally_used = False
         self.has_iron_shield = False
+        self.level = 1
         self.location = "village"
 
     def add_score(self, points):
         self.score += points
         print(f"{YELLOW}★ +{points} Points! (Total Score: {self.score}){RESET}")
+        check_level_up(self)
 
     def show_status(self):
         print(f"\n{CYAN}{'='*50}")
-        print(f" HERO: {self.name} | HP: {self.hp}/{self.max_hp} | SCORE: {self.score} PTS")
+        print(f" HERO: {self.name} | LVL: {self.level} | HP: {self.hp}/{self.max_hp} | SCORE: {self.score} PTS")
         print(f" INVENTORY: {', '.join(self.inventory) if self.inventory else 'Empty'}")
         print(f"{'='*50}{RESET}\n")
 
@@ -143,8 +220,9 @@ def village_square(player):
     print("3. Venture towards the Rocky Mountains (To the East)")
     print("4. Rest at the Tavern (+20 HP)")
     print("5. Visit the Blacksmith")
+    print("6. Venture into the Wilderness Trail (repeatable)")
 
-    choice = input("\nSelect choice (1-5): ").strip()
+    choice = input("\nSelect choice (1-6): ").strip()
     if choice == "1":
         slow_print("\nElder: 'Brave adventurer! The Sunblade lies hidden inside the Sunken Temple across the Whispering Forest.")
         slow_print("Take this Silver Key. It unlocks the inner sanctum!'")
@@ -166,6 +244,8 @@ def village_square(player):
             slow_print("\nYour health is already full!")
     elif choice == "5":
         blacksmith(player)
+    elif choice == "6":
+        wilderness_trail(player)
     else:
         print("Invalid option!")
 
@@ -236,9 +316,13 @@ def goblin_fight(player):
 
         c = input("Action (1-4): ").strip()
         if c == "1":
-            damage = random.randint(15, 25) if player.has_sword else random.randint(8, 15)
+            low, high = (15, 25) if player.has_sword else (8, 15)
+            damage, crit = roll_attack(low, high, player)
             goblin_hp -= damage
-            print(f"You strike the Goblin for {damage} damage!")
+            if crit:
+                print(f"{YELLOW}💥 CRITICAL HIT!{RESET} You strike the Goblin for {damage} damage!")
+            else:
+                print(f"You strike the Goblin for {damage} damage!")
             if goblin_hp > 0:
                 g_dmg = mitigate(random.randint(5, 12), player)
                 player.hp -= g_dmg
@@ -342,17 +426,78 @@ def mountain_pass(player):
         dragons_lair(player)
     elif choice == "2":
         if not player.cave_searched:
-            slow_print("\nYou explore the cave and find a sturdy Elven Shield & Elixir of Life!")
-            player.cave_searched = True
-            player.inventory.append("Elixir of Life")
-            player.heal(50)
-            player.add_score(100)
+            mountain_cave(player)
         else:
             slow_print("The cave has been scavenged.")
     elif choice == "3":
         old_watchtower(player)
     elif choice == "4":
         village_square(player)
+
+def mountain_cave(player):
+    slow_print("\n🕳️ MOUNTAIN CAVE")
+    slow_print("A Cave Troll blocks the entrance, guarding a chest of glittering treasure!")
+    print("\nWhat do you do?")
+    print("1. Fight the Cave Troll")
+    print("2. Sneak past while it's distracted")
+    print("3. Retreat to the Mountain Pass")
+
+    choice = input("\nSelect choice (1-3): ").strip()
+    if choice == "2":
+        slow_print("\nYou slip past the dozing Troll and find a sturdy Elven Shield & Elixir of Life!")
+        player.cave_searched = True
+        player.inventory.append("Elixir of Life")
+        player.heal(50)
+        player.add_score(100)
+        return
+    elif choice == "3":
+        slow_print("\nYou back away carefully. The Troll doesn't notice.")
+        return
+    elif choice != "1":
+        print("Invalid option!")
+        return
+
+    slow_print(f"\n{RED}The Cave Troll roars and swings its massive club!{RESET}")
+    troll_hp = 60
+    while troll_hp > 0 and player.hp > 0:
+        print(f"\nTroll HP: {troll_hp} | Your HP: {player.hp}")
+        print("1. Attack with weapon")
+        print("2. Use Healing Potion")
+        print("3. Flee back to the Mountain Pass")
+
+        c = input("Action (1-3): ").strip()
+        if c == "1":
+            low, high = (15, 25) if player.has_sword else (8, 15)
+            damage, crit = roll_attack(low, high, player)
+            troll_hp -= damage
+            if crit:
+                print(f"{YELLOW}💥 CRITICAL HIT!{RESET} You strike the Troll for {damage} damage!")
+            else:
+                print(f"You strike the Troll for {damage} damage!")
+            if troll_hp > 0:
+                t_dmg = mitigate(random.randint(10, 18), player)
+                player.hp -= t_dmg
+                print(f"The Troll clubs you for {t_dmg} damage!")
+        elif c == "2":
+            if "Healing Potion" in player.inventory:
+                player.inventory.remove("Healing Potion")
+                player.heal(40)
+            else:
+                print("No Healing Potions in inventory!")
+        elif c == "3":
+            slow_print("You flee from the Troll safely!")
+            return
+        else:
+            print("Invalid option!")
+
+    if player.hp <= 0:
+        game_over("You were crushed by the Cave Troll in the mountain cave...", player)
+    else:
+        slow_print(f"\n{GREEN}You defeated the Cave Troll!{RESET}")
+        player.cave_searched = True
+        player.inventory.append("Elixir of Life")
+        player.heal(50)
+        player.add_score(250)
 
 def old_watchtower(player):
     slow_print("\n🗼 OLD WATCHTOWER")
@@ -400,13 +545,19 @@ def dragons_lair(player):
         c = input(f"Action (1-{'5' if knight_available else '4'}): ").strip()
         if c == "1":
             if player.has_sword:
-                damage = random.randint(35, 50)
+                damage, crit = roll_attack(35, 50, player)
                 dragon_hp -= damage
-                slow_print(f"{YELLOW}💥 The Sunblade cuts through the dragon's scales for {damage} CRITICAL DAMAGE!{RESET}")
+                if crit:
+                    slow_print(f"{YELLOW}💥⚔️ CRITICAL HIT! The Sunblade cleaves through the dragon's scales for {damage} massive damage!{RESET}")
+                else:
+                    slow_print(f"{YELLOW}💥 The Sunblade cuts through the dragon's scales for {damage} CRITICAL DAMAGE!{RESET}")
             else:
-                damage = random.randint(1, 5)
+                damage, crit = roll_attack(1, 5, player)
                 dragon_hp -= damage
-                slow_print(f"{RED}Your attack bounces harmlessly off the dragon's thick armor for only {damage} damage!{RESET}")
+                if crit:
+                    slow_print(f"{YELLOW}💥 CRITICAL HIT! Your attack finds a chink in the dragon's armor for {damage} damage!{RESET}")
+                else:
+                    slow_print(f"{RED}Your attack bounces harmlessly off the dragon's thick armor for only {damage} damage!{RESET}")
 
             if dragon_hp > 0:
                 d_dmg = mitigate(random.randint(20, 35), player)
