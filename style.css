@@ -1,0 +1,436 @@
+/* ==========================================================================
+   DRAGON'S LAIR (1984) - RETRO CRT STYLING SYSTEM
+   ========================================================================== */
+
+:root {
+    --bg-dark: #0a0a12;
+    --bezel-bg: #1a1a24;
+    --bezel-border: #333346;
+    --screen-bg: #07100b;
+    --neon-green: #39ff14;
+    --neon-cyan: #00f3ff;
+    --neon-yellow: #ffee00;
+    --neon-red: #ff3366;
+    --neon-magenta: #ff00ff;
+    --text-white: #f0f0ff;
+    --panel-bg: rgba(10, 25, 18, 0.85);
+    --border-glow: #00ff88;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Press Start 2P', cursive, monospace;
+    user-select: none;
+}
+
+body {
+    background-color: var(--bg-dark);
+    background-image: radial-gradient(#1c1c2e 15%, transparent 16%), radial-gradient(#10101c 15%, transparent 16%);
+    background-size: 60px 60px;
+    background-position: 0 0, 30px 30px;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    color: var(--neon-green);
+}
+
+/* CRT Monitor Outer Bezel */
+.crt-bezel {
+    width: 100%;
+    max-width: 950px;
+    background: linear-gradient(145deg, #242436, #12121a);
+    border: 4px solid var(--bezel-border);
+    border-radius: 20px;
+    padding: 24px;
+    box-shadow: 0 0 50px rgba(0, 0, 0, 0.9), inset 0 0 15px rgba(255, 255, 255, 0.05);
+    position: relative;
+}
+
+/* CRT Screen Interior */
+.crt-screen {
+    background: var(--screen-bg);
+    border: 3px solid #143322;
+    border-radius: 12px;
+    padding: 20px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: inset 0 0 40px rgba(0, 255, 136, 0.15), 0 0 20px rgba(0, 243, 255, 0.1);
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+/* CRT Scanlines Layer */
+.scanlines {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        rgba(18, 16, 16, 0) 50%, 
+        rgba(0, 0, 0, 0.35) 50%
+    );
+    background-size: 100% 4px;
+    z-index: 10;
+    pointer-events: none;
+}
+
+/* Header */
+.game-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px dashed var(--neon-green);
+    padding-bottom: 12px;
+}
+
+.game-title {
+    font-size: 1.2rem;
+    color: var(--neon-yellow);
+    text-shadow: 0 0 10px rgba(255, 238, 0, 0.6);
+    letter-spacing: 1px;
+}
+
+.header-controls {
+    display: flex;
+    gap: 10px;
+}
+
+.arcade-btn-sm {
+    background: #16241c;
+    border: 2px solid var(--neon-cyan);
+    color: var(--neon-cyan);
+    font-size: 0.6rem;
+    padding: 6px 10px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: all 0.15s ease;
+}
+
+.arcade-btn-sm:hover {
+    background: var(--neon-cyan);
+    color: #000;
+    box-shadow: 0 0 10px var(--neon-cyan);
+}
+
+.arcade-btn-sm.warning {
+    border-color: var(--neon-red);
+    color: var(--neon-red);
+}
+
+.arcade-btn-sm.warning:hover {
+    background: var(--neon-red);
+    color: #fff;
+    box-shadow: 0 0 10px var(--neon-red);
+}
+
+/* Status HUD */
+.status-hud {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(0, 20, 10, 0.6);
+    border: 2px solid #1c5235;
+    border-radius: 8px;
+    padding: 10px 16px;
+    font-size: 0.75rem;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.hud-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.hud-label {
+    color: #88bb99;
+}
+
+.hud-value {
+    color: var(--text-white);
+}
+
+.hud-value.gold {
+    color: var(--neon-yellow);
+    text-shadow: 0 0 8px var(--neon-yellow);
+}
+
+/* HP Bar */
+.hp-container {
+    min-width: 220px;
+}
+
+.hp-bar-outer {
+    width: 100px;
+    height: 14px;
+    background: #220011;
+    border: 2px solid var(--neon-red);
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.hp-bar-inner {
+    height: 100%;
+    background: linear-gradient(90deg, #ff0055, #ff3300);
+    transition: width 0.3s ease-out;
+}
+
+/* Main Scene Area */
+.scene-container {
+    display: grid;
+    grid-template-columns: 340px 1fr;
+    gap: 16px;
+}
+
+@media (max-width: 768px) {
+    .scene-container {
+        grid-template-columns: 1fr;
+    }
+}
+
+.image-frame {
+    position: relative;
+    border: 3px solid var(--neon-green);
+    border-radius: 8px;
+    overflow: hidden;
+    background: #000;
+    box-shadow: 0 0 15px rgba(0, 255, 136, 0.3);
+    height: 230px;
+}
+
+.image-frame img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    image-rendering: pixelated;
+    transition: opacity 0.3s ease;
+}
+
+.location-badge {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.85);
+    color: var(--neon-cyan);
+    font-size: 0.65rem;
+    padding: 6px 8px;
+    text-align: center;
+    border-top: 2px solid var(--neon-cyan);
+}
+
+/* Story Log Box */
+.story-log-container {
+    background: var(--panel-bg);
+    border: 2px solid #1c5235;
+    border-radius: 8px;
+    padding: 14px;
+    height: 230px;
+    overflow-y: auto;
+    font-family: 'VT323', monospace;
+    font-size: 1.2rem;
+    line-height: 1.4;
+    color: var(--neon-green);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.8);
+}
+
+.story-log-container p {
+    font-family: 'VT323', monospace;
+}
+
+.log-event {
+    color: var(--neon-yellow);
+}
+
+.log-alert {
+    color: var(--neon-red);
+}
+
+.log-victory {
+    color: var(--neon-cyan);
+}
+
+/* Inventory Bar */
+.inventory-bar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: rgba(10, 15, 25, 0.7);
+    border: 2px solid #204060;
+    padding: 8px 14px;
+    border-radius: 6px;
+    font-size: 0.65rem;
+}
+
+.inventory-title {
+    color: var(--neon-cyan);
+    white-space: nowrap;
+}
+
+.inventory-pills {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.item-pill {
+    background: #142a3a;
+    border: 1px solid var(--neon-cyan);
+    color: #fff;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.6rem;
+}
+
+/* Action Buttons Grid */
+.actions-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 12px;
+    margin-top: 4px;
+}
+
+.arcade-btn {
+    background: linear-gradient(180deg, #183020, #0a1810);
+    border: 2px solid var(--neon-green);
+    color: var(--text-white);
+    padding: 14px 12px;
+    font-size: 0.7rem;
+    line-height: 1.3;
+    cursor: pointer;
+    border-radius: 6px;
+    text-align: left;
+    transition: all 0.15s ease;
+    box-shadow: 0 4px 0 #08120a;
+}
+
+.arcade-btn:hover {
+    background: linear-gradient(180deg, #285038, #102418);
+    border-color: var(--neon-yellow);
+    color: var(--neon-yellow);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 0 #08120a, 0 0 12px rgba(255, 238, 0, 0.4);
+}
+
+.arcade-btn:active {
+    transform: translateY(2px);
+    box-shadow: 0 2px 0 #08120a;
+}
+
+.arcade-btn.primary {
+    background: linear-gradient(180deg, #2a1840, #140a20);
+    border-color: var(--neon-magenta);
+    color: var(--neon-magenta);
+    text-align: center;
+}
+
+.arcade-btn.primary:hover {
+    background: var(--neon-magenta);
+    color: #fff;
+    box-shadow: 0 0 15px var(--neon-magenta);
+}
+
+/* Discrete Retro Modal Overlay */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(8, 10, 16, 0.92);
+    backdrop-filter: blur(4px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+}
+
+.modal-overlay.hidden {
+    display: none;
+}
+
+.modal-content {
+    background: #161822;
+    border: 2px solid #33384a;
+    border-radius: 10px;
+    padding: 32px 28px;
+    max-width: 480px;
+    width: 90%;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.85);
+}
+
+.modal-content h2 {
+    font-size: 1.05rem;
+    color: #d4af37; /* Warm classic gold */
+    letter-spacing: 1px;
+    text-shadow: none;
+}
+
+.modal-content p {
+    font-family: 'VT323', monospace;
+    font-size: 1.25rem;
+    color: #a0aec0; /* Soft muted slate */
+    line-height: 1.4;
+}
+
+.name-input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    text-align: left;
+}
+
+.name-input-group label {
+    font-size: 0.65rem;
+    color: #cbd5e0;
+    letter-spacing: 0.5px;
+}
+
+.name-input-group input {
+    background: #0d0f16;
+    border: 2px solid #3a415a;
+    color: #f7fafc;
+    padding: 12px;
+    font-size: 0.85rem;
+    border-radius: 6px;
+    outline: none;
+    transition: all 0.2s ease;
+}
+
+.name-input-group input:focus {
+    border-color: #d4af37;
+    box-shadow: 0 0 10px rgba(212, 175, 55, 0.25);
+}
+
+/* Discrete Start Button */
+.arcade-btn.primary {
+    background: linear-gradient(180deg, #242938, #161924);
+    border: 2px solid #d4af37;
+    color: #d4af37;
+    text-align: center;
+    padding: 14px;
+    font-size: 0.75rem;
+    letter-spacing: 1px;
+    border-radius: 6px;
+}
+
+.arcade-btn.primary:hover {
+    background: #d4af37;
+    color: #12141d;
+    box-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
+}

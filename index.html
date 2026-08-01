@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dragon's Lair (1984) - Retro RPG</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Retro CRT Bezel Container -->
+    <div class="crt-bezel">
+        <div class="crt-screen">
+            <div class="scanlines"></div>
+
+            <!-- Arcade Header -->
+            <header class="game-header">
+                <h1 class="game-title">DRAGON'S LAIR (1984)</h1>
+                <div class="header-controls">
+                    <button id="music-btn" class="arcade-btn-sm" title="Toggle Music">🎵 MUSIC: ON</button>
+                    <button id="sound-btn" class="arcade-btn-sm" title="Toggle Sound">🔊 SFX: ON</button>
+                    <button id="reset-btn" class="arcade-btn-sm warning" title="Restart Game">🔄 RESTART</button>
+                </div>
+            </header>
+
+            <!-- Status HUD -->
+            <div class="status-hud">
+                <div class="hud-item">
+                    <span class="hud-label">HERO:</span>
+                    <span id="hero-name" class="hud-value">Sir Eldrin</span>
+                </div>
+                <div class="hud-item hp-container">
+                    <span class="hud-label">HP:</span>
+                    <div class="hp-bar-outer">
+                        <div id="hp-bar-inner" class="hp-bar-inner" style="width: 100%;"></div>
+                    </div>
+                    <span id="hp-text" class="hud-value">100/100</span>
+                </div>
+                <div class="hud-item">
+                    <span class="hud-label">SCORE:</span>
+                    <span id="score-text" class="hud-value gold">000000</span>
+                </div>
+            </div>
+
+            <!-- Main Scene Display Frame -->
+            <div class="scene-container">
+                <div class="image-frame">
+                    <img id="scene-image" src="assets/images/village.png" alt="Scene Image">
+                    <div class="location-badge" id="location-name">🏰 VILLAGE SQUARE</div>
+                </div>
+
+                <!-- Text Story Log -->
+                <div class="story-log-container" id="story-log">
+                    <!-- Typewritten text lines appear here -->
+                </div>
+            </div>
+
+            <!-- Inventory Panel -->
+            <div class="inventory-bar">
+                <span class="inventory-title">INVENTORY:</span>
+                <div id="inventory-list" class="inventory-pills">
+                    <!-- Items rendered dynamically -->
+                </div>
+            </div>
+
+            <!-- Action Buttons Panel -->
+            <div class="actions-container" id="actions-panel">
+                <!-- Action choice buttons rendered dynamically -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Start Modal for Name Entry -->
+    <div id="name-modal" class="modal-overlay">
+        <div class="modal-content crt-box">
+            <h2>⚔️ ENTER THE REALM ⚔️</h2>
+            <p>The Kingdom of Oakhaven is in shadow. Red Dragon Ignis has captured Princess Aurelia!</p>
+            <div class="name-input-group">
+                <label for="name-input">ENTER HERO NAME:</label>
+                <input type="text" id="name-input" maxlength="16" placeholder="Sir Eldrin" value="Sir Eldrin">
+            </div>
+            <button id="start-btn" class="arcade-btn primary">START QUEST</button>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
