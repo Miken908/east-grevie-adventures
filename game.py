@@ -34,6 +34,12 @@ def slow_print(text, delay=0.015, newline=True):
 def clear_screen():
     os.system('cls' if os.name == 'nt' else 'clear')
 
+def mitigate(damage, player):
+    """Reduces incoming damage by 5 (min 1) if the player has forged the Iron Shield."""
+    if player.has_iron_shield:
+        return max(1, damage - 5)
+    return damage
+
 class Player:
     def __init__(self):
         self.name = "Hero"
@@ -47,6 +53,10 @@ class Player:
         self.goblin_defeated = False
         self.stump_searched = False
         self.cave_searched = False
+        self.goblin_spared = False
+        self.knight_freed = False
+        self.knight_ally_used = False
+        self.has_iron_shield = False
         self.location = "village"
 
     def add_score(self, points):
@@ -94,7 +104,14 @@ def victory(player):
     print(f"{'='*60}{RESET}")
     slow_print(f"{GREEN}You vanquished the terror of the realm, rescued Princess Aurelia,")
     slow_print(f"and returned to the Citadel to live in legend forever!{RESET}\n")
-    
+
+    if player.knight_freed:
+        slow_print(f"{CYAN}Sir Cedric rides beside you into the Citadel, his life-debt repaid in blood and fire.{RESET}")
+    if player.goblin_spared:
+        slow_print(f"{CYAN}Word spreads of the mercy you showed the Goblin Rogue in the Whispering Forest.{RESET}")
+    elif player.goblin_defeated:
+        slow_print(f"{CYAN}Tales of the Goblin Rogue you slew in the misty forest travel far and wide.{RESET}")
+
     player.add_score(1000)
     print(f"\n{YELLOW}==========================================")
     print(f"       FINAL SCORE: {player.score} PTS")
@@ -125,8 +142,9 @@ def village_square(player):
     print("2. Enter the Whispering Forest (To the West)")
     print("3. Venture towards the Rocky Mountains (To the East)")
     print("4. Rest at the Tavern (+20 HP)")
-    
-    choice = input("\nSelect choice (1-4): ").strip()
+    print("5. Visit the Blacksmith")
+
+    choice = input("\nSelect choice (1-5): ").strip()
     if choice == "1":
         slow_print("\nElder: 'Brave adventurer! The Sunblade lies hidden inside the Sunken Temple across the Whispering Forest.")
         slow_print("Take this Silver Key. It unlocks the inner sanctum!'")
@@ -146,8 +164,31 @@ def village_square(player):
             player.heal(20)
         else:
             slow_print("\nYour health is already full!")
+    elif choice == "5":
+        blacksmith(player)
     else:
         print("Invalid option!")
+
+def blacksmith(player):
+    player.show_status()
+    slow_print("🔨 BLACKSMITH'S FORGE")
+    slow_print("Sparks fly as the burly blacksmith hammers away at glowing steel.")
+    if player.has_iron_shield:
+        slow_print("Blacksmith: 'That Iron Shield I forged you should still serve you well!'")
+    elif "Gold Pouch" in player.inventory:
+        slow_print("Blacksmith: 'A Gold Pouch, eh? I can forge that Wooden Shield of yours into something sturdier.'")
+        choice = input("Forge the Wooden Shield into an Iron Shield? (y/n): ").strip().lower()
+        if choice == "y":
+            player.inventory.remove("Gold Pouch")
+            player.has_iron_shield = True
+            slow_print(f"{YELLOW}🛡️ Your Wooden Shield is reforged into a gleaming IRON SHIELD!{RESET}")
+            slow_print("It will reduce the damage you take when defending or taking a counterattack.")
+            player.add_score(50)
+        else:
+            slow_print("Blacksmith: 'Suit yourself. The offer stands.'")
+    else:
+        slow_print("Blacksmith: 'Come back with some coin and I'll forge you something worthwhile.'")
+    input("\nPress Enter to return to the Village Square...")
 
 def whispering_forest(player):
     player.location = "forest"
@@ -191,14 +232,15 @@ def goblin_fight(player):
         print("1. Attack with weapon")
         print("2. Use Healing Potion")
         print("3. Flee back to forest path")
-        
-        c = input("Action (1-3): ").strip()
+        print("4. Try to reason with the Goblin (requires Bread)")
+
+        c = input("Action (1-4): ").strip()
         if c == "1":
             damage = random.randint(15, 25) if player.has_sword else random.randint(8, 15)
             goblin_hp -= damage
             print(f"You strike the Goblin for {damage} damage!")
             if goblin_hp > 0:
-                g_dmg = random.randint(5, 12)
+                g_dmg = mitigate(random.randint(5, 12), player)
                 player.hp -= g_dmg
                 print(f"The Goblin bites back for {g_dmg} damage!")
         elif c == "2":
@@ -210,7 +252,19 @@ def goblin_fight(player):
         elif c == "3":
             slow_print("You flee from battle safely!")
             return
-    
+        elif c == "4":
+            if "Bread" in player.inventory:
+                player.inventory.remove("Bread")
+                slow_print(f"\n{GREEN}You toss the Goblin your loaf of Bread. It snatches it and bolts into the trees!{RESET}")
+                player.goblin_defeated = True
+                player.goblin_spared = True
+                player.add_score(100)
+                return
+            else:
+                print("You have no Bread to offer as a peace gesture!")
+        else:
+            print("Invalid option!")
+
     if player.hp <= 0:
         game_over("You were slain by the Goblin Rogue in the misty forest...", player)
     else:
@@ -280,9 +334,10 @@ def mountain_pass(player):
     print("\nWhat do you do?")
     print("1. Ascend to Peak Doom (Dragon's Lair)")
     print("2. Search the Mountain Cave for supplies")
-    print("3. Return to Village Square")
-    
-    choice = input("\nSelect choice (1-3): ").strip()
+    print("3. Explore the Old Watchtower ruins")
+    print("4. Return to Village Square")
+
+    choice = input("\nSelect choice (1-4): ").strip()
     if choice == "1":
         dragons_lair(player)
     elif choice == "2":
@@ -295,7 +350,31 @@ def mountain_pass(player):
         else:
             slow_print("The cave has been scavenged.")
     elif choice == "3":
+        old_watchtower(player)
+    elif choice == "4":
         village_square(player)
+
+def old_watchtower(player):
+    slow_print("\n🗼 OLD WATCHTOWER")
+    slow_print("A crumbling stone tower leans over the cliffside, its door hanging off its hinges.")
+    if player.knight_freed:
+        slow_print("The watchtower is empty and silent. Sir Cedric already rides free.")
+        input("Press Enter to return...")
+        return
+
+    slow_print("Inside, chained to a support beam, lies a wounded Knight - Sir Cedric.")
+    print("\nWhat do you do?")
+    print("1. Free the Knight")
+    print("2. Leave him chained and go")
+
+    choice = input("\nSelect choice (1-2): ").strip()
+    if choice == "1":
+        slow_print(f"\n{GREEN}Sir Cedric: 'My thanks, friend! I owe you a life-debt. If ever you face Ignis, call for me!'{RESET}")
+        player.knight_freed = True
+        player.add_score(75)
+    else:
+        slow_print("\nYou leave the Knight chained and head back down the mountain path.")
+    input("Press Enter to return...")
 
 def dragons_lair(player):
     player.location = "lair"
@@ -309,13 +388,16 @@ def dragons_lair(player):
 
     dragon_hp = 120
     while dragon_hp > 0 and player.hp > 0:
+        knight_available = player.knight_freed and not player.knight_ally_used
         print(f"\n{RED}DRAGON IGNIS HP: {dragon_hp}{RESET} | {GREEN}YOUR HP: {player.hp}{RESET}")
         print("1. Slash with weapon")
         print("2. Raise Shield to Defend")
         print("3. Use Elixir / Potion")
         print("4. Attempt to rescue Princess and run")
-        
-        c = input("Action (1-4): ").strip()
+        if knight_available:
+            print("5. Call upon Sir Cedric to strike Ignis")
+
+        c = input(f"Action (1-{'5' if knight_available else '4'}): ").strip()
         if c == "1":
             if player.has_sword:
                 damage = random.randint(35, 50)
@@ -325,14 +407,14 @@ def dragons_lair(player):
                 damage = random.randint(1, 5)
                 dragon_hp -= damage
                 slow_print(f"{RED}Your attack bounces harmlessly off the dragon's thick armor for only {damage} damage!{RESET}")
-            
+
             if dragon_hp > 0:
-                d_dmg = random.randint(20, 35)
+                d_dmg = mitigate(random.randint(20, 35), player)
                 player.hp -= d_dmg
                 slow_print(f"{RED}Ignis breathes a torrent of fire! You take {d_dmg} fire damage!{RESET}")
         elif c == "2":
             slow_print("You raise your shield! The fire breath is partially blocked.")
-            d_dmg = random.randint(8, 15)
+            d_dmg = mitigate(random.randint(8, 15), player)
             player.hp -= d_dmg
             slow_print(f"You take reduced damage ({d_dmg} HP).")
         elif c == "3":
@@ -349,6 +431,13 @@ def dragons_lair(player):
                 game_over("Ignis swept down and engulfed you in flames as you tried to flee!", player)
             else:
                 slow_print("Ignis blocks the exit! You must finish the battle!")
+        elif c == "5" and knight_available:
+            dmg = random.randint(25, 35)
+            dragon_hp -= dmg
+            player.knight_ally_used = True
+            slow_print(f"{YELLOW}⚔️ Sir Cedric charges in and strikes Ignis for {dmg} damage - the dragon has no chance to retaliate!{RESET}")
+        else:
+            print("Invalid option!")
 
     if player.hp <= 0:
         game_over("You fell in battle against Ignis the Red Dragon.", player)

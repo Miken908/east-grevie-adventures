@@ -189,10 +189,19 @@ const state = {
     goblinDefeated: false,
     stumpSearched: false,
     caveSearched: false,
+    goblinSpared: false,
+    knightFreed: false,
+    knightAllyUsed: false,
+    hasIronShield: false,
     goblinHp: 35,
     dragonHp: 120,
     location: "village"
 };
+
+// Reduces incoming damage by 5 (min 1) if the player has forged the Iron Shield
+function mitigate(damage) {
+    return state.hasIronShield ? Math.max(1, damage - 5) : damage;
+}
 
 // Image assets mapping
 const sceneImages = {
@@ -202,6 +211,8 @@ const sceneImages = {
     temple: "assets/images/sunblade.png",
     mountain: "assets/images/mountain.png",
     lair: "assets/images/dragon.png",
+    watchtower: "assets/images/mountain.png", // placeholder art, no dedicated asset yet
+    blacksmith: "assets/images/village.png", // placeholder art, no dedicated asset yet
     victory: "assets/images/dragon.png" // fallback high resolution scene
 };
 
@@ -288,8 +299,49 @@ function renderVillage() {
         { text: "1. Speak to Wise Elder by fountain", action: speakToElder },
         { text: "2. Enter Whispering Forest (West)", action: goForest },
         { text: "3. Venture to Rocky Mountains (East)", action: goMountain },
-        { text: "4. Rest at Tavern (+20 HP)", action: restTavern }
+        { text: "4. Rest at Tavern (+20 HP)", action: restTavern },
+        { text: "5. Visit the Blacksmith", action: goBlacksmith }
     ]);
+}
+
+function goBlacksmith() {
+    sfx.playClick();
+    renderBlacksmith();
+}
+
+function renderBlacksmith() {
+    state.location = "blacksmith";
+    sfx.playMusic("village");
+    setScene("blacksmith", "🔨 BLACKSMITH'S FORGE");
+    clearLog();
+    addLog("Sparks fly as the burly blacksmith hammers away at glowing steel.");
+
+    if (state.hasIronShield) {
+        addLog("Blacksmith: 'That Iron Shield I forged you should still serve you well!'");
+        renderChoices([{ text: "Return to Village Square", action: renderVillage }]);
+    } else if (state.inventory.includes("Gold Pouch")) {
+        addLog("Blacksmith: 'A Gold Pouch, eh? I can forge that Wooden Shield of yours into something sturdier.'");
+        renderChoices([
+            { text: "Forge Iron Shield (uses Gold Pouch)", action: forgeIronShield },
+            { text: "Not now, return to Village Square", action: renderVillage }
+        ]);
+    } else {
+        addLog("Blacksmith: 'Come back with some coin and I'll forge you something worthwhile.'");
+        renderChoices([{ text: "Return to Village Square", action: renderVillage }]);
+    }
+}
+
+function forgeIronShield() {
+    sfx.playClick();
+    const idx = state.inventory.indexOf("Gold Pouch");
+    if (idx !== -1) {
+        state.inventory.splice(idx, 1);
+        state.hasIronShield = true;
+        addLog("🛡️ Your Wooden Shield is reforged into a gleaming IRON SHIELD!", "event");
+        addLog("It will reduce the damage you take when defending or taking a counterattack.");
+        addScore(50);
+    }
+    renderChoices([{ text: "Return to Village Square", action: renderVillage }]);
 }
 
 function speakToElder() {
@@ -434,7 +486,8 @@ function renderGoblinTurn() {
     renderChoices([
         { text: "1. Attack Goblin with weapon", action: attackGoblin },
         { text: "2. Drink Healing Potion", action: usePotionGoblin },
-        { text: "3. Flee to forest path", action: renderForest }
+        { text: "3. Flee to forest path", action: renderForest },
+        { text: "4. Try to reason with the Goblin (requires Bread)", action: reasonWithGoblin }
     ]);
 }
 
@@ -454,7 +507,7 @@ function attackGoblin() {
     }
 
     // Goblin counter attack
-    const gDmg = Math.floor(Math.random() * 8) + 5;
+    const gDmg = mitigate(Math.floor(Math.random() * 8) + 5);
     state.hp -= gDmg;
     addLog(`The Goblin bites back for ${gDmg} damage!`, "alert");
     updateHUD();
@@ -465,6 +518,23 @@ function attackGoblin() {
     }
 
     renderGoblinTurn();
+}
+
+function reasonWithGoblin() {
+    sfx.playClick();
+    const idx = state.inventory.indexOf("Bread");
+    if (idx === -1) {
+        addLog("You have no Bread to offer as a peace gesture!", "alert");
+        renderGoblinTurn();
+        return;
+    }
+    state.inventory.splice(idx, 1);
+    addLog("You toss the Goblin your loaf of Bread. It snatches it and bolts into the trees!", "event");
+    state.goblinDefeated = true;
+    state.goblinSpared = true;
+    addScore(100);
+    updateHUD();
+    renderChoices([{ text: "Continue through Forest", action: renderForest }]);
 }
 
 function usePotionGoblin() {
@@ -493,8 +563,42 @@ function renderMountain() {
     renderChoices([
         { text: "1. Ascend to Peak Doom (Dragon Lair)", action: battleDragon },
         { text: "2. Search Mountain Cave for supplies", action: searchCave },
-        { text: "3. Return to Village Square", action: renderVillage }
+        { text: "3. Explore the Old Watchtower ruins", action: goWatchtower },
+        { text: "4. Return to Village Square", action: renderVillage }
     ]);
+}
+
+function goWatchtower() {
+    sfx.playClick();
+    renderWatchtower();
+}
+
+function renderWatchtower() {
+    state.location = "watchtower";
+    sfx.playMusic("forest");
+    setScene("watchtower", "🗼 OLD WATCHTOWER");
+    clearLog();
+    addLog("A crumbling stone tower leans over the cliffside, its door hanging off its hinges.");
+
+    if (state.knightFreed) {
+        addLog("The watchtower is empty and silent. Sir Cedric already rides free.");
+        renderChoices([{ text: "Return to Mountain Pass", action: renderMountain }]);
+        return;
+    }
+
+    addLog("Inside, chained to a support beam, lies a wounded Knight - Sir Cedric.");
+    renderChoices([
+        { text: "1. Free the Knight", action: freeKnight },
+        { text: "2. Leave him chained and go", action: renderMountain }
+    ]);
+}
+
+function freeKnight() {
+    sfx.playClick();
+    addLog("Sir Cedric: 'My thanks, friend! I owe you a life-debt. If ever you face Ignis, call for me!'", "event");
+    state.knightFreed = true;
+    addScore(75);
+    renderChoices([{ text: "Return to Mountain Pass", action: renderMountain }]);
 }
 
 function searchCave() {
@@ -528,12 +632,30 @@ function battleDragon() {
 
 function renderDragonTurn() {
     addLog(`🐉 IGNIS HP: ${state.dragonHp} | YOUR HP: ${state.hp}`);
-    renderChoices([
+    const choices = [
         { text: "1. Slash with Weapon", action: attackDragon },
         { text: "2. Raise Shield to Defend", action: defendDragon },
         { text: "3. Drink Elixir / Potion", action: useHealDragon },
         { text: "4. Flee down mountain", action: renderMountain }
-    ]);
+    ];
+    if (state.knightFreed && !state.knightAllyUsed) {
+        choices.push({ text: "5. Call upon Sir Cedric to strike Ignis", action: callKnightAlly });
+    }
+    renderChoices(choices);
+}
+
+function callKnightAlly() {
+    sfx.playSlash();
+    const dmg = Math.floor(Math.random() * 11) + 25;
+    state.dragonHp -= dmg;
+    state.knightAllyUsed = true;
+    addLog(`⚔️ Sir Cedric charges in and strikes Ignis for ${dmg} damage - the dragon has no chance to retaliate!`, "victory");
+
+    if (state.dragonHp <= 0) {
+        winGame();
+        return;
+    }
+    renderDragonTurn();
 }
 
 function attackDragon() {
@@ -555,7 +677,7 @@ function attackDragon() {
     }
 
     // Dragon counter flame attack
-    const dDmg = Math.floor(Math.random() * 16) + 20;
+    const dDmg = mitigate(Math.floor(Math.random() * 16) + 20);
     state.hp -= dDmg;
     addLog(`Ignis breathes a torrent of fire! You take ${dDmg} fire damage!`, "alert");
     updateHUD();
@@ -571,7 +693,7 @@ function attackDragon() {
 function defendDragon() {
     sfx.playClick();
     addLog("You raise your shield! The dragon's fire breath is partially blocked.");
-    const dDmg = Math.floor(Math.random() * 8) + 8;
+    const dDmg = mitigate(Math.floor(Math.random() * 8) + 8);
     state.hp -= dDmg;
     addLog(`You take reduced damage (${dDmg} HP).`, "event");
     updateHUD();
@@ -624,6 +746,15 @@ function winGame() {
     addLog("============================================================", "victory");
     addLog("You vanquished Ignis the Red Dragon, rescued Princess Aurelia, and saved Oakhaven!", "event");
 
+    if (state.knightFreed) {
+        addLog("Sir Cedric rides beside you into the Citadel, his life-debt repaid in blood and fire.", "event");
+    }
+    if (state.goblinSpared) {
+        addLog("Word spreads of the mercy you showed the Goblin Rogue in the Whispering Forest.", "event");
+    } else if (state.goblinDefeated) {
+        addLog("Tales of the Goblin Rogue you slew in the misty forest travel far and wide.", "event");
+    }
+
     addScore(1000);
     addLog(`FINAL SCORE: ${state.score} PTS | RATING: GRAND HERO OF THE REALM`, "victory");
 
@@ -641,6 +772,10 @@ function restartGame() {
     state.goblinDefeated = false;
     state.stumpSearched = false;
     state.caveSearched = false;
+    state.goblinSpared = false;
+    state.knightFreed = false;
+    state.knightAllyUsed = false;
+    state.hasIronShield = false;
     state.goblinHp = 35;
     state.dragonHp = 120;
     updateHUD();
@@ -676,7 +811,7 @@ if (musicBtnEl) {
         if (!sfx.musicEnabled) {
             sfx.stopMusic();
         } else {
-            const trackMap = { village: "village", forest: "forest", temple: "forest", mountain: "forest", goblin: "battle", lair: "battle" };
+            const trackMap = { village: "village", forest: "forest", temple: "forest", mountain: "forest", goblin: "battle", lair: "battle", watchtower: "forest", blacksmith: "village" };
             sfx.playMusic(trackMap[state.location] || "village");
         }
     });
