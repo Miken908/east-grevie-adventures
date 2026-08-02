@@ -1045,9 +1045,6 @@ function winGame() {
 
     if (victoryModalEl) victoryModalEl.classList.remove("hidden");
 
-    // Auto-speak victory narration
-    narrator.speak(speechText);
-
     renderChoices([
         { text: "🏆 Play Again for High Score", action: () => {
             if (victoryModalEl) victoryModalEl.classList.add("hidden");
