@@ -110,10 +110,20 @@ def wilderness_trail(player):
             print("Invalid option!")
 
     if player.hp <= 0:
-        game_over(f"You were slain by a {enemy['name']} on the Wilderness Trail...", player)
+        slow_print(f"\n{RED}💥 You were knocked unconscious by the {enemy['name']}!{RESET}")
+        slow_print(f"{CYAN}🏥 Kind townspeople found you on the trail and brought you back to Oakhaven Village to recover.{RESET}")
+        player.hp = max(10, player.max_hp // 4)
+        input("\nPress Enter to recover in the Village Square...")
+        return
     else:
         slow_print(f"\n{GREEN}You defeated the {enemy['name']}!{RESET}")
         player.add_score(reward)
+        print("\nWhat do you do next?")
+        print("1. Continue deeper on the Wilderness Trail")
+        print("2. Return to the Village Square")
+        nc = input("Choice (1-2): ").strip()
+        if nc == "1":
+            wilderness_trail(player)
 
 class Player:
     def __init__(self):
@@ -218,7 +228,7 @@ def village_square(player):
     print("1. Speak to the Wise Elder by the fountain")
     print("2. Enter the Whispering Forest (To the West)")
     print("3. Venture towards the Rocky Mountains (To the East)")
-    print("4. Rest at the Tavern (+20 HP)")
+    print("4. Rest at the Tavern (Full Rest)")
     print("5. Visit the Blacksmith")
     print("6. Venture into the Wilderness Trail (repeatable)")
 
@@ -238,8 +248,8 @@ def village_square(player):
         mountain_pass(player)
     elif choice == "4":
         if player.hp < player.max_hp:
-            slow_print("\nYou rest at the tavern and eat a warm meal.")
-            player.heal(20)
+            player.hp = player.max_hp
+            slow_print(f"\n{GREEN}🍺 You enjoy a warm meal and a full night's rest at the tavern. Health fully restored! ({player.hp}/{player.max_hp} HP){RESET}")
         else:
             slow_print("\nYour health is already full!")
     elif choice == "5":

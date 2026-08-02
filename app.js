@@ -177,6 +177,61 @@ class SoundEffects {
 
 const sfx = new SoundEffects();
 
+// --- Web Speech API Voice Narrator (Gandalf / Ian McKellen Style) ---
+class VoiceNarrator {
+    constructor() {
+        this.synth = window.speechSynthesis || null;
+        this.enabled = true;
+        this.selectedVoice = null;
+        this.initVoices();
+    }
+
+    initVoices() {
+        if (!this.synth) return;
+        const loadVoices = () => {
+            const voices = this.synth.getVoices();
+            if (!voices || voices.length === 0) return;
+            // Prefer deep English male voices (e.g. Google UK English Male, Daniel, George, Microsoft David/Mark)
+            this.selectedVoice = voices.find(v => v.lang.startsWith('en') && (
+                v.name.includes('Male') || v.name.includes('David') || v.name.includes('Daniel') || v.name.includes('George') || v.name.includes('Ian') || v.name.includes('UK')
+            )) || voices.find(v => v.lang.startsWith('en')) || voices[0];
+        };
+
+        loadVoices();
+        if (this.synth.onvoiceschanged !== undefined) {
+            this.synth.onvoiceschanged = loadVoices;
+        }
+    }
+
+    speak(text) {
+        if (!this.enabled || !this.synth) return;
+        this.stop();
+
+        const cleanText = text.replace(/[\u{1F600}-\u{1F64F}\u{1F300}-\u{1F5FF}\u{1F680}-\u{1F6FF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}]/gu, '');
+        const utterance = new SpeechSynthesisUtterance(cleanText);
+        if (this.selectedVoice) {
+            utterance.voice = this.selectedVoice;
+        }
+        utterance.pitch = 0.72; // Deep voice pitch
+        utterance.rate = 0.83;  // Slower, majestic cadence
+        utterance.volume = 1.0;
+
+        try {
+            this.synth.speak(utterance);
+        } catch (e) {
+            console.warn("SpeechSynthesis error:", e);
+        }
+    }
+
+    stop() {
+        if (this.synth && (this.synth.speaking || this.synth.pending)) {
+            this.synth.cancel();
+        }
+    }
+}
+
+const narrator = new VoiceNarrator();
+
 // --- Game State ---
 const state = {
     name: "Sir Eldrin",
@@ -242,8 +297,11 @@ const sceneImages = {
     temple: "assets/images/sunblade.png",
     mountain: "assets/images/mountain.png",
     lair: "assets/images/dragon.png",
-    watchtower: "assets/images/mountain.png", // placeholder art, no dedicated asset yet
-    blacksmith: "assets/images/village.png", // placeholder art, no dedicated asset yet
+    watchtower: "assets/images/watchtower.png",
+    blacksmith: "assets/images/blacksmith.png",
+    wilderness: "assets/images/wilderness.png",
+    troll: "assets/images/troll.png",
+    cave: "assets/images/troll.png",
     victory: "assets/images/dragon.png" // fallback high resolution scene
 };
 
@@ -333,7 +391,7 @@ function renderVillage() {
         { text: "1. Speak to Wise Elder by fountain", action: speakToElder },
         { text: "2. Enter Whispering Forest (West)", action: goForest },
         { text: "3. Venture to Rocky Mountains (East)", action: goMountain },
-        { text: "4. Rest at Tavern (+20 HP)", action: restTavern },
+        { text: "4. Rest at Tavern (Full Rest)", action: restTavern },
         { text: "5. Visit the Blacksmith", action: goBlacksmith },
         { text: "6. Venture into the Wilderness Trail (repeatable)", action: goWilderness }
     ]);
@@ -383,6 +441,7 @@ function speakToElder() {
     sfx.playClick();
     addLog("Elder: 'Brave adventurer! The Sunblade lies hidden inside the Sunken Temple across the Whispering Forest.'");
     addLog("Elder: 'Take this Silver Key. It unlocks the inner sanctum!'");
+    narrator.speak("Brave adventurer! The Sunblade lies hidden inside the Sunken Temple across the Whispering Forest. Take this Silver Key. It unlocks the inner sanctum!");
 
     if (!state.inventory.includes("Silver Key")) {
         state.inventory.push("Silver Key");
@@ -396,8 +455,10 @@ function speakToElder() {
 function restTavern() {
     sfx.playClick();
     if (state.hp < state.maxHp) {
-        addLog("You rest at the tavern and eat a warm meal.");
-        healPlayer(20);
+        state.hp = state.maxHp;
+        addLog("🍺 You enjoy a warm meal and a full night's rest at the tavern. Health fully restored!", "event");
+        sfx.playHeal();
+        updateHUD();
     } else {
         addLog("Your health is already full!");
     }
@@ -652,7 +713,7 @@ function searchCave() {
 
 function renderMountainCave() {
     state.location = "cave";
-    setScene("mountain", "🕳️ MOUNTAIN CAVE");
+    setScene("troll", "🕳️ MOUNTAIN CAVE");
     clearLog();
     addLog("A Cave Troll blocks the entrance, guarding a chest of glittering treasure!", "alert");
 
@@ -747,7 +808,7 @@ function goWilderness() {
         reward: 60 + levelBonus * 8,
     };
 
-    setScene("forest", "🌾 WILDERNESS TRAIL");
+    setScene("wilderness", "🌾 WILDERNESS TRAIL");
     sfx.playMusic("battle");
     clearLog();
     addLog(`A ${state.wilderness.name} emerges from the tall grass, ready to fight!`, "alert");
@@ -779,7 +840,10 @@ function attackWilderness() {
     if (w.hp <= 0) {
         addLog(`🎉 You defeated the ${w.name}!`, "victory");
         addScore(w.reward);
-        renderChoices([{ text: "Continue on the Trail", action: renderVillage }]);
+        renderChoices([
+            { text: "1. Continue deeper on the Trail", action: goWilderness },
+            { text: "2. Return to Village Square", action: renderVillage }
+        ]);
         return;
     }
 
@@ -789,7 +853,11 @@ function attackWilderness() {
     updateHUD();
 
     if (state.hp <= 0) {
-        gameOver(`You were slain by a ${w.name} on the Wilderness Trail.`);
+        addLog(`💥 You were knocked unconscious by the ${w.name}!`, "alert");
+        addLog("🏥 Kind townspeople found you on the trail and brought you back to Oakhaven Village to recover.", "event");
+        state.hp = Math.max(10, Math.floor(state.maxHp * 0.25));
+        updateHUD();
+        renderChoices([{ text: "Recover in Village Square", action: renderVillage }]);
         return;
     }
 
@@ -815,6 +883,7 @@ function battleDragon() {
     clearLog();
     addLog("Molten lava streams down cavern walls. Atop a mountain of gold lies Princess Aurelia in chains!", "alert");
     addLog("Mighty Red Dragon Ignis awakens with a terrifying roar!", "alert");
+    narrator.speak("Peak Doom! Molten lava streams down dark cavern walls. Atop a mountain of gold lies Princess Aurelia in chains! Mighty Red Dragon Ignis awakens with a terrifying roar!");
 
     if (!state.hasSword) {
         addLog("⚠️ WARNING: You do not possess the Sunblade! Your weapons cannot penetrate Ignis's scales!", "alert");
@@ -948,6 +1017,7 @@ function winGame() {
     addLog("           🎉 VICTORY! THE KINGDOM IS SAVED! 🎉", "victory");
     addLog("============================================================", "victory");
     addLog("You vanquished Ignis the Red Dragon, rescued Princess Aurelia, and saved Oakhaven!", "event");
+    narrator.speak("Victory! You vanquished Ignis the Red Dragon, rescued Princess Aurelia, and saved Oakhaven!");
 
     if (state.knightFreed) {
         addLog("Sir Cedric rides beside you into the Citadel, his life-debt repaid in blood and fire.", "event");
@@ -1001,14 +1071,39 @@ function renderChoices(choices) {
 
 // Event Listeners
 const musicBtnEl = document.getElementById("music-btn");
+const voiceBtnEl = document.getElementById("voice-btn");
+
+const narrateBtnEl = document.getElementById("narrate-btn");
+const introLoreCardEl = document.querySelector(".intro-lore-card");
+
+if (narrateBtnEl) {
+    narrateBtnEl.addEventListener("click", () => {
+        const heroName = nameInputEl.value.trim() || "Sir Eldrin";
+        state.name = heroName;
+        if (introLoreCardEl) introLoreCardEl.classList.add("speaking");
+        narrator.speak(`Welcome, ${heroName}! The Kingdom of Oakhaven is in shadow. The dreaded Red Dragon Ignis has captured Princess Aurelia and fled to Peak Doom. Without the Legendary Sunblade, no mortal weapon can pierce the beast's scales...`);
+    });
+}
 
 startBtnEl.addEventListener("click", () => {
     state.name = nameInputEl.value.trim() || "Sir Eldrin";
+    narrator.stop();
+    if (introLoreCardEl) introLoreCardEl.classList.remove("speaking");
     nameModalEl.classList.add("hidden");
     updateHUD();
     sfx.init();
     renderVillage();
 });
+
+if (voiceBtnEl) {
+    voiceBtnEl.addEventListener("click", () => {
+        narrator.enabled = !narrator.enabled;
+        voiceBtnEl.textContent = `🎙️ VOICE: ${narrator.enabled ? "ON" : "OFF"}`;
+        if (!narrator.enabled) {
+            narrator.stop();
+        }
+    });
+}
 
 if (musicBtnEl) {
     musicBtnEl.addEventListener("click", () => {

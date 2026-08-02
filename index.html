@@ -19,6 +19,7 @@
             <header class="game-header">
                 <h1 class="game-title">DRAGON'S LAIR (1984)</h1>
                 <div class="header-controls">
+                    <button id="voice-btn" class="arcade-btn-sm" title="Toggle Voice Narration">🎙️ VOICE: ON</button>
                     <button id="music-btn" class="arcade-btn-sm" title="Toggle Music">🎵 MUSIC: ON</button>
                     <button id="sound-btn" class="arcade-btn-sm" title="Toggle Sound">🔊 SFX: ON</button>
                     <button id="reset-btn" class="arcade-btn-sm warning" title="Restart Game">🔄 RESTART</button>
@@ -76,16 +77,25 @@
         </div>
     </div>
 
-    <!-- Start Modal for Name Entry -->
+    <!-- Start Modal for Name Entry & Story Intro -->
     <div id="name-modal" class="modal-overlay">
-        <div class="modal-content crt-box">
-            <h2>⚔️ ENTER THE REALM ⚔️</h2>
-            <p>The Kingdom of Oakhaven is in shadow. Red Dragon Ignis has captured Princess Aurelia!</p>
+        <div class="modal-content crt-box intro-box">
+            <h2 class="intro-title">🐉 DRAGON'S LAIR 🐉</h2>
+            <p class="intro-subtitle">THE QUEST FOR THE PRINCESS (1984)</p>
+            
             <div class="name-input-group">
                 <label for="name-input">ENTER HERO NAME:</label>
                 <input type="text" id="name-input" maxlength="16" placeholder="Sir Eldrin" value="Sir Eldrin">
             </div>
-            <button id="start-btn" class="arcade-btn primary">START QUEST</button>
+
+            <div class="intro-lore-card">
+                <p id="intro-lore-text">📜 <em>"The Kingdom of Oakhaven is in shadow. The dreaded Red Dragon Ignis has captured Princess Aurelia and fled to Peak Doom. Without the Legendary Sunblade, no mortal weapon can pierce the beast's scales..."</em></p>
+            </div>
+
+            <div class="intro-btn-group">
+                <button id="narrate-btn" class="arcade-btn primary lg">🎙️ LISTEN TO LORE</button>
+                <button id="start-btn" class="arcade-btn lg">🏰 ENTER VILLAGE</button>
+            </div>
         </div>
     </div>
 
