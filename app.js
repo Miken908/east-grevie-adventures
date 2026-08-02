@@ -1038,6 +1038,7 @@ function winGame() {
 
 function restartGame() {
     state.hp = 100;
+    state.maxHp = 100;
     state.score = 0;
     state.inventory = ["Bread", "Wooden Shield"];
     state.hasSword = false;
