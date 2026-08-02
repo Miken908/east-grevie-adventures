@@ -441,7 +441,6 @@ function speakToElder() {
     sfx.playClick();
     addLog("Elder: 'Brave adventurer! The Sunblade lies hidden inside the Sunken Temple across the Whispering Forest.'");
     addLog("Elder: 'Take this Silver Key. It unlocks the inner sanctum!'");
-    narrator.speak("Brave adventurer! The Sunblade lies hidden inside the Sunken Temple across the Whispering Forest. Take this Silver Key. It unlocks the inner sanctum!");
 
     if (!state.inventory.includes("Silver Key")) {
         state.inventory.push("Silver Key");
@@ -883,7 +882,6 @@ function battleDragon() {
     clearLog();
     addLog("Molten lava streams down cavern walls. Atop a mountain of gold lies Princess Aurelia in chains!", "alert");
     addLog("Mighty Red Dragon Ignis awakens with a terrifying roar!", "alert");
-    narrator.speak("Peak Doom! Molten lava streams down dark cavern walls. Atop a mountain of gold lies Princess Aurelia in chains! Mighty Red Dragon Ignis awakens with a terrifying roar!");
 
     if (!state.hasSword) {
         addLog("⚠️ WARNING: You do not possess the Sunblade! Your weapons cannot penetrate Ignis's scales!", "alert");
