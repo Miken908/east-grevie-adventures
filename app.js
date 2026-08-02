@@ -253,6 +253,7 @@ const state = {
     dragonHp: 120,
     trollHp: 60,
     wilderness: null,
+    fairyVisited: false,
     location: "village"
 };
 
@@ -302,6 +303,8 @@ const sceneImages = {
     wilderness: "assets/images/wilderness.png",
     troll: "assets/images/troll.png",
     cave: "assets/images/troll.png",
+    map: "assets/images/worldmap.png",
+    fairy: "assets/images/fairy.png",
     victory: "assets/images/dragon.png" // fallback high resolution scene
 };
 
@@ -375,6 +378,14 @@ function setScene(imageKey, locationText) {
         sceneImgEl.src = sceneImages[imageKey];
     }
     locationNameEl.textContent = locationText;
+    const mapPinsOverlayEl = document.getElementById("map-pins-overlay");
+    if (mapPinsOverlayEl) {
+        if (imageKey === "map") {
+            mapPinsOverlayEl.classList.remove("hidden");
+        } else {
+            mapPinsOverlayEl.classList.add("hidden");
+        }
+    }
 }
 
 // --- Location Controllers ---
@@ -389,11 +400,10 @@ function renderVillage() {
 
     renderChoices([
         { text: "1. Speak to Wise Elder by fountain", action: speakToElder },
-        { text: "2. Enter Whispering Forest (West)", action: goForest },
-        { text: "3. Venture to Rocky Mountains (East)", action: goMountain },
-        { text: "4. Rest at Tavern (Full Rest)", action: restTavern },
-        { text: "5. Visit the Blacksmith", action: goBlacksmith },
-        { text: "6. Venture into the Wilderness Trail", action: goWilderness }
+        { text: "2. Visit the Blacksmith", action: goBlacksmith },
+        { text: "3. Rest at Tavern (Full Rest)", action: restTavern },
+        { text: "4. Venture into the Wilderness Trail", action: goWilderness },
+        { text: "5. 🗺️ Open World Map (Travel Oakhaven)", action: renderWorldMap }
     ]);
 }
 
@@ -479,7 +489,7 @@ function renderForest() {
         { text: "1. Explore Sunken Temple ruins", action: goTemple },
         { text: "2. Investigate glowing tree stump", action: investigateStump },
         { text: "3. Fight Goblin Rogue", action: battleGoblin },
-        { text: "4. Return to Village Square", action: renderVillage }
+        { text: "4. 🗺️ Open World Map", action: renderWorldMap }
     ];
 
     renderChoices(choices);
@@ -664,7 +674,7 @@ function renderMountain() {
         { text: "1. Ascend to Peak Doom (Dragon Lair)", action: battleDragon },
         { text: "2. Search Mountain Cave for supplies", action: searchCave },
         { text: "3. Explore the Old Watchtower ruins", action: goWatchtower },
-        { text: "4. Return to Village Square", action: renderVillage }
+        { text: "4. 🗺️ Open World Map", action: renderWorldMap }
     ]);
 }
 
@@ -1073,6 +1083,7 @@ function restartGame() {
     state.dragonHp = 120;
     state.trollHp = 60;
     state.wilderness = null;
+    state.fairyVisited = false;
     updateHUD();
     renderVillage();
 }
@@ -1168,4 +1179,70 @@ resetBtnEl.addEventListener("click", () => {
     if (confirm("Restart game from beginning?")) {
         restartGame();
     }
+});
+
+function renderWorldMap() {
+    state.location = "map";
+    sfx.playClick();
+    sfx.playMusic("village");
+    setScene("map", "🗺️ OVERWORLD MAP OF OAKHAVEN");
+    clearLog();
+    addLog("You unroll the ancient cartography map of Oakhaven.");
+    addLog("Click any interactive map pin on the image above, or choose a destination below:");
+
+    renderChoices([
+        { text: "1. 🏰 Oakhaven Village", action: renderVillage },
+        { text: "2. 🌲 Whispering Forest", action: goForest },
+        { text: "3. 🏛️ Sunken Temple Ruins", action: goTemple },
+        { text: "4. 🌾 Wilderness Trail", action: goWilderness },
+        { text: "5. ⛰️ Rocky Mountain Pass", action: goMountain },
+        { text: "6. 🗼 Old Watchtower", action: goWatchtower },
+        { text: "7. 🐉 Peak Doom (Dragon Lair)", action: battleDragon },
+        { text: "8. ✨ Secret Fairy Fountain", action: visitFairyFountain }
+    ]);
+}
+
+function visitFairyFountain() {
+    sfx.playClick();
+    setScene("fairy", "✨ SECRET FAIRY FOUNTAIN");
+    clearLog();
+    if (!state.fairyVisited) {
+        state.fairyVisited = true;
+        addLog("✨ You discover a hidden, shimmering Fairy Fountain in a tranquil glade!", "event");
+        addLog("Glowing sprites bless your journey. Your health is restored by +50 HP!", "victory");
+        healPlayer(50);
+        addScore(25);
+    } else {
+        addLog("The Fairy Fountain is quiet and peaceful. Sprites dance gently over the water.");
+    }
+    renderChoices([
+        { text: "Return to Overworld Map", action: renderWorldMap },
+        { text: "Return to Village Square", action: renderVillage }
+    ]);
+}
+
+// Map Button and Pins Event Handlers
+const mapBtnEl = document.getElementById("map-btn");
+if (mapBtnEl) {
+    mapBtnEl.addEventListener("click", () => {
+        if (state.location === "map") {
+            renderVillage();
+        } else {
+            renderWorldMap();
+        }
+    });
+}
+
+document.querySelectorAll(".map-pin").forEach(pin => {
+    pin.addEventListener("click", () => {
+        const loc = pin.getAttribute("data-location");
+        if (loc === "village") renderVillage();
+        else if (loc === "forest") goForest();
+        else if (loc === "temple") goTemple();
+        else if (loc === "wilderness") goWilderness();
+        else if (loc === "mountain") goMountain();
+        else if (loc === "watchtower") goWatchtower();
+        else if (loc === "lair") battleDragon();
+        else if (loc === "fairy") visitFairyFountain();
+    });
 });

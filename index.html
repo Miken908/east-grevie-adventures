@@ -19,6 +19,7 @@
             <header class="game-header">
                 <h1 class="game-title">DRAGON'S LAIR (1984)</h1>
                 <div class="header-controls">
+                    <button id="map-btn" class="arcade-btn-sm primary" title="Open World Map">🗺️ WORLD MAP</button>
                     <button id="voice-btn" class="arcade-btn-sm" title="Toggle Voice Narration">🎙️ VOICE: ON</button>
                     <button id="music-btn" class="arcade-btn-sm" title="Toggle Music">🎵 MUSIC: ON</button>
                     <button id="sound-btn" class="arcade-btn-sm" title="Toggle Sound">🔊 SFX: ON</button>
@@ -51,9 +52,21 @@
 
             <!-- Main Scene Display Frame -->
             <div class="scene-container">
-                <div class="image-frame">
+                <div class="image-frame" id="image-frame-container">
                     <img id="scene-image" src="assets/images/village.png" alt="Scene Image">
                     <div class="location-badge" id="location-name">🏰 VILLAGE SQUARE</div>
+                    
+                    <!-- Interactive Overworld Map Pins Overlay -->
+                    <div id="map-pins-overlay" class="map-pins-overlay hidden">
+                        <button class="map-pin" style="top: 72%; left: 22%;" data-location="village" title="Oakhaven Village">🏰 <span>Village</span></button>
+                        <button class="map-pin" style="top: 55%; left: 16%;" data-location="forest" title="Whispering Forest">🌲 <span>Forest</span></button>
+                        <button class="map-pin" style="top: 32%; left: 24%;" data-location="temple" title="Sunken Temple">🏛️ <span>Temple</span></button>
+                        <button class="map-pin" style="top: 75%; left: 46%;" data-location="wilderness" title="Wilderness Trail">🌾 <span>Wilderness</span></button>
+                        <button class="map-pin" style="top: 58%; left: 74%;" data-location="mountain" title="Rocky Mountain Pass">⛰️ <span>Mountains</span></button>
+                        <button class="map-pin" style="top: 38%; left: 80%;" data-location="watchtower" title="Old Watchtower">🗼 <span>Watchtower</span></button>
+                        <button class="map-pin danger" style="top: 18%; left: 50%;" data-location="lair" title="Peak Doom (Dragon's Lair)">🐉 <span>Peak Doom</span></button>
+                        <button class="map-pin secret" style="top: 40%; left: 46%;" data-location="fairy" title="Secret Fairy Fountain">✨ <span>Fountain</span></button>
+                    </div>
                 </div>
 
                 <!-- Text Story Log -->
