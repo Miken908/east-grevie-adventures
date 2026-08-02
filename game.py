@@ -230,7 +230,7 @@ def village_square(player):
     print("3. Venture towards the Rocky Mountains (To the East)")
     print("4. Rest at the Tavern (Full Rest)")
     print("5. Visit the Blacksmith")
-    print("6. Venture into the Wilderness Trail (repeatable)")
+    print("6. Venture into the Wilderness Trail")
 
     choice = input("\nSelect choice (1-6): ").strip()
     if choice == "1":

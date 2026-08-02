@@ -393,7 +393,7 @@ function renderVillage() {
         { text: "3. Venture to Rocky Mountains (East)", action: goMountain },
         { text: "4. Rest at Tavern (Full Rest)", action: restTavern },
         { text: "5. Visit the Blacksmith", action: goBlacksmith },
-        { text: "6. Venture into the Wilderness Trail (repeatable)", action: goWilderness }
+        { text: "6. Venture into the Wilderness Trail", action: goWilderness }
     ]);
 }
 
