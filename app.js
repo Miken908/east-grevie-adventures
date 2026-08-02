@@ -1013,26 +1013,49 @@ function gameOver(reason) {
 function winGame() {
     clearLog();
     sfx.playVictory();
+    addScore(1000);
+
     addLog("============================================================", "victory");
     addLog("           🎉 VICTORY! THE KINGDOM IS SAVED! 🎉", "victory");
     addLog("============================================================", "victory");
     addLog("You vanquished Ignis the Red Dragon, rescued Princess Aurelia, and saved Oakhaven!", "event");
-    narrator.speak("Victory! You vanquished Ignis the Red Dragon, rescued Princess Aurelia, and saved Oakhaven!");
 
+    let speechText = `Victory! Hear ye, people of Oakhaven! The hero ${state.name} has vanquished Ignis the Red Dragon and rescued Princess Aurelia from Peak Doom!`;
     if (state.knightFreed) {
+        speechText += " Sir Cedric rides beside you into the Citadel, his life-debt repaid in honor!";
         addLog("Sir Cedric rides beside you into the Citadel, his life-debt repaid in blood and fire.", "event");
     }
     if (state.goblinSpared) {
+        speechText += " Word spreads of the noble mercy you showed the Goblin Rogue.";
         addLog("Word spreads of the mercy you showed the Goblin Rogue in the Whispering Forest.", "event");
     } else if (state.goblinDefeated) {
         addLog("Tales of the Goblin Rogue you slew in the misty forest travel far and wide.", "event");
     }
+    speechText += ` Peace has returned to the Realm, and ${state.name} shall be remembered forever as Grand Hero of Oakhaven!`;
 
-    addScore(1000);
     addLog(`FINAL SCORE: ${state.score} PTS | RATING: GRAND HERO OF THE REALM`, "victory");
 
+    // Populate and display Victory Modal End Screen
+    const victoryModalEl = document.getElementById("victory-modal");
+    const victoryLoreTextEl = document.getElementById("victory-lore-text");
+    const victoryScoreEl = document.getElementById("victory-score");
+    const victoryLevelEl = document.getElementById("victory-level");
+
+    if (victoryLoreTextEl) victoryLoreTextEl.innerHTML = `📜 <em>"${speechText}"</em>`;
+    if (victoryScoreEl) victoryScoreEl.textContent = String(state.score).padStart(6, '0');
+    if (victoryLevelEl) victoryLevelEl.textContent = `LVL ${state.level}`;
+
+    if (victoryModalEl) victoryModalEl.classList.remove("hidden");
+
+    // Auto-speak victory narration
+    narrator.speak(speechText);
+
     renderChoices([
-        { text: "🏆 Play Again for High Score", action: restartGame }
+        { text: "🏆 Play Again for High Score", action: () => {
+            if (victoryModalEl) victoryModalEl.classList.add("hidden");
+            narrator.stop();
+            restartGame();
+        }}
     ]);
 }
 
@@ -1095,6 +1118,28 @@ startBtnEl.addEventListener("click", () => {
     sfx.init();
     renderVillage();
 });
+
+const victoryNarrateBtnEl = document.getElementById("victory-narrate-btn");
+const victoryRestartBtnEl = document.getElementById("victory-restart-btn");
+const victoryLoreCardEl = document.querySelector(".victory-lore-card");
+
+if (victoryNarrateBtnEl) {
+    victoryNarrateBtnEl.addEventListener("click", () => {
+        const victoryText = document.getElementById("victory-lore-text") ? document.getElementById("victory-lore-text").textContent : "";
+        if (victoryLoreCardEl) victoryLoreCardEl.classList.add("speaking");
+        narrator.speak(victoryText);
+    });
+}
+
+if (victoryRestartBtnEl) {
+    victoryRestartBtnEl.addEventListener("click", () => {
+        const vModal = document.getElementById("victory-modal");
+        if (vModal) vModal.classList.add("hidden");
+        if (victoryLoreCardEl) victoryLoreCardEl.classList.remove("speaking");
+        narrator.stop();
+        restartGame();
+    });
+}
 
 if (voiceBtnEl) {
     voiceBtnEl.addEventListener("click", () => {

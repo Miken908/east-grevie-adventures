@@ -490,3 +490,64 @@ body {
     cursor: pointer;
 }
 
+/* Victory End Screen Modal */
+.victory-box {
+    max-width: 580px;
+    border-color: #ffcc00;
+    box-shadow: 0 0 45px rgba(255, 204, 0, 0.45), inset 0 0 25px rgba(0, 0, 0, 0.9);
+}
+
+.victory-title {
+    color: #ffcc00;
+    text-shadow: 0 0 15px rgba(255, 204, 0, 0.7);
+    font-size: 1.15rem;
+    line-height: 1.4;
+}
+
+.victory-subtitle {
+    font-size: 0.7rem;
+    color: #39ff14;
+    letter-spacing: 2px;
+    margin-bottom: 8px;
+}
+
+.victory-lore-card {
+    background: rgba(10, 25, 18, 0.85);
+    border: 1px dashed #ffcc00;
+    border-radius: 8px;
+    padding: 16px;
+    text-align: left;
+    transition: all 0.3s ease;
+}
+
+.victory-lore-card.speaking {
+    border-color: #00f3ff;
+    box-shadow: 0 0 20px rgba(0, 243, 255, 0.4);
+    background: rgba(0, 40, 60, 0.85);
+}
+
+.victory-lore-card p {
+    font-family: 'VT323', monospace;
+    font-size: 1.4rem;
+    color: #f0f0ff;
+    line-height: 1.45;
+}
+
+.victory-stats-hud {
+    display: flex;
+    justify-content: space-around;
+    background: rgba(0, 0, 0, 0.6);
+    border: 1px solid #333346;
+    padding: 10px;
+    border-radius: 6px;
+    margin-top: 10px;
+}
+
+.stat-badge {
+    font-size: 0.7rem;
+}
+
+.stat-lbl {
+    color: #a0aec0;
+}
+

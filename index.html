@@ -99,6 +99,28 @@
         </div>
     </div>
 
+    <!-- Victory Modal for End Screen -->
+    <div id="victory-modal" class="modal-overlay hidden">
+        <div class="modal-content crt-box victory-box">
+            <h2 class="victory-title">🎉 VICTORY! THE KINGDOM IS SAVED! 🎉</h2>
+            <p class="victory-subtitle">RATING: GRAND HERO OF THE REALM</p>
+
+            <div class="victory-lore-card">
+                <p id="victory-lore-text">📜 <em>"With a final heroic strike of the Sunblade, Ignis the Red Dragon was slain! Princess Aurelia was rescued from her chains, and peace has returned to Oakhaven!"</em></p>
+            </div>
+
+            <div class="victory-stats-hud">
+                <div class="stat-badge"><span class="stat-lbl">FINAL SCORE:</span> <span id="victory-score" class="gold">000000</span></div>
+                <div class="stat-badge"><span class="stat-lbl">HERO LEVEL:</span> <span id="victory-level" class="hud-value">LVL 1</span></div>
+            </div>
+
+            <div class="intro-btn-group">
+                <button id="victory-narrate-btn" class="arcade-btn primary lg">🎙️ LISTEN TO VICTORY TALE</button>
+                <button id="victory-restart-btn" class="arcade-btn lg">🏆 PLAY AGAIN FOR HIGH SCORE</button>
+            </div>
+        </div>
+    </div>
+
     <script src="app.js"></script>
 </body>
 </html>
