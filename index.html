@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dragon's Lair (1984) - Retro RPG</title>
+    <title>Dragon's Lair - Retro RPG</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
@@ -17,7 +17,7 @@
 
             <!-- Arcade Header -->
             <header class="game-header">
-                <h1 class="game-title">DRAGON'S LAIR (1984)</h1>
+                <h1 class="game-title">DRAGON'S LAIR</h1>
                 <div class="header-controls">
                     <button id="map-btn" class="arcade-btn-sm primary" title="Open World Map">🗺️ WORLD MAP</button>
                     <button id="voice-btn" class="arcade-btn-sm" title="Toggle Voice Narration">🎙️ VOICE: ON</button>
@@ -55,18 +55,6 @@
                 <div class="image-frame" id="image-frame-container">
                     <img id="scene-image" src="assets/images/village.png" alt="Scene Image">
                     <div class="location-badge" id="location-name">🏰 VILLAGE SQUARE</div>
-                    
-                    <!-- Interactive Overworld Map Pins Overlay -->
-                    <div id="map-pins-overlay" class="map-pins-overlay hidden">
-                        <button class="map-pin" style="top: 72%; left: 22%;" data-location="village" title="Oakhaven Village">🏰 <span>Village</span></button>
-                        <button class="map-pin" style="top: 55%; left: 16%;" data-location="forest" title="Whispering Forest">🌲 <span>Forest</span></button>
-                        <button class="map-pin" style="top: 32%; left: 24%;" data-location="temple" title="Sunken Temple">🏛️ <span>Temple</span></button>
-                        <button class="map-pin" style="top: 75%; left: 46%;" data-location="wilderness" title="Wilderness Trail">🌾 <span>Wilderness</span></button>
-                        <button class="map-pin" style="top: 58%; left: 74%;" data-location="mountain" title="Rocky Mountain Pass">⛰️ <span>Mountains</span></button>
-                        <button class="map-pin" style="top: 38%; left: 80%;" data-location="watchtower" title="Old Watchtower">🗼 <span>Watchtower</span></button>
-                        <button class="map-pin danger" style="top: 18%; left: 50%;" data-location="lair" title="Peak Doom (Dragon's Lair)">🐉 <span>Peak Doom</span></button>
-                        <button class="map-pin secret" style="top: 40%; left: 46%;" data-location="fairy" title="Secret Fairy Fountain">✨ <span>Fountain</span></button>
-                    </div>
                 </div>
 
                 <!-- Text Story Log -->
@@ -94,7 +82,7 @@
     <div id="name-modal" class="modal-overlay">
         <div class="modal-content crt-box intro-box">
             <h2 class="intro-title">🐉 DRAGON'S LAIR 🐉</h2>
-            <p class="intro-subtitle">THE QUEST FOR THE PRINCESS (1984)</p>
+            <p class="intro-subtitle">THE QUEST FOR THE PRINCESS</p>
             
             <div class="name-input-group">
                 <label for="name-input">ENTER HERO NAME:</label>
@@ -130,6 +118,46 @@
             <div class="intro-btn-group">
                 <button id="victory-narrate-btn" class="arcade-btn primary lg">🎙️ LISTEN TO VICTORY TALE</button>
                 <button id="victory-restart-btn" class="arcade-btn lg">🏆 PLAY AGAIN FOR HIGH SCORE</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Expanded Overworld Map Modal (Suggestion 1 Prototype) -->
+    <div id="map-modal" class="modal-overlay hidden">
+        <div class="modal-content crt-box map-modal-box">
+            <div class="map-modal-header">
+                <h2 class="map-modal-title">🗺️ OVERWORLD MAP OF OAKHAVEN</h2>
+                <button id="close-map-modal-btn" class="arcade-btn-sm warning" title="Close World Map">✖ CLOSE</button>
+            </div>
+            
+            <div class="map-modal-canvas-frame">
+                <img id="map-modal-image" src="assets/images/worldmap.png" alt="Kingdom of Oakhaven World Map">
+                
+                <!-- Animated Hero Token -->
+                <div id="hero-map-token" class="hero-map-token" style="top: 74%; left: 22%;" title="Your Hero Position">🗡️</div>
+
+                <!-- Spaced Interactive Pins Overlay -->
+                <div id="modal-map-pins" class="map-pins-overlay">
+                    <button class="map-pin" style="top: 74%; left: 22%;" data-location="village" title="Oakhaven Village Square">🏰 <span>Oakhaven Village</span></button>
+                    <button class="map-pin" style="top: 55%; left: 16%;" data-location="forest" title="Whispering Forest">🌲 <span>Whispering Forest</span></button>
+                    <button class="map-pin" style="top: 32%; left: 24%;" data-location="temple" title="Sunken Temple Sanctum">🏛️ <span>Sunken Temple</span></button>
+                    <button class="map-pin" style="top: 75%; left: 46%;" data-location="wilderness" title="Wilderness Trail">🌾 <span>Wilderness Trail</span></button>
+                    <button class="map-pin" style="top: 58%; left: 74%;" data-location="mountain" title="Rocky Mountain Pass">⛰️ <span>Rocky Mountains</span></button>
+                    <button class="map-pin" style="top: 38%; left: 80%;" data-location="watchtower" title="Old Watchtower Ruins">🗼 <span>Old Watchtower</span></button>
+                    <button class="map-pin danger" style="top: 18%; left: 50%;" data-location="lair" title="Peak Doom (Dragon's Lair)">🐉 <span>Peak Doom (Dragon)</span></button>
+                    <button class="map-pin secret" style="top: 40%; left: 46%;" data-location="fairy" title="Secret Fairy Fountain">✨ <span>Fairy Fountain</span></button>
+                </div>
+            </div>
+
+            <div class="map-modal-actions">
+                <button class="arcade-btn-sm map-dest-btn" data-location="village">🏰 Village</button>
+                <button class="arcade-btn-sm map-dest-btn" data-location="forest">🌲 Forest</button>
+                <button class="arcade-btn-sm map-dest-btn" data-location="temple">🏛️ Temple</button>
+                <button class="arcade-btn-sm map-dest-btn" data-location="wilderness">🌾 Wilderness</button>
+                <button class="arcade-btn-sm map-dest-btn" data-location="mountain">⛰️ Mountains</button>
+                <button class="arcade-btn-sm map-dest-btn" data-location="watchtower">🗼 Watchtower</button>
+                <button class="arcade-btn-sm map-dest-btn warning" data-location="lair">🐉 Peak Doom</button>
+                <button class="arcade-btn-sm map-dest-btn primary" data-location="fairy">✨ Fairy Fountain</button>
             </div>
         </div>
     </div>

@@ -172,7 +172,7 @@ def print_banner():
  \\______/ \\______|   \\______/  \\______| \\______/ |__| \\__| \\______/    
                                                                        
                  === DRAGON'S LAIR: THE PRINCESS QUEST ===
-                        (C) 1984 RETRO ADVENTURE SOFTWARE
+                        RETRO ADVENTURE SOFTWARE
 ================================================================================
 {RESET}"""
     print(banner)
@@ -183,7 +183,7 @@ def game_over(reason, player):
     print(f"{'='*50}{RESET}")
     slow_print(f"{RED}{reason}{RESET}")
     print(f"\n{YELLOW}Final Score: {player.score} Points{RESET}")
-    print(f"{CYAN}Thank you for playing Dragon's Lair (1984)!{RESET}")
+    print(f"{CYAN}Thank you for playing Dragon's Lair!{RESET}")
     sys.exit()
 
 def victory(player):

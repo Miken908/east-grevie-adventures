@@ -807,6 +807,7 @@ function usePotionTroll() {
 
 function goWilderness() {
     sfx.playClick();
+    state.location = "wilderness";
     const base = ENEMY_POOL[Math.floor(Math.random() * ENEMY_POOL.length)];
     const levelBonus = state.level - 1;
     state.wilderness = {
@@ -1181,29 +1182,82 @@ resetBtnEl.addEventListener("click", () => {
     }
 });
 
-function renderWorldMap() {
-    state.location = "map";
-    sfx.playClick();
-    sfx.playMusic("village");
-    setScene("map", "🗺️ OVERWORLD MAP OF OAKHAVEN");
-    clearLog();
-    addLog("You unroll the ancient cartography map of Oakhaven.");
-    addLog("Click any interactive map pin on the image above, or choose a destination below:");
+const mapModalEl = document.getElementById("map-modal");
+const closeMapModalBtn = document.getElementById("close-map-modal-btn");
+const heroMapTokenEl = document.getElementById("hero-map-token");
 
-    renderChoices([
-        { text: "1. 🏰 Oakhaven Village", action: renderVillage },
-        { text: "2. 🌲 Whispering Forest", action: goForest },
-        { text: "3. 🏛️ Sunken Temple Ruins", action: goTemple },
-        { text: "4. 🌾 Wilderness Trail", action: goWilderness },
-        { text: "5. ⛰️ Rocky Mountain Pass", action: goMountain },
-        { text: "6. 🗼 Old Watchtower", action: goWatchtower },
-        { text: "7. 🐉 Peak Doom (Dragon Lair)", action: battleDragon },
-        { text: "8. ✨ Secret Fairy Fountain", action: visitFairyFountain }
-    ]);
+const mapWaypoints = {
+    village: { top: "74%", left: "22%" },
+    blacksmith: { top: "74%", left: "22%" },
+    forest: { top: "55%", left: "16%" },
+    goblin: { top: "55%", left: "16%" },
+    temple: { top: "32%", left: "24%" },
+    wilderness: { top: "75%", left: "46%" },
+    mountain: { top: "58%", left: "74%" },
+    cave: { top: "58%", left: "74%" },
+    watchtower: { top: "38%", left: "80%" },
+    lair: { top: "18%", left: "50%" },
+    fairy: { top: "40%", left: "46%" }
+};
+
+let isTravelling = false;
+
+function setHeroTokenPosition(loc, animate = true) {
+    if (!heroMapTokenEl) return;
+    const wp = mapWaypoints[loc] || mapWaypoints.village;
+    if (!animate) {
+        heroMapTokenEl.style.transition = "none";
+        heroMapTokenEl.style.top = wp.top;
+        heroMapTokenEl.style.left = wp.left;
+        heroMapTokenEl.offsetHeight; // Force reflow
+        heroMapTokenEl.style.transition = "top 0.4s cubic-bezier(0.25, 1, 0.5, 1), left 0.4s cubic-bezier(0.25, 1, 0.5, 1)";
+    } else {
+        heroMapTokenEl.style.top = wp.top;
+        heroMapTokenEl.style.left = wp.left;
+    }
+}
+
+function openMapModal() {
+    if (mapModalEl) {
+        sfx.playClick();
+        setHeroTokenPosition(state.location || "village", false);
+        mapModalEl.classList.remove("hidden");
+    }
+}
+
+function closeMapModal() {
+    if (mapModalEl) {
+        mapModalEl.classList.add("hidden");
+    }
+}
+
+function renderWorldMap() {
+    openMapModal();
+}
+
+function travelTo(loc) {
+    if (isTravelling) return;
+    isTravelling = true;
+    sfx.playClick();
+    setHeroTokenPosition(loc, true);
+
+    setTimeout(() => {
+        isTravelling = false;
+        closeMapModal();
+        if (loc === "village") renderVillage();
+        else if (loc === "forest") goForest();
+        else if (loc === "temple") goTemple();
+        else if (loc === "wilderness") goWilderness();
+        else if (loc === "mountain") goMountain();
+        else if (loc === "watchtower") goWatchtower();
+        else if (loc === "lair") battleDragon();
+        else if (loc === "fairy") visitFairyFountain();
+    }, 420);
 }
 
 function visitFairyFountain() {
     sfx.playClick();
+    state.location = "fairy";
     setScene("fairy", "✨ SECRET FAIRY FOUNTAIN");
     clearLog();
     if (!state.fairyVisited) {
@@ -1221,28 +1275,31 @@ function visitFairyFountain() {
     ]);
 }
 
-// Map Button and Pins Event Handlers
+// Map Button and Modal Event Handlers
 const mapBtnEl = document.getElementById("map-btn");
 if (mapBtnEl) {
     mapBtnEl.addEventListener("click", () => {
-        if (state.location === "map") {
-            renderVillage();
-        } else {
-            renderWorldMap();
+        openMapModal();
+    });
+}
+
+if (closeMapModalBtn) {
+    closeMapModalBtn.addEventListener("click", closeMapModal);
+}
+
+if (mapModalEl) {
+    mapModalEl.addEventListener("click", (e) => {
+        if (e.target === mapModalEl) {
+            closeMapModal();
         }
     });
 }
 
-document.querySelectorAll(".map-pin").forEach(pin => {
-    pin.addEventListener("click", () => {
-        const loc = pin.getAttribute("data-location");
-        if (loc === "village") renderVillage();
-        else if (loc === "forest") goForest();
-        else if (loc === "temple") goTemple();
-        else if (loc === "wilderness") goWilderness();
-        else if (loc === "mountain") goMountain();
-        else if (loc === "watchtower") goWatchtower();
-        else if (loc === "lair") battleDragon();
-        else if (loc === "fairy") visitFairyFountain();
+document.querySelectorAll(".map-pin, .map-dest-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+        const loc = btn.getAttribute("data-location");
+        if (loc) {
+            travelTo(loc);
+        }
     });
 });
