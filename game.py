@@ -143,6 +143,7 @@ class Player:
         self.knight_ally_used = False
         self.has_iron_shield = False
         self.level = 1
+        self.fairy_visited = False
         self.location = "village"
 
     def add_score(self, points):
@@ -226,13 +227,12 @@ def village_square(player):
     slow_print("Townspeople gather around whispering in panic. Cobblestone paths lead in three directions.")
     print("\nWhere will you go?")
     print("1. Speak to the Wise Elder by the fountain")
-    print("2. Enter the Whispering Forest (To the West)")
-    print("3. Venture towards the Rocky Mountains (To the East)")
-    print("4. Rest at the Tavern (Full Rest)")
-    print("5. Visit the Blacksmith")
-    print("6. Venture into the Wilderness Trail")
+    print("2. Visit the Blacksmith")
+    print("3. Rest at the Tavern (Full Rest)")
+    print("4. Venture into the Wilderness Trail")
+    print("5. 🗺️ Open Overworld Map (Travel Oakhaven)")
 
-    choice = input("\nSelect choice (1-6): ").strip()
+    choice = input("\nSelect choice (1-5): ").strip()
     if choice == "1":
         slow_print("\nElder: 'Brave adventurer! The Sunblade lies hidden inside the Sunken Temple across the Whispering Forest.")
         slow_print("Take this Silver Key. It unlocks the inner sanctum!'")
@@ -243,19 +243,17 @@ def village_square(player):
         else:
             slow_print("Elder: 'You already possess the Silver Key! Now seek the temple in the Forest.'")
     elif choice == "2":
-        whispering_forest(player)
+        blacksmith(player)
     elif choice == "3":
-        mountain_pass(player)
-    elif choice == "4":
         if player.hp < player.max_hp:
             player.hp = player.max_hp
             slow_print(f"\n{GREEN}🍺 You enjoy a warm meal and a full night's rest at the tavern. Health fully restored! ({player.hp}/{player.max_hp} HP){RESET}")
         else:
             slow_print("\nYour health is already full!")
-    elif choice == "5":
-        blacksmith(player)
-    elif choice == "6":
+    elif choice == "4":
         wilderness_trail(player)
+    elif choice == "5":
+        worldmap_menu(player)
     else:
         print("Invalid option!")
 
@@ -286,10 +284,10 @@ def whispering_forest(player):
     slow_print("🌲 WHISPERING FOREST")
     slow_print("Ancient trees blot out the sky. Twisted roots line the misty trail.")
     print("\nWhat do you do?")
-    print("1. Explore the Sunken Temple ruins")
+    print("1. Explore Sunken Temple ruins")
     print("2. Investigate a strange glowing tree stump")
     print("3. Fight the Goblin Rogue lurking in the shadows")
-    print("4. Return to the Village Square")
+    print("4. 🗺️ Open Overworld Map")
     
     choice = input("\nSelect choice (1-4): ").strip()
     if choice == "1":
@@ -305,9 +303,64 @@ def whispering_forest(player):
     elif choice == "3":
         goblin_fight(player)
     elif choice == "4":
-        village_square(player)
+        worldmap_menu(player)
     else:
         print("Invalid option!")
+
+def worldmap_menu(player):
+    player.location = "map"
+    player.show_status()
+    slow_print("🗺️ OVERWORLD MAP OF OAKHAVEN")
+    slow_print("You unroll the ancient cartography map of Oakhaven.")
+    print("\nSelect a destination on the map:")
+    print("1. 🏰 Oakhaven Village")
+    print("2. 🌲 Whispering Forest")
+    print("3. 🏛️ Sunken Temple Ruins")
+    print("4. 🌾 Wilderness Trail")
+    print("5. ⛰️ Rocky Mountain Pass")
+    print("6. 🗼 Old Watchtower")
+    print("7. 🐉 Peak Doom (Dragon Lair)")
+    print("8. ✨ Secret Fairy Fountain")
+
+    choice = input("\nSelect destination (1-8): ").strip()
+    if choice == "1":
+        village_square(player)
+    elif choice == "2":
+        whispering_forest(player)
+    elif choice == "3":
+        sunken_temple(player)
+    elif choice == "4":
+        wilderness_trail(player)
+    elif choice == "5":
+        mountain_pass(player)
+    elif choice == "6":
+        old_watchtower(player)
+    elif choice == "7":
+        dragons_lair(player)
+    elif choice == "8":
+        fairy_fountain(player)
+    else:
+        print("Invalid destination!")
+
+def fairy_fountain(player):
+    player.location = "fairy"
+    player.show_status()
+    slow_print("✨ SECRET FAIRY FOUNTAIN")
+    if not player.fairy_visited:
+        player.fairy_visited = True
+        slow_print("✨ You discover a hidden, shimmering Fairy Fountain in a tranquil glade!")
+        slow_print(f"{GREEN}Glowing sprites bless your journey. Your health is restored by +50 HP!{RESET}")
+        player.heal(50)
+        player.add_score(25)
+    else:
+        slow_print("The Fairy Fountain is quiet and peaceful. Sprites dance gently over the water.")
+    print("\n1. Return to Overworld Map")
+    print("2. Return to Village Square")
+    choice = input("\nSelect choice (1-2): ").strip()
+    if choice == "2":
+        village_square(player)
+    else:
+        worldmap_menu(player)
 
 def goblin_fight(player):
     if player.goblin_defeated:
@@ -429,7 +482,7 @@ def mountain_pass(player):
     print("1. Ascend to Peak Doom (Dragon's Lair)")
     print("2. Search the Mountain Cave for supplies")
     print("3. Explore the Old Watchtower ruins")
-    print("4. Return to Village Square")
+    print("4. 🗺️ Open Overworld Map")
 
     choice = input("\nSelect choice (1-4): ").strip()
     if choice == "1":
@@ -442,7 +495,7 @@ def mountain_pass(player):
     elif choice == "3":
         old_watchtower(player)
     elif choice == "4":
-        village_square(player)
+        worldmap_menu(player)
 
 def mountain_cave(player):
     slow_print("\n🕳️ MOUNTAIN CAVE")
