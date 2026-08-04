@@ -1,5 +1,5 @@
 /* ==========================================================================
-   DRAGON'S LAIR (1984) - RETRO GAME ENGINE & WEB AUDIO SYNTHESIZER
+   DRAGON'S LAIR (1984) - RETRO GAME ENGINE, HEROIC ATTRIBUTES & AUDIO SYNTHESIZER
    ========================================================================== */
 
 // --- Web Audio 8-bit Sound Synthesizer ---
