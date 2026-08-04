@@ -27,15 +27,24 @@ class SoundEffects {
         this.init();
         const osc = this.ctx.createOscillator();
         const gain = this.ctx.createGain();
-        osc.type = 'square';
-        osc.frequency.setValueAtTime(440, this.ctx.currentTime);
-        osc.frequency.exponentialRampToValueAtTime(880, this.ctx.currentTime + 0.05);
-        gain.gain.setValueAtTime(0.1, this.ctx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + 0.05);
-        osc.connect(gain);
+        const filter = this.ctx.createBiquadFilter();
+        
+        osc.type = 'sine';
+        filter.type = 'lowpass';
+        filter.frequency.value = 1200;
+        
+        osc.frequency.setValueAtTime(523.25, this.ctx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(783.99, this.ctx.currentTime + 0.04);
+        
+        gain.gain.setValueAtTime(0.06, this.ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.04);
+        
+        osc.connect(filter);
+        filter.connect(gain);
         gain.connect(this.ctx.destination);
+        
         osc.start();
-        osc.stop(this.ctx.currentTime + 0.05);
+        osc.stop(this.ctx.currentTime + 0.04);
     }
 
     playSlash() {
@@ -43,50 +52,73 @@ class SoundEffects {
         this.init();
         const osc = this.ctx.createOscillator();
         const gain = this.ctx.createGain();
-        osc.type = 'sawtooth';
-        osc.frequency.setValueAtTime(300, this.ctx.currentTime);
-        osc.frequency.exponentialRampToValueAtTime(80, this.ctx.currentTime + 0.15);
-        gain.gain.setValueAtTime(0.2, this.ctx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + 0.15);
-        osc.connect(gain);
+        const filter = this.ctx.createBiquadFilter();
+        
+        osc.type = 'triangle';
+        filter.type = 'lowpass';
+        filter.frequency.value = 900;
+        
+        osc.frequency.setValueAtTime(280, this.ctx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(90, this.ctx.currentTime + 0.12);
+        
+        gain.gain.setValueAtTime(0.12, this.ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.12);
+        
+        osc.connect(filter);
+        filter.connect(gain);
         gain.connect(this.ctx.destination);
+        
         osc.start();
-        osc.stop(this.ctx.currentTime + 0.15);
+        osc.stop(this.ctx.currentTime + 0.12);
     }
 
     playHeal() {
         if (!this.enabled) return;
         this.init();
-        const notes = [330, 440, 554, 659];
+        const notes = [329.63, 392.00, 493.88, 659.25];
         notes.forEach((freq, idx) => {
             const osc = this.ctx.createOscillator();
             const gain = this.ctx.createGain();
-            osc.type = 'triangle';
-            osc.frequency.setValueAtTime(freq, this.ctx.currentTime + idx * 0.06);
-            gain.gain.setValueAtTime(0.15, this.ctx.currentTime + idx * 0.06);
-            gain.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + idx * 0.06 + 0.1);
-            osc.connect(gain);
+            const filter = this.ctx.createBiquadFilter();
+            
+            osc.type = 'sine';
+            filter.type = 'lowpass';
+            filter.frequency.value = 1500;
+            
+            osc.frequency.setValueAtTime(freq, this.ctx.currentTime + idx * 0.08);
+            
+            gain.gain.setValueAtTime(0.01, this.ctx.currentTime + idx * 0.08);
+            gain.gain.linearRampToValueAtTime(0.08, this.ctx.currentTime + idx * 0.08 + 0.03);
+            gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + idx * 0.08 + 0.25);
+            
+            osc.connect(filter);
+            filter.connect(gain);
             gain.connect(this.ctx.destination);
-            osc.start(this.ctx.currentTime + idx * 0.06);
-            osc.stop(this.ctx.currentTime + idx * 0.06 + 0.1);
+            
+            osc.start(this.ctx.currentTime + idx * 0.08);
+            osc.stop(this.ctx.currentTime + idx * 0.08 + 0.25);
         });
     }
 
     playItem() {
         if (!this.enabled) return;
         this.init();
-        const notes = [523, 659, 783, 1046];
+        const notes = [523.25, 659.25, 783.99, 1046.50];
         notes.forEach((freq, idx) => {
             const osc = this.ctx.createOscillator();
             const gain = this.ctx.createGain();
-            osc.type = 'square';
-            osc.frequency.setValueAtTime(freq, this.ctx.currentTime + idx * 0.05);
-            gain.gain.setValueAtTime(0.1, this.ctx.currentTime + idx * 0.05);
-            gain.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + idx * 0.05 + 0.08);
+            osc.type = 'triangle';
+            osc.frequency.setValueAtTime(freq, this.ctx.currentTime + idx * 0.06);
+            
+            gain.gain.setValueAtTime(0.01, this.ctx.currentTime + idx * 0.06);
+            gain.gain.linearRampToValueAtTime(0.06, this.ctx.currentTime + idx * 0.06 + 0.02);
+            gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + idx * 0.06 + 0.15);
+            
             osc.connect(gain);
             gain.connect(this.ctx.destination);
-            osc.start(this.ctx.currentTime + idx * 0.05);
-            osc.stop(this.ctx.currentTime + idx * 0.05 + 0.08);
+            
+            osc.start(this.ctx.currentTime + idx * 0.06);
+            osc.stop(this.ctx.currentTime + idx * 0.06 + 0.15);
         });
     }
 
@@ -94,22 +126,26 @@ class SoundEffects {
         if (!this.enabled) return;
         this.init();
         this.stopMusic();
-        const melody = [523, 659, 783, 1046, 880, 1046];
+        const melody = [523.25, 659.25, 783.99, 1046.50, 880.00, 1046.50];
         melody.forEach((freq, idx) => {
             const osc = this.ctx.createOscillator();
             const gain = this.ctx.createGain();
-            osc.type = 'square';
-            osc.frequency.setValueAtTime(freq, this.ctx.currentTime + idx * 0.12);
-            gain.gain.setValueAtTime(0.15, this.ctx.currentTime + idx * 0.12);
-            gain.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + idx * 0.12 + 0.2);
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(freq, this.ctx.currentTime + idx * 0.16);
+            
+            gain.gain.setValueAtTime(0.01, this.ctx.currentTime + idx * 0.16);
+            gain.gain.linearRampToValueAtTime(0.09, this.ctx.currentTime + idx * 0.16 + 0.04);
+            gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + idx * 0.16 + 0.35);
+            
             osc.connect(gain);
             gain.connect(this.ctx.destination);
-            osc.start(this.ctx.currentTime + idx * 0.12);
-            osc.stop(this.ctx.currentTime + idx * 0.12 + 0.2);
+            
+            osc.start(this.ctx.currentTime + idx * 0.16);
+            osc.stop(this.ctx.currentTime + idx * 0.16 + 0.35);
         });
     }
 
-    // --- 8-Bit Chiptune Background Music Sequencer ---
+    // --- Soothing, Low-Stress Ambient Synthesizer Suite ---
     playMusic(trackName) {
         if (this.currentTrack === trackName) return;
         this.stopMusic();
@@ -117,46 +153,86 @@ class SoundEffects {
         if (!this.musicEnabled) return;
 
         this.init();
+
+        // Soothing 16-bit Fantasy Scales (Gentle tempo, soft warm tones)
         const tracks = {
+            // 🏰 Peaceful Village Theme (Warm C Major Pastoral Lullaby)
             village: [
-                { f: 261.63, d: 0.25 }, { f: 329.63, d: 0.25 }, { f: 392.00, d: 0.25 }, { f: 523.25, d: 0.25 },
-                { f: 440.00, d: 0.25 }, { f: 349.23, d: 0.25 }, { f: 392.00, d: 0.50 },
-                { f: 293.66, d: 0.25 }, { f: 349.23, d: 0.25 }, { f: 440.00, d: 0.25 }, { f: 493.88, d: 0.25 },
-                { f: 523.25, d: 0.50 }, { f: 392.00, d: 0.50 }
+                { f: 261.63, d: 0.65, type: 'triangle' }, // C4
+                { f: 329.63, d: 0.65, type: 'sine' },     // E4
+                { f: 392.00, d: 0.65, type: 'triangle' }, // G4
+                { f: 523.25, d: 0.85, type: 'sine' },     // C5
+                { f: 440.00, d: 0.65, type: 'triangle' }, // A4
+                { f: 392.00, d: 0.65, type: 'sine' },     // G4
+                { f: 329.63, d: 0.85, type: 'triangle' }, // E4
+                { f: 293.66, d: 0.65, type: 'sine' },     // D4
+                { f: 349.23, d: 0.65, type: 'triangle' }, // F4
+                { f: 392.00, d: 0.85, type: 'sine' }      // G4
             ],
+            // 🌲 Whispering Forest Theme (Tranquil A Minor Ambient Breeze)
             forest: [
-                { f: 220.00, d: 0.35 }, { f: 261.63, d: 0.35 }, { f: 329.63, d: 0.35 }, { f: 246.94, d: 0.35 },
-                { f: 220.00, d: 0.50 }, { f: 196.00, d: 0.35 }, { f: 220.00, d: 0.50 }
+                { f: 220.00, d: 0.80, type: 'sine' },     // A3
+                { f: 261.63, d: 0.80, type: 'triangle' }, // C4
+                { f: 329.63, d: 0.95, type: 'sine' },     // E4
+                { f: 293.66, d: 0.80, type: 'triangle' }, // D4
+                { f: 246.94, d: 0.80, type: 'sine' },     // B3
+                { f: 220.00, d: 1.10, type: 'triangle' }  // A3
             ],
+            // ⚔️ Heroic Combat Theme (Noble, Balanced D Minor Harmony - Low Stress)
             battle: [
-                { f: 164.81, d: 0.15 }, { f: 164.81, d: 0.15 }, { f: 196.00, d: 0.15 }, { f: 164.81, d: 0.15 },
-                { f: 220.00, d: 0.15 }, { f: 164.81, d: 0.15 }, { f: 233.08, d: 0.15 }, { f: 220.00, d: 0.15 }
+                { f: 146.83, d: 0.45, type: 'triangle' }, // D3
+                { f: 220.00, d: 0.45, type: 'sine' },     // A3
+                { f: 293.66, d: 0.45, type: 'triangle' }, // D4
+                { f: 349.23, d: 0.55, type: 'sine' },     // F4
+                { f: 329.63, d: 0.45, type: 'triangle' }, // E4
+                { f: 293.66, d: 0.45, type: 'sine' },     // D4
+                { f: 220.00, d: 0.65, type: 'triangle' }  // A3
+            ],
+            // ✨ Fairy Sanctuary Theme (Radiant Ambient Chimes)
+            fairy: [
+                { f: 349.23, d: 0.70, type: 'sine' },     // F4
+                { f: 440.00, d: 0.70, type: 'sine' },     // A4
+                { f: 523.25, d: 0.70, type: 'sine' },     // C5
+                { f: 659.25, d: 0.90, type: 'sine' },     // E5
+                { f: 523.25, d: 0.70, type: 'sine' },     // C5
+                { f: 440.00, d: 0.90, type: 'sine' }      // A4
             ]
         };
 
-        const notes = tracks[trackName];
-        if (!notes) return;
-
+        const notes = tracks[trackName] || tracks.village;
         this.noteIndex = 0;
+
         const step = () => {
             if (!this.musicEnabled || this.currentTrack !== trackName) return;
             const note = notes[this.noteIndex];
-            
+
             try {
                 const osc = this.ctx.createOscillator();
                 const gain = this.ctx.createGain();
-                osc.type = 'square';
+                const filter = this.ctx.createBiquadFilter();
+
+                osc.type = note.type || 'triangle';
                 osc.frequency.setValueAtTime(note.f, this.ctx.currentTime);
-                gain.gain.setValueAtTime(0.035, this.ctx.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.005, this.ctx.currentTime + note.d * 0.85);
-                
-                osc.connect(gain);
+
+                // Low-pass filter rolls off harsh frequencies for warm ambient sound
+                filter.type = 'lowpass';
+                filter.frequency.value = 1100;
+
+                // Soft attack and smooth release envelope (No harsh pops or clicks!)
+                const now = this.ctx.currentTime;
+                const duration = note.d;
+                gain.gain.setValueAtTime(0.001, now);
+                gain.gain.linearRampToValueAtTime(0.025, now + 0.05); // Soft 50ms attack
+                gain.gain.exponentialRampToValueAtTime(0.001, now + duration * 0.92);
+
+                osc.connect(filter);
+                filter.connect(gain);
                 gain.connect(this.ctx.destination);
-                
-                osc.start();
-                osc.stop(this.ctx.currentTime + note.d * 0.85);
+
+                osc.start(now);
+                osc.stop(now + duration * 0.92);
             } catch (e) {
-                // AudioContext handling
+                // AudioContext fallback handling
             }
 
             this.noteIndex = (this.noteIndex + 1) % notes.length;
@@ -235,8 +311,8 @@ const narrator = new VoiceNarrator();
 // --- Game State ---
 const state = {
     name: "Sir Eldrin",
-    hp: 145, // 100 + (END 3 * 15)
-    maxHp: 145,
+    hp: 155, // 100 + (END 3 * 15) + (LVL 1 * 10)
+    maxHp: 155,
     level: 1,
     exp: 0,
     expToNextLevel: 100,
