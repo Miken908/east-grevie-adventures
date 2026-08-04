@@ -720,3 +720,132 @@ body {
     50% { transform: translate(-50%, -50%) scale(1.18); box-shadow: 0 0 28px rgba(255, 255, 255, 0.95); }
 }
 
+/* Hero Attributes & Status Modal Styling */
+.ap-badge {
+    background: #ff3366;
+    color: #ffffff;
+    border-radius: 10px;
+    padding: 2px 6px;
+    font-size: 0.55rem;
+    margin-left: 4px;
+    box-shadow: 0 0 8px rgba(255, 51, 102, 0.8);
+    animation: apBadgeGlow 1.5s infinite ease-in-out;
+}
+
+@keyframes apBadgeGlow {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.15); box-shadow: 0 0 14px rgba(255, 51, 102, 1); }
+}
+
+.stats-modal-box {
+    max-width: 720px;
+    width: 92%;
+    border-color: #00f3ff;
+    box-shadow: 0 0 45px rgba(0, 243, 255, 0.35), inset 0 0 25px rgba(0, 0, 0, 0.9);
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 22px;
+}
+
+.stats-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgba(0, 243, 255, 0.3);
+    padding-bottom: 10px;
+}
+
+.stats-modal-title {
+    color: #00f3ff;
+    font-size: 1.1rem;
+    margin: 0;
+    text-shadow: 0 0 12px rgba(0, 243, 255, 0.6);
+}
+
+.stats-summary-bar {
+    display: flex;
+    justify-space-around: space-around;
+    background: rgba(10, 16, 26, 0.85);
+    border: 1px solid #33384a;
+    padding: 10px 14px;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.stat-summary-item .lbl {
+    color: #a0aec0;
+}
+
+.stat-summary-item.highlight .val {
+    color: #ff3366;
+    font-weight: bold;
+    text-shadow: 0 0 8px rgba(255, 51, 102, 0.6);
+}
+
+.attributes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 12px;
+}
+
+.attribute-card {
+    background: rgba(16, 22, 34, 0.9);
+    border: 1px solid #2a3148;
+    border-radius: 6px;
+    padding: 12px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    transition: all 0.2s ease;
+}
+
+.attribute-card:hover {
+    border-color: #00f3ff;
+    box-shadow: 0 0 12px rgba(0, 243, 255, 0.25);
+}
+
+.attr-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.attr-name {
+    font-size: 0.75rem;
+    color: #f0f0ff;
+}
+
+.attr-val {
+    font-size: 1.1rem;
+    color: #ffcc00;
+    font-family: 'Press Start 2P', monospace;
+}
+
+.add-ap-btn {
+    padding: 4px 10px;
+    font-size: 0.7rem;
+    cursor: pointer;
+}
+
+.attr-desc {
+    font-size: 0.7rem;
+    color: #a0aec0;
+    margin: 0;
+    line-height: 1.3;
+}
+
+.derived-stats-panel {
+    display: flex;
+    justify-content: space-around;
+    background: rgba(0, 0, 0, 0.6);
+    border: 1px dashed #d4af37;
+    border-radius: 6px;
+    padding: 12px;
+    font-size: 0.7rem;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+

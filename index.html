@@ -19,6 +19,7 @@
             <header class="game-header">
                 <h1 class="game-title">DRAGON'S LAIR</h1>
                 <div class="header-controls">
+                    <button id="stats-btn" class="arcade-btn-sm primary" title="Hero Stats & Attributes">📊 STATS <span id="ap-badge" class="ap-badge hidden">0</span></button>
                     <button id="map-btn" class="arcade-btn-sm primary" title="Open World Map">🗺️ WORLD MAP</button>
                     <button id="voice-btn" class="arcade-btn-sm" title="Toggle Voice Narration">🎙️ VOICE: ON</button>
                     <button id="music-btn" class="arcade-btn-sm" title="Toggle Music">🎵 MUSIC: ON</button>
@@ -158,6 +159,70 @@
                 <button class="arcade-btn-sm map-dest-btn" data-location="watchtower">🗼 Watchtower</button>
                 <button class="arcade-btn-sm map-dest-btn warning" data-location="lair">🐉 Peak Doom</button>
                 <button class="arcade-btn-sm map-dest-btn primary" data-location="fairy">✨ Fairy Fountain</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hero Attributes & Status Screen Modal -->
+    <div id="stats-modal" class="modal-overlay hidden">
+        <div class="modal-content crt-box stats-modal-box">
+            <div class="stats-modal-header">
+                <h2 class="stats-modal-title">📊 HERO STATUS & ATTRIBUTES</h2>
+                <button id="close-stats-modal-btn" class="arcade-btn-sm warning" title="Close Stats">✖ CLOSE</button>
+            </div>
+            
+            <div class="stats-summary-bar">
+                <div class="stat-summary-item"><span class="lbl">HERO:</span> <span id="stat-hero-name" class="val">Sir Eldrin</span></div>
+                <div class="stat-summary-item"><span class="lbl">LEVEL:</span> <span id="stat-hero-lvl" class="val gold">1</span></div>
+                <div class="stat-summary-item"><span class="lbl">EXP:</span> <span id="stat-hero-exp" class="val">0 / 100</span></div>
+                <div class="stat-summary-item highlight"><span class="lbl">AVAILABLE AP:</span> <span id="stat-available-ap" class="val gold">0</span></div>
+            </div>
+
+            <!-- Attributes Allocation Grid -->
+            <div class="attributes-grid">
+                <div class="attribute-card">
+                    <div class="attr-header">
+                        <span class="attr-name">💪 STRENGTH (STR)</span>
+                        <span id="attr-str-val" class="attr-val">3</span>
+                        <button class="arcade-btn-sm primary add-ap-btn" data-attr="str" title="Add 1 STR Point">+</button>
+                    </div>
+                    <p class="attr-desc">Increases physical attack damage (+1.2 Min / +2.0 Max Dmg per point).</p>
+                </div>
+
+                <div class="attribute-card">
+                    <div class="attr-header">
+                        <span class="attr-name">⚡ AGILITY (AGI)</span>
+                        <span id="attr-agi-val" class="attr-val">3</span>
+                        <button class="arcade-btn-sm primary add-ap-btn" data-attr="agi" title="Add 1 AGI Point">+</button>
+                    </div>
+                    <p class="attr-desc">Increases Dodge chance (+1.5%) and Critical Multiplier (+0.05x).</p>
+                </div>
+
+                <div class="attribute-card">
+                    <div class="attr-header">
+                        <span class="attr-name">🛡️ ENDURANCE (END)</span>
+                        <span id="attr-end-val" class="attr-val">3</span>
+                        <button class="arcade-btn-sm primary add-ap-btn" data-attr="end" title="Add 1 END Point">+</button>
+                    </div>
+                    <p class="attr-desc">Increases Max Health (+15 HP) and Armor Mitigation (+0.8).</p>
+                </div>
+
+                <div class="attribute-card">
+                    <div class="attr-header">
+                        <span class="attr-name">🍀 LUCK (LCK)</span>
+                        <span id="attr-lck-val" class="attr-val">3</span>
+                        <button class="arcade-btn-sm primary add-ap-btn" data-attr="lck" title="Add 1 LCK Point">+</button>
+                    </div>
+                    <p class="attr-desc">Increases Critical Chance (+2.0%), Gold Loot (+5%), and Flee chance.</p>
+                </div>
+            </div>
+
+            <!-- Derived Live Stats Panel -->
+            <div class="derived-stats-panel">
+                <div class="derived-item">⚔️ ATTACK: <span id="derived-dmg-val" class="gold">8 - 15</span></div>
+                <div class="derived-item">💥 CRIT CHANCE: <span id="derived-crit-val" class="gold">14.0%</span></div>
+                <div class="derived-item">💨 DODGE CHANCE: <span id="derived-dodge-val" class="gold">4.5%</span></div>
+                <div class="derived-item">🛡️ ARMOR MITIGATION: <span id="derived-armor-val" class="gold">7.4</span></div>
             </div>
         </div>
     </div>

@@ -235,8 +235,16 @@ const narrator = new VoiceNarrator();
 // --- Game State ---
 const state = {
     name: "Sir Eldrin",
-    hp: 100,
-    maxHp: 100,
+    hp: 145, // 100 + (END 3 * 15)
+    maxHp: 145,
+    level: 1,
+    exp: 0,
+    expToNextLevel: 100,
+    ap: 0,
+    str: 3,
+    agi: 3,
+    end: 3,
+    lck: 3,
     score: 0,
     inventory: ["Bread", "Wooden Shield"],
     hasSword: false,
@@ -248,7 +256,6 @@ const state = {
     knightFreed: false,
     knightAllyUsed: false,
     hasIronShield: false,
-    level: 1,
     goblinHp: 35,
     dragonHp: 120,
     trollHp: 60,
@@ -257,30 +264,72 @@ const state = {
     location: "village"
 };
 
-// Reduces incoming damage by 5 (min 1) if the player has forged the Iron Shield
+// --- Proposal 1: Heroic Attribute & Combat Formulas ---
+
+function calculateMaxHp() {
+    return 100 + (state.end * 15) + (state.level * 10);
+}
+
+function calculateDamageRange() {
+    const baseMin = state.hasSword ? 35 : 8;
+    const baseMax = state.hasSword ? 50 : 15;
+    const minDmg = baseMin + Math.floor(state.str * 1.2) + state.level;
+    const maxDmg = baseMax + Math.floor(state.str * 2.0) + (state.level * 2);
+    return { minDmg, maxDmg };
+}
+
+function calculateCritChance() {
+    return Math.min(50, 5 + (state.lck * 2) + (state.agi * 1));
+}
+
+function calculateCritMultiplier() {
+    return 1.5 + (state.agi * 0.05);
+}
+
+function calculateDodgeChance() {
+    return Math.min(35, state.agi * 1.5);
+}
+
+function calculateMitigation() {
+    let shieldBase = state.hasIronShield ? 10 : (state.inventory.includes("Wooden Shield") ? 5 : 0);
+    return shieldBase + Math.floor(state.end * 0.8);
+}
+
 function mitigate(damage) {
-    return state.hasIronShield ? Math.max(1, damage - 5) : damage;
+    const armor = calculateMitigation();
+    return Math.max(1, Math.round(damage - armor));
 }
 
-const LEVEL_SCORE_STEP = 200;
-const CRIT_CHANCE = 0.15;
-
-function checkLevelUp() {
-    const newLevel = 1 + Math.floor(state.score / LEVEL_SCORE_STEP);
-    while (state.level < newLevel) {
-        state.level++;
-        state.maxHp += 10;
-        state.hp += 10;
-        addLog(`⭐ LEVEL UP! You are now Level ${state.level}! (Max HP +10 -> ${state.maxHp})`, "event");
+function rollAttack() {
+    const { minDmg, maxDmg } = calculateDamageRange();
+    const baseOutput = Math.floor(Math.random() * (maxDmg - minDmg + 1)) + minDmg;
+    const critChance = calculateCritChance() / 100;
+    const isCrit = Math.random() < critChance;
+    let finalDmg = baseOutput;
+    if (isCrit) {
+        finalDmg = Math.floor(baseOutput * calculateCritMultiplier());
     }
+    return { dmg: finalDmg, crit: isCrit };
 }
 
-// Rolls player weapon damage: base roll + level bonus, with a chance to crit
-function rollAttack(low, high) {
-    let dmg = Math.floor(Math.random() * (high - low + 1)) + low + (state.level - 1) * 2;
-    const crit = Math.random() < CRIT_CHANCE;
-    if (crit) dmg *= 2;
-    return { dmg, crit };
+function checkDodge() {
+    const dodgeChance = calculateDodgeChance() / 100;
+    return Math.random() < dodgeChance;
+}
+
+function gainExp(amount) {
+    state.exp += amount;
+    while (state.exp >= state.expToNextLevel) {
+        state.exp -= state.expToNextLevel;
+        state.level += 1;
+        state.ap += 3; // +3 AP granted per level!
+        state.expToNextLevel = Math.floor(100 * Math.pow(state.level, 1.4));
+        state.maxHp = calculateMaxHp();
+        state.hp = state.maxHp;
+        addLog(`⭐ LEVEL UP! You reached Level ${state.level}! Granted +3 Attribute Points!`, "event");
+    }
+    updateHUD();
+    updateStatsModalUI();
 }
 
 const ENEMY_POOL = [
@@ -345,11 +394,11 @@ function addScore(points) {
     state.score += points;
     addLog(`★ +${points} Points! (Total: ${state.score} PTS)`, "event");
     sfx.playItem();
-    checkLevelUp();
-    updateHUD();
+    gainExp(points);
 }
 
 function healPlayer(amount) {
+    state.maxHp = calculateMaxHp();
     state.hp = Math.min(state.maxHp, state.hp + amount);
     addLog(`💚 Restored ${amount} HP! Current HP: ${state.hp}/${state.maxHp}`, "event");
     sfx.playHeal();
@@ -357,12 +406,23 @@ function healPlayer(amount) {
 }
 
 function updateHUD() {
+    state.maxHp = calculateMaxHp();
     heroNameEl.textContent = state.name;
     if (levelTextEl) levelTextEl.textContent = state.level;
     const hpPct = Math.max(0, (state.hp / state.maxHp) * 100);
     hpBarEl.style.width = `${hpPct}%`;
     hpTextEl.textContent = `${state.hp}/${state.maxHp}`;
     scoreTextEl.textContent = String(state.score).padStart(6, '0');
+
+    const apBadgeEl = document.getElementById("ap-badge");
+    if (apBadgeEl) {
+        if (state.ap > 0) {
+            apBadgeEl.textContent = state.ap;
+            apBadgeEl.classList.remove("hidden");
+        } else {
+            apBadgeEl.classList.add("hidden");
+        }
+    }
 
     inventoryListEl.innerHTML = "";
     state.inventory.forEach(item => {
@@ -598,8 +658,7 @@ function renderGoblinTurn() {
 
 function attackGoblin() {
     sfx.playSlash();
-    const [low, high] = state.hasSword ? [15, 25] : [8, 15];
-    const { dmg, crit } = rollAttack(low, high);
+    const { dmg, crit } = rollAttack();
     state.goblinHp -= dmg;
     if (crit) {
         addLog(`💥 CRITICAL HIT! You strike the Goblin for ${dmg} damage!`, "victory");
@@ -616,11 +675,15 @@ function attackGoblin() {
         return;
     }
 
-    // Goblin counter attack
-    const gDmg = mitigate(Math.floor(Math.random() * 8) + 5);
-    state.hp -= gDmg;
-    addLog(`The Goblin bites back for ${gDmg} damage!`, "alert");
-    updateHUD();
+    // Goblin counter attack with Dodge check
+    if (checkDodge()) {
+        addLog("💨 DODGED! You leap clear of the Goblin's attack!", "victory");
+    } else {
+        const gDmg = mitigate(Math.floor(Math.random() * 8) + 5);
+        state.hp -= gDmg;
+        addLog(`The Goblin bites back for ${gDmg} damage!`, "alert");
+        updateHUD();
+    }
 
     if (state.hp <= 0) {
         gameOver("You were slain by the Goblin Rogue in the misty forest.");
@@ -1066,8 +1129,16 @@ function winGame() {
 }
 
 function restartGame() {
-    state.hp = 100;
-    state.maxHp = 100;
+    state.str = 3;
+    state.agi = 3;
+    state.end = 3;
+    state.lck = 3;
+    state.ap = 0;
+    state.level = 1;
+    state.exp = 0;
+    state.expToNextLevel = 100;
+    state.maxHp = calculateMaxHp();
+    state.hp = state.maxHp;
     state.score = 0;
     state.inventory = ["Bread", "Wooden Shield"];
     state.hasSword = false;
@@ -1079,13 +1150,13 @@ function restartGame() {
     state.knightFreed = false;
     state.knightAllyUsed = false;
     state.hasIronShield = false;
-    state.level = 1;
     state.goblinHp = 35;
     state.dragonHp = 120;
     state.trollHp = 60;
     state.wilderness = null;
     state.fairyVisited = false;
     updateHUD();
+    updateStatsModalUI();
     renderVillage();
 }
 
@@ -1300,6 +1371,112 @@ document.querySelectorAll(".map-pin, .map-dest-btn").forEach(btn => {
         const loc = btn.getAttribute("data-location");
         if (loc) {
             travelTo(loc);
+        }
+    });
+});
+
+// --- Hero Status Screen Modal Handlers ---
+
+const statsModalEl = document.getElementById("stats-modal");
+const statsBtnEl = document.getElementById("stats-btn");
+const closeStatsModalBtn = document.getElementById("close-stats-modal-btn");
+
+function updateStatsModalUI() {
+    const statHeroNameEl = document.getElementById("stat-hero-name");
+    const statHeroLvlEl = document.getElementById("stat-hero-lvl");
+    const statHeroExpEl = document.getElementById("stat-hero-exp");
+    const statAvailableApEl = document.getElementById("stat-available-ap");
+
+    if (statHeroNameEl) statHeroNameEl.textContent = state.name;
+    if (statHeroLvlEl) statHeroLvlEl.textContent = state.level;
+    if (statHeroExpEl) statHeroExpEl.textContent = `${state.exp} / ${state.expToNextLevel}`;
+    if (statAvailableApEl) statAvailableApEl.textContent = state.ap;
+
+    const attrStrValEl = document.getElementById("attr-str-val");
+    const attrAgiValEl = document.getElementById("attr-agi-val");
+    const attrEndValEl = document.getElementById("attr-end-val");
+    const attrLckValEl = document.getElementById("attr-lck-val");
+
+    if (attrStrValEl) attrStrValEl.textContent = state.str;
+    if (attrAgiValEl) attrAgiValEl.textContent = state.agi;
+    if (attrEndValEl) attrEndValEl.textContent = state.end;
+    if (attrLckValEl) attrLckValEl.textContent = state.lck;
+
+    const { minDmg, maxDmg } = calculateDamageRange();
+    const derivedDmgValEl = document.getElementById("derived-dmg-val");
+    const derivedCritValEl = document.getElementById("derived-crit-val");
+    const derivedDodgeValEl = document.getElementById("derived-dodge-val");
+    const derivedArmorValEl = document.getElementById("derived-armor-val");
+
+    if (derivedDmgValEl) derivedDmgValEl.textContent = `${minDmg} - ${maxDmg}`;
+    if (derivedCritValEl) derivedCritValEl.textContent = `${calculateCritChance().toFixed(1)}%`;
+    if (derivedDodgeValEl) derivedDodgeValEl.textContent = `${calculateDodgeChance().toFixed(1)}%`;
+    if (derivedArmorValEl) derivedArmorValEl.textContent = `${calculateMitigation().toFixed(1)}`;
+
+    document.querySelectorAll(".add-ap-btn").forEach(btn => {
+        if (state.ap <= 0) {
+            btn.style.opacity = "0.5";
+            btn.style.cursor = "not-allowed";
+        } else {
+            btn.style.opacity = "1";
+            btn.style.cursor = "pointer";
+        }
+    });
+}
+
+function openStatsModal() {
+    if (statsModalEl) {
+        sfx.playClick();
+        updateStatsModalUI();
+        statsModalEl.classList.remove("hidden");
+    }
+}
+
+function closeStatsModal() {
+    if (statsModalEl) {
+        statsModalEl.classList.add("hidden");
+    }
+}
+
+function allocateAP(attr) {
+    if (state.ap <= 0) {
+        addLog("No Attribute Points (AP) available! Level up to earn more.", "alert");
+        return;
+    }
+    state.ap -= 1;
+    state[attr] += 1;
+    if (attr === "end") {
+        const oldMax = state.maxHp;
+        state.maxHp = calculateMaxHp();
+        state.hp += (state.maxHp - oldMax);
+    }
+    sfx.playItem();
+    updateHUD();
+    updateStatsModalUI();
+    addLog(`💪 Allocated +1 to ${attr.toUpperCase()}! (Current ${attr.toUpperCase()}: ${state[attr]})`, "event");
+}
+
+if (statsBtnEl) {
+    statsBtnEl.addEventListener("click", openStatsModal);
+}
+
+if (closeStatsModalBtn) {
+    closeStatsModalBtn.addEventListener("click", closeStatsModal);
+}
+
+if (statsModalEl) {
+    statsModalEl.addEventListener("click", (e) => {
+        if (e.target === statsModalEl) {
+            closeStatsModal();
+        }
+    });
+}
+
+document.querySelectorAll(".add-ap-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+        const attr = btn.getAttribute("data-attr");
+        if (attr) {
+            allocateAP(attr);
         }
     });
 });
