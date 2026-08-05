@@ -531,7 +531,7 @@ function renderVillage() {
     sfx.playMusic("village");
     setScene("village", "🏰 VILLAGE SQUARE");
     clearLog();
-    addLog("You are at the Village Square of Oakhaven.");
+    addLog("You are at the Village Square of East Grevie.");
     addLog("Townspeople gather around whispering in panic. Cobblestone paths lead in three directions.");
 
     renderChoices([
@@ -539,7 +539,7 @@ function renderVillage() {
         { text: "2. Visit the Blacksmith", action: goBlacksmith },
         { text: "3. Rest at Tavern (Full Rest)", action: restTavern },
         { text: "4. Venture into the Wilderness Trail", action: goWilderness },
-        { text: "5. 🗺️ Open World Map (Travel Oakhaven)", action: renderWorldMap }
+        { text: "5. 🗺️ Open World Map (Travel East Grevie)", action: renderWorldMap }
     ]);
 }
 
@@ -688,7 +688,7 @@ function useKeyTemple() {
         addLog("🗝️ The Silver Key fits perfectly into the ancient mechanism!");
         claimSunblade();
     } else {
-        addLog("The pedestal lock requires a key! Speak to the Elder in Oakhaven Village.", "alert");
+        addLog("The pedestal lock requires a key! Speak to the Elder in East Grevie Village.", "alert");
     }
 }
 
@@ -1003,7 +1003,7 @@ function attackWilderness() {
 
     if (state.hp <= 0) {
         addLog(`💥 You were knocked unconscious by the ${w.name}!`, "alert");
-        addLog("🏥 Kind townspeople found you on the trail and brought you back to Oakhaven Village to recover.", "event");
+        addLog("🏥 Kind townspeople found you on the trail and brought you back to East Grevie Village to recover.", "event");
         state.hp = Math.max(10, Math.floor(state.maxHp * 0.25));
         updateHUD();
         renderChoices([{ text: "Recover in Village Square", action: renderVillage }]);
@@ -1166,9 +1166,9 @@ function winGame() {
     addLog("============================================================", "victory");
     addLog("           🎉 VICTORY! THE KINGDOM IS SAVED! 🎉", "victory");
     addLog("============================================================", "victory");
-    addLog("You vanquished Ignis the Red Dragon, rescued Princess Aurelia, and saved Oakhaven!", "event");
+    addLog("You vanquished Ignis the Red Dragon, rescued Princess Aurelia, and saved East Grevie!", "event");
 
-    let speechText = `Victory! Hear ye, people of Oakhaven! The hero ${state.name} has vanquished Ignis the Red Dragon and rescued Princess Aurelia from Peak Doom!`;
+    let speechText = `Victory! Hear ye, people of East Grevie! The hero ${state.name} has vanquished Ignis the Red Dragon and rescued Princess Aurelia from Peak Doom!`;
     if (state.knightFreed) {
         speechText += " Sir Cedric rides beside you into the Citadel, his life-debt repaid in honor!";
         addLog("Sir Cedric rides beside you into the Citadel, his life-debt repaid in blood and fire.", "event");
@@ -1179,7 +1179,7 @@ function winGame() {
     } else if (state.goblinDefeated) {
         addLog("Tales of the Goblin Rogue you slew in the misty forest travel far and wide.", "event");
     }
-    speechText += ` Peace has returned to the Realm, and ${state.name} shall be remembered forever as Grand Hero of Oakhaven!`;
+    speechText += ` Peace has returned to the Realm, and ${state.name} shall be remembered forever as Grand Hero of East Grevie!`;
 
     addLog(`FINAL SCORE: ${state.score} PTS | RATING: GRAND HERO OF THE REALM`, "victory");
 
@@ -1259,7 +1259,7 @@ if (narrateBtnEl) {
         const heroName = nameInputEl.value.trim() || "Sir Eldrin";
         state.name = heroName;
         if (introLoreCardEl) introLoreCardEl.classList.add("speaking");
-        narrator.speak(`Welcome, ${heroName}! The Kingdom of Oakhaven is in shadow. The dreaded Red Dragon Ignis has captured Princess Aurelia and fled to Peak Doom. Without the Legendary Sunblade, no mortal weapon can pierce the beast's scales...`);
+        narrator.speak(`Welcome, ${heroName}! The Kingdom of East Grevie is in shadow. The dreaded Red Dragon Ignis has captured Princess Aurelia and fled to Peak Doom. Without the Legendary Sunblade, no mortal weapon can pierce the beast's scales...`);
     });
 }
 

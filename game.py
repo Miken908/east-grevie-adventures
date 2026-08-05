@@ -111,7 +111,7 @@ def wilderness_trail(player):
 
     if player.hp <= 0:
         slow_print(f"\n{RED}💥 You were knocked unconscious by the {enemy['name']}!{RESET}")
-        slow_print(f"{CYAN}🏥 Kind townspeople found you on the trail and brought you back to Oakhaven Village to recover.{RESET}")
+        slow_print(f"{CYAN}🏥 Kind townspeople found you on the trail and brought you back to East Grevie Village to recover.{RESET}")
         player.hp = max(10, player.max_hp // 4)
         input("\nPress Enter to recover in the Village Square...")
         return
@@ -210,10 +210,10 @@ def victory(player):
 def intro(player):
     clear_screen()
     print_banner()
-    slow_print("The Kingdom of Oakhaven is in shadow.")
+    slow_print("The Kingdom of East Grevie is in shadow.")
     slow_print("The dreaded Red Dragon Ignis has captured Princess Aurelia and fled to Peak Doom.")
     slow_print("Without the Legendary Sunblade, no mortal weapon can pierce the beast's scales.")
-    slow_print("Your quest begins at the crossroad outside the quiet Village of Oakhaven...\n")
+    slow_print("Your quest begins at the crossroad outside the quiet Village of East Grevie...\n")
     
     player.name = input("Enter your hero's name: ").strip() or "Sir Eldrin"
     print(f"\nWelcome, {BOLD}{player.name}{RESET}! Your journey begins now.")
@@ -230,7 +230,7 @@ def village_square(player):
     print("2. Visit the Blacksmith")
     print("3. Rest at the Tavern (Full Rest)")
     print("4. Venture into the Wilderness Trail")
-    print("5. 🗺️ Open Overworld Map (Travel Oakhaven)")
+    print("5. 🗺️ Open Overworld Map (Travel East Grevie)")
 
     choice = input("\nSelect choice (1-5): ").strip()
     if choice == "1":
@@ -310,10 +310,10 @@ def whispering_forest(player):
 def worldmap_menu(player):
     player.location = "map"
     player.show_status()
-    slow_print("🗺️ OVERWORLD MAP OF OAKHAVEN")
-    slow_print("You unroll the ancient cartography map of Oakhaven.")
+    slow_print("🗺️ OVERWORLD MAP OF EAST GREVIE")
+    slow_print("You unroll the ancient cartography map of East Grevie.")
     print("\nSelect a destination on the map:")
-    print("1. 🏰 Oakhaven Village")
+    print("1. 🏰 East Grevie Village")
     print("2. 🌲 Whispering Forest")
     print("3. 🏛️ Sunken Temple Ruins")
     print("4. 🌾 Wilderness Trail")
@@ -452,7 +452,7 @@ def sunken_temple(player):
             player.location = "forest"
             input("Press Enter to continue...")
         else:
-            slow_print("\nThe pedestal lock requires a key! Seek the Elder in Oakhaven Village.")
+            slow_print("\nThe pedestal lock requires a key! Seek the Elder in East Grevie Village.")
     elif choice == "2":
         slow_print("\n📜 An inscription speaks: 'I speak without a mouth and hear without ears. I have no body, but I come alive with wind. What am I?'")
         ans = input("Your answer: ").strip().lower()
