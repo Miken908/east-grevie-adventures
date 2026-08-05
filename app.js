@@ -1169,7 +1169,7 @@ function battleDragon() {
     addLog("Mighty Red Dragon Rodrigues awakens with a terrifying roar!", "alert");
 
     if (!state.hasSword) {
-        addLog("⚠️ WARNING: You do not possess the Sunblade! Your weapons cannot penetrate Rodrigues's scales!", "alert");
+        addLog("⚠️ WARNING: You do not possess the Sunblade! Your weapons cannot penetrate Rodrigues's fur!", "alert");
     }
 
     renderDragonTurn();
@@ -1194,7 +1194,7 @@ function callKnightAlly() {
     const dmg = Math.floor(Math.random() * 11) + 25;
     state.dragonHp -= dmg;
     state.knightAllyUsed = true;
-    addLog(`⚔️ Sir Johan charges in and strikes Rodrigues for ${dmg} damage - the dragon has no chance to retaliate!`, "victory");
+    addLog(`⚔️ Sir Johan charges in and strikes Rodrigues for ${dmg} damage - the cat has no chance to retaliate!`, "victory");
 
     if (state.dragonHp <= 0) {
         winGame();
@@ -1214,14 +1214,14 @@ function attackDragon() {
             state.dragonExposed = false;
             addLog(`🎯 WEAK SPOT STRICKEN! You deal ${dmg} EXTRA CRITICAL DAMAGE!`, "victory");
         } else if (rolled.crit) {
-            addLog(`💥⚔️ CRITICAL HIT! The Sunblade cleaves through the dragon's scales for ${dmg} massive damage!`, "victory");
+            addLog(`💥⚔️ CRITICAL HIT! The Sunblade cleaves through the cat's thick fur for ${dmg} massive damage!`, "victory");
         } else {
-            addLog(`💥 The Sunblade pierces the dragon's scales for ${dmg} DAMAGE!`, "victory");
+            addLog(`💥 The Sunblade pierces the cat's thick fur for ${dmg} DAMAGE!`, "victory");
         }
         state.dragonHp -= dmg;
     } else {
-        addLog("🛡️ YOUR WEAPON REBOUNDS HARMLESSLY OFF RODRIGUES'S IMPENETRABLE SCALES! (0 Damage)", "alert");
-        addLog("Without the Legendary Sunblade, no mortal weapon can pierce the dragon's scales!", "alert");
+        addLog("🛡️ YOUR WEAPON REBOUNDS HARMLESSLY OFF RODRIGUES'S THICK FUR! (0 Damage)", "alert");
+        addLog("Without the Legendary Sunblade, no mortal weapon can pierce the cat's fur!", "alert");
         state.dragonExposed = false;
     }
 
@@ -1230,14 +1230,14 @@ function attackDragon() {
         return;
     }
 
-    // Dragon counter flame attack
+    // Cat counter attack
     const dDmg = mitigate(Math.floor(Math.random() * 16) + 20);
     state.hp -= dDmg;
-    addLog(`Rodrigues breathes a torrent of fire! You take ${dDmg} fire damage!`, "alert");
+    addLog(`Rodrigues slashes with razor claws! You take ${dDmg} damage!`, "alert");
     updateHUD();
 
     if (state.hp <= 0) {
-        gameOver("You fell in battle against Rodrigues the Red Dragon.");
+        gameOver("You fell in battle against Rodrigues the Shadow Cat.");
         return;
     }
 
@@ -1246,17 +1246,17 @@ function attackDragon() {
 
 function defendDragon() {
     sfx.playClick();
-    addLog("🛡️ YOU RAISE YOUR SHIELD TO BLOCK RODRIGUES'S FIRE BREATH!", "event");
+    addLog("🛡️ YOU RAISE YOUR SHIELD TO BLOCK RODRIGUES'S RAZOR CLAWS!", "event");
     const rawDmg = Math.floor(Math.random() * 8) + 12;
     const dDmg = Math.max(1, Math.floor(rawDmg * 0.20));
     state.hp -= dDmg;
-    addLog(`Your shield absorbs 80% of the dragon's fire! You take only ${dDmg} damage!`, "event");
-    addLog("✨ RODRIGUES EXPOSES A VULNERABLE WEAK SPOT IN ITS CHEST ARMOR! Your next attack will deal +50% EXTRA DAMAGE!", "victory");
+    addLog(`Your shield absorbs 80% of the cat's strike! You take only ${dDmg} damage!`, "event");
+    addLog("✨ RODRIGUES EXPOSES A VULNERABLE WEAK SPOT IN ITS CHEST FUR! Your next attack will deal +50% EXTRA DAMAGE!", "victory");
     state.dragonExposed = true;
     updateHUD();
 
     if (state.hp <= 0) {
-        gameOver("You fell in battle against Rodrigues the Red Dragon.");
+        gameOver("You fell in battle against Rodrigues the Shadow Cat.");
         return;
     }
 
@@ -1312,9 +1312,9 @@ function winGame() {
     addLog("============================================================", "victory");
     addLog("           VICTORY! THE KINGDOM IS SAVED!", "victory");
     addLog("============================================================", "victory");
-    addLog("You vanquished Rodrigues the Red Dragon, rescued Princess Anna, and saved East Grevie!", "event");
+    addLog("You vanquished Rodrigues the Shadow Cat, rescued Princess Anna, and saved East Grevie!", "event");
 
-    let speechText = `Victory! Hear ye, people of East Grevie! The hero ${state.name} has vanquished Rodrigues the Red Dragon and rescued Princess Anna from Peak Doom!`;
+    let speechText = `Victory! Hear ye, people of East Grevie! The hero ${state.name} has vanquished Rodrigues the Shadow Cat and rescued Princess Anna from Cat's Hall!`;
     if (state.knightFreed) {
         speechText += " Sir Johan rides beside you into the Citadel, his life-debt repaid in honor!";
         addLog("Sir Johan rides beside you into the Citadel, his life-debt repaid in blood and fire.", "event");
@@ -1415,7 +1415,7 @@ if (narrateBtnEl) {
         const heroName = nameInputEl.value.trim() || "Sir Eldrin";
         state.name = heroName;
         if (introLoreCardEl) introLoreCardEl.classList.add("speaking");
-        narrator.speak(`Welcome, ${heroName}! The Kingdom of East Grevie is in shadow. The dreaded Red Dragon Rodrigues has captured Princess Anna and fled to Peak Doom. Without the Legendary Sunblade, no mortal weapon can pierce the beast's scales...`);
+        narrator.speak(`Welcome, ${heroName}! The Village of East Grevie is in shadow. The dreaded Cat Rodrigues has captured Princess Anna and fled to Cat's Hall. Without the Legendary Sunblade, no mortal weapon can pierce the beast's fur...`);
     });
 }
 

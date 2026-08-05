@@ -216,9 +216,9 @@ def victory(player):
 def intro(player):
     clear_screen()
     print_banner()
-    slow_print("The Kingdom of East Grevie is in shadow.")
-    slow_print("The dreaded Red Dragon Rodrigues has captured Princess Anna and fled to Peak Doom.")
-    slow_print("Without the Legendary Sunblade, no mortal weapon can pierce the beast's scales.")
+    slow_print("The Village of East Grevie is in shadow.")
+    slow_print("The dreaded Cat Rodrigues has captured Princess Anna and fled to Cat's Hall.")
+    slow_print("Without the Legendary Sunblade, no mortal weapon can pierce the beast's fur.")
     slow_print("Your quest begins at the crossroad outside the quiet Village of East Grevie...\n")
     
     player.name = input("Enter your hero's name: ").strip() or "Sir Eldrin"
@@ -599,23 +599,23 @@ def dragons_lair(player):
                 damage, crit = roll_attack(35, 50, player)
                 dragon_hp -= damage
                 if crit:
-                    slow_print(f"{YELLOW}💥⚔️ CRITICAL HIT! The Sunblade cleaves through the dragon's scales for {damage} massive damage!{RESET}")
+                    slow_print(f"{YELLOW}💥⚔️ CRITICAL HIT! The Sunblade cleaves through the cat's thick fur for {damage} massive damage!{RESET}")
                 else:
-                    slow_print(f"{YELLOW}💥 The Sunblade pierces the dragon's scales for {damage} DAMAGE!{RESET}")
+                    slow_print(f"{YELLOW}💥 The Sunblade pierces the cat's thick fur for {damage} DAMAGE!{RESET}")
             else:
-                slow_print(f"{RED}🛡️ YOUR WEAPON REBOUNDS HARMLESSLY OFF RODRIGUES'S IMPENETRABLE SCALES! (0 Damage){RESET}")
-                slow_print(f"{RED}Without the Legendary Sunblade, no mortal weapon can pierce the dragon's scales!{RESET}")
+                slow_print(f"{RED}🛡️ YOUR WEAPON REBOUNDS HARMLESSLY OFF RODRIGUES'S THICK FUR! (0 Damage){RESET}")
+                slow_print(f"{RED}Without the Legendary Sunblade, no mortal weapon can pierce the cat's fur!{RESET}")
 
             if dragon_hp > 0:
                 d_dmg = mitigate(random.randint(20, 35), player)
                 player.hp -= d_dmg
-                slow_print(f"{RED}Rodrigues breathes a torrent of fire! You take {d_dmg} fire damage!{RESET}")
+                slow_print(f"{RED}Rodrigues slashes with razor claws! You take {d_dmg} damage!{RESET}")
         elif c == "2":
-            slow_print("🛡️ YOU RAISE YOUR SHIELD TO BLOCK RODRIGUES'S FIRE BREATH!")
+            slow_print("🛡️ YOU RAISE YOUR SHIELD TO BLOCK RODRIGUES'S RAZOR CLAWS!")
             d_dmg = max(1, random.randint(2, 4))
             player.hp -= d_dmg
-            slow_print(f"Your shield absorbs 80% of the dragon's fire! You take only {d_dmg} damage!")
-            slow_print("✨ RODRIGUES EXPOSES A VULNERABLE WEAK SPOT IN ITS CHEST ARMOR!")
+            slow_print(f"Your shield absorbs 80% of the cat's strike! You take only {d_dmg} damage!")
+            slow_print("✨ RODRIGUES EXPOSES A VULNERABLE WEAK SPOT IN ITS CHEST FUR!")
         elif c == "3":
             if "Elixir of Life" in player.inventory:
                 player.inventory.remove("Elixir of Life")
@@ -627,19 +627,19 @@ def dragons_lair(player):
                 slow_print("You have no healing items left!")
         elif c == "4":
             if not player.has_sword:
-                game_over("Rodrigues swept down and engulfed you in flames as you tried to flee!", player)
+                game_over("Rodrigues pounced and struck you down as you tried to flee!", player)
             else:
                 slow_print("Rodrigues blocks the exit! You must finish the battle!")
         elif c == "5" and knight_available:
             dmg = random.randint(25, 35)
             dragon_hp -= dmg
             player.knight_ally_used = True
-            slow_print(f"{YELLOW}⚔️ Sir Johan charges in and strikes Rodrigues for {dmg} damage - the dragon has no chance to retaliate!{RESET}")
+            slow_print(f"{YELLOW}⚔️ Sir Johan charges in and strikes Rodrigues for {dmg} damage - the cat has no chance to retaliate!{RESET}")
         else:
             print("Invalid option!")
 
     if player.hp <= 0:
-        game_over("You fell in battle against Rodrigues the Red Dragon.", player)
+        game_over("You fell in battle against Rodrigues the Shadow Cat.", player)
     else:
         victory(player)
 
