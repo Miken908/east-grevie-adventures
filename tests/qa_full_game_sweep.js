@@ -7,7 +7,12 @@ console.log("==================================================\n");
 
 const projectDir = path.resolve(__dirname, '..');
 const jsPath = path.join(projectDir, 'app.js');
+const htmlPath = path.join(projectDir, 'index.html');
+const cssPath = path.join(projectDir, 'style.css');
+
 const jsContent = fs.readFileSync(jsPath, 'utf8');
+const htmlContent = fs.readFileSync(htmlPath, 'utf8');
+const cssContent = fs.readFileSync(cssPath, 'utf8');
 
 const testResults = [];
 
@@ -54,11 +59,11 @@ check("rollAttack returns dynamic damage and crit", jsContent.includes("function
 
 // 5. Verify UI Modals & Navigation
 console.log("\n--- TEST GROUP 5: UI Modals & Navigation Bindings ---");
-check("Stats Modal HTML overlay present (#stats-modal)", fs.readFileSync(path.join(projectDir, 'index.html'), 'utf8').includes('id="stats-modal"'));
-check("Stats button present in header (#stats-btn)", fs.readFileSync(path.join(projectDir, 'index.html'), 'utf8').includes('id="stats-btn"'));
-check("Gold HUD element present (#gold-text)", fs.readFileSync(path.join(projectDir, 'index.html'), 'utf8').includes('id="gold-text"'));
-check("AP Notification Badge present (#ap-badge)", fs.readFileSync(path.join(projectDir, 'index.html'), 'utf8').includes('id="ap-badge"'));
-check("World Map Modal present (#map-modal)", fs.readFileSync(path.join(projectDir, 'index.html'), 'utf8').includes('id="map-modal"'));
+check("Stats Modal HTML overlay present (#stats-modal)", htmlContent.includes('id="stats-modal"'));
+check("Stats button present in header (#stats-btn)", htmlContent.includes('id="stats-btn"'));
+check("Gold HUD element present (#gold-text)", htmlContent.includes('id="gold-text"'));
+check("AP Notification Badge present (#ap-badge)", htmlContent.includes('id="ap-badge"'));
+check("World Map Modal present (#map-modal)", htmlContent.includes('id="map-modal"'));
 
 // 6. Simulate Full Mathematical Progression (Level 1 to 5)
 console.log("\n--- TEST GROUP 6: Stat Progression & Balance Simulation ---");
@@ -102,6 +107,25 @@ check("Lvl 3 Sunblade Dmg with +2 STR = 44 - 66 Dmg", lvl3Dmg.min === 44 && lvl3
 check("Lvl 3 Crit Chance with +1 LCK, +1 AGI = 17.0%", lvl3Crit === 17.0, `Got ${lvl3Crit}%`);
 check("Lvl 3 Dodge Chance with +1 AGI = 6.0%", lvl3Dodge === 6.0, `Got ${lvl3Dodge}%`);
 check("Lvl 3 Armor with Iron Shield & +2 END = 14.0 Mitigation", lvl3Armor === 14.0, `Got ${lvl3Armor}`);
+
+// 7. Verify Mouse Realm Theme & Lore Consistency (Regression Prevention)
+console.log("\n--- TEST GROUP 7: Mouse Realm Theme & Lore Integrity ---");
+check("Intro lore text contains 'Village of East Grevie'", htmlContent.includes("Village of East Grevie"));
+check("Intro lore text contains 'Cat Rodrigues'", htmlContent.includes("Cat Rodrigues"));
+check("Intro lore text contains 'beast\'s fur'", htmlContent.includes("beast's fur"));
+check("Mountain Cave enemy updated to Mountain Snake", jsContent.includes("Mountain Snake"));
+check("Cat's Hall location title present", jsContent.includes("CAT'S HALL"));
+check("Wilderness enemy pool contains Wild Weasel", jsContent.includes("Wild Weasel"));
+check("Wilderness enemy pool contains Barn Owl", jsContent.includes("Barn Owl"));
+check("Wilderness enemy pool contains Feral Farm Cat", jsContent.includes("Feral Farm Cat"));
+check("Generic RPG Skeleton Warrior removed from wilderness", !jsContent.includes("Skeleton Warrior"));
+
+// 8. Verify Fullscreen Lightbox & UI Integrity (Regression Prevention)
+console.log("\n--- TEST GROUP 8: Fullscreen Lightbox & UI Integrity ---");
+check("Lightbox Modal element present in HTML (#lightbox-modal)", htmlContent.includes('id="lightbox-modal"'));
+check("Zoom hint badge present on scene image frame", htmlContent.includes('zoom-hint-badge'));
+check("Lightbox click handler binds declared sceneImgEl element", jsContent.includes("lightboxImgEl.src = sceneImgEl.src"));
+check("Map title purged of Overworld prefix", htmlContent.includes("MAP OF EAST GREVIE") && !htmlContent.includes("OVERWORLD MAP"));
 
 console.log("\n==================================================");
 console.log("📊 SUMMARY OF FULL QA & BALANCE SIMULATION RESULTS");
