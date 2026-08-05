@@ -661,31 +661,31 @@ function renderBlacksmith() {
     const discount = Math.min(0.30, state.lck * 0.02);
 
     const broadswordOwned = state.equipment.weapon && state.equipment.weapon.name === "Iron Broadsword";
-    const broadswordCost = Math.round(100 * (1 - discount));
+    const broadswordCost = Math.round(110 * (1 - discount));
     choices.push({
-        text: broadswordOwned ? `1. ⚔️ Iron Broadsword - [ EQUIPPED ]` : `1. ⚔️ Buy Iron Broadsword (+6 Dmg, +1 STR) - 💰 ${broadswordCost} Gold`,
-        action: broadswordOwned ? () => { sfx.playClick(); addLog("You already own and have equipped the Iron Broadsword!"); } : () => buyEquipment("weapon", { name: "Iron Broadsword", bonusStr: 1, bonusMinDmg: 14, bonusMaxDmg: 22 }, broadswordCost)
+        text: broadswordOwned ? `1. ⚔️ Iron Broadsword - [ EQUIPPED ]` : `1. ⚔️ Buy Iron Broadsword (+15 Dmg, +2 STR) - 💰 ${broadswordCost} Gold`,
+        action: broadswordOwned ? () => { sfx.playClick(); addLog("You already own and have equipped the Iron Broadsword!"); } : () => buyEquipment("weapon", { name: "Iron Broadsword", bonusStr: 2, bonusMinDmg: 18, bonusMaxDmg: 28 }, broadswordCost)
     });
 
-    const ironShieldOwned = state.equipment.shield && state.equipment.shield.name === "Reinforced Iron Shield";
-    const ironShieldCost = Math.round(80 * (1 - discount));
+    const ironShieldOwned = state.equipment.shield && state.equipment.shield.name === "Reinforced Tower Shield";
+    const ironShieldCost = Math.round(90 * (1 - discount));
     choices.push({
-        text: ironShieldOwned ? `2. 🛡️ Reinforced Iron Shield - [ EQUIPPED ]` : `2. 🛡️ Buy Reinforced Iron Shield (+5 Armor, +1 END) - 💰 ${ironShieldCost} Gold`,
-        action: ironShieldOwned ? () => { sfx.playClick(); addLog("You already own and have equipped the Reinforced Iron Shield!"); } : () => buyEquipment("shield", { name: "Reinforced Iron Shield", bonusArmor: 8, bonusEnd: 1 }, ironShieldCost)
+        text: ironShieldOwned ? `2. 🛡️ Reinforced Tower Shield - [ EQUIPPED ]` : `2. 🛡️ Buy Reinforced Tower Shield (+10 Armor, +2 END, +20 HP) - 💰 ${ironShieldCost} Gold`,
+        action: ironShieldOwned ? () => { sfx.playClick(); addLog("You already own and have equipped the Reinforced Tower Shield!"); } : () => buyEquipment("shield", { name: "Reinforced Tower Shield", bonusArmor: 10, bonusEnd: 2, bonusMaxHp: 20 }, ironShieldCost)
     });
 
-    const armorOwned = state.equipment.armor && state.equipment.armor.name === "Hardened Leather Armor";
-    const armorCost = Math.round(90 * (1 - discount));
+    const armorOwned = state.equipment.armor && state.equipment.armor.name === "Dragon-Scale Armor";
+    const armorCost = Math.round(100 * (1 - discount));
     choices.push({
-        text: armorOwned ? `3. 🥋 Hardened Leather Armor - [ EQUIPPED ]` : `3. 🥋 Buy Hardened Leather Armor (+4 Armor, +1 AGI) - 💰 ${armorCost} Gold`,
-        action: armorOwned ? () => { sfx.playClick(); addLog("You already own and have equipped the Hardened Leather Armor!"); } : () => buyEquipment("armor", { name: "Hardened Leather Armor", bonusArmor: 4, bonusAgi: 1 }, armorCost)
+        text: armorOwned ? `3. 🥋 Dragon-Scale Armor - [ EQUIPPED ]` : `3. 🥋 Buy Dragon-Scale Armor (+8 Armor, +2 AGI, +30 HP) - 💰 ${armorCost} Gold`,
+        action: armorOwned ? () => { sfx.playClick(); addLog("You already own and have equipped the Dragon-Scale Armor!"); } : () => buyEquipment("armor", { name: "Dragon-Scale Armor", bonusArmor: 8, bonusAgi: 2, bonusMaxHp: 30 }, armorCost)
     });
 
-    const ringOwned = state.equipment.accessory && state.equipment.accessory.name === "Ring of Fortune";
-    const ringCost = Math.round(120 * (1 - discount));
+    const ringOwned = state.equipment.accessory && state.equipment.accessory.name === "Ring of Power";
+    const ringCost = Math.round(130 * (1 - discount));
     choices.push({
-        text: ringOwned ? `4. 💍 Ring of Fortune - [ EQUIPPED ]` : `4. 💍 Buy Ring of Fortune (+2 LCK) - 💰 ${ringCost} Gold`,
-        action: ringOwned ? () => { sfx.playClick(); addLog("You already own and have equipped the Ring of Fortune!"); } : () => buyEquipment("accessory", { name: "Ring of Fortune", bonusLck: 2 }, ringCost)
+        text: ringOwned ? `4. 💍 Ring of Power - [ EQUIPPED ]` : `4. 💍 Buy Ring of Power (+2 LCK, +1 ALL STATS) - 💰 ${ringCost} Gold`,
+        action: ringOwned ? () => { sfx.playClick(); addLog("You already own and have equipped the Ring of Power!"); } : () => buyEquipment("accessory", { name: "Ring of Power", bonusLck: 2, bonusStr: 1, bonusAgi: 1, bonusEnd: 1 }, ringCost)
     });
 
     const potionCost = Math.round(35 * (1 - discount));
