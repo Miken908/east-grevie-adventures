@@ -730,7 +730,7 @@ function buyPotion(cost) {
 
 function speakToElder() {
     sfx.playClick();
-    addLog("Elder: 'Brave adventurer! The Sunblade lies hidden inside the Sunken Temple across the Whispering Forest.'");
+    addLog("Elder: 'Brave adventurer! The Sunblade lies hidden inside The Temple Sanctum across the Whispering Forest.'");
     addLog("Elder: 'Take this Silver Key. It unlocks the inner sanctum!'");
 
     if (!state.inventory.includes("Silver Key")) {
@@ -767,7 +767,7 @@ function renderForest() {
     addLog("Ancient trees blot out the sky. Twisted roots line the misty trail.");
 
     const choices = [
-        { text: "1. Explore Sunken Temple ruins", action: goTemple },
+        { text: "1. Explore The Temple Sanctum", action: goTemple },
         { text: "2. Investigate glowing tree stump", action: investigateStump },
         { text: "3. Fight Goblin Rogue", action: battleGoblin },
         { text: "4. 🗺️ Open World Map", action: renderWorldMap }
@@ -797,7 +797,7 @@ function goTemple() {
 function renderTemple() {
     state.location = "temple";
     sfx.playMusic("forest");
-    setScene("temple", "🏛️ SUNKEN TEMPLE SANCTUM");
+    setScene("temple", "🏛️ THE TEMPLE SANCTUM");
     clearLog();
     addLog("Massive stone pillars support an ancient vault. In the center stands a glowing pedestal.");
 
@@ -940,10 +940,10 @@ function renderMountain() {
     sfx.playMusic("forest");
     setScene("mountain", "⛰️ ROCKY MOUNTAIN PASS");
     clearLog();
-    addLog("Howling winds blow across narrow ledges. High above, smoke rises from Peak Doom.");
+    addLog("Howling winds blow across narrow ledges. High above lies Cat's Hall.");
 
     renderChoices([
-        { text: "1. Ascend to Peak Doom (Dragon Lair)", action: battleDragon },
+        { text: "1. Ascend to Cat's Hall", action: battleDragon },
         { text: "2. Search Mountain Cave for supplies", action: searchCave },
         { text: "3. Explore the Old Watchtower ruins", action: goWatchtower },
         { text: "4. 🗺️ Open World Map", action: renderWorldMap }
@@ -996,18 +996,18 @@ function renderMountainCave() {
     state.location = "cave";
     setScene("troll", "🕳️ MOUNTAIN CAVE");
     clearLog();
-    addLog("A Cave Troll blocks the entrance, guarding a chest of glittering treasure!", "alert");
+    addLog("A Giant Mountain Snake coils in the shadows, guarding a chest of glittering treasure!", "alert");
 
     renderChoices([
-        { text: "1. Fight the Cave Troll", action: startTrollFight },
-        { text: "2. Sneak past while it's distracted", action: sneakPastTroll },
+        { text: "1. Fight the Mountain Snake", action: startTrollFight },
+        { text: "2. Sneak past while it's resting", action: sneakPastTroll },
         { text: "3. Retreat to the Mountain Pass", action: renderMountain }
     ]);
 }
 
 function sneakPastTroll() {
     sfx.playClick();
-    addLog("You slip past the dozing Troll and find a sturdy Elven Shield & Elixir of Life!", "event");
+    addLog("You slip past the resting Snake and find a sturdy Elven Shield & Elixir of Life!", "event");
     state.caveSearched = true;
     state.inventory.push("Elixir of Life");
     healPlayer(50);
@@ -1018,15 +1018,15 @@ function sneakPastTroll() {
 function startTrollFight() {
     sfx.playClick();
     sfx.playMusic("battle");
-    addLog("The Cave Troll roars and swings its massive club!", "alert");
+    addLog("The Mountain Snake rattles its tail and strikes forward!", "alert");
     state.trollHp = 60;
     renderTrollTurn();
 }
 
 function renderTrollTurn() {
-    addLog(`Troll HP: ${state.trollHp} | Your HP: ${state.hp}`);
+    addLog(`Mountain Snake HP: ${state.trollHp} | Your HP: ${state.hp}`);
     renderChoices([
-        { text: "1. Attack Troll with weapon", action: attackTroll },
+        { text: "1. Attack Snake with weapon", action: attackTroll },
         { text: "2. Drink Healing Potion", action: usePotionTroll },
         { text: "3. Flee to Mountain Pass", action: renderMountain }
     ]);
@@ -1038,13 +1038,13 @@ function attackTroll() {
     const { dmg, crit } = rollAttack(low, high);
     state.trollHp -= dmg;
     if (crit) {
-        addLog(`💥 CRITICAL HIT! You strike the Troll for ${dmg} damage!`, "victory");
+        addLog(`💥 CRITICAL HIT! You strike the Mountain Snake for ${dmg} damage!`, "victory");
     } else {
-        addLog(`You strike the Troll for ${dmg} damage!`, "event");
+        addLog(`You strike the Mountain Snake for ${dmg} damage!`, "event");
     }
 
     if (state.trollHp <= 0) {
-        addLog("🎉 You defeated the Cave Troll!", "victory");
+        addLog("🎉 You defeated the Mountain Snake!", "victory");
         state.caveSearched = true;
         state.inventory.push("Elixir of Life");
         healPlayer(50);
@@ -1056,11 +1056,11 @@ function attackTroll() {
 
     const tDmg = mitigate(Math.floor(Math.random() * 9) + 10);
     state.hp -= tDmg;
-    addLog(`The Troll clubs you for ${tDmg} damage!`, "alert");
+    addLog(`The Mountain Snake bites with venomous fangs for ${tDmg} damage!`, "alert");
     updateHUD();
 
     if (state.hp <= 0) {
-        gameOver("You were crushed by the Cave Troll in the mountain cave.");
+        gameOver("You were defeated by the Mountain Snake in the cave.");
         return;
     }
 
@@ -1163,7 +1163,7 @@ function battleDragon() {
     sfx.playClick();
     state.location = "lair";
     sfx.playMusic("battle");
-    setScene("lair", "🐉 PEAK DOOM: DRAGON LAIR");
+    setScene("lair", "🐾 CAT'S HALL");
     clearLog();
     addLog("Molten lava streams down cavern walls. Atop a mountain of gold lies Princess Anna in chains!", "alert");
     addLog("Mighty Red Dragon Rodrigues awakens with a terrifying roar!", "alert");

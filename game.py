@@ -240,7 +240,7 @@ def village_square(player):
 
     choice = input("\nSelect choice (1-5): ").strip()
     if choice == "1":
-        slow_print("\nElder: 'Brave adventurer! The Sunblade lies hidden inside the Sunken Temple across the Whispering Forest.")
+        slow_print("\nElder: 'Brave adventurer! The Sunblade lies hidden inside The Temple Sanctum across the Whispering Forest.")
         slow_print("Take this Silver Key. It unlocks the inner sanctum!'")
         if "Silver Key" not in player.inventory:
             player.inventory.append("Silver Key")
@@ -290,7 +290,7 @@ def whispering_forest(player):
     slow_print("🌲 WHISPERING FOREST")
     slow_print("Ancient trees blot out the sky. Twisted roots line the misty trail.")
     print("\nWhat do you do?")
-    print("1. Explore Sunken Temple ruins")
+    print("1. Explore The Temple Sanctum")
     print("2. Investigate a strange glowing tree stump")
     print("3. Fight the Goblin Rogue lurking in the shadows")
     print("4. 🗺️ Open Overworld Map")
@@ -321,11 +321,11 @@ def worldmap_menu(player):
     print("\nSelect a destination on the map:")
     print("1. 🏰 East Grevie Village")
     print("2. 🌲 Whispering Forest")
-    print("3. 🏛️ Sunken Temple Ruins")
+    print("3. 🏛️ The Temple Sanctum")
     print("4. 🌾 Wilderness Trail")
     print("5. ⛰️ Rocky Mountain Pass")
     print("6. 🗼 Old Watchtower")
-    print("7. 🐉 Peak Doom (Dragon Lair)")
+    print("7. 🐾 Cat's Hall")
     print("8. ✨ Secret Fairy Fountain")
 
     choice = input("\nSelect destination (1-8): ").strip()
@@ -430,7 +430,7 @@ def goblin_fight(player):
 def sunken_temple(player):
     player.location = "temple"
     player.show_status()
-    slow_print("🏛️ SUNKEN TEMPLE SANCTUM")
+    slow_print("🏛️ THE TEMPLE SANCTUM")
     slow_print("Massive stone pillars support an ancient vault. In the center stands a glowing pedestal.")
     
     if player.has_sword:
@@ -465,9 +465,9 @@ def mountain_pass(player):
     player.location = "mountain"
     player.show_status()
     slow_print("⛰️ ROCKY MOUNTAIN PASS")
-    slow_print("Howling winds blow across narrow ledges. High above, smoke rises from Peak Doom.")
+    slow_print("Howling winds blow across narrow ledges. High above lies Cat's Hall.")
     print("\nWhat do you do?")
-    print("1. Ascend to Peak Doom (Dragon's Lair)")
+    print("1. Ascend to Cat's Hall")
     print("2. Search the Mountain Cave for supplies")
     print("3. Explore the Old Watchtower ruins")
     print("4. 🗺️ Open Overworld Map")
@@ -487,32 +487,32 @@ def mountain_pass(player):
 
 def mountain_cave(player):
     slow_print("\n🕳️ MOUNTAIN CAVE")
-    slow_print("A Cave Troll blocks the entrance, guarding a chest of glittering treasure!")
+    slow_print("A Giant Mountain Snake coils in the shadows, guarding a chest of glittering treasure!")
     print("\nWhat do you do?")
-    print("1. Fight the Cave Troll")
-    print("2. Sneak past while it's distracted")
+    print("1. Fight the Mountain Snake")
+    print("2. Sneak past while it's resting")
     print("3. Retreat to the Mountain Pass")
 
     choice = input("\nSelect choice (1-3): ").strip()
     if choice == "2":
-        slow_print("\nYou slip past the dozing Troll and find a sturdy Elven Shield & Elixir of Life!")
+        slow_print("\nYou slip past the resting Snake and find a sturdy Elven Shield & Elixir of Life!")
         player.cave_searched = True
         player.inventory.append("Elixir of Life")
         player.heal(50)
         player.add_score(100)
         return
     elif choice == "3":
-        slow_print("\nYou back away carefully. The Troll doesn't notice.")
+        slow_print("\nYou back away carefully. The Snake doesn't notice.")
         return
     elif choice != "1":
         print("Invalid option!")
         return
 
-    slow_print(f"\n{RED}The Cave Troll roars and swings its massive club!{RESET}")
+    slow_print(f"\n{RED}The Mountain Snake rattles its tail and strikes forward!{RESET}")
     troll_hp = 60
     while troll_hp > 0 and player.hp > 0:
-        print(f"\nTroll HP: {troll_hp} | Your HP: {player.hp}")
-        print("1. Attack with weapon")
+        print(f"\nMountain Snake HP: {troll_hp} | Your HP: {player.hp}")
+        print("1. Attack Snake with weapon")
         print("2. Use Healing Potion")
         print("3. Flee back to the Mountain Pass")
 
@@ -522,13 +522,13 @@ def mountain_cave(player):
             damage, crit = roll_attack(low, high, player)
             troll_hp -= damage
             if crit:
-                print(f"{YELLOW}💥 CRITICAL HIT!{RESET} You strike the Troll for {damage} damage!")
+                print(f"{YELLOW}💥 CRITICAL HIT!{RESET} You strike the Mountain Snake for {damage} damage!")
             else:
-                print(f"You strike the Troll for {damage} damage!")
+                print(f"You strike the Mountain Snake for {damage} damage!")
             if troll_hp > 0:
                 t_dmg = mitigate(random.randint(10, 18), player)
                 player.hp -= t_dmg
-                print(f"The Troll clubs you for {t_dmg} damage!")
+                print(f"The Mountain Snake bites with venomous fangs for {t_dmg} damage!")
         elif c == "2":
             if "Healing Potion" in player.inventory:
                 player.inventory.remove("Healing Potion")
@@ -536,15 +536,15 @@ def mountain_cave(player):
             else:
                 print("No Healing Potions in inventory!")
         elif c == "3":
-            slow_print("You flee from the Troll safely!")
+            slow_print("You flee from the Snake safely!")
             return
         else:
             print("Invalid option!")
 
     if player.hp <= 0:
-        game_over("You were crushed by the Cave Troll in the mountain cave...", player)
+        game_over("You were defeated by the Mountain Snake in the cave...", player)
     else:
-        slow_print(f"\n{GREEN}You defeated the Cave Troll!{RESET}")
+        slow_print(f"\n{GREEN}You defeated the Mountain Snake!{RESET}")
         player.cave_searched = True
         player.inventory.append("Elixir of Life")
         player.heal(50)
@@ -575,7 +575,7 @@ def old_watchtower(player):
 def dragons_lair(player):
     player.location = "lair"
     player.show_status()
-    slow_print("🐉 PEAK DOOM: THE DRAGON'S LAIR")
+    slow_print("🐾 CAT'S HALL")
     slow_print("Molten lava streams down dark cavern walls. Atop a mountain of gold lies Princess Anna in chains.")
     slow_print(f"{RED}The mighty Red Dragon Rodrigues awakens with a terrifying roar!{RESET}")
     
