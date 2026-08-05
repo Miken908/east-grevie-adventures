@@ -61,10 +61,11 @@ def roll_attack(low, high, player):
     return damage, crit
 
 ENEMY_POOL = [
-    {"name": "Bandit", "hp": 30, "dmg_low": 6, "dmg_high": 12},
-    {"name": "Dire Wolf", "hp": 25, "dmg_low": 8, "dmg_high": 14},
-    {"name": "Skeleton Warrior", "hp": 40, "dmg_low": 5, "dmg_high": 10},
-    {"name": "Orc Marauder", "hp": 50, "dmg_low": 9, "dmg_high": 15},
+    {"name": "Wild Weasel", "hp": 28, "dmg_low": 6, "dmg_high": 12},
+    {"name": "Barn Owl", "hp": 35, "dmg_low": 8, "dmg_high": 14},
+    {"name": "Giant Garden Toad", "hp": 24, "dmg_low": 4, "dmg_high": 9},
+    {"name": "Alley Rat Rogue", "hp": 38, "dmg_low": 7, "dmg_high": 13},
+    {"name": "Feral Farm Cat", "hp": 45, "dmg_low": 9, "dmg_high": 15},
 ]
 
 def wilderness_trail(player):
@@ -75,7 +76,7 @@ def wilderness_trail(player):
     dmg_high = enemy["dmg_high"] + level_bonus
     reward = 60 + level_bonus * 8
 
-    slow_print(f"\n🌾 WILDERNESS TRAIL")
+    slow_print(f"\nWILDERNESS TRAIL")
     slow_print(f"A {enemy['name']} emerges from the tall grass, ready to fight!")
 
     while enemy_hp > 0 and player.hp > 0:

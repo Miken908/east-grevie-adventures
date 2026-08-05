@@ -454,10 +454,11 @@ function gainExp(amount) {
 }
 
 const ENEMY_POOL = [
-    { name: "Bandit", hp: 30, dmgLow: 6, dmgHigh: 12 },
-    { name: "Dire Wolf", hp: 25, dmgLow: 8, dmgHigh: 14 },
-    { name: "Skeleton Warrior", hp: 40, dmgLow: 5, dmgHigh: 10 },
-    { name: "Orc Marauder", hp: 50, dmgLow: 9, dmgHigh: 15 },
+    { name: "Wild Weasel", hp: 28, dmgLow: 6, dmgHigh: 12 },
+    { name: "Barn Owl", hp: 35, dmgLow: 8, dmgHigh: 14 },
+    { name: "Giant Garden Toad", hp: 24, dmgLow: 4, dmgHigh: 9 },
+    { name: "Alley Rat Rogue", hp: 38, dmgLow: 7, dmgHigh: 13 },
+    { name: "Feral Farm Cat", hp: 45, dmgLow: 9, dmgHigh: 15 }
 ];
 
 // Image assets mapping
