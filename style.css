@@ -815,14 +815,41 @@ body {
     justify-content: space-between;
 }
 
+.attr-title-group {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.info-icon-btn {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 0.8rem;
+    opacity: 0.7;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    padding: 2px;
+}
+
+.info-icon-btn:hover {
+    opacity: 1;
+    transform: scale(1.2);
+}
+
+.attr-controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
 .attr-name {
     font-size: 0.75rem;
-    color: #f0f0ff;
+    color: var(--text-ivory);
 }
 
 .attr-val {
     font-size: 1.1rem;
-    color: #ffcc00;
+    color: var(--gold-bright);
     font-family: 'Press Start 2P', monospace;
 }
 
@@ -832,9 +859,22 @@ body {
     cursor: pointer;
 }
 
+.attr-tooltip-popover {
+    background: rgba(12, 16, 24, 0.95);
+    border: 1px solid var(--gold-primary);
+    border-radius: 6px;
+    padding: 8px 10px;
+    margin-top: 6px;
+    animation: fadeIn 0.2s ease;
+}
+
+.attr-tooltip-popover.hidden {
+    display: none !important;
+}
+
 .attr-desc {
     font-size: 0.7rem;
-    color: #a0aec0;
+    color: var(--text-muted);
     margin: 0;
     line-height: 1.3;
 }

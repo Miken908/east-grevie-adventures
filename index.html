@@ -182,38 +182,66 @@
             <div class="attributes-grid">
                 <div class="attribute-card">
                     <div class="attr-header">
-                        <span class="attr-name">💪 STRENGTH (STR)</span>
-                        <span id="attr-str-val" class="attr-val">3</span>
-                        <button class="arcade-btn-sm primary add-ap-btn" data-attr="str" title="Add 1 STR Point">+</button>
+                        <div class="attr-title-group">
+                            <span class="attr-name">💪 STRENGTH (STR)</span>
+                            <button class="info-icon-btn" data-info="str-info" title="Toggle STR description">ℹ️</button>
+                        </div>
+                        <div class="attr-controls">
+                            <span id="attr-str-val" class="attr-val">3</span>
+                            <button class="arcade-btn-sm primary add-ap-btn" data-attr="str" title="Add 1 STR Point">+</button>
+                        </div>
                     </div>
-                    <p class="attr-desc">Increases physical attack damage (+1.2 Min / +2.0 Max Dmg per point).</p>
+                    <div id="str-info" class="attr-tooltip-popover hidden">
+                        <p class="attr-desc">Increases physical attack damage (+1.2 Min / +2.0 Max Dmg per point).</p>
+                    </div>
                 </div>
 
                 <div class="attribute-card">
                     <div class="attr-header">
-                        <span class="attr-name">⚡ AGILITY (AGI)</span>
-                        <span id="attr-agi-val" class="attr-val">3</span>
-                        <button class="arcade-btn-sm primary add-ap-btn" data-attr="agi" title="Add 1 AGI Point">+</button>
+                        <div class="attr-title-group">
+                            <span class="attr-name">⚡ AGILITY (AGI)</span>
+                            <button class="info-icon-btn" data-info="agi-info" title="Toggle AGI description">ℹ️</button>
+                        </div>
+                        <div class="attr-controls">
+                            <span id="attr-agi-val" class="attr-val">3</span>
+                            <button class="arcade-btn-sm primary add-ap-btn" data-attr="agi" title="Add 1 AGI Point">+</button>
+                        </div>
                     </div>
-                    <p class="attr-desc">Increases Dodge chance (+1.5%) and Critical Multiplier (+0.05x).</p>
+                    <div id="agi-info" class="attr-tooltip-popover hidden">
+                        <p class="attr-desc">Increases Dodge chance (+1.5%) and Critical Multiplier (+0.05x).</p>
+                    </div>
                 </div>
 
                 <div class="attribute-card">
                     <div class="attr-header">
-                        <span class="attr-name">🛡️ ENDURANCE (END)</span>
-                        <span id="attr-end-val" class="attr-val">3</span>
-                        <button class="arcade-btn-sm primary add-ap-btn" data-attr="end" title="Add 1 END Point">+</button>
+                        <div class="attr-title-group">
+                            <span class="attr-name">🛡️ ENDURANCE (END)</span>
+                            <button class="info-icon-btn" data-info="end-info" title="Toggle END description">ℹ️</button>
+                        </div>
+                        <div class="attr-controls">
+                            <span id="attr-end-val" class="attr-val">3</span>
+                            <button class="arcade-btn-sm primary add-ap-btn" data-attr="end" title="Add 1 END Point">+</button>
+                        </div>
                     </div>
-                    <p class="attr-desc">Increases Max Health (+15 HP) and Armor Mitigation (+0.8).</p>
+                    <div id="end-info" class="attr-tooltip-popover hidden">
+                        <p class="attr-desc">Increases Max Health (+15 HP) and Armor Mitigation (+0.8).</p>
+                    </div>
                 </div>
 
                 <div class="attribute-card">
                     <div class="attr-header">
-                        <span class="attr-name">🍀 LUCK (LCK)</span>
-                        <span id="attr-lck-val" class="attr-val">3</span>
-                        <button class="arcade-btn-sm primary add-ap-btn" data-attr="lck" title="Add 1 LCK Point">+</button>
+                        <div class="attr-title-group">
+                            <span class="attr-name">🍀 LUCK (LCK)</span>
+                            <button class="info-icon-btn" data-info="lck-info" title="Toggle LCK description">ℹ️</button>
+                        </div>
+                        <div class="attr-controls">
+                            <span id="attr-lck-val" class="attr-val">3</span>
+                            <button class="arcade-btn-sm primary add-ap-btn" data-attr="lck" title="Add 1 LCK Point">+</button>
+                        </div>
                     </div>
-                    <p class="attr-desc">Increases Critical Chance (+2.0%), Gold Loot (+5%), and Flee chance.</p>
+                    <div id="lck-info" class="attr-tooltip-popover hidden">
+                        <p class="attr-desc">Increases Critical Chance (+2.0%), Gold Loot (+5%), and Flee chance.</p>
+                    </div>
                 </div>
             </div>
 

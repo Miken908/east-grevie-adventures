@@ -1556,3 +1556,17 @@ document.querySelectorAll(".add-ap-btn").forEach(btn => {
         }
     });
 });
+
+document.querySelectorAll(".info-icon-btn").forEach(btn => {
+    btn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        const targetId = btn.getAttribute("data-info");
+        if (targetId) {
+            const targetEl = document.getElementById(targetId);
+            if (targetEl) {
+                targetEl.classList.toggle("hidden");
+                sfx.playClick();
+            }
+        }
+    });
+});
