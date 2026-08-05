@@ -613,7 +613,7 @@ function setScene(imageKey, locationText) {
 function renderVillage() {
     state.location = "village";
     sfx.playMusic("village");
-    setScene("village", "🏰 VILLAGE SQUARE");
+    setScene("village", "VILLAGE SQUARE");
     clearLog();
     addLog("You are at the Village Square of East Grevie.");
     addLog("Townspeople gather around whispering in panic. Cobblestone paths lead in three directions.");
@@ -623,7 +623,7 @@ function renderVillage() {
         { text: "2. Visit the Blacksmith", action: goBlacksmith },
         { text: "3. Rest at Tavern (Full Rest)", action: restTavern },
         { text: "4. Venture into the Wilderness Trail", action: goWilderness },
-        { text: "5. 🗺️ Open World Map (Travel East Grevie)", action: renderWorldMap }
+        { text: "5. Open World Map", action: renderWorldMap }
     ]);
 }
 
@@ -635,7 +635,7 @@ function goBlacksmith() {
 function renderBlacksmith() {
     state.location = "blacksmith";
     sfx.playMusic("village");
-    setScene("blacksmith", "🔨 BLACKSMITH'S FORGE & SHOP");
+    setScene("blacksmith", "BLACKSMITH'S FORGE & SHOP");
     clearLog();
     addLog("Sparks fly as the burly blacksmith hammers away at glowing steel.");
 
@@ -762,7 +762,7 @@ function goForest() {
 function renderForest() {
     state.location = "forest";
     sfx.playMusic("forest");
-    setScene("forest", "🌲 WHISPERING FOREST");
+    setScene("forest", "WHISPERING FOREST");
     clearLog();
     addLog("Ancient trees blot out the sky. Twisted roots line the misty trail.");
 
@@ -770,7 +770,7 @@ function renderForest() {
         { text: "1. Explore The Temple Sanctum", action: goTemple },
         { text: "2. Investigate glowing tree stump", action: investigateStump },
         { text: "3. Fight Goblin Rogue", action: battleGoblin },
-        { text: "4. 🗺️ Open World Map", action: renderWorldMap }
+        { text: "4. Open World Map", action: renderWorldMap }
     ];
 
     renderChoices(choices);
@@ -797,7 +797,7 @@ function goTemple() {
 function renderTemple() {
     state.location = "temple";
     sfx.playMusic("forest");
-    setScene("temple", "🏛️ THE TEMPLE SANCTUM");
+    setScene("temple", "THE TEMPLE SANCTUM");
     clearLog();
     addLog("Massive stone pillars support an ancient vault. In the center stands a glowing pedestal.");
 
@@ -846,7 +846,7 @@ function battleGoblin() {
 
     state.location = "goblin";
     sfx.playMusic("battle");
-    setScene("goblin", "⚔️ GOBLIN ROGUE ENCOUNTER");
+    setScene("goblin", "GOBLIN ROGUE ENCOUNTER");
     clearLog();
     addLog("⚔️ A Goblin Rogue leaps out with drawn daggers!", "alert");
 
@@ -938,7 +938,7 @@ function goMountain() {
 function renderMountain() {
     state.location = "mountain";
     sfx.playMusic("forest");
-    setScene("mountain", "⛰️ ROCKY MOUNTAIN PASS");
+    setScene("mountain", "ROCKY MOUNTAIN PASS");
     clearLog();
     addLog("Howling winds blow across narrow ledges. High above lies Cat's Hall.");
 
@@ -946,7 +946,7 @@ function renderMountain() {
         { text: "1. Ascend to Cat's Hall", action: battleDragon },
         { text: "2. Search Mountain Cave for supplies", action: searchCave },
         { text: "3. Explore the Old Watchtower ruins", action: goWatchtower },
-        { text: "4. 🗺️ Open World Map", action: renderWorldMap }
+        { text: "4. Open World Map", action: renderWorldMap }
     ]);
 }
 
@@ -958,7 +958,7 @@ function goWatchtower() {
 function renderWatchtower() {
     state.location = "watchtower";
     sfx.playMusic("forest");
-    setScene("watchtower", "🗼 OLD WATCHTOWER");
+    setScene("watchtower", "OLD WATCHTOWER");
     clearLog();
     addLog("A crumbling stone tower leans over the cliffside, its door hanging off its hinges.");
 
@@ -994,7 +994,7 @@ function searchCave() {
 
 function renderMountainCave() {
     state.location = "cave";
-    setScene("troll", "🕳️ MOUNTAIN CAVE");
+    setScene("troll", "MOUNTAIN CAVE");
     clearLog();
     addLog("A Giant Mountain Snake coils in the shadows, guarding a chest of glittering treasure!", "alert");
 
@@ -1091,7 +1091,7 @@ function goWilderness() {
         reward: 60 + levelBonus * 8,
     };
 
-    setScene("wilderness", "🌾 WILDERNESS TRAIL");
+    setScene("wilderness", "WILDERNESS TRAIL");
     sfx.playMusic("battle");
     clearLog();
     addLog(`A ${state.wilderness.name} emerges from the tall grass, ready to fight!`, "alert");
@@ -1163,7 +1163,7 @@ function battleDragon() {
     sfx.playClick();
     state.location = "lair";
     sfx.playMusic("battle");
-    setScene("lair", "🐾 CAT'S HALL");
+    setScene("lair", "CAT'S HALL");
     clearLog();
     addLog("Shadows stretch across the grand stone hall. Atop a velvet cushion throne lies Princess Anna in chains!", "alert");
     addLog("Lord Rodrigues the Vile Shadow Cat uncoils with an intimidating hiss!", "alert");
@@ -1594,7 +1594,7 @@ function travelTo(loc) {
 function visitFairyFountain() {
     sfx.playClick();
     state.location = "fairy";
-    setScene("fairy", "✨ SECRET FAIRY FOUNTAIN");
+    setScene("fairy", "SECRET FAIRY FOUNTAIN");
     clearLog();
     if (!state.fairyVisited) {
         state.fairyVisited = true;
@@ -1608,7 +1608,7 @@ function visitFairyFountain() {
         healPlayer(20);
     }
     renderChoices([
-        { text: "Return to Overworld Map", action: renderWorldMap },
+        { text: "Return to World Map", action: renderWorldMap },
         { text: "Return to Village Square", action: renderVillage }
     ]);
 }

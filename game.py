@@ -293,7 +293,7 @@ def whispering_forest(player):
     print("1. Explore The Temple Sanctum")
     print("2. Investigate a strange glowing tree stump")
     print("3. Fight the Goblin Rogue lurking in the shadows")
-    print("4. 🗺️ Open Overworld Map")
+    print("4. Open World Map")
     
     choice = input("\nSelect choice (1-4): ").strip()
     if choice == "1":
@@ -316,7 +316,7 @@ def whispering_forest(player):
 def worldmap_menu(player):
     player.location = "map"
     player.show_status()
-    slow_print("🗺️ OVERWORLD MAP OF EAST GREVIE")
+    slow_print("MAP OF EAST GREVIE")
     slow_print("You unroll the ancient cartography map of East Grevie.")
     print("\nSelect a destination on the map:")
     print("1. 🏰 East Grevie Village")
@@ -470,7 +470,7 @@ def mountain_pass(player):
     print("1. Ascend to Cat's Hall")
     print("2. Search the Mountain Cave for supplies")
     print("3. Explore the Old Watchtower ruins")
-    print("4. 🗺️ Open Overworld Map")
+    print("4. Open World Map")
 
     choice = input("\nSelect choice (1-4): ").strip()
     if choice == "1":
