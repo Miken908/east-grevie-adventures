@@ -321,8 +321,16 @@ const state = {
     agi: 3,
     end: 3,
     lck: 3,
+    gold: 50,
     score: 0,
-    inventory: ["Bread", "Wooden Shield"],
+    inventory: ["Bread"],
+    equipment: {
+        weapon: { name: "Wooden Sword", bonusStr: 0, bonusMinDmg: 8, bonusMaxDmg: 15 },
+        shield: { name: "Wooden Shield", bonusArmor: 5, bonusEnd: 0 },
+        armor: { name: "Traveler's Tunic", bonusArmor: 1, bonusAgi: 0 },
+        accessory: null
+    },
+    blueprintReturned: false,
     hasSword: false,
     hasKey: false,
     goblinDefeated: false,
@@ -340,35 +348,71 @@ const state = {
     location: "village"
 };
 
-// --- Proposal 1: Heroic Attribute & Combat Formulas ---
+// --- Proposal 1: Heroic Attribute, Equipment & Combat Formulas ---
+
+function calculateEquipmentBonuses() {
+    let str = 0, agi = 0, end = 0, lck = 0, armor = 0, hp = 0;
+    if (state.equipment) {
+        Object.values(state.equipment).forEach(item => {
+            if (item) {
+                if (item.bonusStr) str += item.bonusStr;
+                if (item.bonusAgi) agi += item.bonusAgi;
+                if (item.bonusEnd) end += item.bonusEnd;
+                if (item.bonusLck) lck += item.bonusLck;
+                if (item.bonusArmor) armor += item.bonusArmor;
+                if (item.bonusMaxHp) hp += item.bonusMaxHp;
+            }
+        });
+    }
+    return { str, agi, end, lck, armor, hp };
+}
 
 function calculateMaxHp() {
-    return 100 + (state.end * 15) + (state.level * 10);
+    const eq = calculateEquipmentBonuses();
+    const totalEnd = state.end + eq.end;
+    return 100 + (totalEnd * 15) + (state.level * 10) + eq.hp;
 }
 
 function calculateDamageRange() {
-    const baseMin = state.hasSword ? 35 : 8;
-    const baseMax = state.hasSword ? 50 : 15;
-    const minDmg = baseMin + Math.floor(state.str * 1.2) + state.level;
-    const maxDmg = baseMax + Math.floor(state.str * 2.0) + (state.level * 2);
+    const eq = calculateEquipmentBonuses();
+    const totalStr = state.str + eq.str;
+    let baseMin = 8, baseMax = 15;
+    if (state.equipment && state.equipment.weapon) {
+        baseMin = state.equipment.weapon.bonusMinDmg || 8;
+        baseMax = state.equipment.weapon.bonusMaxDmg || 15;
+    }
+    if (state.hasSword) {
+        baseMin = 35;
+        baseMax = 50;
+    }
+    const minDmg = baseMin + Math.floor(totalStr * 1.2) + state.level;
+    const maxDmg = baseMax + Math.floor(totalStr * 2.0) + (state.level * 2);
     return { minDmg, maxDmg };
 }
 
 function calculateCritChance() {
-    return Math.min(50, 5 + (state.lck * 2) + (state.agi * 1));
+    const eq = calculateEquipmentBonuses();
+    const totalLck = state.lck + eq.lck;
+    const totalAgi = state.agi + eq.agi;
+    return Math.min(50, 5 + (totalLck * 2) + (totalAgi * 1));
 }
 
 function calculateCritMultiplier() {
-    return 1.5 + (state.agi * 0.05);
+    const eq = calculateEquipmentBonuses();
+    const totalAgi = state.agi + eq.agi;
+    return 1.5 + (totalAgi * 0.05);
 }
 
 function calculateDodgeChance() {
-    return Math.min(35, state.agi * 1.5);
+    const eq = calculateEquipmentBonuses();
+    const totalAgi = state.agi + eq.agi;
+    return Math.min(35, totalAgi * 1.5);
 }
 
 function calculateMitigation() {
-    let shieldBase = state.hasIronShield ? 10 : (state.inventory.includes("Wooden Shield") ? 5 : 0);
-    return shieldBase + Math.floor(state.end * 0.8);
+    const eq = calculateEquipmentBonuses();
+    const totalEnd = state.end + eq.end;
+    return eq.armor + Math.floor(totalEnd * 0.8);
 }
 
 function mitigate(damage) {
@@ -481,6 +525,16 @@ function healPlayer(amount) {
     updateHUD();
 }
 
+function addGold(baseGold) {
+    const lckBonusMult = 1 + (state.lck * 0.08);
+    const finalGold = Math.round(baseGold * lckBonusMult);
+    state.gold += finalGold;
+    addLog(`💰 Received +${finalGold} Gold! [Total: 💰 ${state.gold}]`, "event");
+    sfx.playItem();
+    updateHUD();
+    return finalGold;
+}
+
 function updateHUD() {
     state.maxHp = calculateMaxHp();
     heroNameEl.textContent = state.name;
@@ -489,6 +543,9 @@ function updateHUD() {
     hpBarEl.style.width = `${hpPct}%`;
     hpTextEl.textContent = `${state.hp}/${state.maxHp}`;
     scoreTextEl.textContent = String(state.score).padStart(6, '0');
+
+    const goldTextEl = document.getElementById("gold-text");
+    if (goldTextEl) goldTextEl.textContent = `💰 ${state.gold}`;
 
     const apBadgeEl = document.getElementById("ap-badge");
     if (apBadgeEl) {
@@ -501,6 +558,32 @@ function updateHUD() {
     }
 
     inventoryListEl.innerHTML = "";
+    if (state.equipment) {
+        if (state.equipment.weapon) {
+            const span = document.createElement("span");
+            span.className = "item-pill equipment";
+            span.textContent = `⚔️ ${state.equipment.weapon.name}`;
+            inventoryListEl.appendChild(span);
+        }
+        if (state.equipment.shield) {
+            const span = document.createElement("span");
+            span.className = "item-pill equipment";
+            span.textContent = `🛡️ ${state.equipment.shield.name}`;
+            inventoryListEl.appendChild(span);
+        }
+        if (state.equipment.armor) {
+            const span = document.createElement("span");
+            span.className = "item-pill equipment";
+            span.textContent = `🥋 ${state.equipment.armor.name}`;
+            inventoryListEl.appendChild(span);
+        }
+        if (state.equipment.accessory) {
+            const span = document.createElement("span");
+            span.className = "item-pill equipment";
+            span.textContent = `💍 ${state.equipment.accessory.name}`;
+            inventoryListEl.appendChild(span);
+        }
+    }
     state.inventory.forEach(item => {
         const span = document.createElement("span");
         span.className = "item-pill";
@@ -551,36 +634,86 @@ function goBlacksmith() {
 function renderBlacksmith() {
     state.location = "blacksmith";
     sfx.playMusic("village");
-    setScene("blacksmith", "🔨 BLACKSMITH'S FORGE");
+    setScene("blacksmith", "🔨 BLACKSMITH'S FORGE & SHOP");
     clearLog();
     addLog("Sparks fly as the burly blacksmith hammers away at glowing steel.");
 
-    if (state.hasIronShield) {
-        addLog("Blacksmith: 'That Iron Shield I forged you should still serve you well!'");
-        renderChoices([{ text: "Return to Village Square", action: renderVillage }]);
-    } else if (state.inventory.includes("Gold Pouch")) {
-        addLog("Blacksmith: 'A Gold Pouch, eh? I can forge that Wooden Shield of yours into something sturdier.'");
-        renderChoices([
-            { text: "Forge Iron Shield (uses Gold Pouch)", action: forgeIronShield },
-            { text: "Not now, return to Village Square", action: renderVillage }
-        ]);
-    } else {
-        addLog("Blacksmith: 'Come back with some coin and I'll forge you something worthwhile.'");
-        renderChoices([{ text: "Return to Village Square", action: renderVillage }]);
+    if (state.inventory.includes("Stolen Blacksmith Blueprint")) {
+        addLog("Blacksmith: 'By the gods! You recovered my Stolen Mastercraft Blueprint!'", "victory");
+        addLog("Blacksmith: 'Here is 100 Gold for your bravery! My Mastercraft Forge is now open to you.'", "event");
+        const idx = state.inventory.indexOf("Stolen Blacksmith Blueprint");
+        if (idx !== -1) state.inventory.splice(idx, 1);
+        state.blueprintReturned = true;
+        addGold(100);
+        addScore(100);
     }
+
+    addLog(`💰 Current Gold: ${state.gold} | Merchant Discount: -${Math.min(30, state.lck * 2)}%`);
+
+    const choices = [];
+    const discount = Math.min(0.30, state.lck * 0.02);
+
+    const broadswordCost = Math.round(100 * (1 - discount));
+    choices.push({
+        text: `1. ⚔️ Buy Iron Broadsword (+6 Dmg, +1 STR) - 💰 ${broadswordCost} Gold`,
+        action: () => buyEquipment("weapon", { name: "Iron Broadsword", bonusStr: 1, bonusMinDmg: 14, bonusMaxDmg: 22 }, broadswordCost)
+    });
+
+    const ironShieldCost = Math.round(80 * (1 - discount));
+    choices.push({
+        text: `2. 🛡️ Buy Reinforced Iron Shield (+5 Armor, +1 END) - 💰 ${ironShieldCost} Gold`,
+        action: () => buyEquipment("shield", { name: "Reinforced Iron Shield", bonusArmor: 8, bonusEnd: 1 }, ironShieldCost)
+    });
+
+    const armorCost = Math.round(90 * (1 - discount));
+    choices.push({
+        text: `3. 🥋 Buy Hardened Leather Armor (+4 Armor, +1 AGI) - 💰 ${armorCost} Gold`,
+        action: () => buyEquipment("armor", { name: "Hardened Leather Armor", bonusArmor: 4, bonusAgi: 1 }, armorCost)
+    });
+
+    const ringCost = Math.round(120 * (1 - discount));
+    choices.push({
+        text: `4. 💍 Buy Ring of Fortune (+2 LCK) - 💰 ${ringCost} Gold`,
+        action: () => buyEquipment("accessory", { name: "Ring of Fortune", bonusLck: 2 }, ringCost)
+    });
+
+    const potionCost = Math.round(35 * (1 - discount));
+    choices.push({
+        text: `5. 🧪 Buy Healing Potion (+40 HP) - 💰 ${potionCost} Gold`,
+        action: () => buyPotion(potionCost)
+    });
+
+    choices.push({ text: "6. Return to Village Square", action: renderVillage });
+
+    renderChoices(choices);
 }
 
-function forgeIronShield() {
+function buyEquipment(slot, itemObj, cost) {
     sfx.playClick();
-    const idx = state.inventory.indexOf("Gold Pouch");
-    if (idx !== -1) {
-        state.inventory.splice(idx, 1);
-        state.hasIronShield = true;
-        addLog("🛡️ Your Wooden Shield is reforged into a gleaming IRON SHIELD!", "event");
-        addLog("It will reduce the damage you take when defending or taking a counterattack.");
-        addScore(50);
+    if (state.gold < cost) {
+        addLog(`Blacksmith: 'You don't have enough Gold! You need 💰 ${cost} Gold.'`, "alert");
+    } else {
+        state.gold -= cost;
+        state.equipment[slot] = itemObj;
+        addLog(`✨ Purchased & equipped ${itemObj.name}!`, "victory");
+        sfx.playItem();
+        updateHUD();
     }
-    renderChoices([{ text: "Return to Village Square", action: renderVillage }]);
+    renderBlacksmith();
+}
+
+function buyPotion(cost) {
+    sfx.playClick();
+    if (state.gold < cost) {
+        addLog(`Blacksmith: 'You don't have enough Gold! You need 💰 ${cost} Gold.'`, "alert");
+    } else {
+        state.gold -= cost;
+        state.inventory.push("Healing Potion");
+        addLog("🧪 Purchased 1 Healing Potion!", "event");
+        sfx.playItem();
+        updateHUD();
+    }
+    renderBlacksmith();
 }
 
 function speakToElder() {
@@ -730,7 +863,8 @@ function attackGoblin() {
     if (state.goblinHp <= 0) {
         addLog("🎉 You defeated the Goblin Rogue!", "victory");
         state.goblinDefeated = true;
-        state.inventory.push("Gold Pouch");
+        state.inventory.push("Stolen Blacksmith Blueprint");
+        addGold(50);
         addScore(150);
         renderChoices([{ text: "Continue through Forest", action: renderForest }]);
         return;
@@ -1194,14 +1328,22 @@ function restartGame() {
     state.agi = 3;
     state.end = 3;
     state.lck = 3;
+    state.gold = 50;
     state.ap = 0;
     state.level = 1;
     state.exp = 0;
     state.expToNextLevel = 100;
+    state.score = 0;
+    state.inventory = ["Bread"];
+    state.equipment = {
+        weapon: { name: "Wooden Sword", bonusStr: 0, bonusMinDmg: 8, bonusMaxDmg: 15 },
+        shield: { name: "Wooden Shield", bonusArmor: 5, bonusEnd: 0 },
+        armor: { name: "Traveler's Tunic", bonusArmor: 1, bonusAgi: 0 },
+        accessory: null
+    };
+    state.blueprintReturned = false;
     state.maxHp = calculateMaxHp();
     state.hp = state.maxHp;
-    state.score = 0;
-    state.inventory = ["Bread", "Wooden Shield"];
     state.hasSword = false;
     state.hasKey = false;
     state.goblinDefeated = false;

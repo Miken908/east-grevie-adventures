@@ -295,6 +295,13 @@ body {
     font-size: 0.6rem;
 }
 
+.item-pill.equipment {
+    background: linear-gradient(180deg, #2c2818, #18140a);
+    border: 1px solid var(--gold-bright);
+    color: var(--gold-bright);
+    box-shadow: 0 0 6px rgba(245, 197, 66, 0.3);
+}
+
 /* Action Buttons Grid */
 .actions-container {
     display: grid;

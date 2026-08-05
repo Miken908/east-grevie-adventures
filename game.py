@@ -131,6 +131,7 @@ class Player:
         self.hp = 100
         self.max_hp = 100
         self.score = 0
+        self.gold = 50
         self.inventory = ["Bread", "Wooden Shield"]
         self.has_sword = False
         self.has_key = False
@@ -151,9 +152,13 @@ class Player:
         print(f"{YELLOW}★ +{points} Points! (Total Score: {self.score}){RESET}")
         check_level_up(self)
 
+    def add_gold(self, amount):
+        self.gold += amount
+        print(f"{YELLOW}💰 +{amount} Gold! (Total Gold: 💰 {self.gold}){RESET}")
+
     def show_status(self):
         print(f"\n{CYAN}{'='*50}")
-        print(f" HERO: {self.name} | LVL: {self.level} | HP: {self.hp}/{self.max_hp} | SCORE: {self.score} PTS")
+        print(f" HERO: {self.name} | LVL: {self.level} | HP: {self.hp}/{self.max_hp} | SCORE: {self.score} | GOLD: 💰 {self.gold}")
         print(f" INVENTORY: {', '.join(self.inventory) if self.inventory else 'Empty'}")
         print(f"{'='*50}{RESET}\n")
 
