@@ -272,6 +272,7 @@ body {
     padding: 6px 8px;
     text-align: center;
     border-top: 2px solid var(--gold-primary);
+    pointer-events: none;
 }
 
 /* Story Log Box */

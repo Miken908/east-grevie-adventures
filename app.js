@@ -1438,9 +1438,11 @@ const lightboxCloseBtnEl = document.getElementById("lightbox-close-btn");
 
 if (imageFrameEl && lightboxModalEl) {
     imageFrameEl.addEventListener("click", () => {
-        if (sceneImageEl) {
-            lightboxImgEl.src = sceneImageEl.src;
-            lightboxTitleEl.textContent = locationNameEl.textContent;
+        if (sceneImgEl && lightboxImgEl) {
+            lightboxImgEl.src = sceneImgEl.src;
+            if (lightboxTitleEl && locationNameEl) {
+                lightboxTitleEl.textContent = locationNameEl.textContent;
+            }
             lightboxModalEl.classList.remove("hidden");
         }
     });
