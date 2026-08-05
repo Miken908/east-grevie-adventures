@@ -462,20 +462,20 @@ const ENEMY_POOL = [
 
 // Image assets mapping
 const sceneImages = {
-    village: "assets/images/village.png",
-    forest: "assets/images/forest.png",
-    goblin: "assets/images/goblin.png",
-    temple: "assets/images/sunblade.png",
-    mountain: "assets/images/mountain.png",
-    lair: "assets/images/dragon.png",
-    watchtower: "assets/images/watchtower.png",
-    blacksmith: "assets/images/blacksmith.png",
-    wilderness: "assets/images/wilderness.png",
-    troll: "assets/images/troll.png",
-    cave: "assets/images/troll.png",
+    village: "assets/images/village.jpg",
+    forest: "assets/images/Whispering forest.jpg",
+    goblin: "assets/images/goblin.jpg",
+    temple: "assets/images/temple_sanctum.jpg",
+    mountain: "assets/images/rocky_mountain_pass.jpg",
+    lair: "assets/images/final_boss_rodrigues_solo_1785946852711.jpg",
+    watchtower: "assets/images/old_watchtower.jpg",
+    blacksmith: "assets/images/Blacksmith.jpg",
+    wilderness: "assets/images/wilderness_trail.jpg",
+    troll: "assets/images/snake_cave_treasure_draft.jpg",
+    cave: "assets/images/snake_cave_treasure_draft.jpg",
     map: "assets/images/worldmap.png",
-    fairy: "assets/images/fairy.png",
-    victory: "assets/images/dragon.png" // fallback high resolution scene
+    fairy: "assets/images/secret_fairy_fountain.jpg",
+    victory: "assets/images/final_boss_rodrigues_solo_1785946852711.jpg"
 };
 
 // UI Elements
