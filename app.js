@@ -1206,24 +1206,18 @@ function attackDragon() {
     sfx.playSlash();
     let dmg = 0;
     if (state.hasSword) {
-        const rolled = rollAttack(35, 50);
+        const rolled = rollAttack();
         dmg = rolled.dmg;
         if (rolled.crit) {
             addLog(`💥⚔️ CRITICAL HIT! The Sunblade cleaves through the dragon's scales for ${dmg} massive damage!`, "victory");
         } else {
-            addLog(`💥 The Sunblade cuts through the dragon's scales for ${dmg} CRITICAL DAMAGE!`, "victory");
+            addLog(`💥 The Sunblade pierces the dragon's scales for ${dmg} DAMAGE!`, "victory");
         }
+        state.dragonHp -= dmg;
     } else {
-        const rolled = rollAttack(1, 5);
-        dmg = rolled.dmg;
-        if (rolled.crit) {
-            addLog(`💥 CRITICAL HIT! Your attack finds a chink in the dragon's armor for ${dmg} damage!`, "victory");
-        } else {
-            addLog(`Your attack bounces harmlessly off the dragon's thick armor for only ${dmg} damage!`, "alert");
-        }
+        addLog("🛡️ YOUR WEAPON REBOUNDS HARMLESSLY OFF IGNIS'S IMPENETRABLE SCALES! (0 Damage)", "alert");
+        addLog("Without the Legendary Sunblade, no mortal weapon can pierce the dragon's scales!", "alert");
     }
-
-    state.dragonHp -= dmg;
 
     if (state.dragonHp <= 0) {
         winGame();

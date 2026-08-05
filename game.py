@@ -590,14 +590,10 @@ def dragons_lair(player):
                 if crit:
                     slow_print(f"{YELLOW}💥⚔️ CRITICAL HIT! The Sunblade cleaves through the dragon's scales for {damage} massive damage!{RESET}")
                 else:
-                    slow_print(f"{YELLOW}💥 The Sunblade cuts through the dragon's scales for {damage} CRITICAL DAMAGE!{RESET}")
+                    slow_print(f"{YELLOW}💥 The Sunblade pierces the dragon's scales for {damage} DAMAGE!{RESET}")
             else:
-                damage, crit = roll_attack(1, 5, player)
-                dragon_hp -= damage
-                if crit:
-                    slow_print(f"{YELLOW}💥 CRITICAL HIT! Your attack finds a chink in the dragon's armor for {damage} damage!{RESET}")
-                else:
-                    slow_print(f"{RED}Your attack bounces harmlessly off the dragon's thick armor for only {damage} damage!{RESET}")
+                slow_print(f"{RED}🛡️ YOUR WEAPON REBOUNDS HARMLESSLY OFF IGNIS'S IMPENETRABLE SCALES! (0 Damage){RESET}")
+                slow_print(f"{RED}Without the Legendary Sunblade, no mortal weapon can pierce the dragon's scales!{RESET}")
 
             if dragon_hp > 0:
                 d_dmg = mitigate(random.randint(20, 35), player)
