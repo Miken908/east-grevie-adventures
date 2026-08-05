@@ -963,12 +963,12 @@ function renderWatchtower() {
     addLog("A crumbling stone tower leans over the cliffside, its door hanging off its hinges.");
 
     if (state.knightFreed) {
-        addLog("The watchtower is empty and silent. Sir Cedric already rides free.");
+        addLog("The watchtower is empty and silent. Sir Johan already rides free.");
         renderChoices([{ text: "Return to Mountain Pass", action: renderMountain }]);
         return;
     }
 
-    addLog("Inside, chained to a support beam, lies a wounded Knight - Sir Cedric.");
+    addLog("Inside, chained to a support beam, lies a wounded Knight - Sir Johan.");
     renderChoices([
         { text: "1. Free the Knight", action: freeKnight },
         { text: "2. Leave him chained and go", action: renderMountain }
@@ -977,7 +977,7 @@ function renderWatchtower() {
 
 function freeKnight() {
     sfx.playClick();
-    addLog("Sir Cedric: 'My thanks, friend! I owe you a life-debt. If ever you face Ignis, call for me!'", "event");
+    addLog("Sir Johan: 'My thanks, friend! I owe you a life-debt. If ever you face Rodrigues, call for me!'", "event");
     state.knightFreed = true;
     addScore(75);
     renderChoices([{ text: "Return to Mountain Pass", action: renderMountain }]);
@@ -1166,17 +1166,17 @@ function battleDragon() {
     setScene("lair", "🐉 PEAK DOOM: DRAGON LAIR");
     clearLog();
     addLog("Molten lava streams down cavern walls. Atop a mountain of gold lies Princess Anna in chains!", "alert");
-    addLog("Mighty Red Dragon Ignis awakens with a terrifying roar!", "alert");
+    addLog("Mighty Red Dragon Rodrigues awakens with a terrifying roar!", "alert");
 
     if (!state.hasSword) {
-        addLog("⚠️ WARNING: You do not possess the Sunblade! Your weapons cannot penetrate Ignis's scales!", "alert");
+        addLog("⚠️ WARNING: You do not possess the Sunblade! Your weapons cannot penetrate Rodrigues's scales!", "alert");
     }
 
     renderDragonTurn();
 }
 
 function renderDragonTurn() {
-    addLog(`🐉 IGNIS HP: ${state.dragonHp} | YOUR HP: ${state.hp}`);
+    addLog(`🐉 RODRIGUES HP: ${state.dragonHp} | YOUR HP: ${state.hp}`);
     const choices = [
         { text: "1. Slash with Weapon", action: attackDragon },
         { text: "2. Raise Shield to Defend & Charge", action: defendDragon },
@@ -1184,7 +1184,7 @@ function renderDragonTurn() {
         { text: "4. Flee down mountain", action: renderMountain }
     ];
     if (state.knightFreed && !state.knightAllyUsed) {
-        choices.push({ text: "5. Call upon Sir Cedric to strike Ignis", action: callKnightAlly });
+        choices.push({ text: "5. Call upon Sir Johan to strike Rodrigues", action: callKnightAlly });
     }
     renderChoices(choices);
 }
@@ -1194,7 +1194,7 @@ function callKnightAlly() {
     const dmg = Math.floor(Math.random() * 11) + 25;
     state.dragonHp -= dmg;
     state.knightAllyUsed = true;
-    addLog(`⚔️ Sir Cedric charges in and strikes Ignis for ${dmg} damage - the dragon has no chance to retaliate!`, "victory");
+    addLog(`⚔️ Sir Johan charges in and strikes Rodrigues for ${dmg} damage - the dragon has no chance to retaliate!`, "victory");
 
     if (state.dragonHp <= 0) {
         winGame();
@@ -1220,7 +1220,7 @@ function attackDragon() {
         }
         state.dragonHp -= dmg;
     } else {
-        addLog("🛡️ YOUR WEAPON REBOUNDS HARMLESSLY OFF IGNIS'S IMPENETRABLE SCALES! (0 Damage)", "alert");
+        addLog("🛡️ YOUR WEAPON REBOUNDS HARMLESSLY OFF RODRIGUES'S IMPENETRABLE SCALES! (0 Damage)", "alert");
         addLog("Without the Legendary Sunblade, no mortal weapon can pierce the dragon's scales!", "alert");
         state.dragonExposed = false;
     }
@@ -1233,11 +1233,11 @@ function attackDragon() {
     // Dragon counter flame attack
     const dDmg = mitigate(Math.floor(Math.random() * 16) + 20);
     state.hp -= dDmg;
-    addLog(`Ignis breathes a torrent of fire! You take ${dDmg} fire damage!`, "alert");
+    addLog(`Rodrigues breathes a torrent of fire! You take ${dDmg} fire damage!`, "alert");
     updateHUD();
 
     if (state.hp <= 0) {
-        gameOver("You fell in battle against Ignis the Red Dragon.");
+        gameOver("You fell in battle against Rodrigues the Red Dragon.");
         return;
     }
 
@@ -1246,17 +1246,17 @@ function attackDragon() {
 
 function defendDragon() {
     sfx.playClick();
-    addLog("🛡️ YOU RAISE YOUR SHIELD TO BLOCK IGNIS'S FIRE BREATH!", "event");
+    addLog("🛡️ YOU RAISE YOUR SHIELD TO BLOCK RODRIGUES'S FIRE BREATH!", "event");
     const rawDmg = Math.floor(Math.random() * 8) + 12;
     const dDmg = Math.max(1, Math.floor(rawDmg * 0.20));
     state.hp -= dDmg;
     addLog(`Your shield absorbs 80% of the dragon's fire! You take only ${dDmg} damage!`, "event");
-    addLog("✨ IGNIS EXPOSES A VULNERABLE WEAK SPOT IN ITS CHEST ARMOR! Your next attack will deal +50% EXTRA DAMAGE!", "victory");
+    addLog("✨ RODRIGUES EXPOSES A VULNERABLE WEAK SPOT IN ITS CHEST ARMOR! Your next attack will deal +50% EXTRA DAMAGE!", "victory");
     state.dragonExposed = true;
     updateHUD();
 
     if (state.hp <= 0) {
-        gameOver("You fell in battle against Ignis the Red Dragon.");
+        gameOver("You fell in battle against Rodrigues the Red Dragon.");
         return;
     }
 
@@ -1295,20 +1295,29 @@ function gameOver(reason) {
     ]);
 }
 
+function getHeroRating(score) {
+    if (score >= 1000) return "GRAND HERO OF EAST GREVIE";
+    if (score >= 700) return "MASTER DRAGON SLAYER";
+    if (score >= 400) return "VALIANT DEFENDER OF THE REALM";
+    return "NOVICE ADVENTURER OF EAST GREVIE";
+}
+
 function winGame() {
     clearLog();
     sfx.playVictory();
     addScore(1000);
 
-    addLog("============================================================", "victory");
-    addLog("           🎉 VICTORY! THE KINGDOM IS SAVED! 🎉", "victory");
-    addLog("============================================================", "victory");
-    addLog("You vanquished Ignis the Red Dragon, rescued Princess Anna, and saved East Grevie!", "event");
+    const rating = getHeroRating(state.score);
 
-    let speechText = `Victory! Hear ye, people of East Grevie! The hero ${state.name} has vanquished Ignis the Red Dragon and rescued Princess Anna from Peak Doom!`;
+    addLog("============================================================", "victory");
+    addLog("           VICTORY! THE KINGDOM IS SAVED!", "victory");
+    addLog("============================================================", "victory");
+    addLog("You vanquished Rodrigues the Red Dragon, rescued Princess Anna, and saved East Grevie!", "event");
+
+    let speechText = `Victory! Hear ye, people of East Grevie! The hero ${state.name} has vanquished Rodrigues the Red Dragon and rescued Princess Anna from Peak Doom!`;
     if (state.knightFreed) {
-        speechText += " Sir Cedric rides beside you into the Citadel, his life-debt repaid in honor!";
-        addLog("Sir Cedric rides beside you into the Citadel, his life-debt repaid in blood and fire.", "event");
+        speechText += " Sir Johan rides beside you into the Citadel, his life-debt repaid in honor!";
+        addLog("Sir Johan rides beside you into the Citadel, his life-debt repaid in blood and fire.", "event");
     }
     if (state.goblinSpared) {
         speechText += " Word spreads of the noble mercy you showed the Goblin Rogue.";
@@ -1316,17 +1325,19 @@ function winGame() {
     } else if (state.goblinDefeated) {
         addLog("Tales of the Goblin Rogue you slew in the misty forest travel far and wide.", "event");
     }
-    speechText += ` Peace has returned to the Realm, and ${state.name} shall be remembered forever as Grand Hero of East Grevie!`;
+    speechText += ` Peace has returned to the Realm, and ${state.name} shall be remembered forever as ${rating}!`;
 
-    addLog(`FINAL SCORE: ${state.score} PTS | RATING: GRAND HERO OF THE REALM`, "victory");
+    addLog(`FINAL SCORE: ${state.score} PTS | RATING: ${rating}`, "victory");
 
     // Populate and display Victory Modal End Screen
     const victoryModalEl = document.getElementById("victory-modal");
     const victoryLoreTextEl = document.getElementById("victory-lore-text");
     const victoryScoreEl = document.getElementById("victory-score");
     const victoryLevelEl = document.getElementById("victory-level");
+    const victoryRatingEl = document.getElementById("victory-rating");
 
-    if (victoryLoreTextEl) victoryLoreTextEl.innerHTML = `📜 <em>"${speechText}"</em>`;
+    if (victoryRatingEl) victoryRatingEl.textContent = `RATING: ${rating}`;
+    if (victoryLoreTextEl) victoryLoreTextEl.innerHTML = `<em>"${speechText}"</em>`;
     if (victoryScoreEl) victoryScoreEl.textContent = String(state.score).padStart(6, '0');
     if (victoryLevelEl) victoryLevelEl.textContent = `LVL ${state.level}`;
 
@@ -1404,7 +1415,7 @@ if (narrateBtnEl) {
         const heroName = nameInputEl.value.trim() || "Sir Eldrin";
         state.name = heroName;
         if (introLoreCardEl) introLoreCardEl.classList.add("speaking");
-        narrator.speak(`Welcome, ${heroName}! The Kingdom of East Grevie is in shadow. The dreaded Red Dragon Ignis has captured Princess Anna and fled to Peak Doom. Without the Legendary Sunblade, no mortal weapon can pierce the beast's scales...`);
+        narrator.speak(`Welcome, ${heroName}! The Kingdom of East Grevie is in shadow. The dreaded Red Dragon Rodrigues has captured Princess Anna and fled to Peak Doom. Without the Legendary Sunblade, no mortal weapon can pierce the beast's scales...`);
     });
 }
 

@@ -181,24 +181,35 @@ def game_over(player, reason="You have fallen in battle."):
     print(f"\n{CYAN}Thank you for playing East Grevie Adventures!{RESET}")
     sys.exit()
 
+def get_hero_rating(score):
+    if score >= 1000:
+        return "GRAND HERO OF EAST GREVIE"
+    elif score >= 700:
+        return "MASTER DRAGON SLAYER"
+    elif score >= 400:
+        return "VALIANT DEFENDER OF THE REALM"
+    else:
+        return "NOVICE ADVENTURER OF EAST GREVIE"
+
 def victory(player):
+    player.add_score(1000)
+    rating = get_hero_rating(player.score)
     print(f"\n{MAGENTA}{'='*60}")
-    print("           🎉 VICTORY! THE KINGDOM IS SAVED! 🎉")
+    print("           VICTORY! THE KINGDOM IS SAVED!")
     print(f"{'='*60}{RESET}")
     slow_print(f"{GREEN}You vanquished the terror of the realm, rescued Princess Anna,")
     slow_print(f"and returned to the Citadel to live in legend forever!{RESET}\n")
 
     if player.knight_freed:
-        slow_print(f"{CYAN}Sir Cedric rides beside you into the Citadel, his life-debt repaid in blood and fire.{RESET}")
+        slow_print(f"{CYAN}Sir Johan rides beside you into the Citadel, his life-debt repaid in blood and fire.{RESET}")
     if player.goblin_spared:
         slow_print(f"{CYAN}Word spreads of the mercy you showed the Goblin Rogue in the Whispering Forest.{RESET}")
     elif player.goblin_defeated:
         slow_print(f"{CYAN}Tales of the Goblin Rogue you slew in the misty forest travel far and wide.{RESET}")
 
-    player.add_score(1000)
     print(f"\n{YELLOW}==========================================")
     print(f"       FINAL SCORE: {player.score} PTS")
-    print(f"       RATING: GRAND HERO OF THE REALM")
+    print(f"       RATING: {rating}")
     print(f"=========================================={RESET}\n")
     sys.exit()
 
@@ -206,7 +217,7 @@ def intro(player):
     clear_screen()
     print_banner()
     slow_print("The Kingdom of East Grevie is in shadow.")
-    slow_print("The dreaded Red Dragon Ignis has captured Princess Anna and fled to Peak Doom.")
+    slow_print("The dreaded Red Dragon Rodrigues has captured Princess Anna and fled to Peak Doom.")
     slow_print("Without the Legendary Sunblade, no mortal weapon can pierce the beast's scales.")
     slow_print("Your quest begins at the crossroad outside the quiet Village of East Grevie...\n")
     
@@ -543,18 +554,18 @@ def old_watchtower(player):
     slow_print("\n🗼 OLD WATCHTOWER")
     slow_print("A crumbling stone tower leans over the cliffside, its door hanging off its hinges.")
     if player.knight_freed:
-        slow_print("The watchtower is empty and silent. Sir Cedric already rides free.")
+        slow_print("The watchtower is empty and silent. Sir Johan already rides free.")
         input("Press Enter to return...")
         return
 
-    slow_print("Inside, chained to a support beam, lies a wounded Knight - Sir Cedric.")
+    slow_print("Inside, chained to a support beam, lies a wounded Knight - Sir Johan.")
     print("\nWhat do you do?")
     print("1. Free the Knight")
     print("2. Leave him chained and go")
 
     choice = input("\nSelect choice (1-2): ").strip()
     if choice == "1":
-        slow_print(f"\n{GREEN}Sir Cedric: 'My thanks, friend! I owe you a life-debt. If ever you face Ignis, call for me!'{RESET}")
+        slow_print(f"\n{GREEN}Sir Johan: 'My thanks, friend! I owe you a life-debt. If ever you face Rodrigues, call for me!'{RESET}")
         player.knight_freed = True
         player.add_score(75)
     else:
@@ -566,21 +577,21 @@ def dragons_lair(player):
     player.show_status()
     slow_print("🐉 PEAK DOOM: THE DRAGON'S LAIR")
     slow_print("Molten lava streams down dark cavern walls. Atop a mountain of gold lies Princess Anna in chains.")
-    slow_print(f"{RED}The mighty Red Dragon Ignis awakens with a terrifying roar!{RESET}")
+    slow_print(f"{RED}The mighty Red Dragon Rodrigues awakens with a terrifying roar!{RESET}")
     
     if not player.has_sword:
-        slow_print(f"\n{RED}⚠️ WARNING: You do not possess the Legendary Sunblade! Your mundane attacks cannot harm Ignis!{RESET}")
+        slow_print(f"\n{RED}⚠️ WARNING: You do not possess the Legendary Sunblade! Your mundane attacks cannot harm Rodrigues!{RESET}")
 
     dragon_hp = 120
     while dragon_hp > 0 and player.hp > 0:
         knight_available = player.knight_freed and not player.knight_ally_used
-        print(f"\n{RED}DRAGON IGNIS HP: {dragon_hp}{RESET} | {GREEN}YOUR HP: {player.hp}{RESET}")
+        print(f"\n{RED}DRAGON RODRIGUES HP: {dragon_hp}{RESET} | {GREEN}YOUR HP: {player.hp}{RESET}")
         print("1. Slash with weapon")
         print("2. Raise Shield to Defend & Charge")
         print("3. Drink Healing Potion")
         print("4. Attempt to rescue Princess and run")
         if knight_available:
-            print("5. Call upon Sir Cedric to strike Ignis")
+            print("5. Call upon Sir Johan to strike Rodrigues")
 
         c = input(f"Action (1-{'5' if knight_available else '4'}): ").strip()
         if c == "1":
@@ -592,19 +603,19 @@ def dragons_lair(player):
                 else:
                     slow_print(f"{YELLOW}💥 The Sunblade pierces the dragon's scales for {damage} DAMAGE!{RESET}")
             else:
-                slow_print(f"{RED}🛡️ YOUR WEAPON REBOUNDS HARMLESSLY OFF IGNIS'S IMPENETRABLE SCALES! (0 Damage){RESET}")
+                slow_print(f"{RED}🛡️ YOUR WEAPON REBOUNDS HARMLESSLY OFF RODRIGUES'S IMPENETRABLE SCALES! (0 Damage){RESET}")
                 slow_print(f"{RED}Without the Legendary Sunblade, no mortal weapon can pierce the dragon's scales!{RESET}")
 
             if dragon_hp > 0:
                 d_dmg = mitigate(random.randint(20, 35), player)
                 player.hp -= d_dmg
-                slow_print(f"{RED}Ignis breathes a torrent of fire! You take {d_dmg} fire damage!{RESET}")
+                slow_print(f"{RED}Rodrigues breathes a torrent of fire! You take {d_dmg} fire damage!{RESET}")
         elif c == "2":
-            slow_print("🛡️ YOU RAISE YOUR SHIELD TO BLOCK IGNIS'S FIRE BREATH!")
+            slow_print("🛡️ YOU RAISE YOUR SHIELD TO BLOCK RODRIGUES'S FIRE BREATH!")
             d_dmg = max(1, random.randint(2, 4))
             player.hp -= d_dmg
             slow_print(f"Your shield absorbs 80% of the dragon's fire! You take only {d_dmg} damage!")
-            slow_print("✨ IGNIS EXPOSES A VULNERABLE WEAK SPOT IN ITS CHEST ARMOR!")
+            slow_print("✨ RODRIGUES EXPOSES A VULNERABLE WEAK SPOT IN ITS CHEST ARMOR!")
         elif c == "3":
             if "Elixir of Life" in player.inventory:
                 player.inventory.remove("Elixir of Life")
@@ -616,19 +627,19 @@ def dragons_lair(player):
                 slow_print("You have no healing items left!")
         elif c == "4":
             if not player.has_sword:
-                game_over("Ignis swept down and engulfed you in flames as you tried to flee!", player)
+                game_over("Rodrigues swept down and engulfed you in flames as you tried to flee!", player)
             else:
-                slow_print("Ignis blocks the exit! You must finish the battle!")
+                slow_print("Rodrigues blocks the exit! You must finish the battle!")
         elif c == "5" and knight_available:
             dmg = random.randint(25, 35)
             dragon_hp -= dmg
             player.knight_ally_used = True
-            slow_print(f"{YELLOW}⚔️ Sir Cedric charges in and strikes Ignis for {dmg} damage - the dragon has no chance to retaliate!{RESET}")
+            slow_print(f"{YELLOW}⚔️ Sir Johan charges in and strikes Rodrigues for {dmg} damage - the dragon has no chance to retaliate!{RESET}")
         else:
             print("Invalid option!")
 
     if player.hp <= 0:
-        game_over("You fell in battle against Ignis the Red Dragon.", player)
+        game_over("You fell in battle against Rodrigues the Red Dragon.", player)
     else:
         victory(player)
 
