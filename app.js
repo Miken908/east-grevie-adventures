@@ -660,28 +660,32 @@ function renderBlacksmith() {
     const choices = [];
     const discount = Math.min(0.30, state.lck * 0.02);
 
+    const broadswordOwned = state.equipment.weapon && state.equipment.weapon.name === "Iron Broadsword";
     const broadswordCost = Math.round(100 * (1 - discount));
     choices.push({
-        text: `1. ⚔️ Buy Iron Broadsword (+6 Dmg, +1 STR) - 💰 ${broadswordCost} Gold`,
-        action: () => buyEquipment("weapon", { name: "Iron Broadsword", bonusStr: 1, bonusMinDmg: 14, bonusMaxDmg: 22 }, broadswordCost)
+        text: broadswordOwned ? `1. ⚔️ Iron Broadsword - [ EQUIPPED ]` : `1. ⚔️ Buy Iron Broadsword (+6 Dmg, +1 STR) - 💰 ${broadswordCost} Gold`,
+        action: broadswordOwned ? () => { sfx.playClick(); addLog("You already own and have equipped the Iron Broadsword!"); } : () => buyEquipment("weapon", { name: "Iron Broadsword", bonusStr: 1, bonusMinDmg: 14, bonusMaxDmg: 22 }, broadswordCost)
     });
 
+    const ironShieldOwned = state.equipment.shield && state.equipment.shield.name === "Reinforced Iron Shield";
     const ironShieldCost = Math.round(80 * (1 - discount));
     choices.push({
-        text: `2. 🛡️ Buy Reinforced Iron Shield (+5 Armor, +1 END) - 💰 ${ironShieldCost} Gold`,
-        action: () => buyEquipment("shield", { name: "Reinforced Iron Shield", bonusArmor: 8, bonusEnd: 1 }, ironShieldCost)
+        text: ironShieldOwned ? `2. 🛡️ Reinforced Iron Shield - [ EQUIPPED ]` : `2. 🛡️ Buy Reinforced Iron Shield (+5 Armor, +1 END) - 💰 ${ironShieldCost} Gold`,
+        action: ironShieldOwned ? () => { sfx.playClick(); addLog("You already own and have equipped the Reinforced Iron Shield!"); } : () => buyEquipment("shield", { name: "Reinforced Iron Shield", bonusArmor: 8, bonusEnd: 1 }, ironShieldCost)
     });
 
+    const armorOwned = state.equipment.armor && state.equipment.armor.name === "Hardened Leather Armor";
     const armorCost = Math.round(90 * (1 - discount));
     choices.push({
-        text: `3. 🥋 Buy Hardened Leather Armor (+4 Armor, +1 AGI) - 💰 ${armorCost} Gold`,
-        action: () => buyEquipment("armor", { name: "Hardened Leather Armor", bonusArmor: 4, bonusAgi: 1 }, armorCost)
+        text: armorOwned ? `3. 🥋 Hardened Leather Armor - [ EQUIPPED ]` : `3. 🥋 Buy Hardened Leather Armor (+4 Armor, +1 AGI) - 💰 ${armorCost} Gold`,
+        action: armorOwned ? () => { sfx.playClick(); addLog("You already own and have equipped the Hardened Leather Armor!"); } : () => buyEquipment("armor", { name: "Hardened Leather Armor", bonusArmor: 4, bonusAgi: 1 }, armorCost)
     });
 
+    const ringOwned = state.equipment.accessory && state.equipment.accessory.name === "Ring of Fortune";
     const ringCost = Math.round(120 * (1 - discount));
     choices.push({
-        text: `4. 💍 Buy Ring of Fortune (+2 LCK) - 💰 ${ringCost} Gold`,
-        action: () => buyEquipment("accessory", { name: "Ring of Fortune", bonusLck: 2 }, ringCost)
+        text: ringOwned ? `4. 💍 Ring of Fortune - [ EQUIPPED ]` : `4. 💍 Buy Ring of Fortune (+2 LCK) - 💰 ${ringCost} Gold`,
+        action: ringOwned ? () => { sfx.playClick(); addLog("You already own and have equipped the Ring of Fortune!"); } : () => buyEquipment("accessory", { name: "Ring of Fortune", bonusLck: 2 }, ringCost)
     });
 
     const potionCost = Math.round(35 * (1 - discount));
@@ -1436,7 +1440,7 @@ if (victoryRestartBtnEl) {
 if (voiceBtnEl) {
     voiceBtnEl.addEventListener("click", () => {
         narrator.enabled = !narrator.enabled;
-        voiceBtnEl.textContent = `🎙️ VOICE: ${narrator.enabled ? "ON" : "OFF"}`;
+        voiceBtnEl.textContent = `VOICE: ${narrator.enabled ? "ON" : "OFF"}`;
         if (!narrator.enabled) {
             narrator.stop();
         }
@@ -1446,7 +1450,7 @@ if (voiceBtnEl) {
 if (musicBtnEl) {
     musicBtnEl.addEventListener("click", () => {
         sfx.musicEnabled = !sfx.musicEnabled;
-        musicBtnEl.textContent = `🎵 MUSIC: ${sfx.musicEnabled ? "ON" : "OFF"}`;
+        musicBtnEl.textContent = `MUSIC: ${sfx.musicEnabled ? "ON" : "OFF"}`;
         if (!sfx.musicEnabled) {
             sfx.stopMusic();
         } else {
@@ -1458,7 +1462,7 @@ if (musicBtnEl) {
 
 soundBtnEl.addEventListener("click", () => {
     sfx.enabled = !sfx.enabled;
-    soundBtnEl.textContent = `🔊 SFX: ${sfx.enabled ? "ON" : "OFF"}`;
+    soundBtnEl.textContent = `SFX: ${sfx.enabled ? "ON" : "OFF"}`;
 });
 
 resetBtnEl.addEventListener("click", () => {
@@ -1613,10 +1617,12 @@ function updateStatsModalUI() {
     const attrEndValEl = document.getElementById("attr-end-val");
     const attrLckValEl = document.getElementById("attr-lck-val");
 
-    if (attrStrValEl) attrStrValEl.textContent = state.str;
-    if (attrAgiValEl) attrAgiValEl.textContent = state.agi;
-    if (attrEndValEl) attrEndValEl.textContent = state.end;
-    if (attrLckValEl) attrLckValEl.textContent = state.lck;
+    const eq = calculateEquipmentBonuses();
+
+    if (attrStrValEl) attrStrValEl.textContent = eq.str > 0 ? `${state.str} (+${eq.str})` : state.str;
+    if (attrAgiValEl) attrAgiValEl.textContent = eq.agi > 0 ? `${state.agi} (+${eq.agi})` : state.agi;
+    if (attrEndValEl) attrEndValEl.textContent = eq.end > 0 ? `${state.end} (+${eq.end})` : state.end;
+    if (attrLckValEl) attrLckValEl.textContent = eq.lck > 0 ? `${state.lck} (+${eq.lck})` : state.lck;
 
     const { minDmg, maxDmg } = calculateDamageRange();
     const derivedDmgValEl = document.getElementById("derived-dmg-val");

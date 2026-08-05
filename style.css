@@ -139,16 +139,34 @@ body {
     background: rgba(18, 22, 32, 0.9);
     border: 2px solid var(--gold-border);
     border-radius: 8px;
-    padding: 10px 16px;
-    font-size: 0.75rem;
-    flex-wrap: wrap;
-    gap: 10px;
+    padding: 8px 12px;
+    font-size: 0.68rem;
+    flex-wrap: nowrap;
+    gap: 8px;
+    overflow: hidden;
 }
 
 .hud-item {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 4px;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.hud-item.hero-name-item {
+    max-width: 140px;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+#hero-name {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 95px;
+    display: inline-block;
+    vertical-align: bottom;
 }
 
 .hud-label {
@@ -166,12 +184,12 @@ body {
 
 /* HP Bar */
 .hp-container {
-    min-width: 220px;
+    min-width: 160px;
 }
 
 .hp-bar-outer {
-    width: 100px;
-    height: 14px;
+    width: 75px;
+    height: 12px;
     background: #22050c;
     border: 2px solid var(--crimson-alert);
     border-radius: 3px;
