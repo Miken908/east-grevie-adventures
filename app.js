@@ -1429,6 +1429,37 @@ startBtnEl.addEventListener("click", () => {
     renderVillage();
 });
 
+// Fullscreen Artwork Lightbox Modal Handlers
+const imageFrameEl = document.getElementById("image-frame-container");
+const lightboxModalEl = document.getElementById("lightbox-modal");
+const lightboxImgEl = document.getElementById("lightbox-img");
+const lightboxTitleEl = document.getElementById("lightbox-location-title");
+const lightboxCloseBtnEl = document.getElementById("lightbox-close-btn");
+
+if (imageFrameEl && lightboxModalEl) {
+    imageFrameEl.addEventListener("click", () => {
+        if (sceneImageEl) {
+            lightboxImgEl.src = sceneImageEl.src;
+            lightboxTitleEl.textContent = locationNameEl.textContent;
+            lightboxModalEl.classList.remove("hidden");
+        }
+    });
+    lightboxModalEl.addEventListener("click", () => {
+        lightboxModalEl.classList.add("hidden");
+    });
+    if (lightboxCloseBtnEl) {
+        lightboxCloseBtnEl.addEventListener("click", (e) => {
+            e.stopPropagation();
+            lightboxModalEl.classList.add("hidden");
+        });
+    }
+    document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape" && !lightboxModalEl.classList.contains("hidden")) {
+            lightboxModalEl.classList.add("hidden");
+        }
+    });
+}
+
 const victoryNarrateBtnEl = document.getElementById("victory-narrate-btn");
 const victoryRestartBtnEl = document.getElementById("victory-restart-btn");
 const victoryLoreCardEl = document.querySelector(".victory-lore-card");

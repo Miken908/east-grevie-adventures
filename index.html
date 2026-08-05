@@ -57,8 +57,9 @@
 
             <!-- Main Scene Display Frame -->
             <div class="scene-container">
-                <div class="image-frame" id="image-frame-container">
-                    <img id="scene-image" src="assets/images/village.png" alt="Scene Image">
+                <div class="image-frame" id="image-frame-container" title="Click to view artwork in full screen">
+                    <img id="scene-image" src="assets/images/village.jpg" alt="Scene Image">
+                    <div class="zoom-hint-badge">🔍 ENLARGE ART</div>
                     <div class="location-badge" id="location-name">🏰 VILLAGE SQUARE</div>
                 </div>
 
@@ -263,6 +264,18 @@
                 <div class="equip-slot-item">🥋 ARMOR: <span id="equip-armor-val" class="val gold">Traveler's Tunic</span></div>
                 <div class="equip-slot-item">💍 ACCESSORY: <span id="equip-accessory-val" class="val gold">None</span></div>
             </div>
+        </div>
+    </div>
+
+    <!-- Fullscreen Artwork Lightbox Modal -->
+    <div id="lightbox-modal" class="modal-overlay hidden">
+        <div class="modal-content crt-box lightbox-box">
+            <button id="lightbox-close-btn" class="modal-close-btn">✕</button>
+            <h2 id="lightbox-location-title" class="lightbox-title">🏰 EAST GREVIE VILLAGE</h2>
+            <div class="lightbox-img-frame">
+                <img id="lightbox-img" src="" alt="Enlarged Artwork">
+            </div>
+            <p class="lightbox-hint">Click anywhere to close and return to adventure</p>
         </div>
     </div>
 
