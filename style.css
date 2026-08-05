@@ -7,10 +7,10 @@
     --bezel-bg: #1c1e2b;
     --bezel-border: #363a4e;
     --screen-bg: #0c0e16;
-    --gold-primary: #d4af37;
-    --gold-bright: #f5c542;
-    --gold-glow: rgba(212, 175, 55, 0.35);
-    --gold-border: #4a3e1b;
+    --gold-primary: #5a8a9e;
+    --gold-bright: #a2d2e2;
+    --gold-glow: rgba(90, 138, 158, 0.3);
+    --gold-border: #283a45;
     --text-ivory: #f2ebd9;
     --text-muted: #a0aec0;
     --amber-event: #ffc83b;
@@ -473,8 +473,8 @@ body {
 }
 
 .intro-title {
-    color: #ffcc00;
-    text-shadow: 0 0 10px rgba(255, 204, 0, 0.5);
+    color: var(--gold-bright);
+    text-shadow: 0 0 10px rgba(162, 210, 226, 0.4);
     font-size: 1.2rem;
 }
 
@@ -524,13 +524,13 @@ body {
 /* Victory End Screen Modal */
 .victory-box {
     max-width: 700px;
-    border-color: #ffcc00;
-    box-shadow: 0 0 45px rgba(255, 204, 0, 0.45), inset 0 0 25px rgba(0, 0, 0, 0.9);
+    border-color: var(--gold-primary);
+    box-shadow: 0 0 45px rgba(90, 138, 158, 0.4), inset 0 0 25px rgba(0, 0, 0, 0.9);
 }
 
 .victory-title {
-    color: #ffcc00;
-    text-shadow: 0 0 15px rgba(255, 204, 0, 0.7);
+    color: var(--gold-bright);
+    text-shadow: 0 0 12px rgba(162, 210, 226, 0.5);
     font-size: 1.15rem;
     line-height: 1.4;
 }
@@ -544,7 +544,7 @@ body {
 
 .victory-lore-card {
     background: rgba(10, 25, 18, 0.85);
-    border: 1px dashed #ffcc00;
+    border: 1px dashed var(--gold-primary);
     border-radius: 8px;
     padding: 12px 16px;
     text-align: left;
