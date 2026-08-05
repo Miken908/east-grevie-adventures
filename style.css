@@ -314,10 +314,10 @@ body {
 }
 
 .item-pill.equipment {
-    background: linear-gradient(180deg, #2c2818, #18140a);
-    border: 1px solid var(--gold-bright);
+    background: linear-gradient(180deg, #182832, #0c151c);
+    border: 1px solid var(--gold-primary);
     color: var(--gold-bright);
-    box-shadow: 0 0 6px rgba(245, 197, 66, 0.3);
+    box-shadow: 0 0 6px var(--gold-glow);
 }
 
 /* Action Buttons Grid */
@@ -444,15 +444,15 @@ body {
 }
 
 .name-input-group input:focus {
-    border-color: #d4af37;
-    box-shadow: 0 0 10px rgba(212, 175, 55, 0.25);
+    border-color: var(--gold-primary);
+    box-shadow: 0 0 10px var(--gold-glow);
 }
 
 /* Discrete Start Button */
 .arcade-btn.primary {
     background: linear-gradient(180deg, #242938, #161924);
-    border: 2px solid #d4af37;
-    color: #d4af37;
+    border: 2px solid var(--gold-primary);
+    color: var(--gold-bright);
     text-align: center;
     padding: 14px;
     font-size: 0.75rem;
@@ -461,15 +461,15 @@ body {
 }
 
 .arcade-btn.primary:hover {
-    background: #d4af37;
+    background: var(--gold-primary);
     color: #12141d;
-    box-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
+    box-shadow: 0 0 15px var(--gold-glow);
 }
 
 .intro-box {
     max-width: 520px;
-    border-color: #d4af37;
-    box-shadow: 0 0 35px rgba(212, 175, 55, 0.25), inset 0 0 20px rgba(0, 0, 0, 0.8);
+    border-color: var(--gold-primary);
+    box-shadow: 0 0 35px var(--gold-glow), inset 0 0 20px rgba(0, 0, 0, 0.8);
 }
 
 .intro-title {
@@ -601,7 +601,7 @@ body {
     position: absolute;
     transform: translate(-50%, -50%);
     background: rgba(13, 16, 24, 0.85);
-    border: 2px solid #d4af37;
+    border: 2px solid var(--gold-primary);
     border-radius: 20px;
     color: #ffffff;
     padding: 5px 10px;
@@ -610,17 +610,17 @@ body {
     display: flex;
     align-items: center;
     gap: 4px;
-    box-shadow: 0 0 12px rgba(212, 175, 55, 0.4), inset 0 0 6px rgba(0, 0, 0, 0.8);
+    box-shadow: 0 0 12px var(--gold-glow), inset 0 0 6px rgba(0, 0, 0, 0.8);
     transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     animation: pinPulse 2.5s infinite ease-in-out;
 }
 
 .map-pin:hover {
     transform: translate(-50%, -55%) scale(1.15);
-    background: #d4af37;
+    background: var(--gold-primary);
     color: #0b0d14;
     border-color: #ffffff;
-    box-shadow: 0 0 20px rgba(255, 204, 0, 0.8);
+    box-shadow: 0 0 20px var(--gold-glow);
     z-index: 15;
 }
 
@@ -649,8 +649,8 @@ body {
 }
 
 @keyframes pinPulse {
-    0%, 100% { box-shadow: 0 0 10px rgba(212, 175, 55, 0.4); }
-    50% { box-shadow: 0 0 18px rgba(212, 175, 55, 0.7); }
+    0%, 100% { box-shadow: 0 0 10px var(--gold-glow); }
+    50% { box-shadow: 0 0 18px var(--gold-glow); }
 }
 
 @keyframes dangerPulse {
@@ -668,8 +668,8 @@ body {
     max-width: 960px;
     width: 95%;
     max-height: 92vh;
-    border-color: #ffcc00;
-    box-shadow: 0 0 50px rgba(255, 204, 0, 0.4), inset 0 0 30px rgba(0, 0, 0, 0.95);
+    border-color: var(--gold-primary);
+    box-shadow: 0 0 50px var(--gold-glow), inset 0 0 30px rgba(0, 0, 0, 0.95);
     display: flex;
     flex-direction: column;
     gap: 14px;
@@ -680,15 +680,15 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-bottom: 1px solid rgba(255, 204, 0, 0.3);
+    border-bottom: 1px solid var(--gold-primary);
     padding-bottom: 8px;
 }
 
 .map-modal-title {
-    color: #ffcc00;
+    color: var(--gold-bright);
     font-size: 1.1rem;
     margin: 0;
-    text-shadow: 0 0 12px rgba(255, 204, 0, 0.6);
+    text-shadow: 0 0 12px var(--gold-glow);
 }
 
 .map-modal-canvas-frame {
@@ -728,14 +728,14 @@ body {
     transform: translate(-50%, -50%);
     width: 32px;
     height: 32px;
-    background: #ffcc00;
+    background: var(--gold-primary);
     border: 2px solid #ffffff;
     border-radius: 50%;
     display: flex;
     justify-content: center;
     align-items: center;
     font-size: 1.1rem;
-    box-shadow: 0 0 16px rgba(255, 204, 0, 0.95), 0 0 30px rgba(255, 204, 0, 0.6);
+    box-shadow: 0 0 16px var(--gold-glow), 0 0 30px var(--gold-glow);
     z-index: 25;
     pointer-events: none;
     transition: top 0.4s cubic-bezier(0.25, 1, 0.5, 1), left 0.4s cubic-bezier(0.25, 1, 0.5, 1);
@@ -743,7 +743,7 @@ body {
 }
 
 @keyframes heroTokenPulse {
-    0%, 100% { transform: translate(-50%, -50%) scale(1); box-shadow: 0 0 16px rgba(255, 204, 0, 0.95); }
+    0%, 100% { transform: translate(-50%, -50%) scale(1); box-shadow: 0 0 16px var(--gold-glow); }
     50% { transform: translate(-50%, -50%) scale(1.18); box-shadow: 0 0 28px rgba(255, 255, 255, 0.95); }
 }
 
