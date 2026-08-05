@@ -3,18 +3,20 @@
    ========================================================================== */
 
 :root {
-    --bg-dark: #0a0a12;
-    --bezel-bg: #1a1a24;
-    --bezel-border: #333346;
-    --screen-bg: #07100b;
-    --neon-green: #39ff14;
-    --neon-cyan: #00f3ff;
-    --neon-yellow: #ffee00;
-    --neon-red: #ff3366;
-    --neon-magenta: #ff00ff;
-    --text-white: #f0f0ff;
-    --panel-bg: rgba(10, 25, 18, 0.85);
-    --border-glow: #00ff88;
+    --bg-dark: #0b0d14;
+    --bezel-bg: #1c1e2b;
+    --bezel-border: #363a4e;
+    --screen-bg: #0c0e16;
+    --gold-primary: #d4af37;
+    --gold-bright: #f5c542;
+    --gold-glow: rgba(212, 175, 55, 0.35);
+    --gold-border: #4a3e1b;
+    --text-ivory: #f2ebd9;
+    --text-muted: #a0aec0;
+    --amber-event: #ffc83b;
+    --crimson-alert: #e63946;
+    --cyan-accent: #38bdf8;
+    --panel-bg: rgba(18, 22, 32, 0.92);
 }
 
 * {
@@ -27,7 +29,7 @@
 
 body {
     background-color: var(--bg-dark);
-    background-image: radial-gradient(#1c1c2e 15%, transparent 16%), radial-gradient(#10101c 15%, transparent 16%);
+    background-image: radial-gradient(#1e2235 15%, transparent 16%), radial-gradient(#121524 15%, transparent 16%);
     background-size: 60px 60px;
     background-position: 0 0, 30px 30px;
     min-height: 100vh;
@@ -35,14 +37,14 @@ body {
     justify-content: center;
     align-items: center;
     padding: 20px;
-    color: var(--neon-green);
+    color: var(--text-ivory);
 }
 
 /* CRT Monitor Outer Bezel */
 .crt-bezel {
     width: 100%;
     max-width: 950px;
-    background: linear-gradient(145deg, #242436, #12121a);
+    background: linear-gradient(145deg, #222638, #121420);
     border: 4px solid var(--bezel-border);
     border-radius: 20px;
     padding: 24px;
@@ -53,12 +55,12 @@ body {
 /* CRT Screen Interior */
 .crt-screen {
     background: var(--screen-bg);
-    border: 3px solid #143322;
+    border: 3px solid var(--gold-border);
     border-radius: 12px;
     padding: 20px;
     position: relative;
     overflow: hidden;
-    box-shadow: inset 0 0 40px rgba(0, 255, 136, 0.15), 0 0 20px rgba(0, 243, 255, 0.1);
+    box-shadow: inset 0 0 35px rgba(212, 175, 55, 0.08), 0 0 25px rgba(0, 0, 0, 0.8);
     display: flex;
     flex-direction: column;
     gap: 16px;
@@ -73,7 +75,7 @@ body {
     height: 100%;
     background: linear-gradient(
         rgba(18, 16, 16, 0) 50%, 
-        rgba(0, 0, 0, 0.35) 50%
+        rgba(0, 0, 0, 0.25) 50%
     );
     background-size: 100% 4px;
     z-index: 10;
@@ -85,14 +87,14 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-bottom: 2px dashed var(--neon-green);
+    border-bottom: 2px dashed rgba(212, 175, 55, 0.35);
     padding-bottom: 12px;
 }
 
 .game-title {
     font-size: 1.2rem;
-    color: var(--neon-yellow);
-    text-shadow: 0 0 10px rgba(255, 238, 0, 0.6);
+    color: var(--gold-bright);
+    text-shadow: 0 0 12px rgba(245, 197, 66, 0.5);
     letter-spacing: 1px;
 }
 
@@ -102,9 +104,9 @@ body {
 }
 
 .arcade-btn-sm {
-    background: #16241c;
-    border: 2px solid var(--neon-cyan);
-    color: var(--neon-cyan);
+    background: #1a202c;
+    border: 2px solid var(--gold-primary);
+    color: var(--gold-bright);
     font-size: 0.6rem;
     padding: 6px 10px;
     cursor: pointer;
@@ -113,20 +115,20 @@ body {
 }
 
 .arcade-btn-sm:hover {
-    background: var(--neon-cyan);
-    color: #000;
-    box-shadow: 0 0 10px var(--neon-cyan);
+    background: var(--gold-primary);
+    color: #0c0e16;
+    box-shadow: 0 0 10px var(--gold-glow);
 }
 
 .arcade-btn-sm.warning {
-    border-color: var(--neon-red);
-    color: var(--neon-red);
+    border-color: var(--crimson-alert);
+    color: var(--crimson-alert);
 }
 
 .arcade-btn-sm.warning:hover {
-    background: var(--neon-red);
+    background: var(--crimson-alert);
     color: #fff;
-    box-shadow: 0 0 10px var(--neon-red);
+    box-shadow: 0 0 10px rgba(230, 57, 70, 0.5);
 }
 
 /* Status HUD */
@@ -134,8 +136,8 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background: rgba(0, 20, 10, 0.6);
-    border: 2px solid #1c5235;
+    background: rgba(18, 22, 32, 0.9);
+    border: 2px solid var(--gold-border);
     border-radius: 8px;
     padding: 10px 16px;
     font-size: 0.75rem;
@@ -150,16 +152,16 @@ body {
 }
 
 .hud-label {
-    color: #88bb99;
+    color: var(--text-muted);
 }
 
 .hud-value {
-    color: var(--text-white);
+    color: var(--text-ivory);
 }
 
 .hud-value.gold {
-    color: var(--neon-yellow);
-    text-shadow: 0 0 8px var(--neon-yellow);
+    color: var(--gold-bright);
+    text-shadow: 0 0 8px rgba(245, 197, 66, 0.5);
 }
 
 /* HP Bar */
@@ -170,15 +172,15 @@ body {
 .hp-bar-outer {
     width: 100px;
     height: 14px;
-    background: #220011;
-    border: 2px solid var(--neon-red);
+    background: #22050c;
+    border: 2px solid var(--crimson-alert);
     border-radius: 3px;
     overflow: hidden;
 }
 
 .hp-bar-inner {
     height: 100%;
-    background: linear-gradient(90deg, #ff0055, #ff3300);
+    background: linear-gradient(90deg, #e63946, #ff6b6b);
     transition: width 0.3s ease-out;
 }
 
@@ -197,11 +199,11 @@ body {
 
 .image-frame {
     position: relative;
-    border: 3px solid var(--neon-green);
+    border: 3px solid var(--gold-primary);
     border-radius: 8px;
     overflow: hidden;
     background: #000;
-    box-shadow: 0 0 15px rgba(0, 255, 136, 0.3);
+    box-shadow: 0 0 18px rgba(212, 175, 55, 0.25);
     height: 230px;
 }
 
@@ -219,30 +221,30 @@ body {
     bottom: 0;
     left: 0;
     right: 0;
-    background: rgba(0, 0, 0, 0.85);
-    color: var(--neon-cyan);
+    background: rgba(12, 14, 22, 0.92);
+    color: var(--gold-bright);
     font-size: 0.65rem;
     padding: 6px 8px;
     text-align: center;
-    border-top: 2px solid var(--neon-cyan);
+    border-top: 2px solid var(--gold-primary);
 }
 
 /* Story Log Box */
 .story-log-container {
     background: var(--panel-bg);
-    border: 2px solid #1c5235;
+    border: 2px solid var(--gold-border);
     border-radius: 8px;
     padding: 14px;
     height: 230px;
     overflow-y: auto;
     font-family: 'VT323', monospace;
-    font-size: 1.2rem;
+    font-size: 1.25rem;
     line-height: 1.4;
-    color: var(--neon-green);
+    color: var(--text-ivory);
     display: flex;
     flex-direction: column;
     gap: 8px;
-    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.8);
+    box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.9);
 }
 
 .story-log-container p {
@@ -250,15 +252,15 @@ body {
 }
 
 .log-event {
-    color: var(--neon-yellow);
+    color: var(--amber-event);
 }
 
 .log-alert {
-    color: var(--neon-red);
+    color: var(--crimson-alert);
 }
 
 .log-victory {
-    color: var(--neon-cyan);
+    color: var(--cyan-accent);
 }
 
 /* Inventory Bar */
@@ -266,15 +268,15 @@ body {
     display: flex;
     align-items: center;
     gap: 12px;
-    background: rgba(10, 15, 25, 0.7);
-    border: 2px solid #204060;
+    background: rgba(18, 22, 32, 0.85);
+    border: 2px solid var(--gold-border);
     padding: 8px 14px;
     border-radius: 6px;
     font-size: 0.65rem;
 }
 
 .inventory-title {
-    color: var(--neon-cyan);
+    color: var(--gold-primary);
     white-space: nowrap;
 }
 
@@ -285,9 +287,9 @@ body {
 }
 
 .item-pill {
-    background: #142a3a;
-    border: 1px solid var(--neon-cyan);
-    color: #fff;
+    background: #1a202c;
+    border: 1px solid var(--gold-primary);
+    color: var(--text-ivory);
     padding: 4px 8px;
     border-radius: 4px;
     font-size: 0.6rem;
@@ -302,9 +304,9 @@ body {
 }
 
 .arcade-btn {
-    background: linear-gradient(180deg, #183020, #0a1810);
-    border: 2px solid var(--neon-green);
-    color: var(--text-white);
+    background: linear-gradient(180deg, #242a38, #141822);
+    border: 2px solid var(--gold-primary);
+    color: var(--text-ivory);
     padding: 14px 12px;
     font-size: 0.7rem;
     line-height: 1.3;
@@ -312,20 +314,20 @@ body {
     border-radius: 6px;
     text-align: left;
     transition: all 0.15s ease;
-    box-shadow: 0 4px 0 #08120a;
+    box-shadow: 0 4px 0 #0a0c12;
 }
 
 .arcade-btn:hover {
-    background: linear-gradient(180deg, #285038, #102418);
-    border-color: var(--neon-yellow);
-    color: var(--neon-yellow);
+    background: linear-gradient(180deg, #363e52, #1f2534);
+    border-color: var(--gold-bright);
+    color: var(--gold-bright);
     transform: translateY(-2px);
-    box-shadow: 0 6px 0 #08120a, 0 0 12px rgba(255, 238, 0, 0.4);
+    box-shadow: 0 6px 0 #0a0c12, 0 0 14px var(--gold-glow);
 }
 
 .arcade-btn:active {
     transform: translateY(2px);
-    box-shadow: 0 2px 0 #08120a;
+    box-shadow: 0 2px 0 #0a0c12;
 }
 
 .arcade-btn.primary {
