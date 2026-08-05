@@ -638,6 +638,13 @@ function renderBlacksmith() {
     clearLog();
     addLog("Sparks fly as the burly blacksmith hammers away at glowing steel.");
 
+    if (!state.blueprintReturned && !state.inventory.includes("Stolen Blacksmith Blueprint")) {
+        addLog("Blacksmith: 'A treacherous Goblin Rogue stole my Mastercraft Blueprint in the Whispering Forest!'", "alert");
+        addLog("Blacksmith: 'Track down that rogue, recover my blueprint, and return it to me so I can open my forge and craft equipment for you!'");
+        renderChoices([{ text: "Return to Village Square", action: renderVillage }]);
+        return;
+    }
+
     if (state.inventory.includes("Stolen Blacksmith Blueprint")) {
         addLog("Blacksmith: 'By the gods! You recovered my Stolen Mastercraft Blueprint!'", "victory");
         addLog("Blacksmith: 'Here is 100 Gold for your bravery! My Mastercraft Forge is now open to you.'", "event");
@@ -767,9 +774,10 @@ function renderForest() {
 function investigateStump() {
     sfx.playClick();
     if (!state.stumpSearched) {
-        addLog("You examine the glowing stump and find a shimmering Healing Potion!");
+        addLog("You examine the glowing stump and find a shimmering Healing Potion and hidden coins!", "event");
         state.stumpSearched = true;
         state.inventory.push("Healing Potion");
+        addGold(25);
         addScore(75);
     } else {
         addLog("The stump is empty now.");
@@ -862,6 +870,7 @@ function attackGoblin() {
 
     if (state.goblinHp <= 0) {
         addLog("🎉 You defeated the Goblin Rogue!", "victory");
+        addLog("📜 You retrieved the STOLEN BLACKSMITH BLUEPRINT from the Goblin Rogue!", "event");
         state.goblinDefeated = true;
         state.inventory.push("Stolen Blacksmith Blueprint");
         addGold(50);
@@ -1034,6 +1043,7 @@ function attackTroll() {
         state.caveSearched = true;
         state.inventory.push("Elixir of Life");
         healPlayer(50);
+        addGold(100);
         addScore(250);
         renderChoices([{ text: "Return to Mountain Pass", action: renderMountain }]);
         return;
@@ -1107,6 +1117,7 @@ function attackWilderness() {
 
     if (w.hp <= 0) {
         addLog(`🎉 You defeated the ${w.name}!`, "victory");
+        addGold(30);
         addScore(w.reward);
         renderChoices([
             { text: "1. Continue deeper on the Trail", action: goWilderness },
@@ -1537,11 +1548,13 @@ function visitFairyFountain() {
     if (!state.fairyVisited) {
         state.fairyVisited = true;
         addLog("✨ You discover a hidden, shimmering Fairy Fountain in a tranquil glade!", "event");
-        addLog("Glowing sprites bless your journey. Your health is restored by +50 HP!", "victory");
+        addLog("Glowing sprites bless your journey with health and fairy gold!", "victory");
         healPlayer(50);
-        addScore(25);
+        addGold(30);
+        addScore(100);
     } else {
-        addLog("The Fairy Fountain is quiet and peaceful. Sprites dance gently over the water.");
+        addLog("The fairy sprites welcome you warmly.");
+        healPlayer(20);
     }
     renderChoices([
         { text: "Return to Overworld Map", action: renderWorldMap },
@@ -1615,6 +1628,16 @@ function updateStatsModalUI() {
     if (derivedCritValEl) derivedCritValEl.textContent = `${calculateCritChance().toFixed(1)}%`;
     if (derivedDodgeValEl) derivedDodgeValEl.textContent = `${calculateDodgeChance().toFixed(1)}%`;
     if (derivedArmorValEl) derivedArmorValEl.textContent = `${calculateMitigation().toFixed(1)}`;
+
+    const equipWeaponValEl = document.getElementById("equip-weapon-val");
+    const equipShieldValEl = document.getElementById("equip-shield-val");
+    const equipArmorValEl = document.getElementById("equip-armor-val");
+    const equipAccessoryValEl = document.getElementById("equip-accessory-val");
+
+    if (equipWeaponValEl) equipWeaponValEl.textContent = state.equipment.weapon ? state.equipment.weapon.name : "None";
+    if (equipShieldValEl) equipShieldValEl.textContent = state.equipment.shield ? state.equipment.shield.name : "None";
+    if (equipArmorValEl) equipArmorValEl.textContent = state.equipment.armor ? state.equipment.armor.name : "None";
+    if (equipAccessoryValEl) equipAccessoryValEl.textContent = state.equipment.accessory ? state.equipment.accessory.name : "None";
 
     document.querySelectorAll(".add-ap-btn").forEach(btn => {
         if (state.ap <= 0) {

@@ -19,12 +19,12 @@
             <header class="game-header">
                 <h1 class="game-title">EAST GREVIE ADVENTURES</h1>
                 <div class="header-controls">
-                    <button id="stats-btn" class="arcade-btn-sm primary" title="Hero Stats & Attributes">📊 STATS <span id="ap-badge" class="ap-badge hidden">0</span></button>
-                    <button id="map-btn" class="arcade-btn-sm primary" title="Open World Map">🗺️ WORLD MAP</button>
-                    <button id="voice-btn" class="arcade-btn-sm" title="Toggle Voice Narration">🎙️ VOICE: ON</button>
-                    <button id="music-btn" class="arcade-btn-sm" title="Toggle Music">🎵 MUSIC: ON</button>
-                    <button id="sound-btn" class="arcade-btn-sm" title="Toggle Sound">🔊 SFX: ON</button>
-                    <button id="reset-btn" class="arcade-btn-sm warning" title="Restart Game">🔄 RESTART</button>
+                    <button id="stats-btn" class="arcade-btn-sm primary" title="Hero Stats & Attributes">STATS <span id="ap-badge" class="ap-badge hidden">0</span></button>
+                    <button id="map-btn" class="arcade-btn-sm primary" title="Open World Map">WORLD MAP</button>
+                    <button id="voice-btn" class="arcade-btn-sm" title="Toggle Voice Narration">VOICE: ON</button>
+                    <button id="music-btn" class="arcade-btn-sm" title="Toggle Music">MUSIC: ON</button>
+                    <button id="sound-btn" class="arcade-btn-sm" title="Toggle Sound">SFX: ON</button>
+                    <button id="reset-btn" class="arcade-btn-sm warning" title="Restart Game">RESTART</button>
                 </div>
             </header>
 
@@ -86,8 +86,7 @@
     <!-- Start Modal for Name Entry & Story Intro -->
     <div id="name-modal" class="modal-overlay">
         <div class="modal-content crt-box intro-box">
-            <h2 class="intro-title">🐉 EAST GREVIE ADVENTURES 🐉</h2>
-            <p class="intro-subtitle">THE QUEST FOR THE PRINCESS</p>
+            <h2 class="intro-title">EAST GREVIE ADVENTURES</h2>
             
             <div class="name-input-group">
                 <label for="name-input">ENTER HERO NAME:</label>
@@ -255,6 +254,14 @@
                 <div class="derived-item">💥 CRIT CHANCE: <span id="derived-crit-val" class="gold">14.0%</span></div>
                 <div class="derived-item">💨 DODGE CHANCE: <span id="derived-dodge-val" class="gold">4.5%</span></div>
                 <div class="derived-item">🛡️ ARMOR MITIGATION: <span id="derived-armor-val" class="gold">7.4</span></div>
+            </div>
+
+            <!-- Equipped Gear Slots Panel -->
+            <div class="equipment-panel">
+                <div class="equip-slot-item">⚔️ WEAPON: <span id="equip-weapon-val" class="val gold">Wooden Sword</span></div>
+                <div class="equip-slot-item">🛡️ SHIELD: <span id="equip-shield-val" class="val gold">Wooden Shield</span></div>
+                <div class="equip-slot-item">🥋 ARMOR: <span id="equip-armor-val" class="val gold">Traveler's Tunic</span></div>
+                <div class="equip-slot-item">💍 ACCESSORY: <span id="equip-accessory-val" class="val gold">None</span></div>
             </div>
         </div>
     </div>

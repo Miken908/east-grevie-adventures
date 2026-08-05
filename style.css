@@ -898,3 +898,23 @@ body {
     gap: 12px;
 }
 
+.equipment-panel {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 8px;
+    background: rgba(12, 16, 26, 0.9);
+    border: 1px solid var(--gold-border);
+    border-radius: 6px;
+    padding: 10px 14px;
+    font-size: 0.65rem;
+    text-align: left;
+}
+
+.equip-slot-item {
+    color: var(--text-muted);
+}
+
+.equip-slot-item .val {
+    color: var(--gold-bright);
+}
+
