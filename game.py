@@ -576,8 +576,8 @@ def dragons_lair(player):
     player.location = "lair"
     player.show_status()
     slow_print("🐾 CAT'S HALL")
-    slow_print("Molten lava streams down dark cavern walls. Atop a mountain of gold lies Princess Anna in chains.")
-    slow_print(f"{RED}The mighty Red Dragon Rodrigues awakens with a terrifying roar!{RESET}")
+    slow_print("Shadows stretch across the grand stone hall. Atop a velvet cushion throne lies Princess Anna in chains.")
+    slow_print(f"{RED}Lord Rodrigues the Vile Shadow Cat uncoils with an intimidating hiss!{RESET}")
     
     if not player.has_sword:
         slow_print(f"\n{RED}⚠️ WARNING: You do not possess the Legendary Sunblade! Your mundane attacks cannot harm Rodrigues!{RESET}")
@@ -585,7 +585,7 @@ def dragons_lair(player):
     dragon_hp = 120
     while dragon_hp > 0 and player.hp > 0:
         knight_available = player.knight_freed and not player.knight_ally_used
-        print(f"\n{RED}DRAGON RODRIGUES HP: {dragon_hp}{RESET} | {GREEN}YOUR HP: {player.hp}{RESET}")
+        print(f"\n{RED}SHADOW CAT RODRIGUES HP: {dragon_hp}{RESET} | {GREEN}YOUR HP: {player.hp}{RESET}")
         print("1. Slash with weapon")
         print("2. Raise Shield to Defend & Charge")
         print("3. Drink Healing Potion")

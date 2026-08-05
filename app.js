@@ -1165,8 +1165,8 @@ function battleDragon() {
     sfx.playMusic("battle");
     setScene("lair", "🐾 CAT'S HALL");
     clearLog();
-    addLog("Molten lava streams down cavern walls. Atop a mountain of gold lies Princess Anna in chains!", "alert");
-    addLog("Mighty Red Dragon Rodrigues awakens with a terrifying roar!", "alert");
+    addLog("Shadows stretch across the grand stone hall. Atop a velvet cushion throne lies Princess Anna in chains!", "alert");
+    addLog("Lord Rodrigues the Vile Shadow Cat uncoils with an intimidating hiss!", "alert");
 
     if (!state.hasSword) {
         addLog("⚠️ WARNING: You do not possess the Sunblade! Your weapons cannot penetrate Rodrigues's fur!", "alert");
@@ -1176,12 +1176,12 @@ function battleDragon() {
 }
 
 function renderDragonTurn() {
-    addLog(`🐉 RODRIGUES HP: ${state.dragonHp} | YOUR HP: ${state.hp}`);
+    addLog(`🐾 RODRIGUES HP: ${state.dragonHp} | YOUR HP: ${state.hp}`);
     const choices = [
         { text: "1. Slash with Weapon", action: attackDragon },
         { text: "2. Raise Shield to Defend & Charge", action: defendDragon },
         { text: "3. Drink Healing Potion", action: useHealDragon },
-        { text: "4. Flee down mountain", action: renderMountain }
+        { text: "4. Flee to Mountain Pass", action: renderMountain }
     ];
     if (state.knightFreed && !state.knightAllyUsed) {
         choices.push({ text: "5. Call upon Sir Johan to strike Rodrigues", action: callKnightAlly });
