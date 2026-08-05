@@ -1,5 +1,5 @@
 /* ==========================================================================
-   DRAGON'S LAIR (1984) - RETRO GAME ENGINE, HEROIC ATTRIBUTES & AUDIO SYNTHESIZER
+   EAST GREVIE ADVENTURES (1984) - RETRO GAME ENGINE, HEROIC ATTRIBUTES & AUDIO SYNTHESIZER
    ========================================================================== */
 
 // --- Web Audio 8-bit Sound Synthesizer ---
@@ -665,8 +665,7 @@ function renderTemple() {
 
     renderChoices([
         { text: "1. Insert Silver Key into Pedestal Lock", action: useKeyTemple },
-        { text: "2. Attempt Riddle of Sun Altar", action: solveRiddleTemple },
-        { text: "3. Return to Whispering Forest", action: renderForest }
+        { text: "2. Return to Whispering Forest", action: renderForest }
     ]);
 }
 
@@ -689,20 +688,6 @@ function useKeyTemple() {
         claimSunblade();
     } else {
         addLog("The pedestal lock requires a key! Speak to the Elder in East Grevie Village.", "alert");
-    }
-}
-
-function solveRiddleTemple() {
-    sfx.playClick();
-    const answer = prompt("📜 RIDDLE: 'I speak without a mouth and hear without ears. I have no body, but I come alive with wind. What am I?'");
-    if (answer && answer.toLowerCase().includes("echo")) {
-        addLog("Correct! The stone pedestal slides open!", "event");
-        claimSunblade();
-    } else {
-        addLog("Incorrect! A trap fires poison darts!", "alert");
-        state.hp -= 20;
-        updateHUD();
-        if (state.hp <= 0) gameOver("The temple's deadly poison darts ended your quest.");
     }
 }
 

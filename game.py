@@ -1,6 +1,6 @@
 """
 ===================================================================
- DRAGON'S LAIR: THE QUEST FOR THE PRINCESS (1984 RETRO EDITION)
+ EAST GREVIE ADVENTURES: THE QUEST FOR THE PRINCESS (1984 RETRO EDITION)
 ===================================================================
  A classic 1980s style interactive text adventure RPG.
 """
@@ -162,28 +162,18 @@ class Player:
         print(f"{GREEN}💚 Restored {amount} HP! Current HP: {self.hp}/{self.max_hp}{RESET}")
 
 def print_banner():
-    banner = f"""{GREEN}
-================================================================================
-  ______   _______    ______    ______   ______  .__   __.  ______     
- /  __  \\ /  _____|  /  __  \\  / _____| /  __  \\ |  \\ |  | /  __  \\    
-|  |  |  |  |  __   |  |  |  ||  |  __ |  |  |  ||   \\|  ||  |  |  |   
-|  |  |  |  | |_ |  |  |  |  ||  | |_ ||  |  |  ||  . `  ||  |  |  |   
-|  `--'  |  |__| |  |  `--'  ||  |__| ||  `--'  ||  |\\   ||  `--'  |   
- \\______/ \\______|   \\______/  \\______| \\______/ |__| \\__| \\______/    
-                                                                       
-                 === DRAGON'S LAIR: THE PRINCESS QUEST ===
-                        RETRO ADVENTURE SOFTWARE
-================================================================================
-{RESET}"""
-    print(banner)
+    print(f"{BOLD}{YELLOW}")
+    print("============================================================================")
+    print("                 === EAST GREVIE ADVENTURES: THE PRINCESS QUEST ===")
+    print("============================================================================")
+    print(f"{RESET}")
 
-def game_over(reason, player):
-    print(f"\n{RED}{'='*50}")
-    print("                 GAME OVER")
-    print(f"{'='*50}{RESET}")
+def game_over(player, reason="You have fallen in battle."):
+    clear_screen()
+    slow_print(f"\n{RED}💀 GAME OVER 💀{RESET}")
     slow_print(f"{RED}{reason}{RESET}")
-    print(f"\n{YELLOW}Final Score: {player.score} Points{RESET}")
-    print(f"{CYAN}Thank you for playing Dragon's Lair!{RESET}")
+    slow_print(f"\nFINAL SCORE: {player.score} PTS")
+    print(f"\n{CYAN}Thank you for playing East Grevie Adventures!{RESET}")
     sys.exit()
 
 def victory(player):
@@ -413,7 +403,7 @@ def goblin_fight(player):
             print("Invalid option!")
 
     if player.hp <= 0:
-        game_over("You were slain by the Goblin Rogue in the misty forest...", player)
+        game_over(player, "You were slain by the Goblin Rogue in the misty forest...")
     else:
         slow_print(f"\n{GREEN} You defeated the Goblin Rogue!{RESET}")
         player.goblin_defeated = True
@@ -436,10 +426,9 @@ def sunken_temple(player):
 
     print("\nWhat do you do?")
     print("1. Insert the Silver Key into the Pedestal Lock")
-    print("2. Attempt the Riddle of the Sun Altar")
-    print("3. Return to Whispering Forest")
+    print("2. Return to Whispering Forest")
     
-    choice = input("\nSelect choice (1-3): ").strip()
+    choice = input("\nSelect choice (1-2): ").strip()
     if choice == "1":
         if "Silver Key" in player.inventory:
             slow_print("\n🗝️ The Silver Key fits perfectly into the ancient mechanism!")
@@ -454,23 +443,6 @@ def sunken_temple(player):
         else:
             slow_print("\nThe pedestal lock requires a key! Seek the Elder in East Grevie Village.")
     elif choice == "2":
-        slow_print("\n📜 An inscription speaks: 'I speak without a mouth and hear without ears. I have no body, but I come alive with wind. What am I?'")
-        ans = input("Your answer: ").strip().lower()
-        if "echo" in ans:
-            slow_print(f"\n{GREEN}Correct! The stone pedestal slides open!{RESET}")
-            slow_print(f"{BOLD}{YELLOW}YOU HAVE FOUND THE LEGENDARY SUNBLADE!{RESET}")
-            player.has_sword = True
-            player.inventory.append("Legendary Sunblade")
-            player.add_score(300)
-            slow_print("\nWith the Sunblade in hand, you exit the temple back to the Whispering Forest.")
-            player.location = "forest"
-            input("Press Enter to continue...")
-        else:
-            slow_print(f"\n{RED}Incorrect! A trap fires poison darts!{RESET}")
-            player.hp -= 20
-            if player.hp <= 0:
-                game_over("The temple's deadly poison darts ended your quest.", player)
-    elif choice == "3":
         player.location = "forest"
 
 def mountain_pass(player):
