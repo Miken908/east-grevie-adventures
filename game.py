@@ -185,7 +185,7 @@ def victory(player):
     print(f"\n{MAGENTA}{'='*60}")
     print("           🎉 VICTORY! THE KINGDOM IS SAVED! 🎉")
     print(f"{'='*60}{RESET}")
-    slow_print(f"{GREEN}You vanquished the terror of the realm, rescued Princess Aurelia,")
+    slow_print(f"{GREEN}You vanquished the terror of the realm, rescued Princess Anna,")
     slow_print(f"and returned to the Citadel to live in legend forever!{RESET}\n")
 
     if player.knight_freed:
@@ -206,7 +206,7 @@ def intro(player):
     clear_screen()
     print_banner()
     slow_print("The Kingdom of East Grevie is in shadow.")
-    slow_print("The dreaded Red Dragon Ignis has captured Princess Aurelia and fled to Peak Doom.")
+    slow_print("The dreaded Red Dragon Ignis has captured Princess Anna and fled to Peak Doom.")
     slow_print("Without the Legendary Sunblade, no mortal weapon can pierce the beast's scales.")
     slow_print("Your quest begins at the crossroad outside the quiet Village of East Grevie...\n")
     
@@ -565,7 +565,7 @@ def dragons_lair(player):
     player.location = "lair"
     player.show_status()
     slow_print("🐉 PEAK DOOM: THE DRAGON'S LAIR")
-    slow_print("Molten lava streams down dark cavern walls. Atop a mountain of gold lies Princess Aurelia in chains.")
+    slow_print("Molten lava streams down dark cavern walls. Atop a mountain of gold lies Princess Anna in chains.")
     slow_print(f"{RED}The mighty Red Dragon Ignis awakens with a terrifying roar!{RESET}")
     
     if not player.has_sword:
@@ -576,8 +576,8 @@ def dragons_lair(player):
         knight_available = player.knight_freed and not player.knight_ally_used
         print(f"\n{RED}DRAGON IGNIS HP: {dragon_hp}{RESET} | {GREEN}YOUR HP: {player.hp}{RESET}")
         print("1. Slash with weapon")
-        print("2. Raise Shield to Defend")
-        print("3. Use Elixir / Potion")
+        print("2. Raise Shield to Defend & Charge")
+        print("3. Drink Healing Potion")
         print("4. Attempt to rescue Princess and run")
         if knight_available:
             print("5. Call upon Sir Cedric to strike Ignis")
@@ -600,10 +600,11 @@ def dragons_lair(player):
                 player.hp -= d_dmg
                 slow_print(f"{RED}Ignis breathes a torrent of fire! You take {d_dmg} fire damage!{RESET}")
         elif c == "2":
-            slow_print("You raise your shield! The fire breath is partially blocked.")
-            d_dmg = mitigate(random.randint(8, 15), player)
+            slow_print("🛡️ YOU RAISE YOUR SHIELD TO BLOCK IGNIS'S FIRE BREATH!")
+            d_dmg = max(1, random.randint(2, 4))
             player.hp -= d_dmg
-            slow_print(f"You take reduced damage ({d_dmg} HP).")
+            slow_print(f"Your shield absorbs 80% of the dragon's fire! You take only {d_dmg} damage!")
+            slow_print("✨ IGNIS EXPOSES A VULNERABLE WEAK SPOT IN ITS CHEST ARMOR!")
         elif c == "3":
             if "Elixir of Life" in player.inventory:
                 player.inventory.remove("Elixir of Life")

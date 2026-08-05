@@ -345,6 +345,7 @@ const state = {
     trollHp: 60,
     wilderness: null,
     fairyVisited: false,
+    dragonExposed: false,
     location: "village"
 };
 
@@ -1164,7 +1165,7 @@ function battleDragon() {
     sfx.playMusic("battle");
     setScene("lair", "🐉 PEAK DOOM: DRAGON LAIR");
     clearLog();
-    addLog("Molten lava streams down cavern walls. Atop a mountain of gold lies Princess Aurelia in chains!", "alert");
+    addLog("Molten lava streams down cavern walls. Atop a mountain of gold lies Princess Anna in chains!", "alert");
     addLog("Mighty Red Dragon Ignis awakens with a terrifying roar!", "alert");
 
     if (!state.hasSword) {
@@ -1178,8 +1179,8 @@ function renderDragonTurn() {
     addLog(`🐉 IGNIS HP: ${state.dragonHp} | YOUR HP: ${state.hp}`);
     const choices = [
         { text: "1. Slash with Weapon", action: attackDragon },
-        { text: "2. Raise Shield to Defend", action: defendDragon },
-        { text: "3. Drink Elixir / Potion", action: useHealDragon },
+        { text: "2. Raise Shield to Defend & Charge", action: defendDragon },
+        { text: "3. Drink Healing Potion", action: useHealDragon },
         { text: "4. Flee down mountain", action: renderMountain }
     ];
     if (state.knightFreed && !state.knightAllyUsed) {
@@ -1208,7 +1209,11 @@ function attackDragon() {
     if (state.hasSword) {
         const rolled = rollAttack();
         dmg = rolled.dmg;
-        if (rolled.crit) {
+        if (state.dragonExposed) {
+            dmg = Math.floor(dmg * 1.5);
+            state.dragonExposed = false;
+            addLog(`🎯 WEAK SPOT STRICKEN! You deal ${dmg} EXTRA CRITICAL DAMAGE!`, "victory");
+        } else if (rolled.crit) {
             addLog(`💥⚔️ CRITICAL HIT! The Sunblade cleaves through the dragon's scales for ${dmg} massive damage!`, "victory");
         } else {
             addLog(`💥 The Sunblade pierces the dragon's scales for ${dmg} DAMAGE!`, "victory");
@@ -1217,6 +1222,7 @@ function attackDragon() {
     } else {
         addLog("🛡️ YOUR WEAPON REBOUNDS HARMLESSLY OFF IGNIS'S IMPENETRABLE SCALES! (0 Damage)", "alert");
         addLog("Without the Legendary Sunblade, no mortal weapon can pierce the dragon's scales!", "alert");
+        state.dragonExposed = false;
     }
 
     if (state.dragonHp <= 0) {
@@ -1240,10 +1246,13 @@ function attackDragon() {
 
 function defendDragon() {
     sfx.playClick();
-    addLog("You raise your shield! The dragon's fire breath is partially blocked.");
-    const dDmg = mitigate(Math.floor(Math.random() * 8) + 8);
+    addLog("🛡️ YOU RAISE YOUR SHIELD TO BLOCK IGNIS'S FIRE BREATH!", "event");
+    const rawDmg = Math.floor(Math.random() * 8) + 12;
+    const dDmg = Math.max(1, Math.floor(rawDmg * 0.20));
     state.hp -= dDmg;
-    addLog(`You take reduced damage (${dDmg} HP).`, "event");
+    addLog(`Your shield absorbs 80% of the dragon's fire! You take only ${dDmg} damage!`, "event");
+    addLog("✨ IGNIS EXPOSES A VULNERABLE WEAK SPOT IN ITS CHEST ARMOR! Your next attack will deal +50% EXTRA DAMAGE!", "victory");
+    state.dragonExposed = true;
     updateHUD();
 
     if (state.hp <= 0) {
@@ -1294,9 +1303,9 @@ function winGame() {
     addLog("============================================================", "victory");
     addLog("           🎉 VICTORY! THE KINGDOM IS SAVED! 🎉", "victory");
     addLog("============================================================", "victory");
-    addLog("You vanquished Ignis the Red Dragon, rescued Princess Aurelia, and saved East Grevie!", "event");
+    addLog("You vanquished Ignis the Red Dragon, rescued Princess Anna, and saved East Grevie!", "event");
 
-    let speechText = `Victory! Hear ye, people of East Grevie! The hero ${state.name} has vanquished Ignis the Red Dragon and rescued Princess Aurelia from Peak Doom!`;
+    let speechText = `Victory! Hear ye, people of East Grevie! The hero ${state.name} has vanquished Ignis the Red Dragon and rescued Princess Anna from Peak Doom!`;
     if (state.knightFreed) {
         speechText += " Sir Cedric rides beside you into the Citadel, his life-debt repaid in honor!";
         addLog("Sir Cedric rides beside you into the Citadel, his life-debt repaid in blood and fire.", "event");
@@ -1395,7 +1404,7 @@ if (narrateBtnEl) {
         const heroName = nameInputEl.value.trim() || "Sir Eldrin";
         state.name = heroName;
         if (introLoreCardEl) introLoreCardEl.classList.add("speaking");
-        narrator.speak(`Welcome, ${heroName}! The Kingdom of East Grevie is in shadow. The dreaded Red Dragon Ignis has captured Princess Aurelia and fled to Peak Doom. Without the Legendary Sunblade, no mortal weapon can pierce the beast's scales...`);
+        narrator.speak(`Welcome, ${heroName}! The Kingdom of East Grevie is in shadow. The dreaded Red Dragon Ignis has captured Princess Anna and fled to Peak Doom. Without the Legendary Sunblade, no mortal weapon can pierce the beast's scales...`);
     });
 }
 
