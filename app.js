@@ -222,7 +222,7 @@ class SoundEffects {
                 const now = this.ctx.currentTime;
                 const duration = note.d;
                 gain.gain.setValueAtTime(0.001, now);
-                gain.gain.linearRampToValueAtTime(0.025, now + 0.05); // Soft 50ms attack
+                gain.gain.linearRampToValueAtTime(0.015, now + 0.05); // Balanced background music level
                 gain.gain.exponentialRampToValueAtTime(0.001, now + duration * 0.92);
 
                 osc.connect(filter);
@@ -298,19 +298,19 @@ class SoundEffects {
                     filter.type = 'bandpass';
                     filter.frequency.value = 800;
                     filter.Q.value = 1.2;
-                    gain.gain.setValueAtTime(0.008, this.ctx.currentTime);
+                    gain.gain.setValueAtTime(0.045, this.ctx.currentTime);
                     break;
                 case 'forest':
                 case 'wilderness':
                     filter.type = 'lowpass';
                     filter.frequency.value = 600;
-                    gain.gain.setValueAtTime(0.012, this.ctx.currentTime);
+                    gain.gain.setValueAtTime(0.055, this.ctx.currentTime);
                     this.startOccasionalBirdChirps();
                     break;
                 case 'blacksmith':
                     filter.type = 'lowpass';
                     filter.frequency.value = 350;
-                    gain.gain.setValueAtTime(0.015, this.ctx.currentTime);
+                    gain.gain.setValueAtTime(0.065, this.ctx.currentTime);
                     this.startOccasionalForgeSparks();
                     break;
                 case 'mountain':
@@ -318,36 +318,36 @@ class SoundEffects {
                     filter.type = 'bandpass';
                     filter.frequency.value = 450;
                     filter.Q.value = 2.0;
-                    gain.gain.setValueAtTime(0.018, this.ctx.currentTime);
+                    gain.gain.setValueAtTime(0.075, this.ctx.currentTime);
                     break;
                 case 'cave':
                 case 'troll':
                     filter.type = 'lowpass';
                     filter.frequency.value = 250;
-                    gain.gain.setValueAtTime(0.015, this.ctx.currentTime);
+                    gain.gain.setValueAtTime(0.065, this.ctx.currentTime);
                     this.startOccasionalWaterDrips();
                     break;
                 case 'temple':
                     filter.type = 'bandpass';
                     filter.frequency.value = 550;
                     filter.Q.value = 3.0;
-                    gain.gain.setValueAtTime(0.010, this.ctx.currentTime);
+                    gain.gain.setValueAtTime(0.050, this.ctx.currentTime);
                     break;
                 case 'fairy':
                     filter.type = 'highpass';
                     filter.frequency.value = 2000;
-                    gain.gain.setValueAtTime(0.006, this.ctx.currentTime);
+                    gain.gain.setValueAtTime(0.040, this.ctx.currentTime);
                     this.startFairyGlissando();
                     break;
                 case 'lair':
                     filter.type = 'lowpass';
                     filter.frequency.value = 180;
-                    gain.gain.setValueAtTime(0.020, this.ctx.currentTime);
+                    gain.gain.setValueAtTime(0.085, this.ctx.currentTime);
                     break;
                 default:
                     filter.type = 'lowpass';
                     filter.frequency.value = 400;
-                    gain.gain.setValueAtTime(0.008, this.ctx.currentTime);
+                    gain.gain.setValueAtTime(0.045, this.ctx.currentTime);
                     break;
             }
 
@@ -378,7 +378,7 @@ class SoundEffects {
 
     startOccasionalBirdChirps() {
         this.ambientTimer = setInterval(() => {
-            if (!this.enabled || this.currentAmbientLoc !== 'forest') return;
+            if (!this.enabled || (this.currentAmbientLoc !== 'forest' && this.currentAmbientLoc !== 'wilderness')) return;
             try {
                 const osc = this.ctx.createOscillator();
                 const gain = this.ctx.createGain();
@@ -386,14 +386,14 @@ class SoundEffects {
                 const startFreq = 2200 + Math.random() * 800;
                 osc.frequency.setValueAtTime(startFreq, this.ctx.currentTime);
                 osc.frequency.exponentialRampToValueAtTime(startFreq + 600, this.ctx.currentTime + 0.08);
-                gain.gain.setValueAtTime(0.004, this.ctx.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.0001, this.ctx.currentTime + 0.12);
+                gain.gain.setValueAtTime(0.035, this.ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.0001, this.ctx.currentTime + 0.14);
                 osc.connect(gain);
                 gain.connect(this.ctx.destination);
                 osc.start();
-                osc.stop(this.ctx.currentTime + 0.12);
+                osc.stop(this.ctx.currentTime + 0.14);
             } catch (e) {}
-        }, 4000 + Math.random() * 5000);
+        }, 2500 + Math.random() * 3000);
     }
 
     startOccasionalForgeSparks() {
@@ -404,15 +404,15 @@ class SoundEffects {
                 const gain = this.ctx.createGain();
                 osc.type = 'triangle';
                 osc.frequency.setValueAtTime(1400, this.ctx.currentTime);
-                osc.frequency.exponentialRampToValueAtTime(300, this.ctx.currentTime + 0.05);
-                gain.gain.setValueAtTime(0.008, this.ctx.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.0001, this.ctx.currentTime + 0.05);
+                osc.frequency.exponentialRampToValueAtTime(300, this.ctx.currentTime + 0.06);
+                gain.gain.setValueAtTime(0.055, this.ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.0001, this.ctx.currentTime + 0.06);
                 osc.connect(gain);
                 gain.connect(this.ctx.destination);
                 osc.start();
-                osc.stop(this.ctx.currentTime + 0.05);
+                osc.stop(this.ctx.currentTime + 0.06);
             } catch (e) {}
-        }, 3500 + Math.random() * 3000);
+        }, 2500 + Math.random() * 2500);
     }
 
     startOccasionalWaterDrips() {
@@ -424,15 +424,15 @@ class SoundEffects {
                 osc.type = 'sine';
                 const dripFreq = 1600 + Math.random() * 400;
                 osc.frequency.setValueAtTime(dripFreq, this.ctx.currentTime);
-                osc.frequency.exponentialRampToValueAtTime(dripFreq * 1.4, this.ctx.currentTime + 0.04);
-                gain.gain.setValueAtTime(0.006, this.ctx.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.0001, this.ctx.currentTime + 0.15);
+                osc.frequency.exponentialRampToValueAtTime(dripFreq * 1.4, this.ctx.currentTime + 0.05);
+                gain.gain.setValueAtTime(0.045, this.ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.0001, this.ctx.currentTime + 0.16);
                 osc.connect(gain);
                 gain.connect(this.ctx.destination);
                 osc.start();
-                osc.stop(this.ctx.currentTime + 0.15);
+                osc.stop(this.ctx.currentTime + 0.16);
             } catch (e) {}
-        }, 3000 + Math.random() * 4000);
+        }, 2000 + Math.random() * 2500);
     }
 
     startFairyGlissando() {
@@ -445,14 +445,14 @@ class SoundEffects {
                 osc.type = 'sine';
                 osc.frequency.setValueAtTime(freq, this.ctx.currentTime);
                 osc.frequency.exponentialRampToValueAtTime(freq * 1.5, this.ctx.currentTime + 0.25);
-                gain.gain.setValueAtTime(0.005, this.ctx.currentTime);
+                gain.gain.setValueAtTime(0.040, this.ctx.currentTime);
                 gain.gain.exponentialRampToValueAtTime(0.0001, this.ctx.currentTime + 0.3);
                 osc.connect(gain);
                 gain.connect(this.ctx.destination);
                 osc.start();
                 osc.stop(this.ctx.currentTime + 0.3);
             } catch (e) {}
-        }, 2500 + Math.random() * 2000);
+        }, 1800 + Math.random() * 2000);
     }
 }
 
