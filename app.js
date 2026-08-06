@@ -630,8 +630,8 @@ function renderVillage() {
     sfx.playMusic("village");
     setScene("village", "VILLAGE SQUARE");
     clearLog();
-    addLog("You are at the Village Square of East Grevie.");
-    addLog("Townspeople gather around whispering in panic. Cobblestone paths lead in three directions.");
+    addLog("You stand in the peaceful sunlit Village Square of East Grevie.");
+    addLog("Charming timber-frame cottages enclose the stone well, while distant whispers of Cat Rodrigues's shadowy reign echo through the quiet streets.");
 
     renderChoices([
         { text: "1. Speak to Wise Elder by fountain", action: speakToElder },
@@ -652,7 +652,8 @@ function renderBlacksmith() {
     sfx.playMusic("village");
     setScene("blacksmith", "BLACKSMITH'S FORGE & SHOP");
     clearLog();
-    addLog("Sparks fly as the burly blacksmith hammers away at glowing steel.");
+    addLog("The intense heat of the forge hearth radiates through the stone smithy.");
+    addLog("Racks of polished steel and glowing embers surround the anvil, waiting for the master smith's craft.");
 
     if (!state.blueprintReturned && !state.inventory.includes("Stolen Blacksmith Blueprint")) {
         addLog("Blacksmith: 'A treacherous Goblin Rogue stole my Mastercraft Blueprint in the Whispering Forest!'", "alert");
@@ -779,7 +780,8 @@ function renderForest() {
     sfx.playMusic("forest");
     setScene("forest", "WHISPERING FOREST");
     clearLog();
-    addLog("Ancient trees blot out the sky. Twisted roots line the misty trail.");
+    addLog("Sunlight pierces the dense emerald canopy of the Whispering Forest.");
+    addLog("Ancient mossy monoliths and glowing forest flora line the quiet dirt path leading deep into the ancient woodland.");
 
     const choices = [
         { text: "1. Explore The Temple Sanctum", action: goTemple },
@@ -814,7 +816,8 @@ function renderTemple() {
     sfx.playMusic("forest");
     setScene("temple", "THE TEMPLE SANCTUM");
     clearLog();
-    addLog("Massive stone pillars support an ancient vault. In the center stands a glowing pedestal.");
+    addLog("Golden rays beam through high vaulted arches into the quiet Temple Sanctum.");
+    addLog("Massive rune-carved pillars frame the sacred altar, where an ancient pedestal awaits the Silver Key.");
 
     if (state.hasSword) {
         addLog("The pedestal is empty. You have already claimed the Sunblade!");
@@ -863,7 +866,7 @@ function battleGoblin() {
     sfx.playMusic("battle");
     setScene("goblin", "GOBLIN ROGUE ENCOUNTER");
     clearLog();
-    addLog("⚔️ A Goblin Rogue leaps out with drawn daggers!", "alert");
+    addLog("⚔️ A sly, green-skinned Goblin Rogue emerges from the shadows of the brush, clutching stolen scrolls and baring sharp daggers!", "alert");
 
     renderGoblinTurn();
 }
@@ -955,7 +958,8 @@ function renderMountain() {
     sfx.playMusic("forest");
     setScene("mountain", "ROCKY MOUNTAIN PASS");
     clearLog();
-    addLog("Howling winds blow across narrow ledges. High above lies Cat's Hall.");
+    addLog("Howling alpine winds echo across the steep, snow-dusted ledges of the Rocky Mountain Pass.");
+    addLog("Jagged granite crags tower into the clouds above, marking the perilous path toward Rodrigues's fortress.");
 
     renderChoices([
         { text: "1. Ascend to Cat's Hall", action: battleDragon },
@@ -975,7 +979,7 @@ function renderWatchtower() {
     sfx.playMusic("forest");
     setScene("watchtower", "OLD WATCHTOWER");
     clearLog();
-    addLog("A crumbling stone tower leans over the cliffside, its door hanging off its hinges.");
+    addLog("An ancient stone watchtower stands guard over the cliffside ravine, its weathered timber gate broken open.");
 
     if (state.knightFreed) {
         addLog("The watchtower is empty and silent. Sir Johan already rides free.");
@@ -1011,7 +1015,7 @@ function renderMountainCave() {
     state.location = "cave";
     setScene("troll", "MOUNTAIN CAVE");
     clearLog();
-    addLog("A Giant Mountain Snake coils in the shadows, guarding a chest of glittering treasure!", "alert");
+    addLog("Luminous crystals illuminate the damp cavern floor, where a massive Giant Mountain Snake coils over piles of glittering gold!", "alert");
 
     renderChoices([
         { text: "1. Fight the Mountain Snake", action: startTrollFight },
@@ -1109,7 +1113,7 @@ function goWilderness() {
     setScene("wilderness", "WILDERNESS TRAIL");
     sfx.playMusic("battle");
     clearLog();
-    addLog(`A ${state.wilderness.name} emerges from the tall grass, ready to fight!`, "alert");
+    addLog(`The wild trail winds through dense brush, where a ferocious ${state.wilderness.name} springs forth!`, "alert");
     renderWildernessTurn();
 }
 
@@ -1180,8 +1184,8 @@ function battleDragon() {
     sfx.playMusic("battle");
     setScene("lair", "CAT'S HALL");
     clearLog();
-    addLog("Shadows stretch across the grand stone hall. Atop a velvet cushion throne lies Princess Anna in chains!", "alert");
-    addLog("Lord Rodrigues the Vile Shadow Cat uncoils with an intimidating hiss!", "alert");
+    addLog("Crimson braziers cast dramatic shadows across the vaulted obsidian hall of Cat's Hall.", "alert");
+    addLog("Atop the high cushion throne, Lord Rodrigues the Shadow Cat uncoils his dark fur with a terrifying roar!", "alert");
 
     if (!state.hasSword) {
         addLog("⚠️ WARNING: You do not possess the Sunblade! Your weapons cannot penetrate Rodrigues's fur!", "alert");
@@ -1740,8 +1744,8 @@ function visitFairyFountain() {
     clearLog();
     if (!state.fairyVisited) {
         state.fairyVisited = true;
-        addLog("✨ You discover a hidden, shimmering Fairy Fountain in a tranquil glade!", "event");
-        addLog("Glowing sprites bless your journey with health and fairy gold!", "victory");
+        addLog("✨ Bioluminescent lotus flowers illuminate the crystalline waters of the Secret Fairy Fountain!", "event");
+        addLog("Glowing fairy sprites hover in the tranquility, blessing your quest with health and fairy gold!", "victory");
         healPlayer(50);
         addGold(30);
         addScore(100);

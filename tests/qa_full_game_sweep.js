@@ -114,6 +114,11 @@ check("Intro lore text contains 'Village of East Grevie'", htmlContent.includes(
 check("Intro lore text contains 'Cat Rodrigues'", htmlContent.includes("Cat Rodrigues"));
 check("Intro lore text contains 'his cursed lair'", htmlContent.includes("his cursed lair"));
 check("Intro lore text contains 'thick fur'", htmlContent.includes("thick fur"));
+check("Village lore modernized for sunlit timber cottages", jsContent.includes("timber-frame cottages enclose the stone well"));
+check("Whispering Forest lore modernized for emerald canopy", jsContent.includes("dense emerald canopy of the Whispering Forest"));
+check("Blacksmith lore modernized for forge hearth heat", jsContent.includes("heat of the forge hearth radiates"));
+check("Temple Sanctum lore modernized for high vaulted arches", jsContent.includes("Golden rays beam through high vaulted arches"));
+check("Cat's Hall lore modernized for crimson braziers", jsContent.includes("Crimson braziers cast dramatic shadows"));
 check("Mountain Cave enemy updated to Mountain Snake", jsContent.includes("Mountain Snake"));
 check("Cat's Hall location title present", jsContent.includes("CAT'S HALL"));
 check("Wilderness enemy pool contains Wild Weasel", jsContent.includes("Wild Weasel"));
