@@ -1098,7 +1098,11 @@ body {
     float: right;
 }
 
-/* Fullscreen Artwork Lightbox Modal */
+/* Fullscreen Artwork Lightbox Modal Overlay */
+#lightbox-modal {
+    z-index: 9999 !important;
+}
+
 .lightbox-box {
     max-width: 1200px;
     width: 96vw;

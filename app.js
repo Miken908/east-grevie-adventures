@@ -1444,54 +1444,78 @@ startBtnEl.addEventListener("click", () => {
     renderVillage();
 });
 
-const introImgFrameEl = document.getElementById("intro-image-frame-container");
-const introImgEl = document.getElementById("intro-image");
-const introLightboxBtnEl = document.getElementById("intro-lightbox-btn");
+// --- Fullscreen Artwork Lightbox Modal Handlers ---
+const imageFrameEl = document.getElementById("image-frame-container");
+const lightboxModalEl = document.getElementById("lightbox-modal");
+const lightboxImgEl = document.getElementById("lightbox-img");
+const lightboxTitleEl = document.getElementById("lightbox-location-title");
+const lightboxCloseBtnEl = document.getElementById("lightbox-close-btn");
 
-function openIntroLightbox() {
-    if (introImgEl && lightboxImgEl && lightboxModalEl) {
-        lightboxImgEl.src = introImgEl.src;
+function openLightbox(imageSrc, titleText) {
+    if (lightboxImgEl && lightboxModalEl) {
+        lightboxImgEl.src = imageSrc;
         if (lightboxTitleEl) {
-            lightboxTitleEl.textContent = "EAST GREVIE ADVENTURES - LEGEND INTRO";
+            lightboxTitleEl.textContent = titleText || "EAST GREVIE ARTWORK";
         }
         lightboxModalEl.classList.remove("hidden");
     }
 }
 
+function closeLightbox() {
+    if (lightboxModalEl) {
+        lightboxModalEl.classList.add("hidden");
+    }
+}
+
+if (lightboxModalEl) {
+    lightboxModalEl.addEventListener("click", closeLightbox);
+}
+
+if (lightboxCloseBtnEl) {
+    lightboxCloseBtnEl.addEventListener("click", (e) => {
+        e.stopPropagation();
+        closeLightbox();
+    });
+}
+
+document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && lightboxModalEl && !lightboxModalEl.classList.contains("hidden")) {
+        closeLightbox();
+    }
+});
+
+// Scene Location Artwork Lightbox Trigger
+if (imageFrameEl) {
+    imageFrameEl.addEventListener("click", () => {
+        if (sceneImgEl) {
+            const locTitle = locationNameEl ? locationNameEl.textContent : "LOCATION ARTWORK";
+            openLightbox(sceneImgEl.src, locTitle);
+        }
+    });
+}
+
+// Intro Image Frame Lightbox Triggers (Start Modal)
+const introImgFrameEl = document.getElementById("intro-image-frame-container");
+const introImgEl = document.getElementById("intro-image");
+const introLightboxBtnEl = document.getElementById("intro-lightbox-btn");
+
 if (introImgFrameEl) {
-    introImgFrameEl.addEventListener("click", openIntroLightbox);
+    introImgFrameEl.addEventListener("click", () => {
+        if (introImgEl) {
+            openLightbox(introImgEl.src, "EAST GREVIE ADVENTURES - LEGEND INTRO");
+        }
+    });
 }
 
 if (introLightboxBtnEl) {
-    introLightboxBtnEl.addEventListener("click", openIntroLightbox);
-}
-
-if (imageFrameEl && lightboxModalEl) {
-    imageFrameEl.addEventListener("click", () => {
-        if (sceneImgEl && lightboxImgEl) {
-            lightboxImgEl.src = sceneImgEl.src;
-            if (lightboxTitleEl && locationNameEl) {
-                lightboxTitleEl.textContent = locationNameEl.textContent;
-            }
-            lightboxModalEl.classList.remove("hidden");
-        }
-    });
-    lightboxModalEl.addEventListener("click", () => {
-        lightboxModalEl.classList.add("hidden");
-    });
-    if (lightboxCloseBtnEl) {
-        lightboxCloseBtnEl.addEventListener("click", (e) => {
-            e.stopPropagation();
-            lightboxModalEl.classList.add("hidden");
-        });
-    }
-    document.addEventListener("keydown", (e) => {
-        if (e.key === "Escape" && !lightboxModalEl.classList.contains("hidden")) {
-            lightboxModalEl.classList.add("hidden");
+    introLightboxBtnEl.addEventListener("click", () => {
+        if (introImgEl) {
+            openLightbox(introImgEl.src, "EAST GREVIE ADVENTURES - LEGEND INTRO");
         }
     });
 }
 
+// Victory Image Frame Lightbox Triggers (Victory Modal)
 const victoryNarrateBtnEl = document.getElementById("victory-narrate-btn");
 const victoryRestartBtnEl = document.getElementById("victory-restart-btn");
 const victoryLightboxBtnEl = document.getElementById("victory-lightbox-btn");
@@ -1499,22 +1523,20 @@ const victoryImgFrameEl = document.getElementById("victory-image-frame-container
 const victoryImgEl = document.getElementById("victory-image");
 const victoryLoreCardEl = document.querySelector(".victory-lore-card");
 
-function openVictoryLightbox() {
-    if (victoryImgEl && lightboxImgEl && lightboxModalEl) {
-        lightboxImgEl.src = victoryImgEl.src;
-        if (lightboxTitleEl) {
-            lightboxTitleEl.textContent = "EAST GREVIE VILLAGE - PRINCESS ANNA RESCUED";
-        }
-        lightboxModalEl.classList.remove("hidden");
-    }
-}
-
 if (victoryImgFrameEl) {
-    victoryImgFrameEl.addEventListener("click", openVictoryLightbox);
+    victoryImgFrameEl.addEventListener("click", () => {
+        if (victoryImgEl) {
+            openLightbox(victoryImgEl.src, "EAST GREVIE VILLAGE - PRINCESS ANNA RESCUED");
+        }
+    });
 }
 
 if (victoryLightboxBtnEl) {
-    victoryLightboxBtnEl.addEventListener("click", openVictoryLightbox);
+    victoryLightboxBtnEl.addEventListener("click", () => {
+        if (victoryImgEl) {
+            openLightbox(victoryImgEl.src, "EAST GREVIE VILLAGE - PRINCESS ANNA RESCUED");
+        }
+    });
 }
 
 if (victoryNarrateBtnEl) {
@@ -1535,6 +1557,7 @@ if (victoryRestartBtnEl) {
     });
 }
 
+// Header Control Buttons (Safe Event Listeners)
 if (voiceBtnEl) {
     voiceBtnEl.addEventListener("click", () => {
         narrator.enabled = !narrator.enabled;
@@ -1558,16 +1581,20 @@ if (musicBtnEl) {
     });
 }
 
-soundBtnEl.addEventListener("click", () => {
-    sfx.enabled = !sfx.enabled;
-    soundBtnEl.textContent = `SFX: ${sfx.enabled ? "ON" : "OFF"}`;
-});
+if (soundBtnEl) {
+    soundBtnEl.addEventListener("click", () => {
+        sfx.enabled = !sfx.enabled;
+        soundBtnEl.textContent = `SFX: ${sfx.enabled ? "ON" : "OFF"}`;
+    });
+}
 
-resetBtnEl.addEventListener("click", () => {
-    if (confirm("Restart game from beginning?")) {
-        restartGame();
-    }
-});
+if (resetBtnEl) {
+    resetBtnEl.addEventListener("click", () => {
+        if (confirm("Restart game from beginning?")) {
+            restartGame();
+        }
+    });
+}
 
 const mapModalEl = document.getElementById("map-modal");
 const closeMapModalBtn = document.getElementById("close-map-modal-btn");

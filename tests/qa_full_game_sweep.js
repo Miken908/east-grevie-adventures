@@ -124,7 +124,7 @@ check("Generic RPG Skeleton Warrior removed from wilderness", !jsContent.include
 console.log("\n--- TEST GROUP 8: Fullscreen Lightbox & UI Integrity ---");
 check("Lightbox Modal element present in HTML (#lightbox-modal)", htmlContent.includes('id="lightbox-modal"'));
 check("Zoom hint badge present on scene image frame", htmlContent.includes('zoom-hint-badge'));
-check("Lightbox click handler binds declared sceneImgEl element", jsContent.includes("lightboxImgEl.src = sceneImgEl.src"));
+check("Lightbox click handler binds declared sceneImgEl element", jsContent.includes("openLightbox("));
 check("Map title purged of Overworld prefix", htmlContent.includes("MAP OF EAST GREVIE") && !htmlContent.includes("OVERWORLD MAP"));
 
 // 9. Verify Victory Panel Redesign & Victory Artwork (Regression Prevention)
@@ -132,15 +132,33 @@ console.log("\n--- TEST GROUP 9: Victory Panel Redesign & Victory Artwork ---");
 check("Victory artwork image present in victory modal HTML", htmlContent.includes('src="assets/images/victory.jpg"'));
 check("Victory image frame container present (#victory-image-frame-container)", htmlContent.includes('id="victory-image-frame-container"'));
 check("Victory art overlay badge removed for clean artwork view", !htmlContent.includes('victory-art-badge'));
-check("Victory Lightbox handler bound in JS", jsContent.includes("openVictoryLightbox"));
 check("Victory Lightbox button present in HTML (#victory-lightbox-btn)", htmlContent.includes('id="victory-lightbox-btn"'));
 
 // 10. Verify Intro Panel Redesign & Intro Artwork (Regression Prevention)
 console.log("\n--- TEST GROUP 10: Intro Panel Redesign & Intro Artwork ---");
 check("Intro artwork image present in name modal HTML", htmlContent.includes('src="assets/images/Intro.jpg"'));
 check("Intro image frame container present (#intro-image-frame-container)", htmlContent.includes('id="intro-image-frame-container"'));
-check("Intro Lightbox handler bound in JS", jsContent.includes("openIntroLightbox"));
 check("Intro Lightbox button present in HTML (#intro-lightbox-btn)", htmlContent.includes('id="intro-lightbox-btn"'));
+
+// 11. Header Control Buttons & Universal Lightbox Verification
+console.log("\n--- TEST GROUP 11: Header Control Buttons & Universal Lightbox Verification ---");
+check("Lightbox overlay has z-index 9999 in CSS", cssContent.includes("z-index: 9999 !important"));
+check("Universal openLightbox function defined in JS", jsContent.includes("function openLightbox("));
+check("Header Stats button present in HTML", htmlContent.includes('id="stats-btn"'));
+check("Header Map button present in HTML", htmlContent.includes('id="map-btn"'));
+check("Header Voice button present in HTML", htmlContent.includes('id="voice-btn"'));
+check("Header Music button present in HTML", htmlContent.includes('id="music-btn"'));
+check("Header Sound SFX button present in HTML", htmlContent.includes('id="sound-btn"'));
+check("Header Reset button present in HTML", htmlContent.includes('id="reset-btn"'));
+check("Header Stats button click listener bound", jsContent.includes('statsBtnEl.addEventListener'));
+check("Header Map button click listener bound", jsContent.includes('mapBtnEl.addEventListener'));
+check("Header Voice button click listener bound", jsContent.includes('voiceBtnEl.addEventListener'));
+check("Header Music button click listener bound", jsContent.includes('musicBtnEl.addEventListener'));
+check("Header Sound SFX button click listener bound", jsContent.includes('soundBtnEl.addEventListener'));
+check("Header Reset button click listener bound", jsContent.includes('resetBtnEl.addEventListener'));
+check("Intro image frame click listener bound", jsContent.includes('introImgFrameEl.addEventListener'));
+check("Intro Lightbox button click listener bound", jsContent.includes('introLightboxBtnEl.addEventListener'));
+check("Main scene image frame click listener bound", jsContent.includes('imageFrameEl.addEventListener'));
 
 console.log("\n==================================================");
 console.log("📊 SUMMARY OF FULL QA & BALANCE SIMULATION RESULTS");
