@@ -267,11 +267,12 @@ check("Header Trophies button present in HTML (#achievements-btn)", htmlContent.
 check("Achievements badge present in HTML (#achievements-badge)", htmlContent.includes('id="achievements-badge"'));
 check("Achievements modal present in HTML (#achievements-modal)", htmlContent.includes('id="achievements-modal"'));
 check("Achievement toast banner present in HTML (#achievement-toast)", htmlContent.includes('id="achievement-toast"'));
-check("ACHIEVEMENTS_DATA dictionary defined in JS with 10 entries", jsContent.includes('const ACHIEVEMENTS_DATA = [') && jsContent.includes('savior_of_realm'));
+check("ACHIEVEMENTS_DATA dictionary defined in JS with 15 entries", jsContent.includes('const ACHIEVEMENTS_DATA = [') && jsContent.includes('cat_hunter'));
 check("unlockAchievement function defined in JS", jsContent.includes('function unlockAchievement('));
+check("recordWildernessKill function defined in JS", jsContent.includes('function recordWildernessKill('));
 check("showAchievementToast function defined in JS", jsContent.includes('function showAchievementToast('));
 check("updateAchievementsUI function defined in JS", jsContent.includes('function updateAchievementsUI()'));
-check("Achievement storage persistence functions defined in JS", jsContent.includes('loadAchievementsFromStorage()') && jsContent.includes('saveAchievementsToStorage()'));
+check("Achievement & kill storage persistence functions defined in JS", jsContent.includes('loadAchievementsFromStorage()') && jsContent.includes('saveAchievementsToStorage()'));
 
 console.log("\n==================================================");
 console.log("📊 SUMMARY OF FULL QA & BALANCE SIMULATION RESULTS");

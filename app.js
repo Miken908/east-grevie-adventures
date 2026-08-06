@@ -559,8 +559,10 @@ const state = {
     hasHiltOfDawn: false,
     hasBlueprint: false,
     hasDormantSunblade: false,
+    hasDormantSunblade: false,
     location: "village",
-    achievements: {}
+    achievements: {},
+    killCounts: {}
 };
 
 function getRelicCount() {
@@ -582,26 +584,47 @@ const ACHIEVEMENTS_DATA = [
     { id: "master_craftsman", icon: "🔨", title: "Master Forger", desc: "Reforge the Dormant Sunblade at the Blacksmith Forge using all 3 relics." },
     { id: "sunfire_awakened", icon: "✨", title: "Sunfire Ascendant", desc: "Consecrate the Dormant Sunblade on the Altar of Dawn." },
     { id: "perfect_guard", icon: "🛡️", title: "Perfect Counter", desc: "Successfully block Lord Rodrigues's Crimson Shadow Pounce." },
-    { id: "savior_of_realm", icon: "🏆", title: "Savior of East Grevie", desc: "Vanquish Lord Rodrigues and rescue Princess Elsa." }
+    { id: "savior_of_realm", icon: "🏆", title: "Savior of East Grevie", desc: "Vanquish Lord Rodrigues and rescue Princess Elsa." },
+    { id: "weasel_hunter", icon: "🦦", title: "Weasel Exterminator", desc: "Defeat 5 Wild Weasels on the Wilderness Trail.", enemyName: "Wild Weasel", targetCount: 5 },
+    { id: "owl_hunter", icon: "🦉", title: "Owl Tracker", desc: "Defeat 5 Barn Owls on the Wilderness Trail.", enemyName: "Barn Owl", targetCount: 5 },
+    { id: "toad_hunter", icon: "🐸", title: "Toad Vanquisher", desc: "Defeat 5 Giant Garden Toads on the Wilderness Trail.", enemyName: "Giant Garden Toad", targetCount: 5 },
+    { id: "rat_hunter", icon: "🐀", title: "Rat Catcher", desc: "Defeat 5 Alley Rat Rogues on the Wilderness Trail.", enemyName: "Alley Rat Rogue", targetCount: 5 },
+    { id: "cat_hunter", icon: "🐈", title: "Wilderness Predator", desc: "Defeat 5 Feral Farm Cats on the Wilderness Trail.", enemyName: "Feral Farm Cat", targetCount: 5 }
 ];
 
 function loadAchievementsFromStorage() {
     try {
-        const saved = localStorage.getItem("east_grevie_achievements");
-        if (saved) {
-            state.achievements = JSON.parse(saved);
-        }
+        const savedAch = localStorage.getItem("east_grevie_achievements");
+        if (savedAch) state.achievements = JSON.parse(savedAch);
+        const savedKills = localStorage.getItem("east_grevie_kill_counts");
+        if (savedKills) state.killCounts = JSON.parse(savedKills);
     } catch (e) {
-        console.warn("Could not load achievements:", e);
+        console.warn("Could not load achievements/kills:", e);
     }
 }
 
 function saveAchievementsToStorage() {
     try {
         localStorage.setItem("east_grevie_achievements", JSON.stringify(state.achievements || {}));
+        localStorage.setItem("east_grevie_kill_counts", JSON.stringify(state.killCounts || {}));
     } catch (e) {
-        console.warn("Could not save achievements:", e);
+        console.warn("Could not save achievements/kills:", e);
     }
+}
+
+function recordWildernessKill(enemyName) {
+    if (!state.killCounts) state.killCounts = {};
+    state.killCounts[enemyName] = (state.killCounts[enemyName] || 0) + 1;
+    saveAchievementsToStorage();
+
+    const count = state.killCounts[enemyName];
+    if (enemyName === "Wild Weasel" && count >= 5) unlockAchievement("weasel_hunter");
+    if (enemyName === "Barn Owl" && count >= 5) unlockAchievement("owl_hunter");
+    if (enemyName === "Giant Garden Toad" && count >= 5) unlockAchievement("toad_hunter");
+    if (enemyName === "Alley Rat Rogue" && count >= 5) unlockAchievement("rat_hunter");
+    if (enemyName === "Feral Farm Cat" && count >= 5) unlockAchievement("cat_hunter");
+
+    updateAchievementsUI();
 }
 
 function unlockAchievement(id) {
@@ -645,6 +668,8 @@ function showAchievementToast(ach) {
 
 function updateAchievementsUI() {
     if (!state.achievements) state.achievements = {};
+    if (!state.killCounts) state.killCounts = {};
+
     const unlockedIds = Object.keys(state.achievements).filter(id => state.achievements[id] && state.achievements[id].unlocked);
     const count = unlockedIds.length;
     const total = ACHIEVEMENTS_DATA.length;
@@ -666,7 +691,14 @@ function updateAchievementsUI() {
             const card = document.createElement("div");
             card.className = `achievement-card ${isUnlocked ? 'unlocked' : 'locked'}`;
 
-            const timeStr = isUnlocked ? (state.achievements[ach.id].unlockedAt || 'Unlocked') : '';
+            let statusText = 'LOCKED';
+            if (isUnlocked) {
+                const timeStr = state.achievements[ach.id].unlockedAt || 'Unlocked';
+                statusText = `UNLOCKED (${timeStr})`;
+            } else if (ach.enemyName && ach.targetCount) {
+                const currentKills = state.killCounts[ach.enemyName] || 0;
+                statusText = `PROGRESS: ${currentKills} / ${ach.targetCount} DEFEATED`;
+            }
 
             card.innerHTML = `
                 <div class="achievement-card-icon">${isUnlocked ? ach.icon : '🔒'}</div>
@@ -676,7 +708,7 @@ function updateAchievementsUI() {
                         ${isUnlocked ? '<span style="color:#00ff88;">✔</span>' : ''}
                     </div>
                     <div class="achievement-card-desc">${ach.desc}</div>
-                    <div class="achievement-card-status">${isUnlocked ? `UNLOCKED (${timeStr})` : 'LOCKED'}</div>
+                    <div class="achievement-card-status">${statusText}</div>
                 </div>
             `;
             gridEl.appendChild(card);
@@ -1658,6 +1690,7 @@ function attackWilderness() {
         addGold(30);
         addScore(w.reward);
         unlockAchievement("first_blood");
+        recordWildernessKill(w.name);
         renderChoices([
             { text: "1. Continue deeper on the Trail", action: goWilderness },
             { text: "2. Open World Map", action: renderWorldMap }
