@@ -697,7 +697,12 @@ function updateAchievementsUI() {
     const barInnerEl = document.getElementById("achievements-bar-inner");
     if (barInnerEl) barInnerEl.style.width = `${(count / total) * 100}%`;
 
-    // Check 15/15 Trophies for NG+ Sunblade Paladin Unlock
+    // Check 15/15 Trophies for NG+ Sunblade Paladin Unlock & Main Menu Button Text
+    const menuStartBtnEl = document.getElementById("menu-start-btn");
+    if (menuStartBtnEl) {
+        menuStartBtnEl.textContent = count >= 15 ? "START NEW GAME+" : "START NEW GAME";
+    }
+
     const paladinCardEl = document.getElementById("paladin-class-card");
     const paladinStatusEl = document.getElementById("paladin-card-status");
     if (paladinCardEl && paladinStatusEl) {
