@@ -1444,12 +1444,27 @@ startBtnEl.addEventListener("click", () => {
     renderVillage();
 });
 
-// Fullscreen Artwork Lightbox Modal Handlers
-const imageFrameEl = document.getElementById("image-frame-container");
-const lightboxModalEl = document.getElementById("lightbox-modal");
-const lightboxImgEl = document.getElementById("lightbox-img");
-const lightboxTitleEl = document.getElementById("lightbox-location-title");
-const lightboxCloseBtnEl = document.getElementById("lightbox-close-btn");
+const introImgFrameEl = document.getElementById("intro-image-frame-container");
+const introImgEl = document.getElementById("intro-image");
+const introLightboxBtnEl = document.getElementById("intro-lightbox-btn");
+
+function openIntroLightbox() {
+    if (introImgEl && lightboxImgEl && lightboxModalEl) {
+        lightboxImgEl.src = introImgEl.src;
+        if (lightboxTitleEl) {
+            lightboxTitleEl.textContent = "EAST GREVIE ADVENTURES - LEGEND INTRO";
+        }
+        lightboxModalEl.classList.remove("hidden");
+    }
+}
+
+if (introImgFrameEl) {
+    introImgFrameEl.addEventListener("click", openIntroLightbox);
+}
+
+if (introLightboxBtnEl) {
+    introLightboxBtnEl.addEventListener("click", openIntroLightbox);
+}
 
 if (imageFrameEl && lightboxModalEl) {
     imageFrameEl.addEventListener("click", () => {

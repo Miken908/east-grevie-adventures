@@ -515,23 +515,70 @@ body {
     box-shadow: 0 0 15px var(--gold-glow);
 }
 
+/* Redesigned Intro Start Modal */
 .intro-box {
-    max-width: 520px;
+    max-width: 920px;
+    width: 95vw;
+    max-height: 94vh;
+    overflow-y: auto;
     border-color: var(--gold-primary);
-    box-shadow: 0 0 35px var(--gold-glow), inset 0 0 20px rgba(0, 0, 0, 0.8);
+    box-shadow: 0 0 50px var(--gold-glow), inset 0 0 30px rgba(0, 0, 0, 0.95);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 20px 24px;
+    text-align: center;
+}
+
+.intro-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    border-bottom: 1px solid rgba(90, 138, 158, 0.3);
+    padding-bottom: 8px;
 }
 
 .intro-title {
+    font-family: var(--font-display);
+    font-weight: 700;
     color: var(--gold-bright);
-    text-shadow: 0 0 10px rgba(162, 210, 226, 0.4);
-    font-size: 1.2rem;
+    text-shadow: 0 0 16px var(--gold-glow);
+    font-size: 1.3rem;
+    letter-spacing: 1px;
+    margin: 0;
 }
 
-.intro-subtitle {
-    font-size: 0.65rem;
-    color: #00f3ff;
-    letter-spacing: 2px;
-    margin-bottom: 5px;
+.intro-image-frame {
+    width: 100%;
+    height: 44vh;
+    max-height: 420px;
+    min-height: 220px;
+    border: 3px solid var(--gold-primary);
+    border-radius: 8px;
+    position: relative;
+    overflow: hidden;
+    background: #05070a;
+    box-shadow: 0 0 35px rgba(0, 0, 0, 0.95), inset 0 0 20px rgba(0, 0, 0, 0.8);
+    cursor: pointer;
+    transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.intro-image-frame:hover {
+    border-color: var(--gold-bright);
+    box-shadow: 0 0 45px var(--gold-glow), inset 0 0 20px rgba(0, 0, 0, 0.8);
+}
+
+.intro-image-frame:hover .zoom-hint-badge {
+    opacity: 1;
+}
+
+.intro-image-frame img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
 }
 
 .intro-lore-card {

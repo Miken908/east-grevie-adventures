@@ -135,6 +135,13 @@ check("Victory art overlay badge removed for clean artwork view", !htmlContent.i
 check("Victory Lightbox handler bound in JS", jsContent.includes("openVictoryLightbox"));
 check("Victory Lightbox button present in HTML (#victory-lightbox-btn)", htmlContent.includes('id="victory-lightbox-btn"'));
 
+// 10. Verify Intro Panel Redesign & Intro Artwork (Regression Prevention)
+console.log("\n--- TEST GROUP 10: Intro Panel Redesign & Intro Artwork ---");
+check("Intro artwork image present in name modal HTML", htmlContent.includes('src="assets/images/Intro.jpg"'));
+check("Intro image frame container present (#intro-image-frame-container)", htmlContent.includes('id="intro-image-frame-container"'));
+check("Intro Lightbox handler bound in JS", jsContent.includes("openIntroLightbox"));
+check("Intro Lightbox button present in HTML (#intro-lightbox-btn)", htmlContent.includes('id="intro-lightbox-btn"'));
+
 console.log("\n==================================================");
 console.log("📊 SUMMARY OF FULL QA & BALANCE SIMULATION RESULTS");
 console.log("==================================================");
