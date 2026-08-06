@@ -1430,7 +1430,7 @@ if (narrateBtnEl) {
         const heroName = nameInputEl.value.trim() || "Sir Eldrin";
         state.name = heroName;
         if (introLoreCardEl) introLoreCardEl.classList.add("speaking");
-        narrator.speak(`Welcome, ${heroName}! The Village of East Grevie is in shadow. The dreaded Cat Rodrigues has captured Princess Anna and fled to Cat's Hall. Without the Legendary Sunblade, no mortal weapon can pierce the beast's fur...`);
+        narrator.speak(`Welcome, ${heroName}! Shadows fall over the Village of East Grevie. The ruthless Cat Rodrigues has abducted Princess Anna to Cat's Hall. Only the Legendary Sunblade can pierce the beast's thick fur. Hero, your quest begins now...`);
     });
 }
 

@@ -112,7 +112,7 @@ check("Lvl 3 Armor with Iron Shield & +2 END = 14.0 Mitigation", lvl3Armor === 1
 console.log("\n--- TEST GROUP 7: Mouse Realm Theme & Lore Integrity ---");
 check("Intro lore text contains 'Village of East Grevie'", htmlContent.includes("Village of East Grevie"));
 check("Intro lore text contains 'Cat Rodrigues'", htmlContent.includes("Cat Rodrigues"));
-check("Intro lore text contains 'beast\'s fur'", htmlContent.includes("beast's fur"));
+check("Intro lore text contains 'thick fur'", htmlContent.includes("thick fur"));
 check("Mountain Cave enemy updated to Mountain Snake", jsContent.includes("Mountain Snake"));
 check("Cat's Hall location title present", jsContent.includes("CAT'S HALL"));
 check("Wilderness enemy pool contains Wild Weasel", jsContent.includes("Wild Weasel"));
