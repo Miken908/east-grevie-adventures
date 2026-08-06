@@ -631,7 +631,7 @@ function renderVillage() {
     setScene("village", "VILLAGE SQUARE");
     clearLog();
     addLog("You stand in the peaceful sunlit Village Square of East Grevie.");
-    addLog("Charming timber-frame cottages enclose the stone well, while distant whispers of Cat Rodrigues's shadowy reign echo through the quiet streets.");
+    addLog("Charming timber-frame cottages enclose the stone fountain, while distant whispers of Cat Rodrigues's shadowy reign echo through the quiet streets.");
 
     renderChoices([
         { text: "1. Speak to Wise Elder by fountain", action: speakToElder },
@@ -987,7 +987,7 @@ function renderWatchtower() {
         return;
     }
 
-    addLog("Inside, chained to a support beam, lies a wounded Knight - Sir Johan.");
+    addLog("Inside, bound in iron chains against a stone pillar, stands the brave Knight - Sir Johan.");
     renderChoices([
         { text: "1. Free the Knight", action: freeKnight },
         { text: "2. Leave him chained and go", action: renderMountain }
@@ -1015,7 +1015,7 @@ function renderMountainCave() {
     state.location = "cave";
     setScene("troll", "MOUNTAIN CAVE");
     clearLog();
-    addLog("Luminous crystals illuminate the damp cavern floor, where a massive Giant Mountain Snake coils over piles of glittering gold!", "alert");
+    addLog("Torches illuminate the damp stone cavern, where a massive Giant Mountain Snake coils over piles of glittering gold!", "alert");
 
     renderChoices([
         { text: "1. Fight the Mountain Snake", action: startTrollFight },
