@@ -1164,18 +1164,22 @@ function speakToElder() {
         state.hasRuneScroll = true;
         state.inventory.push("Sunblade Rune Scroll");
         state.hasKey = true;
-        addLog("Elder: 'Take this Sunblade Rune Scroll! Recover all 3 relics across the realm, reforge the dormant blade at the Village Blacksmith, and consecrate it at the Temple Sanctum!'", "victory");
+        addLog("Elder: 'Take this Sunblade Rune Scroll! Seek all 3 relics across the realm. Once gathered, bring them to the Village Blacksmith to reforge the blade!'", "victory");
         
         const count = getRelicCount();
         if (count > 0) {
-            addLog(`Elder: 'Ah! I see you already carry ${count}/3 celestial relics! Excellent work!'`, "event");
+            addLog(`Elder: 'Ah! I see you already carry ${count}/3 celestial relics in your inventory! Excellent work!'`, "event");
         }
         addScore(100);
         updateHUD();
         unlockAchievement("sunblade_scroll");
     } else {
         const count = getRelicCount();
-        addLog(`Elder: 'You currently carry ${count}/3 relics in your inventory. Seek any remaining relics across the realm!'`);
+        if (count === 3) {
+            addLog("Elder: 'Magnificent! You carry all 3 celestial relics! Take them to the Village Blacksmith right here in East Grevie to reforge the Sunblade!'", "victory");
+        } else {
+            addLog(`Elder: 'You carry ${count}/3 relics in your inventory. Find the rest, then bring them to the Village Blacksmith to reforge the blade!'`, "event");
+        }
     }
 
     if (storyLogEl) storyLogEl.scrollTop = 0;
