@@ -127,6 +127,14 @@ check("Zoom hint badge present on scene image frame", htmlContent.includes('zoom
 check("Lightbox click handler binds declared sceneImgEl element", jsContent.includes("lightboxImgEl.src = sceneImgEl.src"));
 check("Map title purged of Overworld prefix", htmlContent.includes("MAP OF EAST GREVIE") && !htmlContent.includes("OVERWORLD MAP"));
 
+// 9. Verify Victory Panel Redesign & Victory Artwork (Regression Prevention)
+console.log("\n--- TEST GROUP 9: Victory Panel Redesign & Victory Artwork ---");
+check("Victory artwork image present in victory modal HTML", htmlContent.includes('src="assets/images/victory.jpg"'));
+check("Victory image frame container present (#victory-image-frame-container)", htmlContent.includes('id="victory-image-frame-container"'));
+check("Victory art overlay badge present in HTML", htmlContent.includes('victory-art-badge'));
+check("Victory Lightbox handler bound in JS", jsContent.includes("openVictoryLightbox"));
+check("Victory Lightbox button present in HTML (#victory-lightbox-btn)", htmlContent.includes('id="victory-lightbox-btn"'));
+
 console.log("\n==================================================");
 console.log("📊 SUMMARY OF FULL QA & BALANCE SIMULATION RESULTS");
 console.log("==================================================");

@@ -105,11 +105,20 @@
         </div>
     </div>
 
-    <!-- Victory Modal for End Screen -->
+    <!-- Redesigned Victory Modal for End Screen -->
     <div id="victory-modal" class="modal-overlay hidden">
         <div class="modal-content crt-box victory-box">
-            <h2 class="victory-title">VICTORY! THE KINGDOM IS SAVED!</h2>
-            <p class="victory-subtitle" id="victory-rating">RATING: GRAND HERO OF THE REALM</p>
+            <div class="victory-header">
+                <h2 class="victory-title">🏆 VICTORY! PRINCESS ANNA IS RESCUED!</h2>
+                <p class="victory-subtitle" id="victory-rating">RATING: GRAND HERO OF EAST GREVIE</p>
+            </div>
+
+            <!-- Heroic Artwork Centerpiece -->
+            <div class="victory-image-frame" id="victory-image-frame-container" title="Click to view artwork in full screen">
+                <img id="victory-image" src="assets/images/victory.jpg" alt="Princess Anna Rescued in East Grevie Village">
+                <div class="zoom-hint-badge">🔍 ENLARGE ART</div>
+                <div class="victory-art-badge">✨ PRINCESS ANNA RESTORED TO EAST GREVIE</div>
+            </div>
 
             <div class="victory-lore-card">
                 <p id="victory-lore-text"><em>"With a final heroic strike of the Sunblade, Rodrigues the Shadow Cat was defeated! Princess Anna was rescued from her chains, and peace has returned to East Grevie!"</em></p>
@@ -122,6 +131,7 @@
 
             <div class="intro-btn-group">
                 <button id="victory-narrate-btn" class="arcade-btn primary lg">🎙️ LISTEN TO VICTORY TALE</button>
+                <button id="victory-lightbox-btn" class="arcade-btn secondary lg">🔍 ENLARGE ART</button>
                 <button id="victory-restart-btn" class="arcade-btn lg">🏆 PLAY AGAIN FOR HIGH SCORE</button>
             </div>
         </div>

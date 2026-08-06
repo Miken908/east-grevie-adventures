@@ -1465,7 +1465,28 @@ if (imageFrameEl && lightboxModalEl) {
 
 const victoryNarrateBtnEl = document.getElementById("victory-narrate-btn");
 const victoryRestartBtnEl = document.getElementById("victory-restart-btn");
+const victoryLightboxBtnEl = document.getElementById("victory-lightbox-btn");
+const victoryImgFrameEl = document.getElementById("victory-image-frame-container");
+const victoryImgEl = document.getElementById("victory-image");
 const victoryLoreCardEl = document.querySelector(".victory-lore-card");
+
+function openVictoryLightbox() {
+    if (victoryImgEl && lightboxImgEl && lightboxModalEl) {
+        lightboxImgEl.src = victoryImgEl.src;
+        if (lightboxTitleEl) {
+            lightboxTitleEl.textContent = "EAST GREVIE VILLAGE - PRINCESS ANNA RESCUED";
+        }
+        lightboxModalEl.classList.remove("hidden");
+    }
+}
+
+if (victoryImgFrameEl) {
+    victoryImgFrameEl.addEventListener("click", openVictoryLightbox);
+}
+
+if (victoryLightboxBtnEl) {
+    victoryLightboxBtnEl.addEventListener("click", openVictoryLightbox);
+}
 
 if (victoryNarrateBtnEl) {
     victoryNarrateBtnEl.addEventListener("click", () => {

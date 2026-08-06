@@ -549,25 +549,87 @@ body {
     cursor: pointer;
 }
 
-/* Victory End Screen Modal */
+/* Redesigned Victory End Screen Modal */
 .victory-box {
-    max-width: 700px;
+    max-width: 920px;
+    width: 95vw;
+    max-height: 94vh;
+    overflow-y: auto;
     border-color: var(--gold-primary);
-    box-shadow: 0 0 45px rgba(90, 138, 158, 0.4), inset 0 0 25px rgba(0, 0, 0, 0.9);
+    box-shadow: 0 0 50px var(--gold-glow), inset 0 0 30px rgba(0, 0, 0, 0.95);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 20px 24px;
+    text-align: center;
+}
+
+.victory-header {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    align-items: center;
 }
 
 .victory-title {
     color: var(--gold-bright);
-    text-shadow: 0 0 12px rgba(162, 210, 226, 0.5);
-    font-size: 1.15rem;
-    line-height: 1.4;
+    text-shadow: 0 0 16px var(--gold-glow);
+    font-size: 1.3rem;
+    letter-spacing: 1px;
+    margin: 0;
 }
 
 .victory-subtitle {
-    font-size: 0.7rem;
+    font-size: 0.75rem;
     color: #39ff14;
     letter-spacing: 2px;
-    margin-bottom: 8px;
+    text-shadow: 0 0 8px rgba(57, 255, 20, 0.4);
+    margin: 0;
+}
+
+.victory-image-frame {
+    width: 100%;
+    height: 48vh;
+    max-height: 440px;
+    min-height: 240px;
+    border: 3px solid var(--gold-primary);
+    border-radius: 8px;
+    position: relative;
+    overflow: hidden;
+    background: #05070a;
+    box-shadow: 0 0 35px rgba(0, 0, 0, 0.95), inset 0 0 20px rgba(0, 0, 0, 0.8);
+    cursor: pointer;
+    transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.victory-image-frame:hover {
+    border-color: var(--gold-bright);
+    box-shadow: 0 0 45px var(--gold-glow), inset 0 0 20px rgba(0, 0, 0, 0.8);
+}
+
+.victory-image-frame:hover .zoom-hint-badge {
+    opacity: 1;
+}
+
+.victory-image-frame img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.victory-art-badge {
+    position: absolute;
+    bottom: 8px;
+    left: 12px;
+    background: rgba(5, 10, 15, 0.85);
+    border: 1px solid var(--gold-primary);
+    border-radius: 4px;
+    padding: 4px 10px;
+    font-size: 0.65rem;
+    color: var(--gold-bright);
+    letter-spacing: 1px;
+    backdrop-filter: blur(4px);
 }
 
 .victory-lore-card {
@@ -587,9 +649,10 @@ body {
 
 .victory-lore-card p {
     font-family: 'VT323', monospace;
-    font-size: 1.2rem;
+    font-size: 1.25rem;
     color: #f0f0ff;
     line-height: 1.35;
+    margin: 0;
 }
 
 .victory-stats-hud {
@@ -599,7 +662,6 @@ body {
     border: 1px solid #333346;
     padding: 10px;
     border-radius: 6px;
-    margin-top: 10px;
 }
 
 .stat-badge {
