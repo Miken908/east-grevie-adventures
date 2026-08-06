@@ -580,6 +580,16 @@ body {
     display: block;
 }
 
+.creation-portrait-frame {
+    height: 38vh;
+    max-height: 360px;
+    min-height: 220px;
+}
+
+.creation-portrait-frame img {
+    object-position: center top;
+}
+
 .intro-lore-card {
     background: rgba(0, 0, 0, 0.6);
     border: 1px dashed #3a415a;

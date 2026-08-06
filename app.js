@@ -2116,8 +2116,39 @@ document.querySelectorAll(".class-card").forEach(card => {
         document.querySelectorAll(".class-card").forEach(c => c.classList.remove("selected"));
         card.classList.add("selected");
         sfx.playClick();
+
+        const heroClass = card.getAttribute("data-class") || "paladin";
+        state.heroClass = heroClass;
+
+        const creationPortraitImgEl = document.getElementById("creation-portrait-img");
+        const creationClassBadgeEl = document.getElementById("creation-class-badge");
+
+        if (creationPortraitImgEl && creationClassBadgeEl) {
+            if (heroClass === "paladin") {
+                creationPortraitImgEl.src = "assets/images/portrait_paladin.jpg";
+                creationClassBadgeEl.textContent = "SUNBLADE PALADIN";
+            } else if (heroClass === "ranger") {
+                creationPortraitImgEl.src = "assets/images/portrait_ranger.jpg";
+                creationClassBadgeEl.textContent = "WOODLAND RANGER";
+            } else if (heroClass === "alchemist") {
+                creationPortraitImgEl.src = "assets/images/portrait_alchemist.jpg";
+                creationClassBadgeEl.textContent = "ROYAL ALCHEMIST";
+            }
+        }
     });
 });
+
+const creationPortraitFrameEl = document.getElementById("creation-portrait-frame");
+if (creationPortraitFrameEl) {
+    creationPortraitFrameEl.addEventListener("click", () => {
+        const creationPortraitImgEl = document.getElementById("creation-portrait-img");
+        const creationClassBadgeEl = document.getElementById("creation-class-badge");
+        if (creationPortraitImgEl) {
+            const badgeText = creationClassBadgeEl ? creationClassBadgeEl.textContent : "HERO PORTRAIT";
+            openLightbox(creationPortraitImgEl.src, badgeText);
+        }
+    });
+}
 
 startBtnEl.addEventListener("click", () => {
     state.name = nameInputEl.value.trim() || "Sir Ario";
@@ -2177,11 +2208,16 @@ startBtnEl.addEventListener("click", () => {
 
 // --- Main Menu Title Screen Starter Panel Event Handlers ---
 const mainMenuModalEl = document.getElementById("main-menu-modal");
+const prologueModalEl = document.getElementById("prologue-modal");
 const menuStartBtnEl = document.getElementById("menu-start-btn");
 const menuGalleryBtnEl = document.getElementById("menu-gallery-btn");
 const menuCreditsBtnEl = document.getElementById("menu-credits-btn");
 const titleBannerContainerEl = document.getElementById("title-banner-container");
 const titleBannerImgEl = document.getElementById("title-banner-img");
+
+const prologueContinueBtnEl = document.getElementById("prologue-continue-btn");
+const prologueBackBtnEl = document.getElementById("prologue-back-btn");
+const creationBackBtnEl = document.getElementById("creation-back-btn");
 
 const galleryModalEl = document.getElementById("gallery-modal");
 const closeGalleryModalBtn = document.getElementById("close-gallery-modal-btn");
@@ -2192,7 +2228,35 @@ const closeCreditsModalBtn = document.getElementById("close-credits-modal-btn");
 if (menuStartBtnEl) {
     menuStartBtnEl.addEventListener("click", () => {
         if (mainMenuModalEl) mainMenuModalEl.classList.add("hidden");
+        if (prologueModalEl) prologueModalEl.classList.remove("hidden");
+        sfx.playClick();
+    });
+}
+
+if (prologueContinueBtnEl) {
+    prologueContinueBtnEl.addEventListener("click", () => {
+        narrator.stop();
+        if (introLoreCardEl) introLoreCardEl.classList.remove("speaking");
+        if (prologueModalEl) prologueModalEl.classList.add("hidden");
         if (nameModalEl) nameModalEl.classList.remove("hidden");
+        sfx.playClick();
+    });
+}
+
+if (prologueBackBtnEl) {
+    prologueBackBtnEl.addEventListener("click", () => {
+        narrator.stop();
+        if (introLoreCardEl) introLoreCardEl.classList.remove("speaking");
+        if (prologueModalEl) prologueModalEl.classList.add("hidden");
+        if (mainMenuModalEl) mainMenuModalEl.classList.remove("hidden");
+        sfx.playClick();
+    });
+}
+
+if (creationBackBtnEl) {
+    creationBackBtnEl.addEventListener("click", () => {
+        if (nameModalEl) nameModalEl.classList.add("hidden");
+        if (prologueModalEl) prologueModalEl.classList.remove("hidden");
         sfx.playClick();
     });
 }
@@ -2387,8 +2451,8 @@ if (imageFrameEl) {
     });
 }
 
-// Intro Image Frame Lightbox Triggers (Start Modal)
-const introImgFrameEl = document.getElementById("intro-image-frame-container");
+// Intro Image Frame Lightbox Triggers (Prologue Modal)
+const introImgFrameEl = document.getElementById("prologue-image-frame-container");
 const introImgEl = document.getElementById("intro-image");
 const introLightboxBtnEl = document.getElementById("intro-lightbox-btn");
 

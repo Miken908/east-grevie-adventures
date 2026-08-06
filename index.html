@@ -105,40 +105,15 @@
         </div>
     </div>
 
-    <!-- Start Modal for Name Entry & Story Intro (Opened by START GAME) -->
-    <div id="name-modal" class="modal-overlay hidden">
+    <!-- Screen 1: Kingdom Prologue & Lore Modal (Opened by START GAME) -->
+    <div id="prologue-modal" class="modal-overlay hidden">
         <div class="modal-content crt-box intro-box">
             <div class="intro-header">
-                <h2 class="intro-title">EAST GREVIE ADVENTURES</h2>
-                <div class="name-input-group">
-                    <label for="name-input">HERO NAME:</label>
-                    <input type="text" id="name-input" maxlength="16" placeholder="Sir Ario" value="Sir Ario">
-                </div>
-
-                <div class="class-selection-container">
-                    <label class="class-select-label">SELECT HERO CLASS:</label>
-                    <div class="class-selection-grid">
-                        <div class="class-card selected" data-class="paladin">
-                            <div class="class-card-header">SUNBLADE PALADIN</div>
-                            <div class="class-card-perk"><strong>Holy Guard:</strong> Takes -3 less damage</div>
-                            <div class="class-card-stats">+3 END | High Defense | 200 HP</div>
-                        </div>
-                        <div class="class-card" data-class="ranger">
-                            <div class="class-card-header">WOODLAND RANGER</div>
-                            <div class="class-card-perk"><strong>Eagle Eye:</strong> +10% Critical Chance</div>
-                            <div class="class-card-stats">+2 AGI, +1 LCK | High Dodge</div>
-                        </div>
-                        <div class="class-card" data-class="alchemist">
-                            <div class="class-card-header">ROYAL ALCHEMIST</div>
-                            <div class="class-card-perk"><strong>Elixir Master:</strong> Potions heal +60 HP</div>
-                            <div class="class-card-stats">+1 All Stats | 3 Potions | 75 Gold</div>
-                        </div>
-                    </div>
-                </div>
+                <h2 class="intro-title">THE LEGEND OF EAST GREVIE</h2>
             </div>
 
             <!-- Heroic Intro Artwork Centerpiece -->
-            <div class="intro-image-frame" id="intro-image-frame-container" title="Click to view artwork in full screen">
+            <div class="intro-image-frame" id="prologue-image-frame-container" title="Click to view artwork in full screen">
                 <img id="intro-image" src="assets/images/abduction_of_princess_elsa.jpg" alt="Abduction of Princess Elsa Artwork">
                 <div class="zoom-hint-badge">🔍 ENLARGE ART</div>
             </div>
@@ -148,9 +123,57 @@
             </div>
 
             <div class="intro-btn-group">
+                <button id="prologue-back-btn" class="arcade-btn warning lg">BACK TO MENU</button>
                 <button id="narrate-btn" class="arcade-btn primary lg">LISTEN TO LORE</button>
                 <button id="intro-lightbox-btn" class="arcade-btn secondary lg">ENLARGE ART</button>
-                <button id="start-btn" class="arcade-btn lg">ENTER VILLAGE</button>
+                <button id="prologue-continue-btn" class="arcade-btn primary lg">CONTINUE TO HERO CREATION ➔</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Screen 2: Character Creation & Class Selection Modal -->
+    <div id="name-modal" class="modal-overlay hidden">
+        <div class="modal-content crt-box intro-box">
+            <div class="intro-header">
+                <h2 class="intro-title">HERO ARCHETYPE & NAME SELECTION</h2>
+            </div>
+
+            <!-- Dynamic Class Portrait Preview Frame -->
+            <div class="intro-image-frame creation-portrait-frame" id="creation-portrait-frame" title="Click to view hero portrait in full screen">
+                <img id="creation-portrait-img" src="assets/images/portrait_paladin.jpg" alt="Selected Hero Portrait">
+                <div class="zoom-hint-badge">🔍 ENLARGE PORTRAIT</div>
+                <div id="creation-class-badge" class="location-badge">SUNBLADE PALADIN</div>
+            </div>
+
+            <div class="name-input-group">
+                <label for="name-input">HERO NAME:</label>
+                <input type="text" id="name-input" maxlength="16" placeholder="Sir Ario" value="Sir Ario">
+            </div>
+
+            <div class="class-selection-container">
+                <label class="class-select-label">SELECT HERO CLASS:</label>
+                <div class="class-selection-grid">
+                    <div class="class-card selected" data-class="paladin">
+                        <div class="class-card-header">SUNBLADE PALADIN</div>
+                        <div class="class-card-perk"><strong>Holy Guard:</strong> Takes -3 less damage</div>
+                        <div class="class-card-stats">+3 END | High Defense | 200 HP</div>
+                    </div>
+                    <div class="class-card" data-class="ranger">
+                        <div class="class-card-header">WOODLAND RANGER</div>
+                        <div class="class-card-perk"><strong>Eagle Eye:</strong> +10% Critical Chance</div>
+                        <div class="class-card-stats">+2 AGI, +1 LCK | High Dodge</div>
+                    </div>
+                    <div class="class-card" data-class="alchemist">
+                        <div class="class-card-header">ROYAL ALCHEMIST</div>
+                        <div class="class-card-perk"><strong>Elixir Master:</strong> Potions heal +60 HP</div>
+                        <div class="class-card-stats">+1 All Stats | 3 Potions | 75 Gold</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="intro-btn-group">
+                <button id="creation-back-btn" class="arcade-btn warning lg">BACK TO LORE</button>
+                <button id="start-btn" class="arcade-btn primary lg">ENTER VILLAGE ➔</button>
             </div>
         </div>
     </div>

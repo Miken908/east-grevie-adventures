@@ -143,11 +143,15 @@ check("Victory image frame container present (#victory-image-frame-container)", 
 check("Victory art overlay badge removed for clean artwork view", !htmlContent.includes('victory-art-badge'));
 check("Victory Lightbox button present in HTML (#victory-lightbox-btn)", htmlContent.includes('id="victory-lightbox-btn"'));
 
-// 10. Verify Intro Panel Redesign & Intro Artwork (Regression Prevention)
-console.log("\n--- TEST GROUP 10: Intro Panel Redesign & Intro Artwork ---");
-check("Intro artwork image present in name modal HTML", htmlContent.includes('src="assets/images/abduction_of_princess_elsa.jpg"'));
-check("Intro image frame container present (#intro-image-frame-container)", htmlContent.includes('id="intro-image-frame-container"'));
-check("Intro Lightbox button present in HTML (#intro-lightbox-btn)", htmlContent.includes('id="intro-lightbox-btn"'));
+// 10. Verify 2-Step Intro Sequence (Prologue & Character Creation Modals)
+console.log("\n--- TEST GROUP 10: 2-Step Intro Sequence Verification ---");
+check("Prologue modal present in HTML (#prologue-modal)", htmlContent.includes('id="prologue-modal"'));
+check("Intro artwork image present in prologue modal HTML", htmlContent.includes('src="assets/images/abduction_of_princess_elsa.jpg"'));
+check("Prologue image frame container present (#prologue-image-frame-container)", htmlContent.includes('id="prologue-image-frame-container"'));
+check("Prologue continue button present (#prologue-continue-btn)", htmlContent.includes('id="prologue-continue-btn"'));
+check("Character creation portrait frame present (#creation-portrait-frame)", htmlContent.includes('id="creation-portrait-frame"'));
+check("Character creation dynamic portrait image present (#creation-portrait-img)", htmlContent.includes('id="creation-portrait-img"'));
+check("Dynamic class portrait switching defined in JS", jsContent.includes('creationPortraitImgEl.src = "assets/images/portrait_paladin.jpg"') && jsContent.includes('creationPortraitImgEl.src = "assets/images/portrait_ranger.jpg"'));
 
 // 11. Header Control Buttons & Universal Lightbox Verification
 console.log("\n--- TEST GROUP 11: Header Control Buttons & Universal Lightbox Verification ---");
