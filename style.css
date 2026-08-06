@@ -650,6 +650,25 @@ body {
     gap: 16px;
 }
 
+.creation-2x2-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+}
+
+.class-card.ng-plus-class.locked {
+    opacity: 0.7;
+    border-color: #5a4b28;
+    background: rgba(18, 14, 8, 0.75);
+    cursor: not-allowed;
+}
+
+.class-card.ng-plus-class.unlocked {
+    border-color: var(--gold-bright);
+    background: linear-gradient(180deg, #322510, #171006);
+    box-shadow: 0 0 14px var(--gold-glow);
+}
+
 .intro-lore-card {
     background: rgba(0, 0, 0, 0.6);
     border: 1px dashed #3a415a;

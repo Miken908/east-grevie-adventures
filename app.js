@@ -697,6 +697,21 @@ function updateAchievementsUI() {
     const barInnerEl = document.getElementById("achievements-bar-inner");
     if (barInnerEl) barInnerEl.style.width = `${(count / total) * 100}%`;
 
+    // Check 15/15 Trophies for NG+ Sunblade Paladin Unlock
+    const paladinCardEl = document.getElementById("paladin-class-card");
+    const paladinStatusEl = document.getElementById("paladin-card-status");
+    if (paladinCardEl && paladinStatusEl) {
+        if (count >= 15) {
+            paladinCardEl.classList.remove("locked");
+            paladinCardEl.classList.add("unlocked");
+            paladinStatusEl.textContent = "👑 NG+ UNLOCKED | +3 AP & Sigil";
+        } else {
+            paladinCardEl.classList.add("locked");
+            paladinCardEl.classList.remove("unlocked");
+            paladinStatusEl.textContent = "🔒 UNLOCK 15/15 TROPHIES";
+        }
+    }
+
     const gridEl = document.getElementById("achievements-grid");
     if (gridEl) {
         gridEl.innerHTML = "";
@@ -790,7 +805,9 @@ function calculateCritMultiplier() {
 function calculateDodgeChance() {
     const eq = calculateEquipmentBonuses();
     const totalAgi = state.agi + eq.agi;
-    return Math.min(35, totalAgi * 1.5);
+    let dodge = Math.min(35, totalAgi * 1.5);
+    if (state.heroClass === "ranger") dodge += 10;
+    return dodge;
 }
 
 function calculateMitigation() {
@@ -800,9 +817,10 @@ function calculateMitigation() {
 }
 
 function mitigate(damage) {
-    const armor = calculateMitigation();
-    let mitigated = Math.round(damage - armor);
-    if (state.heroClass === "paladin") mitigated -= 3; // Paladin Perk: Holy Guard (-3 Damage Taken)
+    const totalArmor = calculateMitigation();
+    let mitigated = Math.max(1, damage - Math.floor(totalArmor * 0.45));
+    if (state.heroClass === "knight") mitigated = Math.max(1, mitigated - 2); // Royal Knight Perk: Bastion Shield (-2 Damage Taken)
+    if (state.heroClass === "paladin") mitigated = Math.max(1, mitigated - 3); // Sunblade Paladin Perk: Sunfire Ascendant (-3 Damage Taken)
     return Math.max(1, mitigated);
 }
 
@@ -2111,26 +2129,35 @@ if (narrateBtnEl) {
 
 document.querySelectorAll(".class-card").forEach(card => {
     card.addEventListener("click", () => {
+        if (card.classList.contains("locked")) {
+            sfx.playClick();
+            addLog("🔒 Unlock all 15 Trophies to awaken the Sunblade Paladin in New Game+!", "alert");
+            return;
+        }
+
         document.querySelectorAll(".class-card").forEach(c => c.classList.remove("selected"));
         card.classList.add("selected");
         sfx.playClick();
 
-        const heroClass = card.getAttribute("data-class") || "paladin";
+        const heroClass = card.getAttribute("data-class") || "knight";
         state.heroClass = heroClass;
 
         const creationPortraitImgEl = document.getElementById("creation-portrait-img");
         const creationClassBadgeEl = document.getElementById("creation-class-badge");
 
         if (creationPortraitImgEl && creationClassBadgeEl) {
-            if (heroClass === "paladin") {
-                creationPortraitImgEl.src = "assets/images/portrait_paladin.jpg";
-                creationClassBadgeEl.textContent = "SUNBLADE PALADIN";
+            if (heroClass === "knight") {
+                creationPortraitImgEl.src = "assets/images/portrait_knight.jpg";
+                creationClassBadgeEl.textContent = "ROYAL KNIGHT";
             } else if (heroClass === "ranger") {
                 creationPortraitImgEl.src = "assets/images/portrait_ranger.jpg";
                 creationClassBadgeEl.textContent = "WOODLAND RANGER";
             } else if (heroClass === "alchemist") {
                 creationPortraitImgEl.src = "assets/images/portrait_alchemist.jpg";
                 creationClassBadgeEl.textContent = "ROYAL ALCHEMIST";
+            } else if (heroClass === "paladin") {
+                creationPortraitImgEl.src = "assets/images/portrait_paladin.jpg";
+                creationClassBadgeEl.textContent = "👑 SUNBLADE PALADIN (NG+)";
             }
         }
     });
@@ -2152,19 +2179,32 @@ startBtnEl.addEventListener("click", () => {
     state.name = nameInputEl.value.trim() || "Sir Ario";
 
     const selectedCard = document.querySelector(".class-card.selected");
-    const chosenClass = selectedCard ? (selectedCard.getAttribute("data-class") || "paladin") : "paladin";
+    const chosenClass = selectedCard ? (selectedCard.getAttribute("data-class") || "knight") : "knight";
     state.heroClass = chosenClass;
 
-    if (chosenClass === "paladin") {
-        state.end = 6;
-        state.str = 3;
+    if (chosenClass === "knight") {
+        state.end = 5;
+        state.str = 4;
         state.agi = 3;
         state.lck = 3;
         state.equipment = {
-            weapon: { name: "Wooden Sword", bonusStr: 0, bonusMinDmg: 8, bonusMaxDmg: 15 },
-            shield: { name: "Wooden Shield", bonusArmor: 5, bonusEnd: 0 },
-            armor: { name: "Traveler's Tunic", bonusArmor: 1, bonusAgi: 0 },
+            weapon: { name: "Steel Longsword", bonusStr: 0, bonusMinDmg: 9, bonusMaxDmg: 16 },
+            shield: { name: "Iron Kite Shield", bonusArmor: 4, bonusEnd: 0 },
+            armor: { name: "Knight's Chainmail", bonusArmor: 2, bonusAgi: 0 },
             accessory: null
+        };
+    } else if (chosenClass === "paladin") {
+        state.end = 7;
+        state.str = 5;
+        state.agi = 4;
+        state.lck = 4;
+        state.gold = 300;
+        state.statPoints = 3;
+        state.equipment = {
+            weapon: { name: "Sunfire Blade", bonusStr: 2, bonusMinDmg: 16, bonusMaxDmg: 26 },
+            shield: { name: "Radiant Aegis", bonusArmor: 6, bonusEnd: 1 },
+            armor: { name: "Sunfire Plate Armor", bonusArmor: 4, bonusAgi: 0 },
+            accessory: { name: "Sunfire Sigil", bonusStr: 2, bonusAgi: 2, bonusEnd: 2, bonusLck: 2 }
         };
     } else if (chosenClass === "ranger") {
         state.end = 3;
@@ -2753,21 +2793,24 @@ function updateStatsModalUI() {
     const statPassivePerkTextEl = document.getElementById("stat-passive-perk-text");
     const portraitImgEl = document.querySelector("#hero-portrait-frame img");
 
-    const heroClass = state.heroClass || "paladin";
+    const heroClass = state.heroClass || "knight";
     if (statHeroClassBadgeEl) {
-        if (heroClass === "paladin") statHeroClassBadgeEl.textContent = "⚔️ SUNBLADE PALADIN";
+        if (heroClass === "knight") statHeroClassBadgeEl.textContent = "🛡️ ROYAL KNIGHT";
+        else if (heroClass === "paladin") statHeroClassBadgeEl.textContent = "👑 SUNBLADE PALADIN (NG+)";
         else if (heroClass === "ranger") statHeroClassBadgeEl.textContent = "🏹 WOODLAND RANGER";
         else if (heroClass === "alchemist") statHeroClassBadgeEl.textContent = "🧪 ROYAL ALCHEMIST";
     }
 
     if (statPassivePerkTextEl) {
-        if (heroClass === "paladin") statPassivePerkTextEl.textContent = "🛡️ Holy Guard (-3 Damage Taken)";
+        if (heroClass === "knight") statPassivePerkTextEl.textContent = "🛡️ Bastion Shield (-2 Physical Damage Taken)";
+        else if (heroClass === "paladin") statPassivePerkTextEl.textContent = "✨ Sunfire Ascendant (-3 Damage, Radiant Sunfire Blade)";
         else if (heroClass === "ranger") statPassivePerkTextEl.textContent = "🎯 Eagle Eye (+10% Critical Chance)";
-        else if (heroClass === "alchemist") statPassivePerkTextEl.textContent = "🧪 Elixir Master (Potions Heal +60 HP)";
+        else if (heroClass === "alchemist") statPassivePerkTextEl.textContent = "🧪 Elixir Master (Potions Heal +60 HP & Extra Gold)";
     }
 
     if (portraitImgEl) {
-        if (heroClass === "paladin") portraitImgEl.src = "assets/images/portrait.jpg";
+        if (heroClass === "knight") portraitImgEl.src = "assets/images/portrait_knight.jpg";
+        else if (heroClass === "paladin") portraitImgEl.src = "assets/images/portrait_paladin.jpg";
         else if (heroClass === "ranger") portraitImgEl.src = "assets/images/portrait_ranger.jpg";
         else if (heroClass === "alchemist") portraitImgEl.src = "assets/images/portrait_alchemist.jpg";
     }

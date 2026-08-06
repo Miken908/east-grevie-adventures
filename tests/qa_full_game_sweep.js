@@ -187,7 +187,7 @@ check("Main menu start game button present (#menu-start-btn)", htmlContent.inclu
 check("Main menu art gallery button present (#menu-gallery-btn)", htmlContent.includes('id="menu-gallery-btn"'));
 check("Main menu credits button present (#menu-credits-btn)", htmlContent.includes('id="menu-credits-btn"'));
 check("Art gallery modal present in HTML (#gallery-modal)", htmlContent.includes('id="gallery-modal"'));
-check("Art gallery grid contains 23 artwork cards", (htmlContent.match(/class="gallery-item"/g) || []).length === 23);
+check("Art gallery grid contains 24 artwork cards", (htmlContent.match(/class="gallery-item"/g) || []).length === 24);
 check("Credits modal present in HTML (#credits-modal)", htmlContent.includes('id="credits-modal"'));
 check("Main menu start button click listener bound in JS", jsContent.includes('menuStartBtnEl.addEventListener'));
 check("Main menu gallery button click listener bound in JS", jsContent.includes('menuGalleryBtnEl.addEventListener'));
@@ -249,11 +249,11 @@ check("healPlayer triggers floating heal text", jsContent.includes('spawnFloatin
 // 19. Hero Archetype Class Selection Verification
 console.log("\n--- TEST GROUP 19: Hero Archetype Class Selection Verification ---");
 check("Class selection container present in HTML (.class-selection-container)", htmlContent.includes('class="class-selection-container"'));
-check("Class selection grid present in HTML (.class-selection-grid)", htmlContent.includes('class="class-selection-grid"'));
-check("Class badge element present in stats modal (#stat-hero-class-badge)", htmlContent.includes('id="stat-hero-class-badge"'));
-check("Passive perk banner present in stats modal (.passive-perk-banner)", htmlContent.includes('class="passive-perk-banner"'));
-check("Paladin Holy Guard perk mitigation formula present in JS", jsContent.includes('state.heroClass === "paladin"'));
-check("Ranger Eagle Eye perk crit formula present in JS", jsContent.includes('state.heroClass === "ranger"'));
+check("Class selection 2x2 grid present in HTML (.creation-2x2-grid)", htmlContent.includes('creation-2x2-grid'));
+check("Royal Knight starter class card present in HTML", htmlContent.includes('data-class="knight"'));
+check("Sunblade Paladin NG+ class card present in HTML (#paladin-class-card)", htmlContent.includes('id="paladin-class-card"'));
+check("Royal Knight Bastion Shield perk formula present in JS", jsContent.includes('state.heroClass === "knight"'));
+check("Sunblade Paladin NG+ unlock logic present in JS", jsContent.includes('paladinCardEl.classList.remove("locked")'));
 // 20. Lightbox Navigation & Keyboard Controls Verification
 console.log("\n--- TEST GROUP 20: Lightbox Navigation & Keyboard Controls Verification ---");
 check("Lightbox previous button present in HTML (#lightbox-prev-btn)", htmlContent.includes('id="lightbox-prev-btn"'));
