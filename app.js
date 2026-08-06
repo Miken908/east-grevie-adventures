@@ -1066,25 +1066,29 @@ function getClassEquipNames() {
         return {
             weapon: "Sunfire Greatsword",
             shield: "Empyrean Sun Shield",
-            armor: "Divine Sunfire Heavy Plate"
+            armor: "Divine Sunfire Heavy Plate",
+            accessory: "Empowered Sunfire Sigil"
         };
     } else if (cls === "ranger") {
         return {
             weapon: "Composite Yew Bow",
             shield: "Reinforced Quiver Guard",
-            armor: "Dragon-Scale Scout Leather"
+            armor: "Dragon-Scale Scout Leather",
+            accessory: "Eagle Eye Talisman"
         };
     } else if (cls === "alchemist") {
         return {
             weapon: "Rune Catalyst Staff",
             shield: "Alchemical Athanor Aegis",
-            armor: "Dragon-Scale Scholar Robe"
+            armor: "Dragon-Scale Scholar Robe",
+            accessory: "Philosopher's Stone Fragment"
         };
     }
     return {
         weapon: "Mastercraft Steel Broadsword",
         shield: "Reinforced Tower Shield",
-        armor: "Dragon-Scale Plate Mail"
+        armor: "Dragon-Scale Plate Mail",
+        accessory: "Ring of Power"
     };
 }
 
@@ -1145,11 +1149,17 @@ function renderBlacksmith() {
         action: armorOwned ? () => { sfx.playClick(); addLog(`You already own and have equipped the ${equipNames.armor}!`); } : () => buyEquipment("armor", { name: equipNames.armor, bonusArmor: 8, bonusAgi: 2, bonusMaxHp: 30 }, armorCost)
     });
 
-    const ringOwned = state.equipment.accessory && state.equipment.accessory.name === "Ring of Power";
-    const ringCost = Math.round(130 * (1 - discount));
+    const ringOwned = state.equipment.accessory && state.equipment.accessory.name === equipNames.accessory;
+    const ringCost = Math.round(140 * (1 - discount));
+    const isPaladinAcc = state.heroClass === "paladin";
+    const accDesc = isPaladinAcc ? "(+3 ALL STATS)" : "(+2 LCK, +1 ALL STATS)";
+    const accItem = isPaladinAcc 
+        ? { name: equipNames.accessory, bonusStr: 3, bonusAgi: 3, bonusEnd: 3, bonusLck: 3 }
+        : { name: equipNames.accessory, bonusLck: 2, bonusStr: 1, bonusAgi: 1, bonusEnd: 1 };
+
     choices.push({
-        text: ringOwned ? `4. 💍 Ring of Power - [ EQUIPPED ]` : `4. 💍 Buy Ring of Power (+2 LCK, +1 ALL STATS) - 💰 ${ringCost} Gold`,
-        action: ringOwned ? () => { sfx.playClick(); addLog("You already own and have equipped the Ring of Power!"); } : () => buyEquipment("accessory", { name: "Ring of Power", bonusLck: 2, bonusStr: 1, bonusAgi: 1, bonusEnd: 1 }, ringCost)
+        text: ringOwned ? `4. 💍 ${equipNames.accessory} - [ EQUIPPED ]` : `4. 💍 Buy ${equipNames.accessory} ${accDesc} - 💰 ${ringCost} Gold`,
+        action: ringOwned ? () => { sfx.playClick(); addLog(`You already own and have equipped the ${equipNames.accessory}!`); } : () => buyEquipment("accessory", accItem, ringCost)
     });
 
     const hasAllRelics = state.hasSunCrystal && state.hasHiltOfDawn && state.hasBlueprint;
