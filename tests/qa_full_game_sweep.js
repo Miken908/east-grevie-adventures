@@ -205,6 +205,15 @@ check("Story log height aligned to 460px", cssContent.includes("height: 460px;")
 check("Pixelated image-rendering removed for HD artwork quality", !cssContent.includes("image-rendering: pixelated;"));
 check("Intro banner frame height expanded to 480px", cssContent.includes("max-height: 480px;"));
 
+// 15. Modernized Widescreen Hero Status Screen
+console.log("\n--- TEST GROUP 15: Modernized Widescreen Hero Status Screen ---");
+check("Stats modal box expanded max-width to 1080px in CSS", cssContent.includes("max-width: 1080px;"));
+check("Stats layout columns 3-column grid defined in CSS", cssContent.includes("grid-template-columns: 260px 1.2fr 1fr;"));
+check("Hero avatar badge present in HTML (.hero-avatar-badge)", htmlContent.includes('class="hero-avatar-badge"'));
+check("AP status banner present in HTML (.ap-status-banner)", htmlContent.includes('class="ap-status-banner"'));
+check("Derived combat stats block present in HTML (.combat-stats-block)", htmlContent.includes('class="combat-stats-block"'));
+check("Equipped gear block present in HTML (.equipment-block)", htmlContent.includes('class="equipment-block"'));
+
 console.log("\n==================================================");
 console.log("📊 SUMMARY OF FULL QA & BALANCE SIMULATION RESULTS");
 console.log("==================================================");

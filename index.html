@@ -209,98 +209,114 @@
     <div id="stats-modal" class="modal-overlay hidden">
         <div class="modal-content crt-box stats-modal-box">
             <div class="stats-modal-header">
-                <h2 class="stats-modal-title">📊 HERO STATUS & ATTRIBUTES</h2>
+                <div class="stats-header-title-group">
+                    <h2 class="stats-modal-title">⚔️ HERO STATUS & ATTRIBUTES</h2>
+                    <p class="stats-modal-subtitle">Manage attributes, view combat calculations, and check equipped gear</p>
+                </div>
                 <button id="close-stats-modal-btn" class="arcade-btn-sm warning" title="Close Stats">✖ CLOSE</button>
             </div>
             
-            <div class="stats-summary-bar">
-                <div class="stat-summary-item"><span class="lbl">HERO:</span> <span id="stat-hero-name" class="val">Sir Eldrin</span></div>
-                <div class="stat-summary-item"><span class="lbl">LEVEL:</span> <span id="stat-hero-lvl" class="val gold">1</span></div>
-                <div class="stat-summary-item"><span class="lbl">EXP:</span> <span id="stat-hero-exp" class="val">0 / 100</span></div>
-                <div class="stat-summary-item highlight"><span class="lbl">AVAILABLE AP:</span> <span id="stat-available-ap" class="val gold">0</span></div>
-            </div>
-
-            <!-- Attributes Allocation Grid -->
-            <div class="attributes-grid">
-                <div class="attribute-card">
-                    <div class="attr-header">
-                        <div class="attr-title-group">
-                            <span class="attr-name">💪 STRENGTH (STR)</span>
-                            <button class="info-icon-btn" data-info="str-info" title="Toggle STR description">ℹ️</button>
-                        </div>
-                        <div class="attr-controls">
-                            <span id="attr-str-val" class="attr-val">3</span>
-                            <button class="arcade-btn-sm primary add-ap-btn" data-attr="str" title="Add 1 STR Point">+</button>
-                        </div>
+            <div class="stats-layout-columns">
+                <!-- Column 1: Hero Identity & Core Stats -->
+                <div class="stats-col hero-identity-col">
+                    <div class="hero-avatar-badge">
+                        <div class="avatar-icon">🐭</div>
+                        <h3 id="stat-hero-name" class="hero-identity-name">Sir Eldrin</h3>
+                        <span class="hero-identity-title">Hero of East Grevie</span>
                     </div>
-                    <div id="str-info" class="attr-tooltip-popover hidden">
-                        <p class="attr-desc">Increases physical attack damage (+1.2 Min / +2.0 Max Dmg per point).</p>
+
+                    <div class="hero-progress-card">
+                        <div class="summary-row"><span class="lbl">HERO LEVEL:</span> <span id="stat-hero-lvl" class="val gold">1</span></div>
+                        <div class="summary-row"><span class="lbl">EXP PROGRESS:</span> <span id="stat-hero-exp" class="val">0 / 100</span></div>
+                    </div>
+
+                    <div class="ap-status-banner">
+                        <span class="ap-banner-lbl">AVAILABLE AP:</span>
+                        <span id="stat-available-ap" class="ap-banner-val gold">0</span>
                     </div>
                 </div>
 
-                <div class="attribute-card">
-                    <div class="attr-header">
-                        <div class="attr-title-group">
-                            <span class="attr-name">⚡ AGILITY (AGI)</span>
-                            <button class="info-icon-btn" data-info="agi-info" title="Toggle AGI description">ℹ️</button>
+                <!-- Column 2: Core Attribute Allocation -->
+                <div class="stats-col attributes-col">
+                    <h3 class="stats-col-heading">ATTRIBUTES ALLOCATION</h3>
+
+                    <div class="attributes-stack">
+                        <div class="attribute-card">
+                            <div class="attr-header">
+                                <div class="attr-title-group">
+                                    <span class="attr-name">💪 STRENGTH (STR)</span>
+                                </div>
+                                <div class="attr-controls">
+                                    <span id="attr-str-val" class="attr-val">3</span>
+                                    <button class="arcade-btn-sm primary add-ap-btn" data-attr="str" title="Add 1 STR Point">+</button>
+                                </div>
+                            </div>
+                            <p class="attr-desc">Boosts attack damage (+1.2 Min / +2.0 Max Dmg per point).</p>
                         </div>
-                        <div class="attr-controls">
-                            <span id="attr-agi-val" class="attr-val">3</span>
-                            <button class="arcade-btn-sm primary add-ap-btn" data-attr="agi" title="Add 1 AGI Point">+</button>
+
+                        <div class="attribute-card">
+                            <div class="attr-header">
+                                <div class="attr-title-group">
+                                    <span class="attr-name">⚡ AGILITY (AGI)</span>
+                                </div>
+                                <div class="attr-controls">
+                                    <span id="attr-agi-val" class="attr-val">3</span>
+                                    <button class="arcade-btn-sm primary add-ap-btn" data-attr="agi" title="Add 1 AGI Point">+</button>
+                                </div>
+                            </div>
+                            <p class="attr-desc">Increases Dodge chance (+1.5%) and Critical Damage (+0.05x).</p>
                         </div>
-                    </div>
-                    <div id="agi-info" class="attr-tooltip-popover hidden">
-                        <p class="attr-desc">Increases Dodge chance (+1.5%) and Critical Multiplier (+0.05x).</p>
+
+                        <div class="attribute-card">
+                            <div class="attr-header">
+                                <div class="attr-title-group">
+                                    <span class="attr-name">🛡️ ENDURANCE (END)</span>
+                                </div>
+                                <div class="attr-controls">
+                                    <span id="attr-end-val" class="attr-val">3</span>
+                                    <button class="arcade-btn-sm primary add-ap-btn" data-attr="end" title="Add 1 END Point">+</button>
+                                </div>
+                            </div>
+                            <p class="attr-desc">Increases Max HP (+15 HP) and Armor Mitigation (+0.8).</p>
+                        </div>
+
+                        <div class="attribute-card">
+                            <div class="attr-header">
+                                <div class="attr-title-group">
+                                    <span class="attr-name">🍀 LUCK (LCK)</span>
+                                </div>
+                                <div class="attr-controls">
+                                    <span id="attr-lck-val" class="attr-val">3</span>
+                                    <button class="arcade-btn-sm primary add-ap-btn" data-attr="lck" title="Add 1 LCK Point">+</button>
+                                </div>
+                            </div>
+                            <p class="attr-desc">Increases Crit Chance (+2.0%) and Merchant Gold Discounts.</p>
+                        </div>
                     </div>
                 </div>
 
-                <div class="attribute-card">
-                    <div class="attr-header">
-                        <div class="attr-title-group">
-                            <span class="attr-name">🛡️ ENDURANCE (END)</span>
-                            <button class="info-icon-btn" data-info="end-info" title="Toggle END description">ℹ️</button>
-                        </div>
-                        <div class="attr-controls">
-                            <span id="attr-end-val" class="attr-val">3</span>
-                            <button class="arcade-btn-sm primary add-ap-btn" data-attr="end" title="Add 1 END Point">+</button>
+                <!-- Column 3: Combat Stats & Equipment -->
+                <div class="stats-col combat-gear-col">
+                    <div class="combat-stats-block">
+                        <h3 class="stats-col-heading">DERIVED COMBAT STATS</h3>
+                        <div class="derived-list">
+                            <div class="derived-row"><span>⚔️ ATTACK POWER:</span> <span id="derived-dmg-val" class="val gold">8 - 15</span></div>
+                            <div class="derived-row"><span>💥 CRIT CHANCE:</span> <span id="derived-crit-val" class="val gold">14.0%</span></div>
+                            <div class="derived-row"><span>💨 DODGE CHANCE:</span> <span id="derived-dodge-val" class="val gold">4.5%</span></div>
+                            <div class="derived-row"><span>🛡️ ARMOR MITIGATION:</span> <span id="derived-armor-val" class="val gold">7.4</span></div>
                         </div>
                     </div>
-                    <div id="end-info" class="attr-tooltip-popover hidden">
-                        <p class="attr-desc">Increases Max Health (+15 HP) and Armor Mitigation (+0.8).</p>
+
+                    <div class="equipment-block">
+                        <h3 class="stats-col-heading">EQUIPPED GEAR</h3>
+                        <div class="equipment-list">
+                            <div class="equip-row"><span>⚔️ WEAPON:</span> <span id="equip-weapon-val" class="val gold">Wooden Sword</span></div>
+                            <div class="equip-row"><span>🛡️ SHIELD:</span> <span id="equip-shield-val" class="val gold">Wooden Shield</span></div>
+                            <div class="equip-row"><span>🥋 ARMOR:</span> <span id="equip-armor-val" class="val gold">Traveler's Tunic</span></div>
+                            <div class="equip-row"><span>💍 ACCESSORY:</span> <span id="equip-accessory-val" class="val gold">None</span></div>
+                        </div>
                     </div>
                 </div>
-
-                <div class="attribute-card">
-                    <div class="attr-header">
-                        <div class="attr-title-group">
-                            <span class="attr-name">🍀 LUCK (LCK)</span>
-                            <button class="info-icon-btn" data-info="lck-info" title="Toggle LCK description">ℹ️</button>
-                        </div>
-                        <div class="attr-controls">
-                            <span id="attr-lck-val" class="attr-val">3</span>
-                            <button class="arcade-btn-sm primary add-ap-btn" data-attr="lck" title="Add 1 LCK Point">+</button>
-                        </div>
-                    </div>
-                    <div id="lck-info" class="attr-tooltip-popover hidden">
-                        <p class="attr-desc">Increases Critical Chance (+2.0%), Gold Earned (+8%), and Merchant Discounts (-2%).</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Derived Live Stats Panel -->
-            <div class="derived-stats-panel">
-                <div class="derived-item">⚔️ ATTACK: <span id="derived-dmg-val" class="gold">8 - 15</span></div>
-                <div class="derived-item">💥 CRIT CHANCE: <span id="derived-crit-val" class="gold">14.0%</span></div>
-                <div class="derived-item">💨 DODGE CHANCE: <span id="derived-dodge-val" class="gold">4.5%</span></div>
-                <div class="derived-item">🛡️ ARMOR MITIGATION: <span id="derived-armor-val" class="gold">7.4</span></div>
-            </div>
-
-            <!-- Equipped Gear Slots Panel -->
-            <div class="equipment-panel">
-                <div class="equip-slot-item">⚔️ WEAPON: <span id="equip-weapon-val" class="val gold">Wooden Sword</span></div>
-                <div class="equip-slot-item">🛡️ SHIELD: <span id="equip-shield-val" class="val gold">Wooden Shield</span></div>
-                <div class="equip-slot-item">🥋 ARMOR: <span id="equip-armor-val" class="val gold">Traveler's Tunic</span></div>
-                <div class="equip-slot-item">💍 ACCESSORY: <span id="equip-accessory-val" class="val gold">None</span></div>
             </div>
         </div>
     </div>
