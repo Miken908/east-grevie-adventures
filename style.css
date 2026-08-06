@@ -44,7 +44,7 @@ body {
 /* CRT Monitor Container */
 .crt-bezel {
     width: 100%;
-    max-width: 1020px;
+    max-width: 1240px;
     background: transparent;
     border: none;
     border-radius: 0;
@@ -215,11 +215,11 @@ body {
 /* Main Scene Area */
 .scene-container {
     display: grid;
-    grid-template-columns: 480px 1fr;
-    gap: 16px;
+    grid-template-columns: minmax(500px, 58%) 1fr;
+    gap: 18px;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 900px) {
     .scene-container {
         grid-template-columns: 1fr;
     }
@@ -231,8 +231,8 @@ body {
     border-radius: 8px;
     overflow: hidden;
     background: #000;
-    box-shadow: 0 0 20px var(--gold-glow);
-    height: 350px;
+    box-shadow: 0 0 24px var(--gold-glow);
+    height: 460px;
     cursor: pointer;
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
@@ -267,7 +267,6 @@ body {
     height: 100%;
     object-fit: cover;
     display: block;
-    image-rendering: pixelated;
     transition: opacity 0.3s ease;
 }
 
@@ -290,8 +289,8 @@ body {
     background: var(--panel-bg);
     border: 2px solid var(--gold-border);
     border-radius: 8px;
-    padding: 16px 18px;
-    height: 350px;
+    padding: 18px 20px;
+    height: 460px;
     overflow-y: auto;
     font-family: var(--font-body);
     font-size: 1.05rem;
@@ -549,9 +548,9 @@ body {
 
 .intro-image-frame {
     width: 100%;
-    height: 44vh;
-    max-height: 420px;
-    min-height: 220px;
+    height: 50vh;
+    max-height: 480px;
+    min-height: 260px;
     border: 3px solid var(--gold-primary);
     border-radius: 8px;
     position: relative;
@@ -1167,9 +1166,9 @@ body {
 
 .title-banner-frame {
     width: 100%;
-    height: 40vh;
-    max-height: 380px;
-    min-height: 220px;
+    height: 48vh;
+    max-height: 460px;
+    min-height: 260px;
     border: 3px solid var(--gold-primary);
     border-radius: 10px;
     position: relative;

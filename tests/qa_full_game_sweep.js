@@ -188,6 +188,14 @@ check("Main menu credits button click listener bound in JS", jsContent.includes(
 check("Body background purged of radial-gradient dots", !cssContent.includes("radial-gradient"));
 check("CRT Bezel frame background is transparent", cssContent.includes("background: transparent;\n    border: none;"));
 
+// 14. Widescreen & HD Artwork Display System
+console.log("\n--- TEST GROUP 14: Widescreen & HD Artwork Display System ---");
+check("Console container max-width expanded to 1240px", cssContent.includes("max-width: 1240px;"));
+check("Location image frame height expanded to 460px", cssContent.includes("height: 460px;"));
+check("Story log height aligned to 460px", cssContent.includes("height: 460px;"));
+check("Pixelated image-rendering removed for HD artwork quality", !cssContent.includes("image-rendering: pixelated;"));
+check("Intro banner frame height expanded to 480px", cssContent.includes("max-height: 480px;"));
+
 console.log("\n==================================================");
 console.log("📊 SUMMARY OF FULL QA & BALANCE SIMULATION RESULTS");
 console.log("==================================================");
