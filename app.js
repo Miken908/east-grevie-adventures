@@ -1889,6 +1889,13 @@ if (closeStatsModalBtn) {
     closeStatsModalBtn.addEventListener("click", closeStatsModal);
 }
 
+const heroPortraitFrameEl = document.getElementById("hero-portrait-frame");
+if (heroPortraitFrameEl) {
+    heroPortraitFrameEl.addEventListener("click", () => {
+        openLightbox("assets/images/portrait.jpg", `Hero Portrait - ${state.heroName}`);
+    });
+}
+
 if (statsModalEl) {
     statsModalEl.addEventListener("click", (e) => {
         if (e.target === statsModalEl) {

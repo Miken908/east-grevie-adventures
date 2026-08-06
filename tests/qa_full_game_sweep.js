@@ -189,7 +189,7 @@ check("Main menu start game button present (#menu-start-btn)", htmlContent.inclu
 check("Main menu art gallery button present (#menu-gallery-btn)", htmlContent.includes('id="menu-gallery-btn"'));
 check("Main menu credits button present (#menu-credits-btn)", htmlContent.includes('id="menu-credits-btn"'));
 check("Art gallery modal present in HTML (#gallery-modal)", htmlContent.includes('id="gallery-modal"'));
-check("Art gallery grid contains 15 artwork cards", (htmlContent.match(/class="gallery-item"/g) || []).length === 15);
+check("Art gallery grid contains 16 artwork cards", (htmlContent.match(/class="gallery-item"/g) || []).length === 16);
 check("Credits modal present in HTML (#credits-modal)", htmlContent.includes('id="credits-modal"'));
 check("Main menu start button click listener bound in JS", jsContent.includes('menuStartBtnEl.addEventListener'));
 check("Main menu gallery button click listener bound in JS", jsContent.includes('menuGalleryBtnEl.addEventListener'));
@@ -210,6 +210,9 @@ console.log("\n--- TEST GROUP 15: Modernized Widescreen Hero Status Screen ---")
 check("Stats modal box expanded max-width to 1080px in CSS", cssContent.includes("max-width: 1080px;"));
 check("Stats layout columns 3-column grid defined in CSS", cssContent.includes("grid-template-columns: 260px 1.2fr 1fr;"));
 check("Hero avatar badge present in HTML (.hero-avatar-badge)", htmlContent.includes('class="hero-avatar-badge"'));
+check("Hero portrait frame present in HTML (#hero-portrait-frame)", htmlContent.includes('id="hero-portrait-frame"'));
+check("Hero portrait image uses portrait.jpg asset", htmlContent.includes('assets/images/portrait.jpg'));
+check("Hero portrait click listener bound in JS", jsContent.includes('heroPortraitFrameEl.addEventListener'));
 check("AP status banner present in HTML (.ap-status-banner)", htmlContent.includes('class="ap-status-banner"'));
 check("Derived combat stats block present in HTML (.combat-stats-block)", htmlContent.includes('class="combat-stats-block"'));
 check("Equipped gear block present in HTML (.equipment-block)", htmlContent.includes('class="equipment-block"'));
