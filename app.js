@@ -1156,10 +1156,9 @@ function buyPotion(cost) {
 
 function speakToElder() {
     sfx.playClick();
-    addLog("Elder: 'Brave adventurer! The Sunblade was forged during the First Shadow War, but was shattered into three celestial relics to prevent Lord Rodrigues from stealing it:'", "event");
-    addLog("Elder: '1. The Sun Crystal Core (hidden within the Mountain Snake Cave)'");
-    addLog("Elder: '2. The Hilt of Dawn (blessed by the Fairy Fountain Queen)'");
-    addLog("Elder: '3. The Forge Blueprint (recovered from the Old Watchtower)'");
+    clearLog();
+    addLog("Elder: 'Brave adventurer! The Sunblade was shattered into three celestial relics to prevent Lord Rodrigues from stealing it:'", "event");
+    addLog("Elder: '1. Sun Crystal Core (Mountain Cave) | 2. Hilt of Dawn (Fairy Fountain) | 3. Forge Blueprint (Old Watchtower)'");
 
     if (!state.hasRuneScroll) {
         state.hasRuneScroll = true;
@@ -1169,15 +1168,17 @@ function speakToElder() {
         
         const count = getRelicCount();
         if (count > 0) {
-            addLog(`Elder: 'Ah! I see you already carry ${count} of the 3 celestial relics in your inventory! Excellent work!'`, "event");
+            addLog(`Elder: 'Ah! I see you already carry ${count}/3 celestial relics! Excellent work!'`, "event");
         }
         addScore(100);
         updateHUD();
         unlockAchievement("sunblade_scroll");
     } else {
         const count = getRelicCount();
-        addLog(`Elder: 'You currently carry ${count}/3 relics in your inventory. Seek any remaining relics across the Mountain Cave, Fairy Fountain, and Old Watchtower!'`);
+        addLog(`Elder: 'You currently carry ${count}/3 relics in your inventory. Seek any remaining relics across the realm!'`);
     }
+
+    if (storyLogEl) storyLogEl.scrollTop = 0;
 }
 
 function restTavern() {
@@ -1859,11 +1860,10 @@ function useHealDragon() {
 function gameOver(reason) {
     clearLog();
     sfx.stopMusic();
-    addLog("==========================================", "alert");
-    addLog("               GAME OVER", "alert");
-    addLog("==========================================", "alert");
+    addLog("💀 GAME OVER - YOU HAVE FALLEN IN BATTLE", "alert");
     addLog(reason, "alert");
     addLog(`Final Score: ${state.score} PTS`, "event");
+    addLog("Select 'Return to Main Menu' below to choose a new hero class and try again.", "event");
 
     renderChoices([
         { text: "Return to Main Menu", action: exitToMainMenu }

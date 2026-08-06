@@ -292,6 +292,9 @@ body {
     padding: 18px 20px;
     height: 460px;
     overflow-y: auto;
+    overflow-x: hidden;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
     font-family: var(--font-body);
     font-size: 1.05rem;
     font-weight: 400;
