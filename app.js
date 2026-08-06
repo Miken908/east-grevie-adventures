@@ -1061,8 +1061,14 @@ function renderVillage() {
 }
 
 function getClassEquipNames() {
-    const cls = state.heroClass || "paladin";
-    if (cls === "ranger") {
+    const cls = state.heroClass || "knight";
+    if (cls === "paladin") {
+        return {
+            weapon: "Sunfire Greatsword",
+            shield: "Empyrean Sun Shield",
+            armor: "Divine Sunfire Heavy Plate"
+        };
+    } else if (cls === "ranger") {
         return {
             weapon: "Composite Yew Bow",
             shield: "Reinforced Quiver Guard",
@@ -1076,7 +1082,7 @@ function getClassEquipNames() {
         };
     }
     return {
-        weapon: "Iron Broadsword",
+        weapon: "Mastercraft Steel Broadsword",
         shield: "Reinforced Tower Shield",
         armor: "Dragon-Scale Plate Mail"
     };
