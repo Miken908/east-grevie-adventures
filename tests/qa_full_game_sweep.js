@@ -185,6 +185,7 @@ check("Credits modal present in HTML (#credits-modal)", htmlContent.includes('id
 check("Main menu start button click listener bound in JS", jsContent.includes('menuStartBtnEl.addEventListener'));
 check("Main menu gallery button click listener bound in JS", jsContent.includes('menuGalleryBtnEl.addEventListener'));
 check("Main menu credits button click listener bound in JS", jsContent.includes('menuCreditsBtnEl.addEventListener'));
+check("Body background purged of radial-gradient dots", !cssContent.includes("radial-gradient"));
 
 console.log("\n==================================================");
 console.log("📊 SUMMARY OF FULL QA & BALANCE SIMULATION RESULTS");
