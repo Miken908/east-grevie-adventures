@@ -488,7 +488,7 @@ const sceneImages = {
     wilderness: "assets/images/wilderness_trail.jpg",
     troll: "assets/images/snake_cave_treasure_draft.jpg",
     cave: "assets/images/snake_cave_treasure_draft.jpg",
-    map: "assets/images/worldmap.png",
+    map: "assets/images/Map.jpg",
     fairy: "assets/images/secret_fairy_fountain.jpg",
     victory: "assets/images/final_boss_rodrigues_solo_1785946852711.jpg"
 };
@@ -1601,17 +1601,17 @@ const closeMapModalBtn = document.getElementById("close-map-modal-btn");
 const heroMapTokenEl = document.getElementById("hero-map-token");
 
 const mapWaypoints = {
-    village: { top: "74%", left: "22%" },
-    blacksmith: { top: "74%", left: "22%" },
-    forest: { top: "55%", left: "16%" },
-    goblin: { top: "55%", left: "16%" },
-    temple: { top: "32%", left: "24%" },
-    wilderness: { top: "75%", left: "46%" },
-    mountain: { top: "58%", left: "74%" },
-    cave: { top: "58%", left: "74%" },
-    watchtower: { top: "38%", left: "80%" },
-    lair: { top: "18%", left: "50%" },
-    fairy: { top: "40%", left: "46%" }
+    village: { top: "50%", left: "50%" },
+    blacksmith: { top: "50%", left: "50%" },
+    forest: { top: "32%", left: "50%" },
+    goblin: { top: "32%", left: "50%" },
+    temple: { top: "14%", left: "50%" },
+    wilderness: { top: "70%", left: "78%" },
+    mountain: { top: "72%", left: "28%" },
+    cave: { top: "72%", left: "28%" },
+    watchtower: { top: "85%", left: "18%" },
+    lair: { top: "48%", left: "15%" },
+    fairy: { top: "15%", left: "82%" }
 };
 
 let isTravelling = false;

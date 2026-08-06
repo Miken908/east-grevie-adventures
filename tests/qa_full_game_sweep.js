@@ -160,6 +160,19 @@ check("Intro image frame click listener bound", jsContent.includes('introImgFram
 check("Intro Lightbox button click listener bound", jsContent.includes('introLightboxBtnEl.addEventListener'));
 check("Main scene image frame click listener bound", jsContent.includes('imageFrameEl.addEventListener'));
 
+// 12. New Overworld Map Artwork & Location Pin Mapping
+console.log("\n--- TEST GROUP 12: New Overworld Map Artwork & Location Pin Mapping ---");
+check("Map modal uses new Map.jpg image asset", htmlContent.includes('src="assets/images/Map.jpg"'));
+check("Map asset dictionary uses Map.jpg in JS", jsContent.includes('map: "assets/images/Map.jpg"'));
+check("Village pin centered (50%, 50%) on map", htmlContent.includes('style="top: 50%; left: 50%;" data-location="village"'));
+check("Forest pin located north of village (32%, 50%)", htmlContent.includes('style="top: 32%; left: 50%;" data-location="forest"'));
+check("Temple pin located north of forest (14%, 50%)", htmlContent.includes('style="top: 14%; left: 50%;" data-location="temple"'));
+check("Wilderness pin located southeast of village (70%, 78%)", htmlContent.includes('style="top: 70%; left: 78%;" data-location="wilderness"'));
+check("Mountain pin located south/southwest (72%, 28%)", htmlContent.includes('style="top: 72%; left: 28%;" data-location="mountain"'));
+check("Watchtower pin located southwest (85%, 18%)", htmlContent.includes('style="top: 85%; left: 18%;" data-location="watchtower"'));
+check("Cat's Hall pin located west/northwest of watchtower (48%, 15%)", htmlContent.includes('style="top: 48%; left: 15%;" data-location="lair"'));
+check("Fairy Fountain pin located northeast corner (15%, 82%)", htmlContent.includes('style="top: 15%; left: 82%;" data-location="fairy"'));
+
 console.log("\n==================================================");
 console.log("📊 SUMMARY OF FULL QA & BALANCE SIMULATION RESULTS");
 console.log("==================================================");
