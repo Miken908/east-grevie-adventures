@@ -460,19 +460,19 @@ function gainExp(amount) {
         state.ap += 3; // +3 AP granted per level!
         state.expToNextLevel = Math.floor(100 * Math.pow(state.level, 1.4));
         state.maxHp = calculateMaxHp();
-        state.hp = state.maxHp;
-        addLog(`⭐ LEVEL UP! You reached Level ${state.level}! Granted +3 Attribute Points!`, "event");
+        state.hp = Math.min(state.maxHp, state.hp + 25);
+        addLog(`⭐ LEVEL UP! You reached Level ${state.level}! Granted +3 Attribute Points (+25 HP restored)!`, "event");
     }
     updateHUD();
     updateStatsModalUI();
 }
 
 const ENEMY_POOL = [
-    { name: "Wild Weasel", hp: 28, dmgLow: 6, dmgHigh: 12 },
-    { name: "Barn Owl", hp: 35, dmgLow: 8, dmgHigh: 14 },
-    { name: "Giant Garden Toad", hp: 24, dmgLow: 4, dmgHigh: 9 },
-    { name: "Alley Rat Rogue", hp: 38, dmgLow: 7, dmgHigh: 13 },
-    { name: "Feral Farm Cat", hp: 45, dmgLow: 9, dmgHigh: 15 }
+    { name: "Wild Weasel", hp: 38, dmgLow: 12, dmgHigh: 20 },
+    { name: "Barn Owl", hp: 45, dmgLow: 14, dmgHigh: 24 },
+    { name: "Giant Garden Toad", hp: 35, dmgLow: 10, dmgHigh: 18 },
+    { name: "Alley Rat Rogue", hp: 50, dmgLow: 15, dmgHigh: 26 },
+    { name: "Feral Farm Cat", hp: 60, dmgLow: 18, dmgHigh: 30 }
 ];
 
 // Image assets mapping
@@ -1133,9 +1133,9 @@ function goWilderness() {
     const levelBonus = state.level - 1;
     state.wilderness = {
         name: base.name,
-        hp: base.hp + levelBonus * 6,
-        dmgLow: base.dmgLow + levelBonus,
-        dmgHigh: base.dmgHigh + levelBonus,
+        hp: base.hp + levelBonus * 8,
+        dmgLow: base.dmgLow + levelBonus * 2,
+        dmgHigh: base.dmgHigh + levelBonus * 2,
         reward: 60 + levelBonus * 8,
     };
 
@@ -1185,11 +1185,7 @@ function attackWilderness() {
     updateHUD();
 
     if (state.hp <= 0) {
-        addLog(`💥 You were knocked unconscious by the ${w.name}!`, "alert");
-        addLog("🏥 Kind townspeople found you on the trail and brought you back to East Grevie Village to recover.", "event");
-        state.hp = Math.max(10, Math.floor(state.maxHp * 0.25));
-        updateHUD();
-        renderChoices([{ text: "Recover in Village Square", action: renderVillage }]);
+        gameOver(`You were slain by a ferocious ${w.name} on the Wilderness Trail.`);
         return;
     }
 
