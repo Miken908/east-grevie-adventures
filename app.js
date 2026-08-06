@@ -929,11 +929,20 @@ function reasonWithGoblin() {
         return;
     }
     state.inventory.splice(idx, 1);
-    addLog("You toss the Goblin your loaf of Bread. It snatches it and bolts into the trees!", "event");
+    addLog("🍞 You toss the Goblin Rogue your fresh loaf of Bread. Surprised by your unexpected mercy, he lowers his daggers!", "victory");
+    addLog("Goblin Rogue: 'You... share food with Grik? No human has ever shown Grik kindness! Take this scroll—I stole it from the forge, but I cannot read it anyway! And take my Lucky Charm!'", "event");
+    addLog("📜 You obtained the STOLEN BLACKSMITH BLUEPRINT from the Goblin Rogue!", "event");
+    addLog("🍀 You obtained the GOBLIN LUCKY CHARM (+2 LCK)!", "victory");
     state.goblinDefeated = true;
     state.goblinSpared = true;
-    addScore(100);
+    if (!state.inventory.includes("Stolen Blacksmith Blueprint")) {
+        state.inventory.push("Stolen Blacksmith Blueprint");
+    }
+    state.inventory.push("Goblin Lucky Charm");
+    state.lck += 2;
+    addScore(150);
     updateHUD();
+    updateStatsModalUI();
     renderChoices([{ text: "Continue through Forest", action: renderForest }]);
 }
 
@@ -979,27 +988,47 @@ function renderWatchtower() {
     sfx.playMusic("forest");
     setScene("watchtower", "OLD WATCHTOWER");
     clearLog();
-    addLog("An ancient stone watchtower stands guard over the cliffside ravine, its weathered timber gate broken open.");
+    addLog("An ancient stone watchtower stands guard over the cliffside ravine, its weathered timber gates broken open.");
 
     if (state.knightFreed) {
-        addLog("The watchtower is empty and silent. Sir Johan already rides free.");
+        addLog("The watchtower is empty and silent. Sir Johan rides free at your side, ready for the final battle at Cat's Hall.");
         renderChoices([{ text: "Return to Mountain Pass", action: renderMountain }]);
         return;
     }
 
-    addLog("Inside, bound in iron chains against a stone pillar, stands the brave Knight - Sir Johan.");
+    addLog("Inside, bound in heavy blood-iron chains against a stone pillar, stands Sir Johan, former Commander of the Royal Guard.", "alert");
+    addLog("Sir Johan: 'Greetings, traveler... Cat Rodrigues's shadowy lieutenants ambushed me and bound me here in dark blood-iron chains.'", "event");
+
     renderChoices([
-        { text: "1. Free the Knight", action: freeKnight },
-        { text: "2. Leave him chained and go", action: renderMountain }
+        { text: "1. Shatter chains & free Sir Johan", action: freeKnight },
+        { text: "2. Ask Sir Johan why he was chained", action: askKnightLore },
+        { text: "3. Leave him chained for now & return", action: renderMountain }
+    ]);
+}
+
+function askKnightLore() {
+    sfx.playClick();
+    clearLog();
+    addLog("Sir Johan: 'I stood against Rodrigues when he brought dark shadows to East Grevie and abducted Princess Anna. His sorcerers bound me in blood-iron.'", "event");
+    addLog("Sir Johan reveals a secret tactic: 'Listen carefully! In Cat's Hall, Rodrigues hides behind a shadow barrier. When his eyes glow crimson, raise your shield immediately to deflect his dark pounce!'", "victory");
+
+    renderChoices([
+        { text: "1. Shatter chains & free Sir Johan", action: freeKnight },
+        { text: "2. Return to Mountain Pass", action: renderMountain }
     ]);
 }
 
 function freeKnight() {
-    sfx.playClick();
-    addLog("Sir Johan: 'My thanks, friend! I owe you a life-debt. If ever you face Rodrigues, call for me!'", "event");
+    sfx.playSlash();
+    addLog("⚔️ With a mighty strike, you shatter the blood-iron link-pin! Sir Johan steps free from the stone pillar!", "victory");
+    addLog("Sir Johan: 'My eternal thanks! Take my Royal Guard Crest (+3 Armor) to aid your protection. When you breach Cat's Hall, I shall strike at your side!'", "event");
     state.knightFreed = true;
-    addScore(75);
-    renderChoices([{ text: "Return to Mountain Pass", action: renderMountain }]);
+    state.inventory.push("Royal Guard Crest");
+    state.equipment.accessory = { name: "Royal Guard Crest", bonusArmor: 3 };
+    addScore(100);
+    updateHUD();
+    updateStatsModalUI();
+    renderChoices([{ text: "Return to Mountain Pass with Sir Johan", action: renderMountain }]);
 }
 
 function searchCave() {
@@ -1363,12 +1392,59 @@ function winGame() {
     if (victoryModalEl) victoryModalEl.classList.remove("hidden");
 
     renderChoices([
-        { text: "🏆 Play Again for High Score", action: () => {
-            if (victoryModalEl) victoryModalEl.classList.add("hidden");
-            narrator.stop();
-            restartGame();
-        }}
+        { text: "🏰 Return to Main Menu", action: exitToMainMenu }
     ]);
+}
+
+function exitToMainMenu() {
+    narrator.stop();
+    state.str = 3;
+    state.agi = 3;
+    state.end = 3;
+    state.lck = 3;
+    state.gold = 50;
+    state.ap = 0;
+    state.level = 1;
+    state.exp = 0;
+    state.expToNextLevel = 100;
+    state.score = 0;
+    state.inventory = ["Bread"];
+    state.equipment = {
+        weapon: { name: "Wooden Sword", bonusStr: 0, bonusMinDmg: 8, bonusMaxDmg: 15 },
+        shield: { name: "Wooden Shield", bonusArmor: 5, bonusEnd: 0 },
+        armor: { name: "Traveler's Tunic", bonusArmor: 1, bonusAgi: 0 },
+        accessory: null
+    };
+    state.blueprintReturned = false;
+    state.maxHp = calculateMaxHp();
+    state.hp = state.maxHp;
+    state.hasSword = false;
+    state.hasKey = false;
+    state.goblinDefeated = false;
+    state.stumpSearched = false;
+    state.caveSearched = false;
+    state.goblinSpared = false;
+    state.knightFreed = false;
+    state.knightAllyUsed = false;
+    state.hasIronShield = false;
+    state.goblinHp = 35;
+    state.dragonHp = 120;
+    state.trollHp = 60;
+    state.wilderness = null;
+    state.fairyVisited = false;
+    updateHUD();
+    updateStatsModalUI();
+
+    if (typeof statsModalEl !== 'undefined' && statsModalEl) statsModalEl.classList.add("hidden");
+    if (typeof mapModalEl !== 'undefined' && mapModalEl) mapModalEl.classList.add("hidden");
+    if (typeof galleryModalEl !== 'undefined' && galleryModalEl) galleryModalEl.classList.add("hidden");
+    if (typeof creditsModalEl !== 'undefined' && creditsModalEl) creditsModalEl.classList.add("hidden");
+    if (typeof nameModalEl !== 'undefined' && nameModalEl) nameModalEl.classList.add("hidden");
+    const vModal = document.getElementById("victory-modal");
+    if (vModal) vModal.classList.add("hidden");
+
+    const mMenu = document.getElementById("main-menu-modal");
+    if (mMenu) mMenu.classList.remove("hidden");
 }
 
 function restartGame() {
@@ -1617,11 +1693,7 @@ if (victoryNarrateBtnEl) {
 
 if (victoryRestartBtnEl) {
     victoryRestartBtnEl.addEventListener("click", () => {
-        const vModal = document.getElementById("victory-modal");
-        if (vModal) vModal.classList.add("hidden");
-        if (victoryLoreCardEl) victoryLoreCardEl.classList.remove("speaking");
-        narrator.stop();
-        restartGame();
+        exitToMainMenu();
     });
 }
 
@@ -1658,8 +1730,8 @@ if (soundBtnEl) {
 
 if (resetBtnEl) {
     resetBtnEl.addEventListener("click", () => {
-        if (confirm("Restart game from beginning?")) {
-            restartGame();
+        if (confirm("Exit to main menu?")) {
+            exitToMainMenu();
         }
     });
 }

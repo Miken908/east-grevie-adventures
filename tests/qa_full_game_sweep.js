@@ -119,7 +119,7 @@ check("Whispering Forest lore modernized for emerald canopy", jsContent.includes
 check("Blacksmith lore modernized for forge hearth heat", jsContent.includes("heat of the forge hearth radiates"));
 check("Temple Sanctum lore modernized for high vaulted arches", jsContent.includes("Golden rays beam through high vaulted arches"));
 check("Cat's Hall lore modernized for crimson braziers", jsContent.includes("Crimson braziers cast dramatic shadows"));
-check("Old Watchtower lore updated for standing knight in chains", jsContent.includes("stands the brave Knight - Sir Johan"));
+check("Old Watchtower lore updated for Sir Johan in blood-iron chains", jsContent.includes("Sir Johan, former Commander of the Royal Guard"));
 check("Mountain Cave lore updated for torch illumination", jsContent.includes("Torches illuminate the damp stone cavern"));
 check("Mountain Cave enemy updated to Mountain Snake", jsContent.includes("Mountain Snake"));
 check("Cat's Hall location title present", jsContent.includes("CAT'S HALL"));
