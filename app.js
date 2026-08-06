@@ -1396,9 +1396,9 @@ function renderGoblinTurn() {
     addLog(`Goblin HP: ${state.goblinHp} | Your HP: ${state.hp}`);
     renderChoices([
         { text: "1. Attack Goblin with weapon", action: attackGoblin },
-        { text: "2. Drink Healing Potion", action: usePotionGoblin },
-        { text: "3. Flee to forest path", action: renderForest },
-        { text: "4. Try to reason with the Goblin (requires Bread)", action: reasonWithGoblin }
+        { text: "2. Try to reason with the Goblin (requires Bread)", action: reasonWithGoblin },
+        { text: "3. Drink Healing Potion", action: usePotionGoblin },
+        { text: "4. Flee to forest path", action: renderForest }
     ]);
 }
 
