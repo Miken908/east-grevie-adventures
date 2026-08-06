@@ -145,7 +145,7 @@ check("Victory Lightbox button present in HTML (#victory-lightbox-btn)", htmlCon
 
 // 10. Verify Intro Panel Redesign & Intro Artwork (Regression Prevention)
 console.log("\n--- TEST GROUP 10: Intro Panel Redesign & Intro Artwork ---");
-check("Intro artwork image present in name modal HTML", htmlContent.includes('src="assets/images/abduction_of_princess_anna.jpg"'));
+check("Intro artwork image present in name modal HTML", htmlContent.includes('src="assets/images/abduction_of_princess_elsa.jpg"'));
 check("Intro image frame container present (#intro-image-frame-container)", htmlContent.includes('id="intro-image-frame-container"'));
 check("Intro Lightbox button present in HTML (#intro-lightbox-btn)", htmlContent.includes('id="intro-lightbox-btn"'));
 

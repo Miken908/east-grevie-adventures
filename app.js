@@ -2395,7 +2395,7 @@ const introLightboxBtnEl = document.getElementById("intro-lightbox-btn");
 if (introImgFrameEl) {
     introImgFrameEl.addEventListener("click", () => {
         if (introImgEl) {
-            openLightbox(introImgEl.src, "THE ABDUCTION OF PRINCESS ANNA");
+            openLightbox(introImgEl.src, "THE ABDUCTION OF PRINCESS ELSA");
         }
     });
 }
@@ -2403,7 +2403,7 @@ if (introImgFrameEl) {
 if (introLightboxBtnEl) {
     introLightboxBtnEl.addEventListener("click", () => {
         if (introImgEl) {
-            openLightbox(introImgEl.src, "THE ABDUCTION OF PRINCESS ANNA");
+            openLightbox(introImgEl.src, "THE ABDUCTION OF PRINCESS ELSA");
         }
     });
 }
