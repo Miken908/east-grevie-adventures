@@ -612,6 +612,20 @@ function saveAchievementsToStorage() {
     }
 }
 
+function resetAchievementsData() {
+    state.achievements = {};
+    state.killCounts = {};
+    try {
+        localStorage.removeItem("east_grevie_achievements");
+        localStorage.removeItem("east_grevie_kill_counts");
+    } catch (e) {
+        console.warn("Could not reset achievements storage:", e);
+    }
+    updateAchievementsUI();
+    addLog("🏆 All trophy and kill count progress has been reset!", "event");
+    sfx.playClick();
+}
+
 function recordWildernessKill(enemyName) {
     if (!state.killCounts) state.killCounts = {};
     state.killCounts[enemyName] = (state.killCounts[enemyName] || 0) + 1;
@@ -2868,6 +2882,15 @@ if (achievementsModalEl) {
     achievementsModalEl.addEventListener("click", (e) => {
         if (e.target === achievementsModalEl) {
             achievementsModalEl.classList.add("hidden");
+        }
+    });
+}
+
+const resetAchievementsBtnEl = document.getElementById("reset-achievements-btn");
+if (resetAchievementsBtnEl) {
+    resetAchievementsBtnEl.addEventListener("click", () => {
+        if (confirm("Are you sure you want to reset all 15 trophies and kill counts? This action cannot be undone.")) {
+            resetAchievementsData();
         }
     });
 }

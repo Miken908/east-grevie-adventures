@@ -272,6 +272,8 @@ check("unlockAchievement function defined in JS", jsContent.includes('function u
 check("recordWildernessKill function defined in JS", jsContent.includes('function recordWildernessKill('));
 check("showAchievementToast function defined in JS", jsContent.includes('function showAchievementToast('));
 check("updateAchievementsUI function defined in JS", jsContent.includes('function updateAchievementsUI()'));
+check("resetAchievementsData function defined in JS", jsContent.includes('function resetAchievementsData()'));
+check("Reset trophies button present in HTML (#reset-achievements-btn)", htmlContent.includes('id="reset-achievements-btn"'));
 check("Achievement & kill storage persistence functions defined in JS", jsContent.includes('loadAchievementsFromStorage()') && jsContent.includes('saveAchievementsToStorage()'));
 
 console.log("\n==================================================");
