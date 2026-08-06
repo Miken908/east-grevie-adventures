@@ -1009,7 +1009,7 @@ function renderWatchtower() {
 function askKnightLore() {
     sfx.playClick();
     clearLog();
-    addLog("Sir Johan: 'I stood against Rodrigues when he brought dark shadows to East Grevie and abducted Princess Anna. His sorcerers bound me in blood-iron.'", "event");
+    addLog("Sir Johan: 'I stood against Rodrigues when he brought dark shadows to East Grevie and abducted Princess Elsa. His sorcerers bound me in blood-iron.'", "event");
     addLog("Sir Johan reveals a secret tactic: 'Listen carefully! In Cat's Hall, Rodrigues hides behind a shadow barrier. When his eyes glow crimson, raise your shield immediately to deflect his dark pounce!'", "victory");
 
     renderChoices([
@@ -1286,14 +1286,11 @@ function attackDragon() {
     // Check if Cat was glowing crimson eyes
     if (state.catEyesGlowing) {
         state.catEyesGlowing = false;
-        const lethalDmg = 120;
-        state.hp -= lethalDmg;
-        addLog(`💥 LETHAL SHADOW POUNCE! You failed to raise your shield! Rodrigues leaps through the shadows and pounces with unblocked killer force for ${lethalDmg} DAMAGE!`, "alert");
+        state.hp = 0;
         updateHUD();
-        if (state.hp <= 0) {
-            gameOver("You were slain by Lord Rodrigues's unblocked Crimson Shadow Pounce! (Tip: Raise your shield when his eyes glow!)");
-            return;
-        }
+        addLog("💥 INSTANT KILL! You failed to raise your shield! Rodrigues leaps through the shadows and slays you instantly with a lethal Crimson Shadow Pounce!", "alert");
+        gameOver("You were slain instantly by Lord Rodrigues's unblocked Crimson Shadow Pounce! (Tip: Raise your shield when his eyes glow!)");
+        return;
     } else {
         // Cat counter attack or charge crimson eyes
         if (Math.random() < 0.45) {
@@ -1363,14 +1360,11 @@ function useHealDragon() {
     // Check if Cat was glowing crimson eyes
     if (state.catEyesGlowing) {
         state.catEyesGlowing = false;
-        const lethalDmg = 120;
-        state.hp -= lethalDmg;
-        addLog(`💥 LETHAL SHADOW POUNCE! While you drank a potion, Rodrigues pounced with unblocked killer force for ${lethalDmg} DAMAGE!`, "alert");
+        state.hp = 0;
         updateHUD();
-        if (state.hp <= 0) {
-            gameOver("You were slain by Lord Rodrigues's unblocked Crimson Shadow Pounce! (Tip: Raise your shield when his eyes glow!)");
-            return;
-        }
+        addLog("💥 INSTANT KILL! While you drank a potion, Rodrigues pounces with lethal unblocked force and slays you instantly!", "alert");
+        gameOver("You were slain instantly by Lord Rodrigues's unblocked Crimson Shadow Pounce! (Tip: Raise your shield when his eyes glow!)");
+        return;
     }
 
     renderDragonTurn();
@@ -1407,9 +1401,9 @@ function winGame() {
     addLog("============================================================", "victory");
     addLog("           VICTORY! THE KINGDOM IS SAVED!", "victory");
     addLog("============================================================", "victory");
-    addLog("You vanquished Rodrigues the Shadow Cat, rescued Princess Anna, and saved East Grevie!", "event");
+    addLog("You vanquished Rodrigues the Shadow Cat, rescued Princess Elsa, and saved East Grevie!", "event");
 
-    let speechText = `Sunlight breaks over the Village of East Grevie as ${state.name} returns triumphant! With Princess Anna rescued and Lord Rodrigues vanquished, peace is restored to the realm.`;
+    let speechText = `Sunlight breaks over the Village of East Grevie as ${state.name} returns triumphant! With Princess Elsa rescued and Lord Rodrigues vanquished, peace is restored to the realm.`;
     if (state.knightFreed) {
         speechText += " Sir Johan rides proud at your flank, his sworn oath honored.";
         addLog("Sir Johan rides beside you into the Citadel, his life-debt repaid in blood and fire.", "event");
@@ -1557,7 +1551,7 @@ if (narrateBtnEl) {
         const heroName = nameInputEl.value.trim() || "Sir Eldrin";
         state.name = heroName;
         if (introLoreCardEl) introLoreCardEl.classList.add("speaking");
-        narrator.speak(`Welcome, ${heroName}! Shadows fall over the Village of East Grevie. The ruthless Cat Rodrigues has abducted Princess Anna to his cursed lair. Only the Legendary Sunblade can pierce the beast's thick fur. Hero, your quest begins now...`);
+        narrator.speak(`Welcome, ${heroName}! Shadows fall over the Village of East Grevie. The ruthless Cat Rodrigues has abducted Princess Elsa to his cursed lair. Only the Legendary Sunblade can pierce the beast's thick fur. Hero, your quest begins now...`);
     });
 }
 
@@ -1717,7 +1711,7 @@ const victoryLoreCardEl = document.querySelector(".victory-lore-card");
 if (victoryImgFrameEl) {
     victoryImgFrameEl.addEventListener("click", () => {
         if (victoryImgEl) {
-            openLightbox(victoryImgEl.src, "EAST GREVIE VILLAGE - PRINCESS ANNA RESCUED");
+            openLightbox(victoryImgEl.src, "EAST GREVIE VILLAGE - PRINCESS ELSA RESCUED");
         }
     });
 }
@@ -1725,7 +1719,7 @@ if (victoryImgFrameEl) {
 if (victoryLightboxBtnEl) {
     victoryLightboxBtnEl.addEventListener("click", () => {
         if (victoryImgEl) {
-            openLightbox(victoryImgEl.src, "EAST GREVIE VILLAGE - PRINCESS ANNA RESCUED");
+            openLightbox(victoryImgEl.src, "EAST GREVIE VILLAGE - PRINCESS ELSA RESCUED");
         }
     });
 }

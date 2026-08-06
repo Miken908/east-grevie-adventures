@@ -198,7 +198,7 @@ def victory(player):
     print(f"\n{MAGENTA}{'='*60}")
     print("           VICTORY! THE KINGDOM IS SAVED!")
     print(f"{'='*60}{RESET}")
-    slow_print(f"{GREEN}You vanquished the terror of the realm, rescued Princess Anna,")
+    slow_print(f"{GREEN}You vanquished the terror of the realm, rescued Princess Elsa,")
     slow_print(f"and returned to the Citadel to live in legend forever!{RESET}\n")
 
     if player.knight_freed:
@@ -218,7 +218,7 @@ def intro(player):
     clear_screen()
     print_banner()
     slow_print("The Village of East Grevie is in shadow.")
-    slow_print("The dreaded Cat Rodrigues has captured Princess Anna and fled to Cat's Hall.")
+    slow_print("The dreaded Cat Rodrigues has captured Princess Elsa and fled to Cat's Hall.")
     slow_print("Without the Legendary Sunblade, no mortal weapon can pierce the beast's fur.")
     slow_print("Your quest begins at the crossroad outside the quiet Village of East Grevie...\n")
     
@@ -577,7 +577,7 @@ def dragons_lair(player):
     player.location = "lair"
     player.show_status()
     slow_print("🐾 CAT'S HALL")
-    slow_print("Shadows stretch across the grand stone hall. Atop a velvet cushion throne lies Princess Anna in chains.")
+    slow_print("Shadows stretch across the grand stone hall. Atop a velvet cushion throne lies Princess Elsa in chains.")
     slow_print(f"{RED}Lord Rodrigues the Vile Shadow Cat uncoils with an intimidating hiss!{RESET}")
     
     if not player.has_sword:
