@@ -112,6 +112,7 @@ check("Lvl 3 Armor with Iron Shield & +2 END = 14.0 Mitigation", lvl3Armor === 1
 console.log("\n--- TEST GROUP 7: Mouse Realm Theme & Lore Integrity ---");
 check("Intro lore text contains 'Village of East Grevie'", htmlContent.includes("Village of East Grevie"));
 check("Intro lore text contains 'Cat Rodrigues'", htmlContent.includes("Cat Rodrigues"));
+check("Intro lore text contains 'his cursed lair'", htmlContent.includes("his cursed lair"));
 check("Intro lore text contains 'thick fur'", htmlContent.includes("thick fur"));
 check("Mountain Cave enemy updated to Mountain Snake", jsContent.includes("Mountain Snake"));
 check("Cat's Hall location title present", jsContent.includes("CAT'S HALL"));
@@ -123,6 +124,7 @@ check("Generic RPG Skeleton Warrior removed from wilderness", !jsContent.include
 // 8. Verify Fullscreen Lightbox & UI Integrity (Regression Prevention)
 console.log("\n--- TEST GROUP 8: Fullscreen Lightbox & UI Integrity ---");
 check("Lightbox Modal element present in HTML (#lightbox-modal)", htmlContent.includes('id="lightbox-modal"'));
+check("Lightbox close X button removed for uncluttered view", !htmlContent.includes('id="lightbox-close-btn"'));
 check("Zoom hint badge present on scene image frame", htmlContent.includes('zoom-hint-badge'));
 check("Lightbox click handler binds declared sceneImgEl element", jsContent.includes("openLightbox("));
 check("Map title purged of Overworld prefix", htmlContent.includes("MAP OF EAST GREVIE") && !htmlContent.includes("OVERWORLD MAP"));
