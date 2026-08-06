@@ -108,33 +108,37 @@ body {
 
 .arcade-btn-sm {
     font-family: var(--font-display);
-    font-weight: 600;
-    background: #1a202c;
+    font-weight: 700;
+    background: linear-gradient(180deg, #242a38, #141822);
     border: 2px solid var(--gold-primary);
-    color: var(--gold-bright);
-    font-size: 0.72rem;
+    color: #ffffff;
+    font-size: 0.76rem;
     letter-spacing: 0.5px;
-    padding: 6px 12px;
+    padding: 8px 14px;
     cursor: pointer;
     border-radius: 4px;
     transition: all 0.15s ease;
+    text-shadow: 0 1px 2px #000000;
 }
 
 .arcade-btn-sm:hover {
     background: var(--gold-primary);
+    border-color: var(--gold-bright);
     color: #0c0e16;
-    box-shadow: 0 0 10px var(--gold-glow);
+    box-shadow: 0 0 12px var(--gold-glow);
+    text-shadow: none;
 }
 
 .arcade-btn-sm.warning {
+    background: linear-gradient(180deg, #381a1d, #1f0b0d);
     border-color: var(--crimson-alert);
-    color: var(--crimson-alert);
+    color: #ffffff;
 }
 
 .arcade-btn-sm.warning:hover {
     background: var(--crimson-alert);
-    color: #fff;
-    box-shadow: 0 0 10px rgba(230, 57, 70, 0.5);
+    color: #ffffff;
+    box-shadow: 0 0 12px rgba(230, 57, 70, 0.6);
 }
 
 /* Status HUD */
@@ -372,25 +376,26 @@ body {
 
 .arcade-btn {
     font-family: var(--font-display);
-    font-weight: 600;
+    font-weight: 700;
     background: linear-gradient(180deg, #242a38, #141822);
     border: 2px solid var(--gold-primary);
-    color: var(--text-ivory);
-    padding: 14px 14px;
+    color: #ffffff;
+    padding: 14px 16px;
     font-size: 0.85rem;
-    letter-spacing: 0.3px;
+    letter-spacing: 0.5px;
     line-height: 1.35;
     cursor: pointer;
     border-radius: 6px;
-    text-align: left;
+    text-align: center;
     transition: all 0.15s ease;
     box-shadow: 0 4px 0 #0a0c12;
+    text-shadow: 0 1px 2px #000000;
 }
 
 .arcade-btn:hover {
-    background: linear-gradient(180deg, #363e52, #1f2534);
+    background: linear-gradient(180deg, #384259, #222938);
     border-color: var(--gold-bright);
-    color: var(--gold-bright);
+    color: #ffffff;
     transform: translateY(-2px);
     box-shadow: 0 6px 0 #0a0c12, 0 0 14px var(--gold-glow);
 }
@@ -401,16 +406,46 @@ body {
 }
 
 .arcade-btn.primary {
-    background: linear-gradient(180deg, #2a1840, #140a20);
-    border-color: var(--neon-magenta);
-    color: var(--neon-magenta);
+    background: linear-gradient(180deg, #352b18, #1c150a);
+    border: 2px solid var(--gold-bright);
+    color: #ffffff;
     text-align: center;
 }
 
 .arcade-btn.primary:hover {
-    background: var(--neon-magenta);
-    color: #fff;
-    box-shadow: 0 0 15px var(--neon-magenta);
+    background: var(--gold-primary);
+    color: #0c0e16;
+    border-color: var(--gold-bright);
+    box-shadow: 0 0 16px var(--gold-glow);
+    text-shadow: none;
+}
+
+.arcade-btn.secondary {
+    background: linear-gradient(180deg, #222a36, #121720);
+    border: 2px solid var(--gold-primary);
+    color: #ffffff;
+    text-align: center;
+}
+
+.arcade-btn.secondary:hover {
+    background: linear-gradient(180deg, #323d4f, #1e2633);
+    border-color: var(--gold-bright);
+    color: #ffffff;
+    box-shadow: 0 0 14px var(--gold-glow);
+}
+
+.arcade-btn.warning {
+    background: linear-gradient(180deg, #3a181c, #1e0a0d);
+    border: 2px solid var(--crimson-alert);
+    color: #ffffff;
+    text-align: center;
+}
+
+.arcade-btn.warning:hover {
+    background: var(--crimson-alert);
+    color: #ffffff;
+    border-color: #ff7373;
+    box-shadow: 0 0 16px rgba(230, 57, 70, 0.7);
 }
 
 /* Discrete Retro Modal Overlay */
@@ -497,23 +532,6 @@ body {
 }
 
 /* Discrete Start Button */
-.arcade-btn.primary {
-    background: linear-gradient(180deg, #242938, #161924);
-    border: 2px solid var(--gold-primary);
-    color: var(--gold-bright);
-    text-align: center;
-    padding: 14px;
-    font-size: 0.75rem;
-    letter-spacing: 1px;
-    border-radius: 6px;
-}
-
-.arcade-btn.primary:hover {
-    background: var(--gold-primary);
-    color: #12141d;
-    box-shadow: 0 0 15px var(--gold-glow);
-}
-
 /* Redesigned Intro Start Modal */
 .intro-box {
     max-width: 920px;
@@ -892,8 +910,11 @@ body {
 }
 
 .map-modal-actions .arcade-btn-sm {
-    font-size: 0.76rem;
-    padding: 10px 16px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    padding: 10px 18px;
+    color: #ffffff;
+    text-shadow: 0 1px 2px #000000;
 }
 
 /* Animated Hero Map Token */
