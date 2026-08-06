@@ -131,7 +131,7 @@ check("Map title purged of Overworld prefix", htmlContent.includes("MAP OF EAST 
 console.log("\n--- TEST GROUP 9: Victory Panel Redesign & Victory Artwork ---");
 check("Victory artwork image present in victory modal HTML", htmlContent.includes('src="assets/images/victory.jpg"'));
 check("Victory image frame container present (#victory-image-frame-container)", htmlContent.includes('id="victory-image-frame-container"'));
-check("Victory art overlay badge present in HTML", htmlContent.includes('victory-art-badge'));
+check("Victory art overlay badge removed for clean artwork view", !htmlContent.includes('victory-art-badge'));
 check("Victory Lightbox handler bound in JS", jsContent.includes("openVictoryLightbox"));
 check("Victory Lightbox button present in HTML (#victory-lightbox-btn)", htmlContent.includes('id="victory-lightbox-btn"'));
 

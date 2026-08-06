@@ -1315,18 +1315,18 @@ function winGame() {
     addLog("============================================================", "victory");
     addLog("You vanquished Rodrigues the Shadow Cat, rescued Princess Anna, and saved East Grevie!", "event");
 
-    let speechText = `Victory! Hear ye, people of East Grevie! The hero ${state.name} has vanquished Rodrigues the Shadow Cat and rescued Princess Anna from Cat's Hall!`;
+    let speechText = `Sunlight breaks over the Village of East Grevie as ${state.name} returns triumphant! With Princess Anna rescued and Lord Rodrigues vanquished, peace is restored to the realm.`;
     if (state.knightFreed) {
-        speechText += " Sir Johan rides beside you into the Citadel, his life-debt repaid in honor!";
+        speechText += " Sir Johan rides proud at your flank, his sworn oath honored.";
         addLog("Sir Johan rides beside you into the Citadel, his life-debt repaid in blood and fire.", "event");
     }
     if (state.goblinSpared) {
-        speechText += " Word spreads of the noble mercy you showed the Goblin Rogue.";
+        speechText += " Whispers of your wisdom and mercy echo through the Whispering Forest.";
         addLog("Word spreads of the mercy you showed the Goblin Rogue in the Whispering Forest.", "event");
     } else if (state.goblinDefeated) {
         addLog("Tales of the Goblin Rogue you slew in the misty forest travel far and wide.", "event");
     }
-    speechText += ` Peace has returned to the Realm, and ${state.name} shall be remembered forever as ${rating}!`;
+    speechText += ` Your courage will echo through legend forever as the ${rating}!`;
 
     addLog(`FINAL SCORE: ${state.score} PTS | RATING: ${rating}`, "victory");
 
