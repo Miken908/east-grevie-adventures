@@ -205,6 +205,17 @@ check("Story log height aligned to 460px", cssContent.includes("height: 460px;")
 check("Pixelated image-rendering removed for HD artwork quality", !cssContent.includes("image-rendering: pixelated;"));
 check("Intro banner frame height expanded to 480px", cssContent.includes("max-height: 480px;"));
 
+// 15. Ambient Environmental Audio Synthesizer
+console.log("\n--- TEST GROUP 15: Ambient Environmental Audio Synthesizer ---");
+check("playAmbient method implemented in SoundEffects class", jsContent.includes("playAmbient(locationKey)"));
+check("stopAmbient method implemented in SoundEffects class", jsContent.includes("stopAmbient()"));
+check("createNoiseBuffer pink noise generator defined", jsContent.includes("createNoiseBuffer(type"));
+check("Forest bird chirps generator implemented", jsContent.includes("startOccasionalBirdChirps()"));
+check("Forge sparks generator implemented", jsContent.includes("startOccasionalForgeSparks()"));
+check("Cavern water drips generator implemented", jsContent.includes("startOccasionalWaterDrips()"));
+check("Fairy glissando generator implemented", jsContent.includes("startFairyGlissando()"));
+check("setScene triggers playAmbient automatically", jsContent.includes("sfx.playAmbient(imageKey)"));
+
 console.log("\n==================================================");
 console.log("📊 SUMMARY OF FULL QA & BALANCE SIMULATION RESULTS");
 console.log("==================================================");

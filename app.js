@@ -248,6 +248,211 @@ class SoundEffects {
             this.musicTimer = null;
         }
         this.currentTrack = null;
+        this.currentAmbientLoc = null;
+        this.ambientSource = null;
+        this.ambientGain = null;
+        this.ambientTimer = null;
+    }
+
+    // --- Environmental Ambient SFX Generators ---
+    createNoiseBuffer(type = 'pink') {
+        if (!this.ctx) return null;
+        const bufferSize = this.ctx.sampleRate * 2;
+        const buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
+        const data = buffer.getChannelData(0);
+        let lastOut = 0.0;
+        for (let i = 0; i < bufferSize; i++) {
+            const white = Math.random() * 2 - 1;
+            if (type === 'pink') {
+                data[i] = (lastOut + (0.02 * white)) / 1.02;
+                lastOut = data[i];
+                data[i] *= 3.5;
+            } else {
+                data[i] = white;
+            }
+        }
+        return buffer;
+    }
+
+    playAmbient(locationKey) {
+        if (this.currentAmbientLoc === locationKey) return;
+        this.stopAmbient();
+        this.currentAmbientLoc = locationKey;
+        if (!this.enabled) return;
+
+        this.init();
+
+        const buffer = this.createNoiseBuffer(locationKey === 'forest' || locationKey === 'village' ? 'pink' : 'white');
+        if (!buffer) return;
+
+        try {
+            const noiseSource = this.ctx.createBufferSource();
+            noiseSource.buffer = buffer;
+            noiseSource.loop = true;
+
+            const filter = this.ctx.createBiquadFilter();
+            const gain = this.ctx.createGain();
+
+            switch (locationKey) {
+                case 'village':
+                    filter.type = 'bandpass';
+                    filter.frequency.value = 800;
+                    filter.Q.value = 1.2;
+                    gain.gain.setValueAtTime(0.008, this.ctx.currentTime);
+                    break;
+                case 'forest':
+                case 'wilderness':
+                    filter.type = 'lowpass';
+                    filter.frequency.value = 600;
+                    gain.gain.setValueAtTime(0.012, this.ctx.currentTime);
+                    this.startOccasionalBirdChirps();
+                    break;
+                case 'blacksmith':
+                    filter.type = 'lowpass';
+                    filter.frequency.value = 350;
+                    gain.gain.setValueAtTime(0.015, this.ctx.currentTime);
+                    this.startOccasionalForgeSparks();
+                    break;
+                case 'mountain':
+                case 'watchtower':
+                    filter.type = 'bandpass';
+                    filter.frequency.value = 450;
+                    filter.Q.value = 2.0;
+                    gain.gain.setValueAtTime(0.018, this.ctx.currentTime);
+                    break;
+                case 'cave':
+                case 'troll':
+                    filter.type = 'lowpass';
+                    filter.frequency.value = 250;
+                    gain.gain.setValueAtTime(0.015, this.ctx.currentTime);
+                    this.startOccasionalWaterDrips();
+                    break;
+                case 'temple':
+                    filter.type = 'bandpass';
+                    filter.frequency.value = 550;
+                    filter.Q.value = 3.0;
+                    gain.gain.setValueAtTime(0.010, this.ctx.currentTime);
+                    break;
+                case 'fairy':
+                    filter.type = 'highpass';
+                    filter.frequency.value = 2000;
+                    gain.gain.setValueAtTime(0.006, this.ctx.currentTime);
+                    this.startFairyGlissando();
+                    break;
+                case 'lair':
+                    filter.type = 'lowpass';
+                    filter.frequency.value = 180;
+                    gain.gain.setValueAtTime(0.020, this.ctx.currentTime);
+                    break;
+                default:
+                    filter.type = 'lowpass';
+                    filter.frequency.value = 400;
+                    gain.gain.setValueAtTime(0.008, this.ctx.currentTime);
+                    break;
+            }
+
+            noiseSource.connect(filter);
+            filter.connect(gain);
+            gain.connect(this.ctx.destination);
+
+            noiseSource.start();
+            this.ambientSource = noiseSource;
+            this.ambientGain = gain;
+        } catch (e) {}
+    }
+
+    stopAmbient() {
+        if (this.ambientTimer) {
+            clearInterval(this.ambientTimer);
+            this.ambientTimer = null;
+        }
+        if (this.ambientSource) {
+            try {
+                this.ambientSource.stop();
+                this.ambientSource.disconnect();
+            } catch (e) {}
+            this.ambientSource = null;
+        }
+        this.currentAmbientLoc = null;
+    }
+
+    startOccasionalBirdChirps() {
+        this.ambientTimer = setInterval(() => {
+            if (!this.enabled || this.currentAmbientLoc !== 'forest') return;
+            try {
+                const osc = this.ctx.createOscillator();
+                const gain = this.ctx.createGain();
+                osc.type = 'sine';
+                const startFreq = 2200 + Math.random() * 800;
+                osc.frequency.setValueAtTime(startFreq, this.ctx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(startFreq + 600, this.ctx.currentTime + 0.08);
+                gain.gain.setValueAtTime(0.004, this.ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.0001, this.ctx.currentTime + 0.12);
+                osc.connect(gain);
+                gain.connect(this.ctx.destination);
+                osc.start();
+                osc.stop(this.ctx.currentTime + 0.12);
+            } catch (e) {}
+        }, 4000 + Math.random() * 5000);
+    }
+
+    startOccasionalForgeSparks() {
+        this.ambientTimer = setInterval(() => {
+            if (!this.enabled || this.currentAmbientLoc !== 'blacksmith') return;
+            try {
+                const osc = this.ctx.createOscillator();
+                const gain = this.ctx.createGain();
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(1400, this.ctx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(300, this.ctx.currentTime + 0.05);
+                gain.gain.setValueAtTime(0.008, this.ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.0001, this.ctx.currentTime + 0.05);
+                osc.connect(gain);
+                gain.connect(this.ctx.destination);
+                osc.start();
+                osc.stop(this.ctx.currentTime + 0.05);
+            } catch (e) {}
+        }, 3500 + Math.random() * 3000);
+    }
+
+    startOccasionalWaterDrips() {
+        this.ambientTimer = setInterval(() => {
+            if (!this.enabled || (this.currentAmbientLoc !== 'cave' && this.currentAmbientLoc !== 'troll')) return;
+            try {
+                const osc = this.ctx.createOscillator();
+                const gain = this.ctx.createGain();
+                osc.type = 'sine';
+                const dripFreq = 1600 + Math.random() * 400;
+                osc.frequency.setValueAtTime(dripFreq, this.ctx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(dripFreq * 1.4, this.ctx.currentTime + 0.04);
+                gain.gain.setValueAtTime(0.006, this.ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.0001, this.ctx.currentTime + 0.15);
+                osc.connect(gain);
+                gain.connect(this.ctx.destination);
+                osc.start();
+                osc.stop(this.ctx.currentTime + 0.15);
+            } catch (e) {}
+        }, 3000 + Math.random() * 4000);
+    }
+
+    startFairyGlissando() {
+        this.ambientTimer = setInterval(() => {
+            if (!this.enabled || this.currentAmbientLoc !== 'fairy') return;
+            try {
+                const freq = 1200 + Math.random() * 1000;
+                const osc = this.ctx.createOscillator();
+                const gain = this.ctx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(freq, this.ctx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(freq * 1.5, this.ctx.currentTime + 0.25);
+                gain.gain.setValueAtTime(0.005, this.ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.0001, this.ctx.currentTime + 0.3);
+                osc.connect(gain);
+                gain.connect(this.ctx.destination);
+                osc.start();
+                osc.stop(this.ctx.currentTime + 0.3);
+            } catch (e) {}
+        }, 2500 + Math.random() * 2000);
     }
 }
 
@@ -620,6 +825,9 @@ function setScene(imageKey, locationText) {
         } else {
             mapPinsOverlayEl.classList.add("hidden");
         }
+    }
+    if (typeof sfx !== 'undefined') {
+        sfx.playAmbient(imageKey);
     }
 }
 
@@ -1653,6 +1861,11 @@ if (soundBtnEl) {
     soundBtnEl.addEventListener("click", () => {
         sfx.enabled = !sfx.enabled;
         soundBtnEl.textContent = `SFX: ${sfx.enabled ? "ON" : "OFF"}`;
+        if (sfx.enabled) {
+            sfx.playAmbient(state.location || "village");
+        } else {
+            sfx.stopAmbient();
+        }
     });
 }
 
