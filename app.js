@@ -704,7 +704,7 @@ function updateAchievementsUI() {
         if (count >= 15) {
             paladinCardEl.classList.remove("locked");
             paladinCardEl.classList.add("unlocked");
-            paladinStatusEl.textContent = "👑 NG+ UNLOCKED | +3 AP & Sigil";
+            paladinStatusEl.textContent = "Sunfire Sigil (+2 All Stats) | High Defense";
         } else {
             paladinCardEl.classList.add("locked");
             paladinCardEl.classList.remove("unlocked");
@@ -2157,7 +2157,7 @@ document.querySelectorAll(".class-card").forEach(card => {
                 creationClassBadgeEl.textContent = "ROYAL ALCHEMIST";
             } else if (heroClass === "paladin") {
                 creationPortraitImgEl.src = "assets/images/portrait_paladin.jpg";
-                creationClassBadgeEl.textContent = "👑 SUNBLADE PALADIN (NG+)";
+                creationClassBadgeEl.textContent = "SUNBLADE PALADIN";
             }
         }
     });
@@ -2199,7 +2199,7 @@ startBtnEl.addEventListener("click", () => {
         state.agi = 4;
         state.lck = 4;
         state.gold = 300;
-        state.statPoints = 3;
+        state.ap = 3;
         state.equipment = {
             weapon: { name: "Sunfire Blade", bonusStr: 2, bonusMinDmg: 16, bonusMaxDmg: 26 },
             shield: { name: "Radiant Aegis", bonusArmor: 6, bonusEnd: 1 },
@@ -2796,7 +2796,7 @@ function updateStatsModalUI() {
     const heroClass = state.heroClass || "knight";
     if (statHeroClassBadgeEl) {
         if (heroClass === "knight") statHeroClassBadgeEl.textContent = "🛡️ ROYAL KNIGHT";
-        else if (heroClass === "paladin") statHeroClassBadgeEl.textContent = "👑 SUNBLADE PALADIN (NG+)";
+        else if (heroClass === "paladin") statHeroClassBadgeEl.textContent = "⚔️ SUNBLADE PALADIN";
         else if (heroClass === "ranger") statHeroClassBadgeEl.textContent = "🏹 WOODLAND RANGER";
         else if (heroClass === "alchemist") statHeroClassBadgeEl.textContent = "🧪 ROYAL ALCHEMIST";
     }
