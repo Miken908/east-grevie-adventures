@@ -222,7 +222,7 @@ def intro(player):
     slow_print("Without the Legendary Sunblade, no mortal weapon can pierce the beast's fur.")
     slow_print("Your quest begins at the crossroad outside the quiet Village of East Grevie...\n")
     
-    player.name = input("Enter your hero's name: ").strip() or "Sir Eldrin"
+    player.name = input("Enter your hero's name: ").strip() or "Sir Ario"
     print(f"\nWelcome, {BOLD}{player.name}{RESET}! Your journey begins now.")
     player.add_score(50)
     time.sleep(1)
@@ -241,14 +241,17 @@ def village_square(player):
 
     choice = input("\nSelect choice (1-5): ").strip()
     if choice == "1":
-        slow_print("\nElder: 'Brave adventurer! The Sunblade lies hidden inside The Temple Sanctum across the Whispering Forest.")
-        slow_print("Take this Silver Key. It unlocks the inner sanctum!'")
-        if "Silver Key" not in player.inventory:
-            player.inventory.append("Silver Key")
+        slow_print("\nElder: 'Brave adventurer! The Sunblade was broken into 3 celestial relics during the First Shadow War:")
+        slow_print("1. Sun Crystal Core (Mountain Cave)")
+        slow_print("2. Hilt of Dawn (Fairy Fountain)")
+        slow_print("3. Forge Blueprint (Old Watchtower)")
+        slow_print("Recover all 3 relics, reforge the blade at the Blacksmith, and consecrate it at the Temple Sanctum!'")
+        if "Sunblade Rune Scroll" not in player.inventory:
+            player.inventory.append("Sunblade Rune Scroll")
             player.has_key = True
             player.add_score(100)
         else:
-            slow_print("Elder: 'You already possess the Silver Key! Now seek the temple in the Forest.'")
+            slow_print("Elder: 'Recover the 3 relics, reforge them at the Blacksmith, and consecrate the blade at the Temple!'")
     elif choice == "2":
         blacksmith(player)
     elif choice == "3":

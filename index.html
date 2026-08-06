@@ -21,9 +21,8 @@
                 <div class="header-controls">
                     <button id="stats-btn" class="arcade-btn-sm primary" title="Hero Stats & Attributes">STATS <span id="ap-badge" class="ap-badge hidden">0</span></button>
                     <button id="map-btn" class="arcade-btn-sm primary" title="Open World Map">WORLD MAP</button>
-                    <button id="voice-btn" class="arcade-btn-sm" title="Toggle Voice Narration">VOICE: ON</button>
-                    <button id="music-btn" class="arcade-btn-sm" title="Toggle Music">MUSIC: ON</button>
-                    <button id="sound-btn" class="arcade-btn-sm" title="Toggle Sound">SFX: ON</button>
+                    <button id="achievements-btn" class="arcade-btn-sm primary" title="View Trophy Room & Achievements">TROPHIES <span id="achievements-badge" class="achievements-badge">0/10</span></button>
+                    <button id="audio-settings-btn" class="arcade-btn-sm primary" title="Audio & Voice Settings">AUDIO</button>
                     <button id="reset-btn" class="arcade-btn-sm warning" title="Exit to Main Menu">EXIT</button>
                 </div>
             </header>
@@ -32,7 +31,7 @@
             <div class="status-hud">
                 <div class="hud-item hero-name-item">
                     <span class="hud-label">HERO:</span>
-                    <span id="hero-name" class="hud-value" title="Hero Name">Sir Eldrin</span>
+                    <span id="hero-name" class="hud-value" title="Hero Name">Sir Ario</span>
                 </div>
                 <div class="hud-item">
                     <span class="hud-label">LVL:</span>
@@ -59,6 +58,7 @@
             <div class="scene-container">
                 <div class="image-frame" id="image-frame-container" title="Click to view artwork in full screen">
                     <img id="scene-image" src="assets/images/village.jpg" alt="Scene Image">
+                    <div id="floating-text-container" class="floating-text-container"></div>
                     <div class="zoom-hint-badge">🔍 ENLARGE ART</div>
                     <div class="location-badge" id="location-name">VILLAGE SQUARE</div>
                 </div>
@@ -94,7 +94,7 @@
 
             <div class="main-menu-header">
                 <h1 class="main-menu-title">EAST GREVIE ADVENTURES</h1>
-                <p class="main-menu-subtitle">THE LEGEND OF SIR ELDRIN</p>
+                <p class="main-menu-subtitle">THE LEGEND OF THE SUNBLADE</p>
             </div>
 
             <div class="main-menu-btn-group">
@@ -112,7 +112,28 @@
                 <h2 class="intro-title">EAST GREVIE ADVENTURES</h2>
                 <div class="name-input-group">
                     <label for="name-input">HERO NAME:</label>
-                    <input type="text" id="name-input" maxlength="16" placeholder="Sir Eldrin" value="Sir Eldrin">
+                    <input type="text" id="name-input" maxlength="16" placeholder="Sir Ario" value="Sir Ario">
+                </div>
+
+                <div class="class-selection-container">
+                    <label class="class-select-label">SELECT HERO CLASS:</label>
+                    <div class="class-selection-grid">
+                        <div class="class-card selected" data-class="paladin">
+                            <div class="class-card-header">SUNBLADE PALADIN</div>
+                            <div class="class-card-perk"><strong>Holy Guard:</strong> Takes -3 less damage</div>
+                            <div class="class-card-stats">+3 END | High Defense | 200 HP</div>
+                        </div>
+                        <div class="class-card" data-class="ranger">
+                            <div class="class-card-header">WOODLAND RANGER</div>
+                            <div class="class-card-perk"><strong>Eagle Eye:</strong> +10% Critical Chance</div>
+                            <div class="class-card-stats">+2 AGI, +1 LCK | High Dodge</div>
+                        </div>
+                        <div class="class-card" data-class="alchemist">
+                            <div class="class-card-header">ROYAL ALCHEMIST</div>
+                            <div class="class-card-perk"><strong>Elixir Master:</strong> Potions heal +60 HP</div>
+                            <div class="class-card-stats">+1 All Stats | 3 Potions | 75 Gold</div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -149,7 +170,7 @@
             </div>
 
             <div class="victory-lore-card">
-                <p id="victory-lore-text"><em>"Sunlight breaks over the Village of East Grevie as Sir Eldrin returns triumphant! With Princess Elsa rescued and Lord Rodrigues vanquished, peace is restored to the realm. Your courage will echo through legend forever!"</em></p>
+                <p id="victory-lore-text"><em>"Sunlight breaks over the Village of East Grevie as Sir Ario returns triumphant! With Princess Elsa rescued and Lord Rodrigues vanquished, peace is restored to the realm. Your courage will echo through legend forever!"</em></p>
             </div>
 
             <div class="victory-stats-hud">
@@ -210,7 +231,7 @@
         <div class="modal-content crt-box stats-modal-box">
             <div class="stats-modal-header">
                 <div class="stats-header-title-group">
-                    <h2 class="stats-modal-title">⚔️ HERO STATUS & ATTRIBUTES</h2>
+                    <h2 class="stats-modal-title">HERO STATUS & ATTRIBUTES</h2>
                     <p class="stats-modal-subtitle">Manage attributes, view combat calculations, and check equipped gear</p>
                 </div>
                 <button id="close-stats-modal-btn" class="arcade-btn-sm warning" title="Close Stats">✖ CLOSE</button>
@@ -224,7 +245,12 @@
                             <img src="assets/images/portrait.jpg" alt="Hero Portrait" class="hero-portrait-img">
                             <div class="portrait-zoom-badge">🔍 ZOOM</div>
                         </div>
-                        <h3 id="stat-hero-name" class="hero-identity-name">Sir Eldrin</h3>
+                        <h3 id="stat-hero-name" class="hero-identity-name">Sir Ario</h3>
+                        <div id="stat-hero-class-badge" class="hero-class-badge">⚔️ SUNBLADE PALADIN</div>
+                        <div class="passive-perk-banner">
+                            <span class="perk-label">PASSIVE PERK:</span>
+                            <span id="stat-passive-perk-text" class="perk-text">🛡️ Holy Guard (-3 Damage Taken)</span>
+                        </div>
                     </div>
 
                     <div class="hero-progress-card">
@@ -341,9 +367,17 @@
                     <img src="assets/images/abduction_of_princess_anna.jpg" alt="Abduction of Princess Elsa">
                     <div class="gallery-item-title">Abduction of Elsa</div>
                 </div>
-                <div class="gallery-item" data-src="assets/images/portrait.jpg" data-title="Hero Portrait - The Champion Mouse">
-                    <img src="assets/images/portrait.jpg" alt="Hero Portrait">
-                    <div class="gallery-item-title">Hero Portrait</div>
+                <div class="gallery-item" data-src="assets/images/portrait_paladin.jpg" data-title="Sunblade Paladin Hero Portrait">
+                    <img src="assets/images/portrait_paladin.jpg" alt="Sunblade Paladin">
+                    <div class="gallery-item-title">Sunblade Paladin</div>
+                </div>
+                <div class="gallery-item" data-src="assets/images/portrait_ranger.jpg" data-title="Woodland Ranger Hero Portrait">
+                    <img src="assets/images/portrait_ranger.jpg" alt="Woodland Ranger">
+                    <div class="gallery-item-title">Woodland Ranger</div>
+                </div>
+                <div class="gallery-item" data-src="assets/images/portrait_alchemist.jpg" data-title="Royal Alchemist Hero Portrait">
+                    <img src="assets/images/portrait_alchemist.jpg" alt="Royal Alchemist">
+                    <div class="gallery-item-title">Royal Alchemist</div>
                 </div>
                 <div class="gallery-item" data-src="assets/images/victory.jpg" data-title="Victory - Princess Elsa Rescued">
                     <img src="assets/images/victory.jpg" alt="Victory Triumph">
@@ -397,6 +431,74 @@
                     <img src="assets/images/Map.jpg" alt="World Map">
                     <div class="gallery-item-title">World Map</div>
                 </div>
+                <div class="gallery-item" data-src="assets/images/wild_weasel.jpg" data-title="Wild Weasel - Forest Trail Predator">
+                    <img src="assets/images/wild_weasel.jpg" alt="Wild Weasel">
+                    <div class="gallery-item-title">Wild Weasel</div>
+                </div>
+                <div class="gallery-item" data-src="assets/images/barn_owl.jpg" data-title="Barn Owl - Canopy Hunter">
+                    <img src="assets/images/barn_owl.jpg" alt="Barn Owl">
+                    <div class="gallery-item-title">Barn Owl</div>
+                </div>
+                <div class="gallery-item" data-src="assets/images/giant_garden_toad.jpg" data-title="Giant Garden Toad - Swamp Beast">
+                    <img src="assets/images/giant_garden_toad.jpg" alt="Giant Garden Toad">
+                    <div class="gallery-item-title">Giant Garden Toad</div>
+                </div>
+                <div class="gallery-item" data-src="assets/images/alley_rat_rogue.jpg" data-title="Alley Rat Rogue - Trail Bandit">
+                    <img src="assets/images/alley_rat_rogue.jpg" alt="Alley Rat Rogue">
+                    <div class="gallery-item-title">Alley Rat Rogue</div>
+                </div>
+                <div class="gallery-item" data-src="assets/images/feral_farm_cat.jpg" data-title="Feral Farm Cat - Rodrigues Minion">
+                    <img src="assets/images/feral_farm_cat.jpg" alt="Feral Farm Cat">
+                    <div class="gallery-item-title">Feral Farm Cat</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Audio & Voice Settings Modal -->
+    <div id="audio-settings-modal" class="modal-overlay hidden">
+        <div class="modal-content crt-box audio-settings-box">
+            <div class="audio-settings-header">
+                <h2 class="audio-settings-title">⚙️ AUDIO & VOICE SETTINGS</h2>
+                <button id="close-audio-settings-modal-btn" class="arcade-btn-sm warning">✖ CLOSE</button>
+            </div>
+            <div class="audio-settings-body">
+                <div class="audio-setting-section">
+                    <h3>STORYTELLER VOICE (NEURAL / HD)</h3>
+                    <p class="audio-setting-desc">Select a high-definition neural voice for cinematic lore narration:</p>
+                    <div class="voice-selector-row">
+                        <select id="voice-select" class="arcade-select" title="Select Neural Voice"></select>
+                        <button id="test-voice-btn" class="arcade-btn-sm primary" title="Preview selected voice">🔊 PREVIEW</button>
+                    </div>
+                </div>
+
+                <div class="audio-setting-section">
+                    <h3>MASTER & CATEGORY VOLUMES</h3>
+                    
+                    <div class="audio-slider-row">
+                        <label for="master-vol">MASTER VOLUME</label>
+                        <input type="range" id="master-vol" min="0" max="100" value="80" class="audio-slider">
+                        <span id="master-vol-val" class="audio-val-badge">80%</span>
+                    </div>
+
+                    <div class="audio-slider-row">
+                        <label for="music-vol">MUSIC VOLUME</label>
+                        <input type="range" id="music-vol" min="0" max="100" value="60" class="audio-slider">
+                        <span id="music-vol-val" class="audio-val-badge">60%</span>
+                    </div>
+
+                    <div class="audio-slider-row">
+                        <label for="sfx-vol">SOUND EFFECTS (SFX)</label>
+                        <input type="range" id="sfx-vol" min="0" max="100" value="70" class="audio-slider">
+                        <span id="sfx-vol-val" class="audio-val-badge">70%</span>
+                    </div>
+
+                    <div class="audio-slider-row">
+                        <label for="voice-vol">NARRATION VOICE</label>
+                        <input type="range" id="voice-vol" min="0" max="100" value="100" class="audio-slider">
+                        <span id="voice-vol-val" class="audio-val-badge">100%</span>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -410,37 +512,84 @@
             </div>
             <div class="credits-body">
                 <div class="credits-section">
-                    <h3>EAST GREVIE ADVENTURES</h3>
-                    <p class="credits-role">Original Retro Concept & Remaster</p>
-                    <p class="credits-name">Created for Retro RPG Gaming</p>
+                    <h3>GAME DESIGN & CREATION</h3>
+                    <p class="credits-role">Lead Creator & Game Director</p>
+                    <p class="credits-name gold-highlight">Miken908</p>
+                    <p class="credits-role mt-xs">AI Development Partner</p>
+                    <p class="credits-name">Antigravity (Google DeepMind)</p>
                 </div>
                 <div class="credits-section">
                     <h3>ART DIRECTION & VISUALS</h3>
-                    <p class="credits-role">Hand-Painted Vanillaware Fantasy Artwork</p>
-                    <p class="credits-name">Created with Gemini AI Generation</p>
+                    <p class="credits-role">Hand-Painted Fantasy Art Generation</p>
+                    <p class="credits-name">Created with Google Gemini AI</p>
+                    <p class="credits-role mt-xs">Visual Aesthetic</p>
+                    <p class="credits-name">High-Definition Vanillaware Fantasy Style</p>
                 </div>
                 <div class="credits-section">
-                    <h3>VOICE & AUDIO NARRATION</h3>
-                    <p class="credits-role">Fairytale Storyteller Speech Engine</p>
-                    <p class="credits-name">Web Speech Synthesis & Natural Neural Voice</p>
+                    <h3>AUDIO SOUNDSCAPES & VOICE</h3>
+                    <p class="credits-role">Storyteller Narration Engine</p>
+                    <p class="credits-name">Natural Neural Speech Synthesis (Edge / Google / Apple)</p>
+                    <p class="credits-role mt-xs">Audio Processing Bus</p>
+                    <p class="credits-name">Web Audio API Master Bus & Dynamic Music Ducking</p>
                 </div>
                 <div class="credits-section">
-                    <h3>DEVELOPMENT & QA</h3>
-                    <p class="credits-role">Full Game Architecture & 80+ Test Suite</p>
-                    <p class="credits-name">Continuous Integration & Balance Verification</p>
+                    <h3>SYSTEM ENGINE & QA</h3>
+                    <p class="credits-role">Core Architecture</p>
+                    <p class="credits-name">Modern HTML5 / CSS3 Design System & Vanilla JS</p>
+                    <p class="credits-role mt-xs">Quality Assurance</p>
+                    <p class="credits-name">Automated 125-Point Balance Simulation Test Suite</p>
+                </div>
+                <div class="credits-section special-thanks">
+                    <h3>SPECIAL THANKS</h3>
+                    <p class="credits-name">Retro RPG Enthusiasts, Princess Elsa, and the Citizens of East Grevie</p>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Fullscreen Artwork Lightbox Modal -->
+    <!-- Fullscreen Artwork Lightbox Modal with Left/Right Gallery Navigation -->
     <div id="lightbox-modal" class="modal-overlay hidden">
+        <button id="lightbox-prev-btn" class="lightbox-nav-btn prev-btn" title="Previous Image (Left Arrow Key)">‹</button>
+        <button id="lightbox-next-btn" class="lightbox-nav-btn next-btn" title="Next Image (Right Arrow Key)">›</button>
         <div class="modal-content crt-box lightbox-box">
             <h2 id="lightbox-location-title" class="lightbox-title">EAST GREVIE VILLAGE</h2>
             <div class="lightbox-img-frame">
                 <img id="lightbox-img" src="" alt="Enlarged Artwork">
             </div>
-            <p class="lightbox-hint">Click anywhere to close and return to adventure</p>
+            <div class="lightbox-footer">
+                <p class="lightbox-hint">Use ◄ / ► arrow keys to browse | Click outside or ESC to close</p>
+                <div id="lightbox-counter" class="lightbox-counter">1 / 23</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Achievement Trophy Room Modal -->
+    <div id="achievements-modal" class="modal-overlay hidden">
+        <div class="modal-content crt-box achievements-box">
+            <div class="achievements-header">
+                <h2 class="achievements-title">TROPHY ROOM & ACHIEVEMENTS</h2>
+                <button id="close-achievements-modal-btn" class="arcade-btn-sm warning">✖ CLOSE</button>
+            </div>
+            <div class="achievements-progress-banner">
+                <span class="progress-label">TOTAL UNLOCKED:</span>
+                <span id="achievements-modal-count" class="achievements-modal-count">0 / 10</span>
+                <div class="achievements-bar-outer">
+                    <div id="achievements-bar-inner" class="achievements-bar-inner" style="width: 0%;"></div>
+                </div>
+            </div>
+            <div id="achievements-grid" class="achievements-grid">
+                <!-- 10 Achievement Cards rendered dynamically -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Achievement Toast Notification Banner -->
+    <div id="achievement-toast" class="achievement-toast hidden">
+        <div class="toast-icon" id="toast-icon">🏆</div>
+        <div class="toast-content">
+            <div class="toast-header">ACHIEVEMENT UNLOCKED!</div>
+            <div class="toast-title" id="toast-title">First Blood</div>
+            <div class="toast-desc" id="toast-desc">Defeat your first enemy in combat</div>
         </div>
     </div>
 

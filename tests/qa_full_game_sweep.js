@@ -155,15 +155,11 @@ check("Lightbox overlay has z-index 9999 in CSS", cssContent.includes("z-index: 
 check("Universal openLightbox function defined in JS", jsContent.includes("function openLightbox("));
 check("Header Stats button present in HTML", htmlContent.includes('id="stats-btn"'));
 check("Header Map button present in HTML", htmlContent.includes('id="map-btn"'));
-check("Header Voice button present in HTML", htmlContent.includes('id="voice-btn"'));
-check("Header Music button present in HTML", htmlContent.includes('id="music-btn"'));
-check("Header Sound SFX button present in HTML", htmlContent.includes('id="sound-btn"'));
+check("Header Audio Settings button present in HTML", htmlContent.includes('id="audio-settings-btn"'));
 check("Header Reset button present in HTML", htmlContent.includes('id="reset-btn"'));
 check("Header Stats button click listener bound", jsContent.includes('statsBtnEl.addEventListener'));
 check("Header Map button click listener bound", jsContent.includes('mapBtnEl.addEventListener'));
-check("Header Voice button click listener bound", jsContent.includes('voiceBtnEl.addEventListener'));
-check("Header Music button click listener bound", jsContent.includes('musicBtnEl.addEventListener'));
-check("Header Sound SFX button click listener bound", jsContent.includes('soundBtnEl.addEventListener'));
+check("Header Audio button click listener bound", jsContent.includes('audioSettingsBtnEl.addEventListener'));
 check("Header Reset button click listener bound", jsContent.includes('resetBtnEl.addEventListener'));
 check("Intro image frame click listener bound", jsContent.includes('introImgFrameEl.addEventListener'));
 check("Intro Lightbox button click listener bound", jsContent.includes('introLightboxBtnEl.addEventListener'));
@@ -189,7 +185,7 @@ check("Main menu start game button present (#menu-start-btn)", htmlContent.inclu
 check("Main menu art gallery button present (#menu-gallery-btn)", htmlContent.includes('id="menu-gallery-btn"'));
 check("Main menu credits button present (#menu-credits-btn)", htmlContent.includes('id="menu-credits-btn"'));
 check("Art gallery modal present in HTML (#gallery-modal)", htmlContent.includes('id="gallery-modal"'));
-check("Art gallery grid contains 16 artwork cards", (htmlContent.match(/class="gallery-item"/g) || []).length === 16);
+check("Art gallery grid contains 23 artwork cards", (htmlContent.match(/class="gallery-item"/g) || []).length === 23);
 check("Credits modal present in HTML (#credits-modal)", htmlContent.includes('id="credits-modal"'));
 check("Main menu start button click listener bound in JS", jsContent.includes('menuStartBtnEl.addEventListener'));
 check("Main menu gallery button click listener bound in JS", jsContent.includes('menuGalleryBtnEl.addEventListener'));
@@ -216,6 +212,66 @@ check("Hero portrait click listener bound in JS", jsContent.includes('heroPortra
 check("AP status banner present in HTML (.ap-status-banner)", htmlContent.includes('class="ap-status-banner"'));
 check("Derived combat stats block present in HTML (.combat-stats-block)", htmlContent.includes('class="combat-stats-block"'));
 check("Equipped gear block present in HTML (.equipment-block)", htmlContent.includes('class="equipment-block"'));
+
+// 16. Modern Audio & Neural Voice Synthesis Engine Verification
+console.log("\n--- TEST GROUP 16: Modern Audio & Neural Voice Synthesis Engine Verification ---");
+check("Audio Settings button present in HTML (#audio-settings-btn)", htmlContent.includes('id="audio-settings-btn"'));
+check("Audio Settings modal present in HTML (#audio-settings-modal)", htmlContent.includes('id="audio-settings-modal"'));
+check("Voice selector dropdown present in HTML (#voice-select)", htmlContent.includes('id="voice-select"'));
+check("Voice test button present in HTML (#test-voice-btn)", htmlContent.includes('id="test-voice-btn"'));
+check("Master volume slider present in HTML (#master-vol)", htmlContent.includes('id="master-vol"'));
+check("Music volume slider present in HTML (#music-vol)", htmlContent.includes('id="music-vol"'));
+check("SFX volume slider present in HTML (#sfx-vol)", htmlContent.includes('id="sfx-vol"'));
+check("Voice volume slider present in HTML (#voice-vol)", htmlContent.includes('id="voice-vol"'));
+check("SoundEffects master/music/sfx volume gains defined in JS", jsContent.includes("this.masterGain") && jsContent.includes("this.musicGain"));
+check("Audio ducking implementation present in JS", jsContent.includes("setDucking(active)"));
+check("VoiceNarrator sentence splitting implementation present in JS", jsContent.includes("split(/(?<=[.!?])\\s+/)"));
+check("VoiceNarrator getAvailableVoices method defined in JS", jsContent.includes("getAvailableVoices()"));
+// 17. Trial of Three Celestial Relics Subquest Verification
+console.log("\n--- TEST GROUP 17: Trial of Three Celestial Relics Subquest Verification ---");
+check("Elder grants Sunblade Rune Scroll and explains 3 relics", jsContent.includes("Sunblade Rune Scroll") && jsContent.includes("hasRuneScroll"));
+check("Fairy Fountain grants Hilt of Dawn relic", jsContent.includes("Hilt of Dawn") && jsContent.includes("hasHiltOfDawn"));
+check("Mountain Cave grants Sun Crystal Core relic", jsContent.includes("Sun Crystal Core") && jsContent.includes("hasSunCrystal"));
+check("Old Watchtower grants Forge Blueprint relic", jsContent.includes("Forge Blueprint") && jsContent.includes("hasBlueprint"));
+check("Village Blacksmith reforgeSunblade function defined", jsContent.includes("function reforgeSunblade()"));
+check("Village Blacksmith grants Dormant Sunblade", jsContent.includes("Dormant Sunblade") && jsContent.includes("hasDormantSunblade"));
+check("Temple Sanctum consecrateSunblade function defined", jsContent.includes("function consecrateSunblade()"));
+// 18. Floating Combat Text Visual Juice Engine Verification
+console.log("\n--- TEST GROUP 18: Floating Combat Text Visual Juice Engine Verification ---");
+check("Floating text container present in HTML (#floating-text-container)", htmlContent.includes('id="floating-text-container"'));
+check("Floating text CSS styles defined in style.css (.floating-text)", cssContent.includes('.floating-text {'));
+check("Floating text keyframes defined in style.css (@keyframes floatAndFade)", cssContent.includes('@keyframes floatAndFade'));
+check("spawnFloatingText function defined in app.js", jsContent.includes('function spawnFloatingText('));
+check("healPlayer triggers floating heal text", jsContent.includes('spawnFloatingText(`+${amount} HP`, "heal"'));
+
+// 19. Hero Archetype Class Selection Verification
+console.log("\n--- TEST GROUP 19: Hero Archetype Class Selection Verification ---");
+check("Class selection container present in HTML (.class-selection-container)", htmlContent.includes('class="class-selection-container"'));
+check("Class selection grid present in HTML (.class-selection-grid)", htmlContent.includes('class="class-selection-grid"'));
+check("Class badge element present in stats modal (#stat-hero-class-badge)", htmlContent.includes('id="stat-hero-class-badge"'));
+check("Passive perk banner present in stats modal (.passive-perk-banner)", htmlContent.includes('class="passive-perk-banner"'));
+check("Paladin Holy Guard perk mitigation formula present in JS", jsContent.includes('state.heroClass === "paladin"'));
+check("Ranger Eagle Eye perk crit formula present in JS", jsContent.includes('state.heroClass === "ranger"'));
+// 20. Lightbox Navigation & Keyboard Controls Verification
+console.log("\n--- TEST GROUP 20: Lightbox Navigation & Keyboard Controls Verification ---");
+check("Lightbox previous button present in HTML (#lightbox-prev-btn)", htmlContent.includes('id="lightbox-prev-btn"'));
+check("Lightbox next button present in HTML (#lightbox-next-btn)", htmlContent.includes('id="lightbox-next-btn"'));
+check("Lightbox counter element present in HTML (#lightbox-counter)", htmlContent.includes('id="lightbox-counter"'));
+check("showNextLightboxImage function defined in app.js", jsContent.includes('function showNextLightboxImage()'));
+check("showPrevLightboxImage function defined in app.js", jsContent.includes('function showPrevLightboxImage()'));
+check("Arrow key navigation listener implemented in app.js", jsContent.includes('ArrowRight') && jsContent.includes('ArrowLeft'));
+
+// 21. Achievement Trophy System Verification
+console.log("\n--- TEST GROUP 21: Achievement Trophy System Verification ---");
+check("Header Trophies button present in HTML (#achievements-btn)", htmlContent.includes('id="achievements-btn"'));
+check("Achievements badge present in HTML (#achievements-badge)", htmlContent.includes('id="achievements-badge"'));
+check("Achievements modal present in HTML (#achievements-modal)", htmlContent.includes('id="achievements-modal"'));
+check("Achievement toast banner present in HTML (#achievement-toast)", htmlContent.includes('id="achievement-toast"'));
+check("ACHIEVEMENTS_DATA dictionary defined in JS with 10 entries", jsContent.includes('const ACHIEVEMENTS_DATA = [') && jsContent.includes('savior_of_realm'));
+check("unlockAchievement function defined in JS", jsContent.includes('function unlockAchievement('));
+check("showAchievementToast function defined in JS", jsContent.includes('function showAchievementToast('));
+check("updateAchievementsUI function defined in JS", jsContent.includes('function updateAchievementsUI()'));
+check("Achievement storage persistence functions defined in JS", jsContent.includes('loadAchievementsFromStorage()') && jsContent.includes('saveAchievementsToStorage()'));
 
 console.log("\n==================================================");
 console.log("📊 SUMMARY OF FULL QA & BALANCE SIMULATION RESULTS");

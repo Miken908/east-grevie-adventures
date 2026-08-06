@@ -2,7 +2,7 @@
    EAST GREVIE ADVENTURES (1984) - RETRO GAME ENGINE, HEROIC ATTRIBUTES & AUDIO SYNTHESIZER
    ========================================================================== */
 
-// --- Web Audio 8-bit Sound Synthesizer ---
+// --- Modern Web Audio Soundscape & Audio Processing Engine ---
 class SoundEffects {
     constructor() {
         this.ctx = null;
@@ -11,141 +11,271 @@ class SoundEffects {
         this.currentTrack = null;
         this.musicTimer = null;
         this.noteIndex = 0;
+
+        // Modern Volume Gains
+        this.masterVolume = 0.8;
+        this.musicVolume = 0.6;
+        this.sfxVolume = 0.7;
+        this.voiceVolume = 1.0;
+
+        this.masterGain = null;
+        this.musicGain = null;
+        this.sfxGain = null;
+        this.voiceGain = null;
+
+        this.duckingActive = false;
     }
 
     init() {
         if (!this.ctx) {
-            this.ctx = new (window.AudioContext || window.webkitAudioContext)();
+            const AudioCtx = window.AudioContext || window.webkitAudioContext;
+            if (!AudioCtx) return;
+            this.ctx = new AudioCtx();
+
+            // Setup Master Bus Architecture
+            this.masterGain = this.ctx.createGain();
+            this.masterGain.gain.setValueAtTime(this.masterVolume, this.ctx.currentTime);
+
+            this.musicGain = this.ctx.createGain();
+            this.musicGain.gain.setValueAtTime(this.musicVolume, this.ctx.currentTime);
+
+            this.sfxGain = this.ctx.createGain();
+            this.sfxGain.gain.setValueAtTime(this.sfxVolume, this.ctx.currentTime);
+
+            this.voiceGain = this.ctx.createGain();
+            this.voiceGain.gain.setValueAtTime(this.voiceVolume, this.ctx.currentTime);
+
+            this.musicGain.connect(this.masterGain);
+            this.sfxGain.connect(this.masterGain);
+            this.voiceGain.connect(this.masterGain);
+            this.masterGain.connect(this.ctx.destination);
         }
-        if (this.ctx.state === 'suspended') {
+        if (this.ctx && this.ctx.state === 'suspended') {
             this.ctx.resume();
         }
+    }
+
+    setMasterVolume(val) {
+        this.masterVolume = Math.max(0, Math.min(1, val));
+        if (this.masterGain && this.ctx) {
+            this.masterGain.gain.setValueAtTime(this.masterVolume, this.ctx.currentTime);
+        }
+    }
+
+    setMusicVolume(val) {
+        this.musicVolume = Math.max(0, Math.min(1, val));
+        if (this.musicGain && this.ctx) {
+            const targetGain = this.duckingActive ? this.musicVolume * 0.25 : this.musicVolume;
+            this.musicGain.gain.setValueAtTime(targetGain, this.ctx.currentTime);
+        }
+    }
+
+    setSfxVolume(val) {
+        this.sfxVolume = Math.max(0, Math.min(1, val));
+        if (this.sfxGain && this.ctx) {
+            this.sfxGain.gain.setValueAtTime(this.sfxVolume, this.ctx.currentTime);
+        }
+    }
+
+    setVoiceVolume(val) {
+        this.voiceVolume = Math.max(0, Math.min(1, val));
+        if (this.voiceGain && this.ctx) {
+            this.voiceGain.gain.setValueAtTime(this.voiceVolume, this.ctx.currentTime);
+        }
+    }
+
+    setDucking(active) {
+        this.duckingActive = active;
+        if (!this.ctx || !this.musicGain) return;
+        const now = this.ctx.currentTime;
+        const target = active ? this.musicVolume * 0.25 : this.musicVolume;
+        this.musicGain.gain.cancelScheduledValues(now);
+        this.musicGain.gain.linearRampToValueAtTime(target, now + (active ? 0.35 : 0.6));
     }
 
     playClick() {
         if (!this.enabled) return;
         this.init();
+        if (!this.ctx) return;
+        
+        const now = this.ctx.currentTime;
         const osc = this.ctx.createOscillator();
         const gain = this.ctx.createGain();
         const filter = this.ctx.createBiquadFilter();
         
         osc.type = 'sine';
         filter.type = 'lowpass';
-        filter.frequency.value = 1200;
+        filter.frequency.setValueAtTime(2400, now);
         
-        osc.frequency.setValueAtTime(523.25, this.ctx.currentTime);
-        osc.frequency.exponentialRampToValueAtTime(783.99, this.ctx.currentTime + 0.04);
+        osc.frequency.setValueAtTime(800, now);
+        osc.frequency.exponentialRampToValueAtTime(400, now + 0.05);
         
-        gain.gain.setValueAtTime(0.06, this.ctx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.04);
+        gain.gain.setValueAtTime(0.001, now);
+        gain.gain.linearRampToValueAtTime(0.12, now + 0.008);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.05);
         
         osc.connect(filter);
         filter.connect(gain);
-        gain.connect(this.ctx.destination);
+        gain.connect(this.sfxGain || this.ctx.destination);
         
-        osc.start();
-        osc.stop(this.ctx.currentTime + 0.04);
+        osc.start(now);
+        osc.stop(now + 0.05);
     }
 
     playSlash() {
         if (!this.enabled) return;
         this.init();
-        const osc = this.ctx.createOscillator();
-        const gain = this.ctx.createGain();
+        if (!this.ctx) return;
+        
+        const now = this.ctx.currentTime;
+        const bufferSize = this.ctx.sampleRate * 0.12;
+        const buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
+        const output = buffer.getChannelData(0);
+        for (let i = 0; i < bufferSize; i++) {
+            output[i] = Math.random() * 2 - 1;
+        }
+        
+        const whiteNoise = this.ctx.createBufferSource();
+        whiteNoise.buffer = buffer;
+        
         const filter = this.ctx.createBiquadFilter();
+        filter.type = 'bandpass';
+        filter.frequency.setValueAtTime(1800, now);
+        filter.frequency.exponentialRampToValueAtTime(300, now + 0.12);
         
+        const noiseGain = this.ctx.createGain();
+        noiseGain.gain.setValueAtTime(0.001, now);
+        noiseGain.gain.linearRampToValueAtTime(0.2, now + 0.02);
+        noiseGain.gain.exponentialRampToValueAtTime(0.001, now + 0.12);
+        
+        whiteNoise.connect(filter);
+        filter.connect(noiseGain);
+        noiseGain.connect(this.sfxGain || this.ctx.destination);
+        
+        whiteNoise.start(now);
+
+        const osc = this.ctx.createOscillator();
+        const oscGain = this.ctx.createGain();
         osc.type = 'triangle';
-        filter.type = 'lowpass';
-        filter.frequency.value = 900;
+        osc.frequency.setValueAtTime(350, now);
+        osc.frequency.exponentialRampToValueAtTime(110, now + 0.10);
         
-        osc.frequency.setValueAtTime(280, this.ctx.currentTime);
-        osc.frequency.exponentialRampToValueAtTime(90, this.ctx.currentTime + 0.12);
+        oscGain.gain.setValueAtTime(0.001, now);
+        oscGain.gain.linearRampToValueAtTime(0.15, now + 0.015);
+        oscGain.gain.exponentialRampToValueAtTime(0.001, now + 0.10);
         
-        gain.gain.setValueAtTime(0.12, this.ctx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.12);
-        
-        osc.connect(filter);
-        filter.connect(gain);
-        gain.connect(this.ctx.destination);
-        
-        osc.start();
-        osc.stop(this.ctx.currentTime + 0.12);
+        osc.connect(oscGain);
+        oscGain.connect(this.sfxGain || this.ctx.destination);
+        osc.start(now);
+        osc.stop(now + 0.10);
     }
 
     playHeal() {
         if (!this.enabled) return;
         this.init();
-        const notes = [329.63, 392.00, 493.88, 659.25];
-        notes.forEach((freq, idx) => {
+        if (!this.ctx) return;
+        
+        const now = this.ctx.currentTime;
+        const chord = [523.25, 659.25, 783.99, 1046.50];
+        chord.forEach((freq, idx) => {
             const osc = this.ctx.createOscillator();
             const gain = this.ctx.createGain();
             const filter = this.ctx.createBiquadFilter();
             
             osc.type = 'sine';
             filter.type = 'lowpass';
-            filter.frequency.value = 1500;
+            filter.frequency.value = 2200;
             
-            osc.frequency.setValueAtTime(freq, this.ctx.currentTime + idx * 0.08);
+            const noteStart = now + idx * 0.07;
+            osc.frequency.setValueAtTime(freq, noteStart);
             
-            gain.gain.setValueAtTime(0.01, this.ctx.currentTime + idx * 0.08);
-            gain.gain.linearRampToValueAtTime(0.08, this.ctx.currentTime + idx * 0.08 + 0.03);
-            gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + idx * 0.08 + 0.25);
+            gain.gain.setValueAtTime(0.001, noteStart);
+            gain.gain.linearRampToValueAtTime(0.08, noteStart + 0.03);
+            gain.gain.exponentialRampToValueAtTime(0.001, noteStart + 0.35);
             
             osc.connect(filter);
             filter.connect(gain);
-            gain.connect(this.ctx.destination);
+            gain.connect(this.sfxGain || this.ctx.destination);
             
-            osc.start(this.ctx.currentTime + idx * 0.08);
-            osc.stop(this.ctx.currentTime + idx * 0.08 + 0.25);
+            osc.start(noteStart);
+            osc.stop(noteStart + 0.35);
         });
     }
 
     playItem() {
         if (!this.enabled) return;
         this.init();
-        const notes = [523.25, 659.25, 783.99, 1046.50];
+        if (!this.ctx) return;
+        
+        const now = this.ctx.currentTime;
+        const notes = [587.33, 880.00, 1174.66];
         notes.forEach((freq, idx) => {
             const osc = this.ctx.createOscillator();
             const gain = this.ctx.createGain();
-            osc.type = 'triangle';
-            osc.frequency.setValueAtTime(freq, this.ctx.currentTime + idx * 0.06);
+            osc.type = 'sine';
             
-            gain.gain.setValueAtTime(0.01, this.ctx.currentTime + idx * 0.06);
-            gain.gain.linearRampToValueAtTime(0.06, this.ctx.currentTime + idx * 0.06 + 0.02);
-            gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + idx * 0.06 + 0.15);
+            const noteStart = now + idx * 0.06;
+            osc.frequency.setValueAtTime(freq, noteStart);
+            
+            gain.gain.setValueAtTime(0.001, noteStart);
+            gain.gain.linearRampToValueAtTime(0.09, noteStart + 0.02);
+            gain.gain.exponentialRampToValueAtTime(0.001, noteStart + 0.22);
             
             osc.connect(gain);
-            gain.connect(this.ctx.destination);
+            gain.connect(this.sfxGain || this.ctx.destination);
             
-            osc.start(this.ctx.currentTime + idx * 0.06);
-            osc.stop(this.ctx.currentTime + idx * 0.06 + 0.15);
+            osc.start(noteStart);
+            osc.stop(noteStart + 0.22);
         });
     }
 
     playVictory() {
         if (!this.enabled) return;
         this.init();
+        if (!this.ctx) return;
+        
         this.stopMusic();
-        const melody = [523.25, 659.25, 783.99, 1046.50, 880.00, 1046.50];
-        melody.forEach((freq, idx) => {
+        const now = this.ctx.currentTime;
+        const melody = [
+            { f: 523.25, d: 0.18 },
+            { f: 659.25, d: 0.18 },
+            { f: 783.99, d: 0.18 },
+            { f: 1046.50, d: 0.40 },
+            { f: 880.00, d: 0.25 },
+            { f: 1046.50, d: 0.60 }
+        ];
+        
+        let timeOffset = 0;
+        melody.forEach((note) => {
             const osc = this.ctx.createOscillator();
+            const subOsc = this.ctx.createOscillator();
             const gain = this.ctx.createGain();
-            osc.type = 'sine';
-            osc.frequency.setValueAtTime(freq, this.ctx.currentTime + idx * 0.16);
             
-            gain.gain.setValueAtTime(0.01, this.ctx.currentTime + idx * 0.16);
-            gain.gain.linearRampToValueAtTime(0.09, this.ctx.currentTime + idx * 0.16 + 0.04);
-            gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + idx * 0.16 + 0.35);
+            osc.type = 'triangle';
+            subOsc.type = 'sine';
+            
+            const noteStart = now + timeOffset;
+            osc.frequency.setValueAtTime(note.f, noteStart);
+            subOsc.frequency.setValueAtTime(note.f * 0.5, noteStart);
+            
+            gain.gain.setValueAtTime(0.001, noteStart);
+            gain.gain.linearRampToValueAtTime(0.12, noteStart + 0.04);
+            gain.gain.exponentialRampToValueAtTime(0.001, noteStart + note.d);
             
             osc.connect(gain);
-            gain.connect(this.ctx.destination);
+            subOsc.connect(gain);
+            gain.connect(this.sfxGain || this.ctx.destination);
             
-            osc.start(this.ctx.currentTime + idx * 0.16);
-            osc.stop(this.ctx.currentTime + idx * 0.16 + 0.35);
+            osc.start(noteStart);
+            subOsc.start(noteStart);
+            osc.stop(noteStart + note.d);
+            subOsc.stop(noteStart + note.d);
+            
+            timeOffset += note.d * 0.85;
         });
     }
 
-    // --- Soothing, Low-Stress Ambient Synthesizer Suite ---
+    // --- Modern Polyphonic Atmospheric Soundtracks ---
     playMusic(trackName) {
         if (this.currentTrack === trackName) return;
         this.stopMusic();
@@ -153,90 +283,69 @@ class SoundEffects {
         if (!this.musicEnabled) return;
 
         this.init();
+        if (!this.ctx) return;
 
-        // Soothing 16-bit Fantasy Scales (Gentle tempo, soft warm tones)
         const tracks = {
-            // 🏰 Peaceful Village Theme (Warm C Major Pastoral Lullaby)
             village: [
-                { f: 261.63, d: 0.65, type: 'triangle' }, // C4
-                { f: 329.63, d: 0.65, type: 'sine' },     // E4
-                { f: 392.00, d: 0.65, type: 'triangle' }, // G4
-                { f: 523.25, d: 0.85, type: 'sine' },     // C5
-                { f: 440.00, d: 0.65, type: 'triangle' }, // A4
-                { f: 392.00, d: 0.65, type: 'sine' },     // G4
-                { f: 329.63, d: 0.85, type: 'triangle' }, // E4
-                { f: 293.66, d: 0.65, type: 'sine' },     // D4
-                { f: 349.23, d: 0.65, type: 'triangle' }, // F4
-                { f: 392.00, d: 0.85, type: 'sine' }      // G4
+                { chord: [261.63, 329.63, 392.00], d: 1.8, type: 'sine' },
+                { chord: [293.66, 349.23, 440.00], d: 1.8, type: 'triangle' },
+                { chord: [329.63, 392.00, 493.88], d: 2.0, type: 'sine' },
+                { chord: [349.23, 440.00, 523.25], d: 2.2, type: 'sine' }
             ],
-            // 🌲 Whispering Forest Theme (Tranquil A Minor Ambient Breeze)
             forest: [
-                { f: 220.00, d: 0.80, type: 'sine' },     // A3
-                { f: 261.63, d: 0.80, type: 'triangle' }, // C4
-                { f: 329.63, d: 0.95, type: 'sine' },     // E4
-                { f: 293.66, d: 0.80, type: 'triangle' }, // D4
-                { f: 246.94, d: 0.80, type: 'sine' },     // B3
-                { f: 220.00, d: 1.10, type: 'triangle' }  // A3
+                { chord: [220.00, 261.63, 329.63], d: 2.2, type: 'sine' },
+                { chord: [174.61, 261.63, 349.23], d: 2.2, type: 'triangle' },
+                { chord: [196.00, 246.94, 293.66], d: 2.4, type: 'sine' }
             ],
-            // ⚔️ Heroic Combat Theme (Noble, Balanced D Minor Harmony - Low Stress)
             battle: [
-                { f: 146.83, d: 0.45, type: 'triangle' }, // D3
-                { f: 220.00, d: 0.45, type: 'sine' },     // A3
-                { f: 293.66, d: 0.45, type: 'triangle' }, // D4
-                { f: 349.23, d: 0.55, type: 'sine' },     // F4
-                { f: 329.63, d: 0.45, type: 'triangle' }, // E4
-                { f: 293.66, d: 0.45, type: 'sine' },     // D4
-                { f: 220.00, d: 0.65, type: 'triangle' }  // A3
+                { chord: [146.83, 220.00, 293.66], d: 1.0, type: 'triangle' },
+                { chord: [130.81, 196.00, 261.63], d: 1.0, type: 'triangle' },
+                { chord: [116.54, 174.61, 233.08], d: 1.2, type: 'triangle' }
             ],
-            // ✨ Fairy Sanctuary Theme (Radiant Ambient Chimes)
             fairy: [
-                { f: 349.23, d: 0.70, type: 'sine' },     // F4
-                { f: 440.00, d: 0.70, type: 'sine' },     // A4
-                { f: 523.25, d: 0.70, type: 'sine' },     // C5
-                { f: 659.25, d: 0.90, type: 'sine' },     // E5
-                { f: 523.25, d: 0.70, type: 'sine' },     // C5
-                { f: 440.00, d: 0.90, type: 'sine' }      // A4
+                { chord: [349.23, 440.00, 523.25, 659.25], d: 2.0, type: 'sine' },
+                { chord: [392.00, 493.88, 587.33, 783.99], d: 2.2, type: 'sine' }
             ]
         };
 
-        const notes = tracks[trackName] || tracks.village;
+        const sequence = tracks[trackName] || tracks.village;
         this.noteIndex = 0;
 
         const step = () => {
             if (!this.musicEnabled || this.currentTrack !== trackName) return;
-            const note = notes[this.noteIndex];
+            const pad = sequence[this.noteIndex];
+            const now = this.ctx.currentTime;
+            const duration = pad.d;
 
             try {
-                const osc = this.ctx.createOscillator();
-                const gain = this.ctx.createGain();
-                const filter = this.ctx.createBiquadFilter();
+                pad.chord.forEach((freq) => {
+                    const osc = this.ctx.createOscillator();
+                    const gain = this.ctx.createGain();
+                    const filter = this.ctx.createBiquadFilter();
 
-                osc.type = note.type || 'triangle';
-                osc.frequency.setValueAtTime(note.f, this.ctx.currentTime);
+                    osc.type = pad.type || 'sine';
+                    osc.frequency.setValueAtTime(freq, now);
 
-                // Low-pass filter rolls off harsh frequencies for warm ambient sound
-                filter.type = 'lowpass';
-                filter.frequency.value = 1100;
+                    filter.type = 'lowpass';
+                    filter.frequency.setValueAtTime(1200, now);
 
-                // Soft attack and smooth release envelope (No harsh pops or clicks!)
-                const now = this.ctx.currentTime;
-                const duration = note.d;
-                gain.gain.setValueAtTime(0.001, now);
-                gain.gain.linearRampToValueAtTime(0.025, now + 0.05); // Soft 50ms attack
-                gain.gain.exponentialRampToValueAtTime(0.001, now + duration * 0.92);
+                    gain.gain.setValueAtTime(0.001, now);
+                    gain.gain.linearRampToValueAtTime(0.035, now + 0.25);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + duration * 0.95);
 
-                osc.connect(filter);
-                filter.connect(gain);
-                gain.connect(this.ctx.destination);
+                    osc.connect(filter);
+                    filter.connect(gain);
+                    gain.connect(this.musicGain || this.ctx.destination);
 
-                osc.start(now);
-                osc.stop(now + duration * 0.92);
+                    osc.start(now);
+                    osc.stop(now + duration * 0.95);
+                });
             } catch (e) {
-                // AudioContext fallback handling
+                // AudioContext fallback
             }
 
-            this.noteIndex = (this.noteIndex + 1) % notes.length;
-            this.musicTimer = setTimeout(step, note.d * 1000);
+            this.noteIndex = (this.noteIndex + 1) % sequence.length;
+            this.musicTimer = setTimeout(step, pad.d * 920);
         };
 
         step();
@@ -253,31 +362,35 @@ class SoundEffects {
 
 const sfx = new SoundEffects();
 
-// --- Web Speech API Voice Narrator (Mystical Storyteller) ---
+// --- Modern Neural Speech Synthesis Engine ---
 class VoiceNarrator {
     constructor() {
         this.synth = window.speechSynthesis || null;
         this.enabled = true;
         this.selectedVoice = null;
+        this.speaking = false;
+        this.currentSentenceTimeout = null;
+        this.onSentenceStart = null;
+        this.onSpeechEnd = null;
         this.initVoices();
     }
 
-    initVoices() {
+    initVoices(onReady) {
         if (!this.synth) return;
         const loadVoices = () => {
             const voices = this.synth.getVoices();
             if (!voices || voices.length === 0) return;
-            // Prioritize high-quality natural/neural English voices for a warm, mystical fairytale storyteller tone
+
             this.selectedVoice = voices.find(v => v.lang.startsWith('en') && (
-                v.name.includes('Natural') || v.name.includes('Neural') || v.name.includes('Online')
-            ) && (v.name.includes('Male') || v.name.includes('UK') || v.name.includes('Ryan') || v.name.includes('Guy') || v.name.includes('George')))
+                v.name.includes('Natural') || v.name.includes('Neural') || v.name.includes('Online') || v.name.includes('HD')
+            ) && (v.name.includes('Guy') || v.name.includes('Christopher') || v.name.includes('Male') || v.name.includes('Sonia') || v.name.includes('Jenny') || v.name.includes('UK')))
             || voices.find(v => v.lang.startsWith('en') && (
-                v.name.includes('Google UK English Male') || v.name.includes('Daniel') || v.name.includes('George') || v.name.includes('Oliver') || v.name.includes('Arthur') || v.name.includes('Male')
+                v.name.includes('Natural') || v.name.includes('Neural') || v.name.includes('Google UK English') || v.name.includes('Oliver') || v.name.includes('Serena') || v.name.includes('Daniel')
             ))
-            || voices.find(v => v.lang.startsWith('en') && (v.name.includes('Natural') || v.name.includes('Neural')))
-            || voices.find(v => v.lang.startsWith('en') && v.name.includes('UK'))
             || voices.find(v => v.lang.startsWith('en'))
             || voices[0];
+
+            if (onReady) onReady();
         };
 
         loadVoices();
@@ -286,36 +399,117 @@ class VoiceNarrator {
         }
     }
 
-    speak(text) {
+    getAvailableVoices() {
+        if (!this.synth) return [];
+        const voices = this.synth.getVoices() || [];
+        const englishVoices = voices.filter(v => v.lang.startsWith('en'));
+        englishVoices.sort((a, b) => {
+            const aNeural = a.name.includes('Natural') || a.name.includes('Neural') || a.name.includes('Online') || a.name.includes('HD');
+            const bNeural = b.name.includes('Natural') || b.name.includes('Neural') || b.name.includes('Online') || b.name.includes('HD');
+            if (aNeural && !bNeural) return -1;
+            if (!aNeural && bNeural) return 1;
+            return a.name.localeCompare(b.name);
+        });
+        return englishVoices.length > 0 ? englishVoices : voices;
+    }
+
+    setVoiceByName(name) {
+        if (!this.synth) return;
+        const voices = this.synth.getVoices();
+        const found = voices.find(v => v.name === name || v.voiceURI === name);
+        if (found) {
+            this.selectedVoice = found;
+        }
+    }
+
+    speak(text, options = {}) {
         if (!this.enabled || !this.synth) return;
         this.stop();
 
-        // Play a warm, mystical ambient chime note before storytelling begins
-        if (typeof sfx !== 'undefined' && sfx.playHeal) {
-            sfx.playHeal();
+        this.speaking = true;
+
+        if (typeof sfx !== 'undefined' && sfx.setDucking) {
+            sfx.setDucking(true);
         }
 
         const cleanText = text.replace(/[\u{1F600}-\u{1F64F}\u{1F300}-\u{1F5FF}\u{1F680}-\u{1F6FF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}]/gu, '');
-        const utterance = new SpeechSynthesisUtterance(cleanText);
-        if (this.selectedVoice) {
-            utterance.voice = this.selectedVoice;
+        const sentences = cleanText.split(/(?<=[.!?])\s+/).filter(s => s.trim().length > 0);
+
+        if (sentences.length === 0) {
+            this.finishSpeech(options);
+            return;
         }
 
-        // Mystical fairytale storyteller voice tuning (warm, resonant pitch and captivating pacing)
-        utterance.pitch = 0.88; // Deep, warm fairytale storyteller resonance
-        utterance.rate = 0.88;  // Captivating, deliberate storytelling tempo
-        utterance.volume = 1.0;
+        let sentenceIndex = 0;
 
-        try {
-            this.synth.speak(utterance);
-        } catch (e) {
-            console.warn("SpeechSynthesis error:", e);
+        const speakNextSentence = () => {
+            if (!this.speaking || sentenceIndex >= sentences.length) {
+                this.finishSpeech(options);
+                return;
+            }
+
+            const sentenceText = sentences[sentenceIndex];
+            const utterance = new SpeechSynthesisUtterance(sentenceText);
+            
+            if (this.selectedVoice) {
+                utterance.voice = this.selectedVoice;
+            }
+
+            utterance.pitch = 0.98;
+            utterance.rate = 0.92;
+            utterance.volume = 1.0;
+
+            if (options.onSentenceStart) {
+                options.onSentenceStart(sentenceIndex, sentences.length, sentenceText);
+            }
+
+            utterance.onend = () => {
+                sentenceIndex++;
+                if (sentenceIndex < sentences.length) {
+                    this.currentSentenceTimeout = setTimeout(speakNextSentence, 350);
+                } else {
+                    this.finishSpeech(options);
+                }
+            };
+
+            utterance.onerror = (e) => {
+                console.warn("SpeechSynthesis sentence error:", e);
+                sentenceIndex++;
+                this.currentSentenceTimeout = setTimeout(speakNextSentence, 200);
+            };
+
+            try {
+                this.synth.speak(utterance);
+            } catch (e) {
+                console.warn("SpeechSynthesis error:", e);
+                this.finishSpeech(options);
+            }
+        };
+
+        speakNextSentence();
+    }
+
+    finishSpeech(options = {}) {
+        this.speaking = false;
+        if (typeof sfx !== 'undefined' && sfx.setDucking) {
+            sfx.setDucking(false);
+        }
+        if (options.onSpeechEnd) {
+            options.onSpeechEnd();
         }
     }
 
     stop() {
+        this.speaking = false;
+        if (this.currentSentenceTimeout) {
+            clearTimeout(this.currentSentenceTimeout);
+            this.currentSentenceTimeout = null;
+        }
         if (this.synth && (this.synth.speaking || this.synth.pending)) {
             this.synth.cancel();
+        }
+        if (typeof sfx !== 'undefined' && sfx.setDucking) {
+            sfx.setDucking(false);
         }
     }
 }
@@ -324,7 +518,7 @@ const narrator = new VoiceNarrator();
 
 // --- Game State ---
 const state = {
-    name: "Sir Eldrin",
+    name: "Sir Ario",
     hp: 155, // 100 + (END 3 * 15) + (LVL 1 * 10)
     maxHp: 155,
     level: 1,
@@ -360,8 +554,135 @@ const state = {
     wilderness: null,
     fairyVisited: false,
     dragonExposed: false,
-    location: "village"
+    hasRuneScroll: false,
+    hasSunCrystal: false,
+    hasHiltOfDawn: false,
+    hasBlueprint: false,
+    hasDormantSunblade: false,
+    location: "village",
+    achievements: {}
 };
+
+function getRelicCount() {
+    let count = 0;
+    if (state.hasSunCrystal) count++;
+    if (state.hasHiltOfDawn) count++;
+    if (state.hasBlueprint) count++;
+    return count;
+}
+
+// --- Achievement Trophy System Engine ---
+const ACHIEVEMENTS_DATA = [
+    { id: "first_blood", icon: "⚔️", title: "First Blood", desc: "Defeat your first enemy in combat." },
+    { id: "sunblade_scroll", icon: "📜", title: "Seeker of Lore", desc: "Receive the Sunblade Scroll from the Wise Elder." },
+    { id: "merciful_hero", icon: "🍞", title: "Merciful Hero", desc: "Share bread with Grik the Goblin Rogue instead of slaying him." },
+    { id: "royal_knight", icon: "🛡️", title: "Brother-in-Arms", desc: "Shatter the blood-iron chains and free Sir Johan." },
+    { id: "fairy_blessing", icon: "🧚", title: "Fairy's Grace", desc: "Discover the Secret Fairy Fountain and receive the Queen's blessing." },
+    { id: "snake_slayer", icon: "🐍", title: "Cave Explorer", desc: "Claim the Sun Crystal Core from the Mountain Cave." },
+    { id: "master_craftsman", icon: "🔨", title: "Master Forger", desc: "Reforge the Dormant Sunblade at the Blacksmith Forge using all 3 relics." },
+    { id: "sunfire_awakened", icon: "✨", title: "Sunfire Ascendant", desc: "Consecrate the Dormant Sunblade on the Altar of Dawn." },
+    { id: "perfect_guard", icon: "🛡️", title: "Perfect Counter", desc: "Successfully block Lord Rodrigues's Crimson Shadow Pounce." },
+    { id: "savior_of_realm", icon: "🏆", title: "Savior of East Grevie", desc: "Vanquish Lord Rodrigues and rescue Princess Elsa." }
+];
+
+function loadAchievementsFromStorage() {
+    try {
+        const saved = localStorage.getItem("east_grevie_achievements");
+        if (saved) {
+            state.achievements = JSON.parse(saved);
+        }
+    } catch (e) {
+        console.warn("Could not load achievements:", e);
+    }
+}
+
+function saveAchievementsToStorage() {
+    try {
+        localStorage.setItem("east_grevie_achievements", JSON.stringify(state.achievements || {}));
+    } catch (e) {
+        console.warn("Could not save achievements:", e);
+    }
+}
+
+function unlockAchievement(id) {
+    if (!state.achievements) state.achievements = {};
+    if (state.achievements[id] && state.achievements[id].unlocked) return;
+
+    const ach = ACHIEVEMENTS_DATA.find(a => a.id === id);
+    if (!ach) return;
+
+    state.achievements[id] = {
+        unlocked: true,
+        unlockedAt: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+    };
+
+    saveAchievementsToStorage();
+    updateAchievementsUI();
+    showAchievementToast(ach);
+    sfx.playVictory();
+}
+
+let toastTimeout = null;
+function showAchievementToast(ach) {
+    const toastEl = document.getElementById("achievement-toast");
+    const toastIconEl = document.getElementById("toast-icon");
+    const toastTitleEl = document.getElementById("toast-title");
+    const toastDescEl = document.getElementById("toast-desc");
+
+    if (toastEl && toastIconEl && toastTitleEl && toastDescEl) {
+        toastIconEl.textContent = ach.icon;
+        toastTitleEl.textContent = ach.title;
+        toastDescEl.textContent = ach.desc;
+
+        toastEl.classList.remove("hidden");
+
+        if (toastTimeout) clearTimeout(toastTimeout);
+        toastTimeout = setTimeout(() => {
+            toastEl.classList.add("hidden");
+        }, 4200);
+    }
+}
+
+function updateAchievementsUI() {
+    if (!state.achievements) state.achievements = {};
+    const unlockedIds = Object.keys(state.achievements).filter(id => state.achievements[id] && state.achievements[id].unlocked);
+    const count = unlockedIds.length;
+    const total = ACHIEVEMENTS_DATA.length;
+
+    const badgeEl = document.getElementById("achievements-badge");
+    if (badgeEl) badgeEl.textContent = `${count}/${total}`;
+
+    const modalCountEl = document.getElementById("achievements-modal-count");
+    if (modalCountEl) modalCountEl.textContent = `${count} / ${total}`;
+
+    const barInnerEl = document.getElementById("achievements-bar-inner");
+    if (barInnerEl) barInnerEl.style.width = `${(count / total) * 100}%`;
+
+    const gridEl = document.getElementById("achievements-grid");
+    if (gridEl) {
+        gridEl.innerHTML = "";
+        ACHIEVEMENTS_DATA.forEach(ach => {
+            const isUnlocked = state.achievements[ach.id] && state.achievements[ach.id].unlocked;
+            const card = document.createElement("div");
+            card.className = `achievement-card ${isUnlocked ? 'unlocked' : 'locked'}`;
+
+            const timeStr = isUnlocked ? (state.achievements[ach.id].unlockedAt || 'Unlocked') : '';
+
+            card.innerHTML = `
+                <div class="achievement-card-icon">${isUnlocked ? ach.icon : '🔒'}</div>
+                <div class="achievement-card-body">
+                    <div class="achievement-card-title">
+                        <span>${ach.title}</span>
+                        ${isUnlocked ? '<span style="color:#00ff88;">✔</span>' : ''}
+                    </div>
+                    <div class="achievement-card-desc">${ach.desc}</div>
+                    <div class="achievement-card-status">${isUnlocked ? `UNLOCKED (${timeStr})` : 'LOCKED'}</div>
+                </div>
+            `;
+            gridEl.appendChild(card);
+        });
+    }
+}
 
 // --- Proposal 1: Heroic Attribute, Equipment & Combat Formulas ---
 
@@ -409,7 +730,9 @@ function calculateCritChance() {
     const eq = calculateEquipmentBonuses();
     const totalLck = state.lck + eq.lck;
     const totalAgi = state.agi + eq.agi;
-    return Math.min(50, 5 + (totalLck * 2) + (totalAgi * 1));
+    let chance = 5 + (totalLck * 2) + (totalAgi * 1);
+    if (state.heroClass === "ranger") chance += 10; // Ranger Perk: Eagle Eye (+10% Crit Chance)
+    return Math.min(50, chance);
 }
 
 function calculateCritMultiplier() {
@@ -432,7 +755,9 @@ function calculateMitigation() {
 
 function mitigate(damage) {
     const armor = calculateMitigation();
-    return Math.max(1, Math.round(damage - armor));
+    let mitigated = Math.round(damage - armor);
+    if (state.heroClass === "paladin") mitigated -= 3; // Paladin Perk: Holy Guard (-3 Damage Taken)
+    return Math.max(1, mitigated);
 }
 
 function rollAttack() {
@@ -468,11 +793,11 @@ function gainExp(amount) {
 }
 
 const ENEMY_POOL = [
-    { name: "Wild Weasel", hp: 38, dmgLow: 12, dmgHigh: 20 },
-    { name: "Barn Owl", hp: 45, dmgLow: 14, dmgHigh: 24 },
-    { name: "Giant Garden Toad", hp: 35, dmgLow: 10, dmgHigh: 18 },
-    { name: "Alley Rat Rogue", hp: 50, dmgLow: 15, dmgHigh: 26 },
-    { name: "Feral Farm Cat", hp: 60, dmgLow: 18, dmgHigh: 30 }
+    { name: "Wild Weasel", hp: 38, dmgLow: 12, dmgHigh: 20, image: "assets/images/wild_weasel.jpg" },
+    { name: "Barn Owl", hp: 45, dmgLow: 14, dmgHigh: 24, image: "assets/images/barn_owl.jpg" },
+    { name: "Giant Garden Toad", hp: 35, dmgLow: 10, dmgHigh: 18, image: "assets/images/giant_garden_toad.jpg" },
+    { name: "Alley Rat Rogue", hp: 50, dmgLow: 15, dmgHigh: 26, image: "assets/images/alley_rat_rogue.jpg" },
+    { name: "Feral Farm Cat", hp: 60, dmgLow: 18, dmgHigh: 30, image: "assets/images/feral_farm_cat.jpg" }
 ];
 
 // Image assets mapping
@@ -533,12 +858,40 @@ function addScore(points) {
     gainExp(points);
 }
 
+function spawnFloatingText(text, type = "damage", customX = 50, customY = 45) {
+    const container = document.getElementById("floating-text-container");
+    if (!container) return;
+
+    const span = document.createElement("span");
+    span.className = `floating-text ft-${type}`;
+    span.textContent = text;
+
+    const offsetX = (Math.random() * 16 - 8);
+    const finalX = Math.min(90, Math.max(10, customX + offsetX));
+
+    span.style.left = `${finalX}%`;
+    span.style.top = `${customY}%`;
+
+    container.appendChild(span);
+
+    setTimeout(() => {
+        if (span.parentNode) {
+            span.parentNode.removeChild(span);
+        }
+    }, 1400);
+}
+
 function healPlayer(amount) {
     state.maxHp = calculateMaxHp();
     state.hp = Math.min(state.maxHp, state.hp + amount);
     addLog(`💚 Restored ${amount} HP! Current HP: ${state.hp}/${state.maxHp}`, "event");
+    spawnFloatingText(`+${amount} HP`, "heal", 50, 45);
     sfx.playHeal();
     updateHUD();
+}
+
+function getPotionHealAmount() {
+    return state.heroClass === "alchemist" ? 60 : 40;
 }
 
 function addGold(baseGold) {
@@ -608,8 +961,10 @@ function updateHUD() {
     });
 }
 
-function setScene(imageKey, locationText) {
-    if (sceneImages[imageKey]) {
+function setScene(imageKey, locationText, customImgPath) {
+    if (customImgPath) {
+        sceneImgEl.src = customImgPath;
+    } else if (sceneImages[imageKey]) {
         sceneImgEl.src = sceneImages[imageKey];
     }
     locationNameEl.textContent = locationText;
@@ -637,9 +992,30 @@ function renderVillage() {
         { text: "1. Speak to Wise Elder by fountain", action: speakToElder },
         { text: "2. Visit the Blacksmith", action: goBlacksmith },
         { text: "3. Rest at Tavern (Full Rest)", action: restTavern },
-        { text: "4. Venture into the Wilderness Trail", action: goWilderness },
-        { text: "5. Open World Map", action: renderWorldMap }
+        { text: "4. Open World Map", action: renderWorldMap }
     ]);
+}
+
+function getClassEquipNames() {
+    const cls = state.heroClass || "paladin";
+    if (cls === "ranger") {
+        return {
+            weapon: "Composite Yew Bow",
+            shield: "Reinforced Quiver Guard",
+            armor: "Dragon-Scale Scout Leather"
+        };
+    } else if (cls === "alchemist") {
+        return {
+            weapon: "Rune Catalyst Staff",
+            shield: "Alchemical Athanor Aegis",
+            armor: "Dragon-Scale Scholar Robe"
+        };
+    }
+    return {
+        weapon: "Iron Broadsword",
+        shield: "Reinforced Tower Shield",
+        armor: "Dragon-Scale Plate Mail"
+    };
 }
 
 function goBlacksmith() {
@@ -676,26 +1052,27 @@ function renderBlacksmith() {
 
     const choices = [];
     const discount = Math.min(0.30, state.lck * 0.02);
+    const equipNames = getClassEquipNames();
 
-    const broadswordOwned = state.equipment.weapon && state.equipment.weapon.name === "Iron Broadsword";
-    const broadswordCost = Math.round(110 * (1 - discount));
+    const weaponOwned = state.equipment.weapon && state.equipment.weapon.name === equipNames.weapon;
+    const weaponCost = Math.round(110 * (1 - discount));
     choices.push({
-        text: broadswordOwned ? `1. ⚔️ Iron Broadsword - [ EQUIPPED ]` : `1. ⚔️ Buy Iron Broadsword (+15 Dmg, +2 STR) - 💰 ${broadswordCost} Gold`,
-        action: broadswordOwned ? () => { sfx.playClick(); addLog("You already own and have equipped the Iron Broadsword!"); } : () => buyEquipment("weapon", { name: "Iron Broadsword", bonusStr: 2, bonusMinDmg: 18, bonusMaxDmg: 28 }, broadswordCost)
+        text: weaponOwned ? `1. ⚔️ ${equipNames.weapon} - [ EQUIPPED ]` : `1. ⚔️ Buy ${equipNames.weapon} (+15 Dmg, +2 STR) - 💰 ${weaponCost} Gold`,
+        action: weaponOwned ? () => { sfx.playClick(); addLog(`You already own and have equipped the ${equipNames.weapon}!`); } : () => buyEquipment("weapon", { name: equipNames.weapon, bonusStr: 2, bonusMinDmg: 18, bonusMaxDmg: 28 }, weaponCost)
     });
 
-    const ironShieldOwned = state.equipment.shield && state.equipment.shield.name === "Reinforced Tower Shield";
-    const ironShieldCost = Math.round(90 * (1 - discount));
+    const shieldOwned = state.equipment.shield && state.equipment.shield.name === equipNames.shield;
+    const shieldCost = Math.round(90 * (1 - discount));
     choices.push({
-        text: ironShieldOwned ? `2. 🛡️ Reinforced Tower Shield - [ EQUIPPED ]` : `2. 🛡️ Buy Reinforced Tower Shield (+10 Armor, +2 END, +20 HP) - 💰 ${ironShieldCost} Gold`,
-        action: ironShieldOwned ? () => { sfx.playClick(); addLog("You already own and have equipped the Reinforced Tower Shield!"); } : () => buyEquipment("shield", { name: "Reinforced Tower Shield", bonusArmor: 10, bonusEnd: 2, bonusMaxHp: 20 }, ironShieldCost)
+        text: shieldOwned ? `2. 🛡️ ${equipNames.shield} - [ EQUIPPED ]` : `2. 🛡️ Buy ${equipNames.shield} (+10 Armor, +2 END, +20 HP) - 💰 ${shieldCost} Gold`,
+        action: shieldOwned ? () => { sfx.playClick(); addLog(`You already own and have equipped the ${equipNames.shield}!`); } : () => buyEquipment("shield", { name: equipNames.shield, bonusArmor: 10, bonusEnd: 2, bonusMaxHp: 20 }, shieldCost)
     });
 
-    const armorOwned = state.equipment.armor && state.equipment.armor.name === "Dragon-Scale Armor";
+    const armorOwned = state.equipment.armor && state.equipment.armor.name === equipNames.armor;
     const armorCost = Math.round(100 * (1 - discount));
     choices.push({
-        text: armorOwned ? `3. 🥋 Dragon-Scale Armor - [ EQUIPPED ]` : `3. 🥋 Buy Dragon-Scale Armor (+8 Armor, +2 AGI, +30 HP) - 💰 ${armorCost} Gold`,
-        action: armorOwned ? () => { sfx.playClick(); addLog("You already own and have equipped the Dragon-Scale Armor!"); } : () => buyEquipment("armor", { name: "Dragon-Scale Armor", bonusArmor: 8, bonusAgi: 2, bonusMaxHp: 30 }, armorCost)
+        text: armorOwned ? `3. 🥋 ${equipNames.armor} - [ EQUIPPED ]` : `3. 🥋 Buy ${equipNames.armor} (+8 Armor, +2 AGI, +30 HP) - 💰 ${armorCost} Gold`,
+        action: armorOwned ? () => { sfx.playClick(); addLog(`You already own and have equipped the ${equipNames.armor}!`); } : () => buyEquipment("armor", { name: equipNames.armor, bonusArmor: 8, bonusAgi: 2, bonusMaxHp: 30 }, armorCost)
     });
 
     const ringOwned = state.equipment.accessory && state.equipment.accessory.name === "Ring of Power";
@@ -705,15 +1082,48 @@ function renderBlacksmith() {
         action: ringOwned ? () => { sfx.playClick(); addLog("You already own and have equipped the Ring of Power!"); } : () => buyEquipment("accessory", { name: "Ring of Power", bonusLck: 2, bonusStr: 1, bonusAgi: 1, bonusEnd: 1 }, ringCost)
     });
 
+    const hasAllRelics = state.hasSunCrystal && state.hasHiltOfDawn && state.hasBlueprint;
+    if (hasAllRelics && !state.hasDormantSunblade && !state.hasSword) {
+        choices.unshift({
+            text: "🔥 REFORGE THE SUNBLADE (Use 3 Relics)",
+            action: reforgeSunblade
+        });
+    }
+
     const potionCost = Math.round(35 * (1 - discount));
     choices.push({
-        text: `5. 🧪 Buy Healing Potion (+40 HP) - 💰 ${potionCost} Gold`,
+        text: `🧪 Buy Healing Potion (+40 HP) - 💰 ${potionCost} Gold`,
         action: () => buyPotion(potionCost)
     });
 
-    choices.push({ text: "6. Return to Village Square", action: renderVillage });
+    choices.push({ text: "Return to Village Square", action: renderVillage });
 
     renderChoices(choices);
+}
+
+function reforgeSunblade() {
+    sfx.playClick();
+    const removeRelic = (itemName) => {
+        const idx = state.inventory.indexOf(itemName);
+        if (idx !== -1) state.inventory.splice(idx, 1);
+    };
+    removeRelic("Sun Crystal Core");
+    removeRelic("Hilt of Dawn");
+    removeRelic("Forge Blueprint");
+
+    state.hasDormantSunblade = true;
+    state.inventory.push("Dormant Sunblade");
+
+    sfx.playItem();
+    addScore(250);
+    updateHUD();
+    renderBlacksmith();
+
+    addLog("🔨 THE BLACKSMITH STRIKES HIS HEARTH ANVIL!", "victory");
+    addLog("Sparks fly as the Sun Crystal Core fuses with the Hilt of Dawn according to the ancient blueprint!", "event");
+    addLog("🎒 YOU OBTAINED: Dormant Sunblade (Added to Inventory!)", "victory");
+    addLog("Take the Dormant Sunblade to the Temple Sanctum altar to ignite its holy sunfire!", "event");
+    unlockAchievement("master_craftsman");
 }
 
 function buyEquipment(slot, itemObj, cost) {
@@ -746,15 +1156,27 @@ function buyPotion(cost) {
 
 function speakToElder() {
     sfx.playClick();
-    addLog("Elder: 'Brave adventurer! The Sunblade lies hidden inside The Temple Sanctum across the Whispering Forest.'");
-    addLog("Elder: 'Take this Silver Key. It unlocks the inner sanctum!'");
+    addLog("Elder: 'Brave adventurer! The Sunblade was forged during the First Shadow War, but was shattered into three celestial relics to prevent Lord Rodrigues from stealing it:'", "event");
+    addLog("Elder: '1. The Sun Crystal Core (hidden within the Mountain Snake Cave)'");
+    addLog("Elder: '2. The Hilt of Dawn (blessed by the Fairy Fountain Queen)'");
+    addLog("Elder: '3. The Forge Blueprint (recovered from the Old Watchtower)'");
 
-    if (!state.inventory.includes("Silver Key")) {
-        state.inventory.push("Silver Key");
+    if (!state.hasRuneScroll) {
+        state.hasRuneScroll = true;
+        state.inventory.push("Sunblade Rune Scroll");
         state.hasKey = true;
+        addLog("Elder: 'Take this Sunblade Rune Scroll! Recover all 3 relics across the realm, reforge the dormant blade at the Village Blacksmith, and consecrate it at the Temple Sanctum!'", "victory");
+        
+        const count = getRelicCount();
+        if (count > 0) {
+            addLog(`Elder: 'Ah! I see you already carry ${count} of the 3 celestial relics in your inventory! Excellent work!'`, "event");
+        }
         addScore(100);
+        updateHUD();
+        unlockAchievement("sunblade_scroll");
     } else {
-        addLog("Elder: 'You already possess the Silver Key! Now seek the temple in the Forest.'");
+        const count = getRelicCount();
+        addLog(`Elder: 'You currently carry ${count}/3 relics in your inventory. Seek any remaining relics across the Mountain Cave, Fairy Fountain, and Old Watchtower!'`);
     }
 }
 
@@ -784,10 +1206,9 @@ function renderForest() {
     addLog("Ancient mossy monoliths and glowing forest flora line the quiet dirt path leading deep into the ancient woodland.");
 
     const choices = [
-        { text: "1. Explore The Temple Sanctum", action: goTemple },
-        { text: "2. Investigate glowing tree stump", action: investigateStump },
-        { text: "3. Fight Goblin Rogue", action: battleGoblin },
-        { text: "4. Open World Map", action: renderWorldMap }
+        { text: "1. Investigate glowing tree stump", action: investigateStump },
+        { text: "2. Fight Goblin Rogue", action: battleGoblin },
+        { text: "3. Open World Map", action: renderWorldMap }
     ];
 
     renderChoices(choices);
@@ -817,42 +1238,57 @@ function renderTemple() {
     setScene("temple", "THE TEMPLE SANCTUM");
     clearLog();
     addLog("Golden rays beam through high vaulted arches into the quiet Temple Sanctum.");
-    addLog("Massive rune-carved pillars frame the sacred altar, where an ancient pedestal awaits the Silver Key.");
+    addLog("Massive rune-carved pillars frame the sacred Altar of Dawn.");
 
     if (state.hasSword) {
-        addLog("The pedestal is empty. You have already claimed the Sunblade!");
+        addLog("The altar glows with lingering celestial light. You have already awakened the Legendary Sunblade!");
         renderChoices([
-            { text: "Return to Whispering Forest", action: renderForest }
+            { text: "Open World Map", action: renderWorldMap }
         ]);
         return;
     }
 
-    renderChoices([
-        { text: "1. Insert Silver Key into Pedestal Lock", action: useKeyTemple },
-        { text: "2. Return to Whispering Forest", action: renderForest }
-    ]);
+    if (state.hasDormantSunblade) {
+        addLog("The pedestal pulses in resonance with the Dormant Sunblade in your inventory!", "event");
+        renderChoices([
+            { text: "1. ✨ Consecrate Dormant Sunblade on the Altar of Dawn", action: consecrateSunblade },
+            { text: "2. Open World Map", action: renderWorldMap }
+        ]);
+    } else if (state.hasSunCrystal && state.hasHiltOfDawn && state.hasBlueprint) {
+        addLog("You have gathered all 3 relics! Take them to the Village Blacksmith to reforge the blade first.", "alert");
+        renderChoices([
+            { text: "Open World Map", action: renderWorldMap }
+        ]);
+    } else {
+        addLog("The Altar of Dawn awaits the Dormant Sunblade. Speak to the Wise Elder in East Grevie Village to learn of the 3 scattered relics.", "alert");
+        renderChoices([
+            { text: "Open World Map", action: renderWorldMap }
+        ]);
+    }
 }
 
-function claimSunblade() {
+function consecrateSunblade() {
+    sfx.playClick();
+    const idx = state.inventory.indexOf("Dormant Sunblade");
+    if (idx !== -1) state.inventory.splice(idx, 1);
+
     state.hasSword = true;
     state.inventory.push("Legendary Sunblade");
-    addLog("✨ A blinding flash of golden light illuminates the temple!", "event");
-    addLog("YOU HAVE FOUND THE LEGENDARY SUNBLADE!", "victory");
+    state.equipment.weapon = { name: "Legendary Sunblade", bonusStr: 25, bonusMinDmg: 35, bonusMaxDmg: 55 };
+
+    sfx.playHeal();
     addScore(300);
+    clearLog();
+    addLog("✨ A DAZZLING BEAM OF HOLY SUNLIGHT PIERCES THE TEMPLE VAULT!", "event");
+    addLog("The Dormant Sunblade ignites with celestial sunfire!", "event");
+    addLog("YOU HAVE AWAKENED THE LEGENDARY SUNBLADE! (+25 STR | Holy Sunfire Cleave)", "victory");
+    updateHUD();
+    updateStatsModalUI();
+    unlockAchievement("sunfire_awakened");
 
     renderChoices([
-        { text: "Exit Temple with Sunblade", action: renderForest }
+        { text: "Open World Map", action: renderWorldMap }
     ]);
-}
-
-function useKeyTemple() {
-    sfx.playClick();
-    if (state.inventory.includes("Silver Key")) {
-        addLog("🗝️ The Silver Key fits perfectly into the ancient mechanism!");
-        claimSunblade();
-    } else {
-        addLog("The pedestal lock requires a key! Speak to the Elder in East Grevie Village.", "alert");
-    }
 }
 
 function battleGoblin() {
@@ -887,8 +1323,10 @@ function attackGoblin() {
     state.goblinHp -= dmg;
     if (crit) {
         addLog(`💥 CRITICAL HIT! You strike the Goblin for ${dmg} damage!`, "victory");
+        spawnFloatingText(`💥 -${dmg} HP`, "crit", 50, 40);
     } else {
         addLog(`You strike the Goblin for ${dmg} damage!`, "event");
+        spawnFloatingText(`-${dmg} HP`, "damage", 50, 40);
     }
 
     if (state.goblinHp <= 0) {
@@ -898,6 +1336,7 @@ function attackGoblin() {
         state.inventory.push("Stolen Blacksmith Blueprint");
         addGold(50);
         addScore(150);
+        unlockAchievement("first_blood");
         renderChoices([{ text: "Continue through Forest", action: renderForest }]);
         return;
     }
@@ -905,10 +1344,12 @@ function attackGoblin() {
     // Goblin counter attack with Dodge check
     if (checkDodge()) {
         addLog("💨 DODGED! You leap clear of the Goblin's attack!", "victory");
+        spawnFloatingText("💨 DODGE!", "dodge", 30, 50);
     } else {
         const gDmg = mitigate(Math.floor(Math.random() * 8) + 5);
         state.hp -= gDmg;
         addLog(`The Goblin bites back for ${gDmg} damage!`, "alert");
+        spawnFloatingText(`-${gDmg} HP`, "damage", 25, 65);
         updateHUD();
     }
 
@@ -935,6 +1376,7 @@ function reasonWithGoblin() {
     addLog("🍀 You obtained the GOBLIN LUCKY CHARM (+2 LCK)!", "victory");
     state.goblinDefeated = true;
     state.goblinSpared = true;
+    unlockAchievement("merciful_hero");
     if (!state.inventory.includes("Stolen Blacksmith Blueprint")) {
         state.inventory.push("Stolen Blacksmith Blueprint");
     }
@@ -950,7 +1392,7 @@ function usePotionGoblin() {
     const idx = state.inventory.indexOf("Healing Potion");
     if (idx !== -1) {
         state.inventory.splice(idx, 1);
-        healPlayer(40);
+        healPlayer(getPotionHealAmount());
         renderGoblinTurn();
     } else {
         addLog("No Healing Potions in inventory!", "alert");
@@ -971,10 +1413,8 @@ function renderMountain() {
     addLog("Jagged granite crags tower into the clouds above, marking the perilous path toward Rodrigues's fortress.");
 
     renderChoices([
-        { text: "1. Ascend to Cat's Hall", action: battleDragon },
-        { text: "2. Search Mountain Cave for supplies", action: searchCave },
-        { text: "3. Explore the Old Watchtower ruins", action: goWatchtower },
-        { text: "4. Open World Map", action: renderWorldMap }
+        { text: "1. Search Mountain Cave for supplies", action: searchCave },
+        { text: "2. Open World Map", action: renderWorldMap }
     ]);
 }
 
@@ -992,7 +1432,15 @@ function renderWatchtower() {
 
     if (state.knightFreed) {
         addLog("The watchtower is empty and silent. Sir Johan rides free at your side, ready for the final battle at Cat's Hall.");
-        renderChoices([{ text: "Return to Mountain Pass", action: renderMountain }]);
+        if (!state.hasBlueprint) {
+            state.hasBlueprint = true;
+            state.inventory.push("Forge Blueprint");
+            const count = getRelicCount();
+            addLog(`📜 Searching the watchtower tactical desk, you discover the ancient Forge Blueprint! (Sunblade Relic ${count}/3)`, "victory");
+            sfx.playItem();
+            updateHUD();
+        }
+        renderChoices([{ text: "Open World Map", action: renderWorldMap }]);
         return;
     }
 
@@ -1002,7 +1450,7 @@ function renderWatchtower() {
     renderChoices([
         { text: "1. Shatter chains & free Sir Johan", action: freeKnight },
         { text: "2. Ask Sir Johan why he was chained", action: askKnightLore },
-        { text: "3. Leave him chained for now & return", action: renderMountain }
+        { text: "3. Open World Map", action: renderWorldMap }
     ]);
 }
 
@@ -1010,11 +1458,11 @@ function askKnightLore() {
     sfx.playClick();
     clearLog();
     addLog("Sir Johan: 'I stood against Rodrigues when he brought dark shadows to East Grevie and abducted Princess Elsa. His sorcerers bound me in blood-iron.'", "event");
-    addLog("Sir Johan reveals a secret tactic: 'Listen carefully! In Cat's Hall, Rodrigues hides behind a shadow barrier. When his eyes glow crimson, raise your shield immediately to deflect his dark pounce!'", "victory");
+    addLog("Sir Johan reveals a secret tactic: 'Listen carefully! When Rodrigues's eyes glow crimson, raise your shield immediately to deflect his dark pounce!'", "victory");
 
     renderChoices([
         { text: "1. Shatter chains & free Sir Johan", action: freeKnight },
-        { text: "2. Return to Mountain Pass", action: renderMountain }
+        { text: "2. Open World Map", action: renderWorldMap }
     ]);
 }
 
@@ -1025,10 +1473,19 @@ function freeKnight() {
     state.knightFreed = true;
     state.inventory.push("Royal Guard Crest");
     state.equipment.accessory = { name: "Royal Guard Crest", bonusArmor: 3 };
+    unlockAchievement("royal_knight");
+
+    if (!state.hasBlueprint) {
+        state.hasBlueprint = true;
+        state.inventory.push("Forge Blueprint");
+        const count = getRelicCount();
+        addLog(`📜 Sir Johan also hands over the ancient Forge Blueprint recovered from Rodrigues's lieutenants! (Sunblade Relic ${count}/3)`, "victory");
+    }
+
     addScore(100);
     updateHUD();
     updateStatsModalUI();
-    renderChoices([{ text: "Return to Mountain Pass with Sir Johan", action: renderMountain }]);
+    renderChoices([{ text: "Open World Map", action: renderWorldMap }]);
 }
 
 function searchCave() {
@@ -1049,7 +1506,7 @@ function renderMountainCave() {
     renderChoices([
         { text: "1. Fight the Mountain Snake", action: startTrollFight },
         { text: "2. Sneak past while it's resting", action: sneakPastTroll },
-        { text: "3. Retreat to the Mountain Pass", action: renderMountain }
+        { text: "3. Open World Map", action: renderWorldMap }
     ]);
 }
 
@@ -1058,9 +1515,17 @@ function sneakPastTroll() {
     addLog("You slip past the resting Snake and find a sturdy Elven Shield & Elixir of Life!", "event");
     state.caveSearched = true;
     state.inventory.push("Elixir of Life");
+    if (!state.hasSunCrystal) {
+        state.hasSunCrystal = true;
+        state.inventory.push("Sun Crystal Core");
+        const count = getRelicCount();
+        addLog(`💎 You discover the Sun Crystal Core glowing brilliantly amongst the cave gold! (Sunblade Relic ${count}/3)`, "victory");
+    }
+    unlockAchievement("snake_slayer");
     healPlayer(50);
     addScore(100);
-    renderChoices([{ text: "Return to Mountain Pass", action: renderMountain }]);
+    updateHUD();
+    renderChoices([{ text: "Open World Map", action: renderWorldMap }]);
 }
 
 function startTrollFight() {
@@ -1076,7 +1541,7 @@ function renderTrollTurn() {
     renderChoices([
         { text: "1. Attack Snake with weapon", action: attackTroll },
         { text: "2. Drink Healing Potion", action: usePotionTroll },
-        { text: "3. Flee to Mountain Pass", action: renderMountain }
+        { text: "3. Open World Map", action: renderWorldMap }
     ]);
 }
 
@@ -1087,24 +1552,36 @@ function attackTroll() {
     state.trollHp -= dmg;
     if (crit) {
         addLog(`💥 CRITICAL HIT! You strike the Mountain Snake for ${dmg} damage!`, "victory");
+        spawnFloatingText(`💥 -${dmg} HP`, "crit", 50, 40);
     } else {
         addLog(`You strike the Mountain Snake for ${dmg} damage!`, "event");
+        spawnFloatingText(`-${dmg} HP`, "damage", 50, 40);
     }
 
     if (state.trollHp <= 0) {
         addLog("🎉 You defeated the Mountain Snake!", "victory");
         state.caveSearched = true;
         state.inventory.push("Elixir of Life");
+        if (!state.hasSunCrystal) {
+            state.hasSunCrystal = true;
+            state.inventory.push("Sun Crystal Core");
+            const count = getRelicCount();
+            addLog(`💎 You discover the Sun Crystal Core glowing brilliantly amongst the cave gold! (Sunblade Relic ${count}/3)`, "victory");
+        }
         healPlayer(50);
         addGold(100);
         addScore(250);
-        renderChoices([{ text: "Return to Mountain Pass", action: renderMountain }]);
+        updateHUD();
+        unlockAchievement("first_blood");
+        unlockAchievement("snake_slayer");
+        renderChoices([{ text: "Open World Map", action: renderWorldMap }]);
         return;
     }
 
     const tDmg = mitigate(Math.floor(Math.random() * 9) + 10);
     state.hp -= tDmg;
     addLog(`The Mountain Snake bites with venomous fangs for ${tDmg} damage!`, "alert");
+    spawnFloatingText(`-${tDmg} HP`, "damage", 25, 65);
     updateHUD();
 
     if (state.hp <= 0) {
@@ -1119,7 +1596,7 @@ function usePotionTroll() {
     const idx = state.inventory.indexOf("Healing Potion");
     if (idx !== -1) {
         state.inventory.splice(idx, 1);
-        healPlayer(40);
+        healPlayer(getPotionHealAmount());
         renderTrollTurn();
     } else {
         addLog("No Healing Potions in inventory!", "alert");
@@ -1133,13 +1610,14 @@ function goWilderness() {
     const levelBonus = state.level - 1;
     state.wilderness = {
         name: base.name,
+        image: base.image,
         hp: base.hp + levelBonus * 8,
         dmgLow: base.dmgLow + levelBonus * 2,
         dmgHigh: base.dmgHigh + levelBonus * 2,
         reward: 60 + levelBonus * 8,
     };
 
-    setScene("wilderness", "WILDERNESS TRAIL");
+    setScene("wilderness", `WILDERNESS TRAIL - ${base.name.toUpperCase()}`, base.image);
     sfx.playMusic("battle");
     clearLog();
     addLog(`The wild trail winds through dense brush, where a ferocious ${state.wilderness.name} springs forth!`, "alert");
@@ -1152,7 +1630,7 @@ function renderWildernessTurn() {
     renderChoices([
         { text: "1. Attack with weapon", action: attackWilderness },
         { text: "2. Use Healing Potion", action: usePotionWilderness },
-        { text: "3. Flee back to the Village", action: renderVillage }
+        { text: "3. Open World Map", action: renderWorldMap }
     ]);
 }
 
@@ -1164,17 +1642,20 @@ function attackWilderness() {
     w.hp -= dmg;
     if (crit) {
         addLog(`💥 CRITICAL HIT! You strike the ${w.name} for ${dmg} damage!`, "victory");
+        spawnFloatingText(`💥 -${dmg} HP`, "crit", 50, 40);
     } else {
         addLog(`You strike the ${w.name} for ${dmg} damage!`, "event");
+        spawnFloatingText(`-${dmg} HP`, "damage", 50, 40);
     }
 
     if (w.hp <= 0) {
         addLog(`🎉 You defeated the ${w.name}!`, "victory");
         addGold(30);
         addScore(w.reward);
+        unlockAchievement("first_blood");
         renderChoices([
             { text: "1. Continue deeper on the Trail", action: goWilderness },
-            { text: "2. Return to Village Square", action: renderVillage }
+            { text: "2. Open World Map", action: renderWorldMap }
         ]);
         return;
     }
@@ -1182,6 +1663,7 @@ function attackWilderness() {
     const eDmg = mitigate(Math.floor(Math.random() * (w.dmgHigh - w.dmgLow + 1)) + w.dmgLow);
     state.hp -= eDmg;
     addLog(`The ${w.name} strikes back for ${eDmg} damage!`, "alert");
+    spawnFloatingText(`-${eDmg} HP`, "damage", 25, 65);
     updateHUD();
 
     if (state.hp <= 0) {
@@ -1196,7 +1678,7 @@ function usePotionWilderness() {
     const idx = state.inventory.indexOf("Healing Potion");
     if (idx !== -1) {
         state.inventory.splice(idx, 1);
-        healPlayer(40);
+        healPlayer(getPotionHealAmount());
         renderWildernessTurn();
     } else {
         addLog("No Healing Potions in inventory!", "alert");
@@ -1230,7 +1712,7 @@ function renderDragonTurn() {
         { text: "1. Slash with Weapon", action: attackDragon },
         { text: "2. Raise Shield to Defend & Block", action: defendDragon },
         { text: "3. Drink Healing Potion", action: useHealDragon },
-        { text: "4. Flee to Mountain Pass", action: renderMountain }
+        { text: "4. Retreat to World Map", action: renderWorldMap }
     ];
     if (state.knightFreed && !state.knightAllyUsed) {
         choices.push({ text: "5. Call upon Sir Johan to strike Rodrigues", action: callKnightAlly });
@@ -1262,15 +1744,19 @@ function attackDragon() {
             dmg = Math.floor(dmg * 1.5);
             state.dragonExposed = false;
             addLog(`🎯 WEAK SPOT STRICKEN! You deal ${dmg} EXTRA CRITICAL DAMAGE!`, "victory");
+            spawnFloatingText(`🎯 -${dmg} HP!`, "crit", 50, 40);
         } else if (rolled.crit) {
             addLog(`💥⚔️ CRITICAL HIT! The Sunblade cleaves through the cat's thick fur for ${dmg} massive damage!`, "victory");
+            spawnFloatingText(`💥 -${dmg} HP`, "crit", 50, 40);
         } else {
             addLog(`💥 The Sunblade pierces the cat's thick fur for ${dmg} DAMAGE!`, "victory");
+            spawnFloatingText(`-${dmg} HP`, "damage", 50, 40);
         }
         state.dragonHp -= dmg;
     } else {
         addLog("🛡️ YOUR WEAPON REBOUNDS HARMLESSLY OFF RODRIGUES'S THICK FUR! (0 Damage)", "alert");
         addLog("Without the Legendary Sunblade, no mortal weapon can pierce the cat's fur!", "alert");
+        spawnFloatingText("🛡️ IMMUNE! (0 HP)", "event", 50, 40);
         state.dragonExposed = false;
     }
 
@@ -1292,10 +1778,12 @@ function attackDragon() {
         if (Math.random() < 0.45) {
             state.catEyesGlowing = true;
             addLog("🔴 RODRIGUES CROUCHES LOW! HIS EYES BEGIN TO GLOW FIERY CRIMSON!", "alert");
+            spawnFloatingText("🔴 CRIMSON EYES!", "event", 50, 30);
         } else {
             const dDmg = mitigate(Math.floor(Math.random() * 16) + 20);
             state.hp -= dDmg;
             addLog(`Rodrigues slashes with razor claws! You take ${dDmg} damage!`, "alert");
+            spawnFloatingText(`-${dDmg} HP`, "damage", 25, 65);
             updateHUD();
             if (state.hp <= 0) {
                 gameOver("You fell in battle against Rodrigues the Shadow Cat.");
@@ -1314,8 +1802,10 @@ function defendDragon() {
         addLog("🛡️ PERFECT BLOCK! You raise your shield high just as Rodrigues executes his Crimson Shadow Pounce!", "victory");
         addLog("💥 The lethal dark strike shatters harmlessly against your shield guard! Rodrigues is stunned!", "victory");
         addLog("✨ RODRIGUES IS STUNNED & EXPOSES HIS CHEST WEAK SPOT! Your next attack deals +50% BONUS DAMAGE!", "event");
+        spawnFloatingText("🛡️ PERFECT BLOCK!", "dodge", 50, 40);
         state.dragonExposed = true;
         state.hp -= 2; // Minimal chip damage
+        unlockAchievement("perfect_guard");
     } else {
         addLog("🛡️ YOU RAISE YOUR SHIELD TO BLOCK RODRIGUES'S RAZOR CLAWS!", "event");
         const rawDmg = Math.floor(Math.random() * 8) + 12;
@@ -1345,7 +1835,7 @@ function useHealDragon() {
         idx = state.inventory.indexOf("Healing Potion");
         if (idx !== -1) {
             state.inventory.splice(idx, 1);
-            healPlayer(40);
+            healPlayer(getPotionHealAmount());
         } else {
             addLog("You have no healing items left!", "alert");
             renderDragonTurn();
@@ -1398,6 +1888,7 @@ function winGame() {
     addLog("           VICTORY! THE KINGDOM IS SAVED!", "victory");
     addLog("============================================================", "victory");
     addLog("You vanquished Rodrigues the Shadow Cat, rescued Princess Elsa, and saved East Grevie!", "event");
+    unlockAchievement("savior_of_realm");
 
     let speechText = `Sunlight breaks over the Village of East Grevie as ${state.name} returns triumphant! With Princess Elsa rescued and Lord Rodrigues vanquished, peace is restored to the realm.`;
     if (state.knightFreed) {
@@ -1485,23 +1976,40 @@ function exitToMainMenu() {
 }
 
 function restartGame() {
-    state.str = 3;
-    state.agi = 3;
-    state.end = 3;
-    state.lck = 3;
-    state.gold = 50;
+    const cls = state.heroClass || "paladin";
+    if (cls === "paladin") {
+        state.str = 3; state.agi = 3; state.end = 6; state.lck = 3; state.gold = 50;
+        state.inventory = ["Bread"];
+        state.equipment = {
+            weapon: { name: "Wooden Sword", bonusStr: 0, bonusMinDmg: 8, bonusMaxDmg: 15 },
+            shield: { name: "Wooden Shield", bonusArmor: 5, bonusEnd: 0 },
+            armor: { name: "Traveler's Tunic", bonusArmor: 1, bonusAgi: 0 },
+            accessory: null
+        };
+    } else if (cls === "ranger") {
+        state.str = 3; state.agi = 5; state.end = 3; state.lck = 4; state.gold = 50;
+        state.inventory = ["Bread"];
+        state.equipment = {
+            weapon: { name: "Hunter's Shortbow", bonusStr: 0, bonusMinDmg: 8, bonusMaxDmg: 15 },
+            shield: { name: "Leather Quiver Guard", bonusArmor: 5, bonusEnd: 0 },
+            armor: { name: "Scout's Cloak", bonusArmor: 1, bonusAgi: 0 },
+            accessory: null
+        };
+    } else if (cls === "alchemist") {
+        state.str = 4; state.agi = 4; state.end = 4; state.lck = 4; state.gold = 75;
+        state.inventory = ["Bread", "Healing Potion", "Healing Potion", "Healing Potion"];
+        state.equipment = {
+            weapon: { name: "Catalyst Wand", bonusStr: 0, bonusMinDmg: 8, bonusMaxDmg: 15 },
+            shield: { name: "Rune Codex", bonusArmor: 5, bonusEnd: 0 },
+            armor: { name: "Scholar's Robe", bonusArmor: 1, bonusAgi: 0 },
+            accessory: null
+        };
+    }
     state.ap = 0;
     state.level = 1;
     state.exp = 0;
     state.expToNextLevel = 100;
     state.score = 0;
-    state.inventory = ["Bread"];
-    state.equipment = {
-        weapon: { name: "Wooden Sword", bonusStr: 0, bonusMinDmg: 8, bonusMaxDmg: 15 },
-        shield: { name: "Wooden Shield", bonusArmor: 5, bonusEnd: 0 },
-        armor: { name: "Traveler's Tunic", bonusArmor: 1, bonusAgi: 0 },
-        accessory: null
-    };
     state.blueprintReturned = false;
     state.maxHp = calculateMaxHp();
     state.hp = state.maxHp;
@@ -1536,27 +2044,82 @@ function renderChoices(choices) {
 }
 
 // Event Listeners
-const musicBtnEl = document.getElementById("music-btn");
-const voiceBtnEl = document.getElementById("voice-btn");
-
 const narrateBtnEl = document.getElementById("narrate-btn");
 const introLoreCardEl = document.querySelector(".intro-lore-card");
 
 if (narrateBtnEl) {
     narrateBtnEl.addEventListener("click", () => {
-        const heroName = nameInputEl.value.trim() || "Sir Eldrin";
+        const heroName = nameInputEl.value.trim() || "Sir Ario";
         state.name = heroName;
         if (introLoreCardEl) introLoreCardEl.classList.add("speaking");
-        narrator.speak(`Welcome, ${heroName}! Shadows fall over the Village of East Grevie. The ruthless Cat Rodrigues has abducted Princess Elsa to his cursed lair. Only the Legendary Sunblade can pierce the beast's thick fur. Hero, your quest begins now...`);
+        narrator.speak(`Welcome, ${heroName}! Shadows fall over the Village of East Grevie. The ruthless Cat Rodrigues has abducted Princess Elsa to his cursed lair. Only the Legendary Sunblade can pierce the beast's thick fur. Hero, your quest begins now...`, {
+            onSpeechEnd: () => {
+                if (introLoreCardEl) introLoreCardEl.classList.remove("speaking");
+            }
+        });
     });
 }
 
+document.querySelectorAll(".class-card").forEach(card => {
+    card.addEventListener("click", () => {
+        document.querySelectorAll(".class-card").forEach(c => c.classList.remove("selected"));
+        card.classList.add("selected");
+        sfx.playClick();
+    });
+});
+
 startBtnEl.addEventListener("click", () => {
-    state.name = nameInputEl.value.trim() || "Sir Eldrin";
+    state.name = nameInputEl.value.trim() || "Sir Ario";
+
+    const selectedCard = document.querySelector(".class-card.selected");
+    const chosenClass = selectedCard ? (selectedCard.getAttribute("data-class") || "paladin") : "paladin";
+    state.heroClass = chosenClass;
+
+    if (chosenClass === "paladin") {
+        state.end = 6;
+        state.str = 3;
+        state.agi = 3;
+        state.lck = 3;
+        state.equipment = {
+            weapon: { name: "Wooden Sword", bonusStr: 0, bonusMinDmg: 8, bonusMaxDmg: 15 },
+            shield: { name: "Wooden Shield", bonusArmor: 5, bonusEnd: 0 },
+            armor: { name: "Traveler's Tunic", bonusArmor: 1, bonusAgi: 0 },
+            accessory: null
+        };
+    } else if (chosenClass === "ranger") {
+        state.end = 3;
+        state.str = 3;
+        state.agi = 5;
+        state.lck = 4;
+        state.equipment = {
+            weapon: { name: "Hunter's Shortbow", bonusStr: 0, bonusMinDmg: 8, bonusMaxDmg: 15 },
+            shield: { name: "Leather Quiver Guard", bonusArmor: 5, bonusEnd: 0 },
+            armor: { name: "Scout's Cloak", bonusArmor: 1, bonusAgi: 0 },
+            accessory: null
+        };
+    } else if (chosenClass === "alchemist") {
+        state.str = 4;
+        state.agi = 4;
+        state.end = 4;
+        state.lck = 4;
+        state.gold = 75;
+        state.inventory = ["Bread", "Healing Potion", "Healing Potion", "Healing Potion"];
+        state.equipment = {
+            weapon: { name: "Catalyst Wand", bonusStr: 0, bonusMinDmg: 8, bonusMaxDmg: 15 },
+            shield: { name: "Rune Codex", bonusArmor: 5, bonusEnd: 0 },
+            armor: { name: "Scholar's Robe", bonusArmor: 1, bonusAgi: 0 },
+            accessory: null
+        };
+    }
+
+    state.maxHp = calculateMaxHp();
+    state.hp = state.maxHp;
+
     narrator.stop();
     if (introLoreCardEl) introLoreCardEl.classList.remove("speaking");
     nameModalEl.classList.add("hidden");
     updateHUD();
+    updateStatsModalUI();
     sfx.init();
     renderVillage();
 });
@@ -1620,26 +2183,100 @@ document.querySelectorAll(".gallery-item").forEach(item => {
         const src = item.getAttribute("data-src");
         const title = item.getAttribute("data-title");
         if (src) {
-            openLightbox(src, title || "GALLERY ARTWORK");
+            openLightbox(src, title || "GALLERY ARTWORK", true);
         }
     });
 });
 
-// --- Fullscreen Artwork Lightbox Modal Handlers ---
+// --- Fullscreen Artwork Lightbox Modal Handlers & Gallery Navigation ---
 const imageFrameEl = document.getElementById("image-frame-container");
 const lightboxModalEl = document.getElementById("lightbox-modal");
 const lightboxImgEl = document.getElementById("lightbox-img");
 const lightboxTitleEl = document.getElementById("lightbox-location-title");
 const lightboxCloseBtnEl = document.getElementById("lightbox-close-btn");
+const lightboxPrevBtnEl = document.getElementById("lightbox-prev-btn");
+const lightboxNextBtnEl = document.getElementById("lightbox-next-btn");
+const lightboxCounterEl = document.getElementById("lightbox-counter");
 
-function openLightbox(imageSrc, titleText) {
+let activeGalleryList = [];
+let currentGalleryIdx = 0;
+let isLightboxGalleryMode = false;
+
+function getGalleryItemList() {
+    const items = [];
+    document.querySelectorAll(".gallery-item").forEach(el => {
+        const src = el.getAttribute("data-src") || (el.querySelector("img") ? el.querySelector("img").src : "");
+        const title = el.getAttribute("data-title") || (el.querySelector(".gallery-item-title") ? el.querySelector(".gallery-item-title").textContent : "REALM ARTWORK");
+        if (src) items.push({ src, title });
+    });
+    return items;
+}
+
+function openLightbox(imageSrc, titleText, isGalleryMode = false) {
     if (lightboxImgEl && lightboxModalEl) {
-        lightboxImgEl.src = imageSrc;
-        if (lightboxTitleEl) {
-            lightboxTitleEl.textContent = titleText || "EAST GREVIE ARTWORK";
+        isLightboxGalleryMode = isGalleryMode;
+        const lightboxHintEl = document.querySelector(".lightbox-hint");
+
+        if (isGalleryMode) {
+            activeGalleryList = getGalleryItemList();
+            const normTarget = imageSrc.split('/').pop().toLowerCase();
+
+            currentGalleryIdx = activeGalleryList.findIndex(item => {
+                const normItem = item.src.split('/').pop().toLowerCase();
+                return normItem === normTarget;
+            });
+
+            if (currentGalleryIdx === -1) {
+                activeGalleryList.push({ src: imageSrc, title: titleText || "EAST GREVIE ARTWORK" });
+                currentGalleryIdx = activeGalleryList.length - 1;
+            }
+
+            if (lightboxPrevBtnEl) lightboxPrevBtnEl.classList.remove("hidden");
+            if (lightboxNextBtnEl) lightboxNextBtnEl.classList.remove("hidden");
+            if (lightboxCounterEl) lightboxCounterEl.classList.remove("hidden");
+            if (lightboxHintEl) lightboxHintEl.textContent = "Use ◄ / ► arrow keys to browse | Click outside or ESC to close";
+
+            updateLightboxDisplay();
+        } else {
+            activeGalleryList = [{ src: imageSrc, title: titleText || "EAST GREVIE ARTWORK" }];
+            currentGalleryIdx = 0;
+
+            if (lightboxImgEl) lightboxImgEl.src = imageSrc;
+            if (lightboxTitleEl) lightboxTitleEl.textContent = titleText || "EAST GREVIE ARTWORK";
+
+            if (lightboxPrevBtnEl) lightboxPrevBtnEl.classList.add("hidden");
+            if (lightboxNextBtnEl) lightboxNextBtnEl.classList.add("hidden");
+            if (lightboxCounterEl) lightboxCounterEl.classList.add("hidden");
+            if (lightboxHintEl) lightboxHintEl.textContent = "Click outside or press ESC to close";
         }
+
         lightboxModalEl.classList.remove("hidden");
     }
+}
+
+function updateLightboxDisplay() {
+    if (activeGalleryList.length === 0) return;
+    const current = activeGalleryList[currentGalleryIdx];
+    if (lightboxImgEl) lightboxImgEl.src = current.src;
+    if (lightboxTitleEl) lightboxTitleEl.textContent = current.title;
+
+    if (isLightboxGalleryMode && lightboxCounterEl) {
+        lightboxCounterEl.textContent = `${currentGalleryIdx + 1} / ${activeGalleryList.length}`;
+    }
+}
+
+function showNextLightboxImage() {
+    if (!isLightboxGalleryMode || activeGalleryList.length <= 1) return;
+    currentGalleryIdx = (currentGalleryIdx + 1) % activeGalleryList.length;
+    updateLightboxDisplay();
+    sfx.playClick();
+}
+
+function showPrevLightboxImage() {
+    if (!isLightboxGalleryMode || activeGalleryList.length <= 1) return;
+    currentGalleryIdx = (currentGalleryIdx - 1 + activeGalleryList.length) % activeGalleryList.length;
+    updateLightboxDisplay();
+    sfx.playClick();
 }
 
 function closeLightbox() {
@@ -1649,7 +2286,25 @@ function closeLightbox() {
 }
 
 if (lightboxModalEl) {
-    lightboxModalEl.addEventListener("click", closeLightbox);
+    lightboxModalEl.addEventListener("click", (e) => {
+        if (e.target === lightboxModalEl) {
+            closeLightbox();
+        }
+    });
+}
+
+if (lightboxPrevBtnEl) {
+    lightboxPrevBtnEl.addEventListener("click", (e) => {
+        e.stopPropagation();
+        showPrevLightboxImage();
+    });
+}
+
+if (lightboxNextBtnEl) {
+    lightboxNextBtnEl.addEventListener("click", (e) => {
+        e.stopPropagation();
+        showNextLightboxImage();
+    });
 }
 
 if (lightboxCloseBtnEl) {
@@ -1660,8 +2315,14 @@ if (lightboxCloseBtnEl) {
 }
 
 document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape" && lightboxModalEl && !lightboxModalEl.classList.contains("hidden")) {
+    if (!lightboxModalEl || lightboxModalEl.classList.contains("hidden")) return;
+
+    if (e.key === "Escape") {
         closeLightbox();
+    } else if (isLightboxGalleryMode && (e.key === "ArrowRight" || e.key === "KeyD" || e.code === "KeyD")) {
+        showNextLightboxImage();
+    } else if (isLightboxGalleryMode && (e.key === "ArrowLeft" || e.key === "KeyA" || e.code === "KeyA")) {
+        showPrevLightboxImage();
     }
 });
 
@@ -1724,7 +2385,11 @@ if (victoryNarrateBtnEl) {
     victoryNarrateBtnEl.addEventListener("click", () => {
         const victoryText = document.getElementById("victory-lore-text") ? document.getElementById("victory-lore-text").textContent : "";
         if (victoryLoreCardEl) victoryLoreCardEl.classList.add("speaking");
-        narrator.speak(victoryText);
+        narrator.speak(victoryText, {
+            onSpeechEnd: () => {
+                if (victoryLoreCardEl) victoryLoreCardEl.classList.remove("speaking");
+            }
+        });
     });
 }
 
@@ -1734,42 +2399,114 @@ if (victoryRestartBtnEl) {
     });
 }
 
-// Header Control Buttons (Safe Event Listeners)
-if (voiceBtnEl) {
-    voiceBtnEl.addEventListener("click", () => {
-        narrator.enabled = !narrator.enabled;
-        voiceBtnEl.textContent = `VOICE: ${narrator.enabled ? "ON" : "OFF"}`;
-        if (!narrator.enabled) {
-            narrator.stop();
+// --- Modern Audio Settings Modal Event Handlers ---
+const audioSettingsBtnEl = document.getElementById("audio-settings-btn");
+const audioSettingsModalEl = document.getElementById("audio-settings-modal");
+const closeAudioSettingsModalBtn = document.getElementById("close-audio-settings-modal-btn");
+const voiceSelectEl = document.getElementById("voice-select");
+const testVoiceBtnEl = document.getElementById("test-voice-btn");
+
+const masterVolEl = document.getElementById("master-vol");
+const musicVolEl = document.getElementById("music-vol");
+const sfxVolEl = document.getElementById("sfx-vol");
+const voiceVolEl = document.getElementById("voice-vol");
+
+const masterVolValEl = document.getElementById("master-vol-val");
+const musicVolValEl = document.getElementById("music-vol-val");
+const sfxVolValEl = document.getElementById("sfx-vol-val");
+const voiceVolValEl = document.getElementById("voice-vol-val");
+
+function populateVoiceDropdown() {
+    if (!voiceSelectEl) return;
+    const voices = narrator.getAvailableVoices();
+    voiceSelectEl.innerHTML = "";
+    voices.forEach(v => {
+        const option = document.createElement("option");
+        option.value = v.name;
+        const isNeural = v.name.includes("Natural") || v.name.includes("Neural") || v.name.includes("Online") || v.name.includes("HD");
+        option.textContent = `${v.name} (${v.lang})${isNeural ? " ✨ [HD NEURAL]" : ""}`;
+        if (narrator.selectedVoice && (v.name === narrator.selectedVoice.name || v.voiceURI === narrator.selectedVoice.voiceURI)) {
+            option.selected = true;
         }
+        voiceSelectEl.appendChild(option);
     });
 }
 
-if (musicBtnEl) {
-    musicBtnEl.addEventListener("click", () => {
-        sfx.musicEnabled = !sfx.musicEnabled;
-        musicBtnEl.textContent = `MUSIC: ${sfx.musicEnabled ? "ON" : "OFF"}`;
-        if (!sfx.musicEnabled) {
+if (audioSettingsBtnEl && audioSettingsModalEl) {
+    audioSettingsBtnEl.addEventListener("click", () => {
+        populateVoiceDropdown();
+        audioSettingsModalEl.classList.remove("hidden");
+        sfx.playClick();
+    });
+}
+
+if (closeAudioSettingsModalBtn && audioSettingsModalEl) {
+    closeAudioSettingsModalBtn.addEventListener("click", () => {
+        audioSettingsModalEl.classList.add("hidden");
+        sfx.playClick();
+    });
+}
+
+if (voiceSelectEl) {
+    voiceSelectEl.addEventListener("change", () => {
+        narrator.setVoiceByName(voiceSelectEl.value);
+    });
+}
+
+if (testVoiceBtnEl) {
+    testVoiceBtnEl.addEventListener("click", () => {
+        narrator.speak("Welcome, brave adventurer! This is your storyteller voice speaking in modern natural audio.");
+    });
+}
+
+if (masterVolEl && masterVolValEl) {
+    masterVolEl.addEventListener("input", (e) => {
+        const val = parseInt(e.target.value, 10);
+        masterVolValEl.textContent = `${val}%`;
+        sfx.setMasterVolume(val / 100);
+    });
+}
+
+if (musicVolEl && musicVolValEl) {
+    musicVolEl.addEventListener("input", (e) => {
+        const val = parseInt(e.target.value, 10);
+        musicVolValEl.textContent = `${val}%`;
+        sfx.setMusicVolume(val / 100);
+        sfx.musicEnabled = val > 0;
+        if (val === 0) {
             sfx.stopMusic();
-        } else {
+        } else if (!sfx.currentTrack && state.location) {
             const trackMap = { village: "village", forest: "forest", temple: "forest", mountain: "forest", goblin: "battle", lair: "battle", watchtower: "forest", blacksmith: "village", cave: "battle" };
             sfx.playMusic(trackMap[state.location] || "village");
         }
     });
 }
 
-if (soundBtnEl) {
-    soundBtnEl.addEventListener("click", () => {
-        sfx.enabled = !sfx.enabled;
-        soundBtnEl.textContent = `SFX: ${sfx.enabled ? "ON" : "OFF"}`;
+if (sfxVolEl && sfxVolValEl) {
+    sfxVolEl.addEventListener("input", (e) => {
+        const val = parseInt(e.target.value, 10);
+        sfxVolValEl.textContent = `${val}%`;
+        sfx.setSfxVolume(val / 100);
+        sfx.enabled = val > 0;
+    });
+}
+
+if (voiceVolEl && voiceVolValEl) {
+    voiceVolEl.addEventListener("input", (e) => {
+        const val = parseInt(e.target.value, 10);
+        voiceVolValEl.textContent = `${val}%`;
+        sfx.setVoiceVolume(val / 100);
+        narrator.enabled = val > 0;
+        if (val === 0) {
+            narrator.stop();
+        }
     });
 }
 
 if (resetBtnEl) {
     resetBtnEl.addEventListener("click", () => {
-        if (confirm("Exit to main menu?")) {
-            exitToMainMenu();
-        }
+        sfx.playClick();
+        exitToMainMenu();
     });
 }
 
@@ -1858,13 +2595,22 @@ function visitFairyFountain() {
         healPlayer(50);
         addGold(30);
         addScore(100);
+
+        if (!state.hasHiltOfDawn) {
+            state.hasHiltOfDawn = true;
+            state.inventory.push("Hilt of Dawn");
+            const count = getRelicCount();
+            addLog(`🛡️ The Fairy Queen presents you with the radiant Hilt of Dawn! (Sunblade Relic ${count}/3)`, "victory");
+            sfx.playItem();
+            updateHUD();
+        }
+        unlockAchievement("fairy_blessing");
     } else {
         addLog("The fairy sprites welcome you warmly.");
         healPlayer(20);
     }
     renderChoices([
-        { text: "Return to World Map", action: renderWorldMap },
-        { text: "Return to Village Square", action: renderVillage }
+        { text: "Open World Map", action: renderWorldMap }
     ]);
 }
 
@@ -1908,6 +2654,28 @@ function updateStatsModalUI() {
     const statHeroLvlEl = document.getElementById("stat-hero-lvl");
     const statHeroExpEl = document.getElementById("stat-hero-exp");
     const statAvailableApEl = document.getElementById("stat-available-ap");
+    const statHeroClassBadgeEl = document.getElementById("stat-hero-class-badge");
+    const statPassivePerkTextEl = document.getElementById("stat-passive-perk-text");
+    const portraitImgEl = document.querySelector("#hero-portrait-frame img");
+
+    const heroClass = state.heroClass || "paladin";
+    if (statHeroClassBadgeEl) {
+        if (heroClass === "paladin") statHeroClassBadgeEl.textContent = "⚔️ SUNBLADE PALADIN";
+        else if (heroClass === "ranger") statHeroClassBadgeEl.textContent = "🏹 WOODLAND RANGER";
+        else if (heroClass === "alchemist") statHeroClassBadgeEl.textContent = "🧪 ROYAL ALCHEMIST";
+    }
+
+    if (statPassivePerkTextEl) {
+        if (heroClass === "paladin") statPassivePerkTextEl.textContent = "🛡️ Holy Guard (-3 Damage Taken)";
+        else if (heroClass === "ranger") statPassivePerkTextEl.textContent = "🎯 Eagle Eye (+10% Critical Chance)";
+        else if (heroClass === "alchemist") statPassivePerkTextEl.textContent = "🧪 Elixir Master (Potions Heal +60 HP)";
+    }
+
+    if (portraitImgEl) {
+        if (heroClass === "paladin") portraitImgEl.src = "assets/images/portrait.jpg";
+        else if (heroClass === "ranger") portraitImgEl.src = "assets/images/portrait_ranger.jpg";
+        else if (heroClass === "alchemist") portraitImgEl.src = "assets/images/portrait_alchemist.jpg";
+    }
 
     if (statHeroNameEl) statHeroNameEl.textContent = state.name;
     if (statHeroLvlEl) statHeroLvlEl.textContent = state.level;
@@ -2001,7 +2769,10 @@ if (closeStatsModalBtn) {
 const heroPortraitFrameEl = document.getElementById("hero-portrait-frame");
 if (heroPortraitFrameEl) {
     heroPortraitFrameEl.addEventListener("click", () => {
-        openLightbox("assets/images/portrait.jpg", `Hero Portrait - ${state.heroName}`);
+        const portraitImgEl = document.querySelector("#hero-portrait-frame img");
+        const currentSrc = portraitImgEl ? portraitImgEl.src : "assets/images/portrait.jpg";
+        const className = state.heroClass ? state.heroClass.toUpperCase() : "PALADIN";
+        openLightbox(currentSrc, `${state.name} - ${className} PORTRAIT`);
     });
 }
 
@@ -2035,3 +2806,35 @@ document.querySelectorAll(".info-icon-btn").forEach(btn => {
         }
     });
 });
+
+// --- Achievement Modal Handlers & Initialization ---
+const achievementsBtnEl = document.getElementById("achievements-btn");
+const achievementsModalEl = document.getElementById("achievements-modal");
+const closeAchievementsModalBtn = document.getElementById("close-achievements-modal-btn");
+
+if (achievementsBtnEl) {
+    achievementsBtnEl.addEventListener("click", () => {
+        sfx.playClick();
+        updateAchievementsUI();
+        if (achievementsModalEl) achievementsModalEl.classList.remove("hidden");
+    });
+}
+
+if (closeAchievementsModalBtn && achievementsModalEl) {
+    closeAchievementsModalBtn.addEventListener("click", () => {
+        sfx.playClick();
+        achievementsModalEl.classList.add("hidden");
+    });
+}
+
+if (achievementsModalEl) {
+    achievementsModalEl.addEventListener("click", (e) => {
+        if (e.target === achievementsModalEl) {
+            achievementsModalEl.classList.add("hidden");
+        }
+    });
+}
+
+// Initial achievements load from browser storage
+loadAchievementsFromStorage();
+updateAchievementsUI();
