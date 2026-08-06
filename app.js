@@ -2100,10 +2100,8 @@ const introLoreCardEl = document.querySelector(".intro-lore-card");
 
 if (narrateBtnEl) {
     narrateBtnEl.addEventListener("click", () => {
-        const heroName = nameInputEl.value.trim() || "Sir Ario";
-        state.name = heroName;
         if (introLoreCardEl) introLoreCardEl.classList.add("speaking");
-        narrator.speak(`Welcome, ${heroName}! Shadows fall over the Village of East Grevie. The ruthless Cat Rodrigues has abducted Princess Elsa to his cursed lair. Only the Legendary Sunblade can pierce the beast's thick fur. Hero, your quest begins now...`, {
+        narrator.speak(`Shadows fall over the Village of East Grevie. The ruthless Cat Rodrigues has abducted Princess Elsa to his cursed lair. Only the Legendary Sunblade can pierce the beast's thick fur. Hero, your quest begins now...`, {
             onSpeechEnd: () => {
                 if (introLoreCardEl) introLoreCardEl.classList.remove("speaking");
             }
