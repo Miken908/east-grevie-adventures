@@ -1444,6 +1444,70 @@ startBtnEl.addEventListener("click", () => {
     renderVillage();
 });
 
+// --- Main Menu Title Screen Starter Panel Event Handlers ---
+const mainMenuModalEl = document.getElementById("main-menu-modal");
+const menuStartBtnEl = document.getElementById("menu-start-btn");
+const menuGalleryBtnEl = document.getElementById("menu-gallery-btn");
+const menuCreditsBtnEl = document.getElementById("menu-credits-btn");
+const titleBannerContainerEl = document.getElementById("title-banner-container");
+const titleBannerImgEl = document.getElementById("title-banner-img");
+
+const galleryModalEl = document.getElementById("gallery-modal");
+const closeGalleryModalBtn = document.getElementById("close-gallery-modal-btn");
+
+const creditsModalEl = document.getElementById("credits-modal");
+const closeCreditsModalBtn = document.getElementById("close-credits-modal-btn");
+
+if (menuStartBtnEl) {
+    menuStartBtnEl.addEventListener("click", () => {
+        if (mainMenuModalEl) mainMenuModalEl.classList.add("hidden");
+        if (nameModalEl) nameModalEl.classList.remove("hidden");
+        sfx.playClick();
+    });
+}
+
+if (menuGalleryBtnEl) {
+    menuGalleryBtnEl.addEventListener("click", () => {
+        if (galleryModalEl) galleryModalEl.classList.remove("hidden");
+        sfx.playClick();
+    });
+}
+
+if (menuCreditsBtnEl) {
+    menuCreditsBtnEl.addEventListener("click", () => {
+        if (creditsModalEl) creditsModalEl.classList.remove("hidden");
+        sfx.playClick();
+    });
+}
+
+if (closeGalleryModalBtn && galleryModalEl) {
+    closeGalleryModalBtn.addEventListener("click", () => {
+        galleryModalEl.classList.add("hidden");
+    });
+}
+
+if (closeCreditsModalBtn && creditsModalEl) {
+    closeCreditsModalBtn.addEventListener("click", () => {
+        creditsModalEl.classList.add("hidden");
+    });
+}
+
+if (titleBannerContainerEl && titleBannerImgEl) {
+    titleBannerContainerEl.addEventListener("click", () => {
+        openLightbox(titleBannerImgEl.src, "EAST GREVIE ADVENTURES - TITLE ARTWORK");
+    });
+}
+
+document.querySelectorAll(".gallery-item").forEach(item => {
+    item.addEventListener("click", () => {
+        const src = item.getAttribute("data-src");
+        const title = item.getAttribute("data-title");
+        if (src) {
+            openLightbox(src, title || "GALLERY ARTWORK");
+        }
+    });
+});
+
 // --- Fullscreen Artwork Lightbox Modal Handlers ---
 const imageFrameEl = document.getElementById("image-frame-container");
 const lightboxModalEl = document.getElementById("lightbox-modal");

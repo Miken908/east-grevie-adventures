@@ -173,6 +173,19 @@ check("Watchtower pin located at 72%, 28%", htmlContent.includes('style="top: 72
 check("Cat's Hall pin located west/northwest of watchtower (48%, 15%)", htmlContent.includes('style="top: 48%; left: 15%;" data-location="lair"'));
 check("Fairy Fountain pin located northeast corner (15%, 82%)", htmlContent.includes('style="top: 15%; left: 82%;" data-location="fairy"'));
 
+// 13. AAA Title Screen, Art Gallery, & Credits Modals
+console.log("\n--- TEST GROUP 13: AAA Title Screen, Art Gallery, & Credits Modals ---");
+check("Main menu modal present in HTML (#main-menu-modal)", htmlContent.includes('id="main-menu-modal"'));
+check("Main menu start game button present (#menu-start-btn)", htmlContent.includes('id="menu-start-btn"'));
+check("Main menu art gallery button present (#menu-gallery-btn)", htmlContent.includes('id="menu-gallery-btn"'));
+check("Main menu credits button present (#menu-credits-btn)", htmlContent.includes('id="menu-credits-btn"'));
+check("Art gallery modal present in HTML (#gallery-modal)", htmlContent.includes('id="gallery-modal"'));
+check("Art gallery grid contains 14 artwork cards", (htmlContent.match(/class="gallery-item"/g) || []).length === 14);
+check("Credits modal present in HTML (#credits-modal)", htmlContent.includes('id="credits-modal"'));
+check("Main menu start button click listener bound in JS", jsContent.includes('menuStartBtnEl.addEventListener'));
+check("Main menu gallery button click listener bound in JS", jsContent.includes('menuGalleryBtnEl.addEventListener'));
+check("Main menu credits button click listener bound in JS", jsContent.includes('menuCreditsBtnEl.addEventListener'));
+
 console.log("\n==================================================");
 console.log("📊 SUMMARY OF FULL QA & BALANCE SIMULATION RESULTS");
 console.log("==================================================");

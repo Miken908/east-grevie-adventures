@@ -84,8 +84,29 @@
         </div>
     </div>
 
-    <!-- Redesigned Start Modal for Name Entry & Story Intro -->
-    <div id="name-modal" class="modal-overlay">
+    <!-- Main Menu / Title Screen Starter Panel -->
+    <div id="main-menu-modal" class="modal-overlay">
+        <div class="modal-content crt-box main-menu-box">
+            <div class="title-banner-frame" id="title-banner-container" title="Click to view artwork in full screen">
+                <img id="title-banner-img" src="assets/images/Intro.jpg" alt="East Grevie Adventures Banner Artwork">
+                <div class="zoom-hint-badge">🔍 ENLARGE ART</div>
+            </div>
+
+            <div class="main-menu-header">
+                <h1 class="main-menu-title">EAST GREVIE ADVENTURES</h1>
+                <p class="main-menu-subtitle">THE LEGEND OF SIR ELDRIN</p>
+            </div>
+
+            <div class="main-menu-btn-group">
+                <button id="menu-start-btn" class="arcade-btn primary lg">START GAME</button>
+                <button id="menu-gallery-btn" class="arcade-btn secondary lg">ART GALLERY</button>
+                <button id="menu-credits-btn" class="arcade-btn lg">CREDITS</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Start Modal for Name Entry & Story Intro (Opened by START GAME) -->
+    <div id="name-modal" class="modal-overlay hidden">
         <div class="modal-content crt-box intro-box">
             <div class="intro-header">
                 <h2 class="intro-title">EAST GREVIE ADVENTURES</h2>
@@ -280,6 +301,108 @@
                 <div class="equip-slot-item">🛡️ SHIELD: <span id="equip-shield-val" class="val gold">Wooden Shield</span></div>
                 <div class="equip-slot-item">🥋 ARMOR: <span id="equip-armor-val" class="val gold">Traveler's Tunic</span></div>
                 <div class="equip-slot-item">💍 ACCESSORY: <span id="equip-accessory-val" class="val gold">None</span></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Interactive Art Gallery Modal -->
+    <div id="gallery-modal" class="modal-overlay hidden">
+        <div class="modal-content crt-box gallery-box">
+            <div class="gallery-header">
+                <h2 class="gallery-title">REALM ART GALLERY</h2>
+                <button id="close-gallery-modal-btn" class="arcade-btn-sm warning">✖ CLOSE</button>
+            </div>
+            <p class="gallery-subtitle">Click any hand-painted artwork to view in full screen</p>
+
+            <div class="gallery-grid">
+                <div class="gallery-item" data-src="assets/images/Intro.jpg" data-title="The Quest Begins - Intro Legend">
+                    <img src="assets/images/Intro.jpg" alt="Intro Legend">
+                    <div class="gallery-item-title">The Legend Begins</div>
+                </div>
+                <div class="gallery-item" data-src="assets/images/victory.jpg" data-title="Victory - Princess Anna Rescued">
+                    <img src="assets/images/victory.jpg" alt="Victory Triumph">
+                    <div class="gallery-item-title">Princess Rescued</div>
+                </div>
+                <div class="gallery-item" data-src="assets/images/village.jpg" data-title="East Grevie Village Square">
+                    <img src="assets/images/village.jpg" alt="Village Square">
+                    <div class="gallery-item-title">Village Square</div>
+                </div>
+                <div class="gallery-item" data-src="assets/images/Whispering forest.jpg" data-title="Whispering Forest">
+                    <img src="assets/images/Whispering forest.jpg" alt="Whispering Forest">
+                    <div class="gallery-item-title">Whispering Forest</div>
+                </div>
+                <div class="gallery-item" data-src="assets/images/temple_sanctum.jpg" data-title="The Temple Sanctum">
+                    <img src="assets/images/temple_sanctum.jpg" alt="Temple Sanctum">
+                    <div class="gallery-item-title">Temple Sanctum</div>
+                </div>
+                <div class="gallery-item" data-src="assets/images/secret_fairy_fountain.jpg" data-title="Secret Fairy Fountain">
+                    <img src="assets/images/secret_fairy_fountain.jpg" alt="Fairy Fountain">
+                    <div class="gallery-item-title">Fairy Fountain</div>
+                </div>
+                <div class="gallery-item" data-src="assets/images/wilderness_trail.jpg" data-title="Wilderness Trail">
+                    <img src="assets/images/wilderness_trail.jpg" alt="Wilderness Trail">
+                    <div class="gallery-item-title">Wilderness Trail</div>
+                </div>
+                <div class="gallery-item" data-src="assets/images/rocky_mountain_pass.jpg" data-title="Rocky Mountain Pass">
+                    <img src="assets/images/rocky_mountain_pass.jpg" alt="Rocky Mountains">
+                    <div class="gallery-item-title">Rocky Mountains</div>
+                </div>
+                <div class="gallery-item" data-src="assets/images/old_watchtower.jpg" data-title="Old Watchtower Ruins">
+                    <img src="assets/images/old_watchtower.jpg" alt="Old Watchtower">
+                    <div class="gallery-item-title">Old Watchtower</div>
+                </div>
+                <div class="gallery-item" data-src="assets/images/final_boss_rodrigues_solo_1785946852711.jpg" data-title="Cat's Hall - Lord Rodrigues">
+                    <img src="assets/images/final_boss_rodrigues_solo_1785946852711.jpg" alt="Lord Rodrigues">
+                    <div class="gallery-item-title">Lord Rodrigues</div>
+                </div>
+                <div class="gallery-item" data-src="assets/images/Blacksmith.jpg" data-title="Village Blacksmith Forge">
+                    <img src="assets/images/Blacksmith.jpg" alt="Blacksmith Forge">
+                    <div class="gallery-item-title">Blacksmith Forge</div>
+                </div>
+                <div class="gallery-item" data-src="assets/images/goblin.jpg" data-title="Goblin Ambush">
+                    <img src="assets/images/goblin.jpg" alt="Goblin Ambush">
+                    <div class="gallery-item-title">Goblin Ambush</div>
+                </div>
+                <div class="gallery-item" data-src="assets/images/snake_cave_treasure_draft.jpg" data-title="Mountain Snake Cave">
+                    <img src="assets/images/snake_cave_treasure_draft.jpg" alt="Snake Cave">
+                    <div class="gallery-item-title">Snake Cave</div>
+                </div>
+                <div class="gallery-item" data-src="assets/images/Map.jpg" data-title="Kingdom of East Grevie Map">
+                    <img src="assets/images/Map.jpg" alt="World Map">
+                    <div class="gallery-item-title">World Map</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Game Credits Modal -->
+    <div id="credits-modal" class="modal-overlay hidden">
+        <div class="modal-content crt-box credits-box">
+            <div class="credits-header">
+                <h2 class="credits-title">GAME CREDITS</h2>
+                <button id="close-credits-modal-btn" class="arcade-btn-sm warning">✖ CLOSE</button>
+            </div>
+            <div class="credits-body">
+                <div class="credits-section">
+                    <h3>EAST GREVIE ADVENTURES</h3>
+                    <p class="credits-role">Original Retro Concept & Remaster</p>
+                    <p class="credits-name">Created for Retro RPG Gaming</p>
+                </div>
+                <div class="credits-section">
+                    <h3>ART DIRECTION & VISUALS</h3>
+                    <p class="credits-role">Hand-Painted Vanillaware Fantasy Artwork</p>
+                    <p class="credits-name">Created with Gemini AI Generation</p>
+                </div>
+                <div class="credits-section">
+                    <h3>VOICE & AUDIO NARRATION</h3>
+                    <p class="credits-role">Fairytale Storyteller Speech Engine</p>
+                    <p class="credits-name">Web Speech Synthesis & Natural Neural Voice</p>
+                </div>
+                <div class="credits-section">
+                    <h3>DEVELOPMENT & QA</h3>
+                    <p class="credits-role">Full Game Architecture & 80+ Test Suite</p>
+                    <p class="credits-name">Continuous Integration & Balance Verification</p>
+                </div>
             </div>
         </div>
     </div>
