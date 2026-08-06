@@ -88,9 +88,7 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-bottom: 2px solid rgba(212, 175, 55, 0.6);
-    box-shadow: 0 3px 10px rgba(212, 175, 55, 0.15);
-    padding-bottom: 12px;
+    padding-bottom: 10px;
 }
 
 .game-title {
