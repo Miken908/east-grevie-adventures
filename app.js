@@ -1380,7 +1380,7 @@ function gameOver(reason) {
     addLog(`Final Score: ${state.score} PTS`, "event");
 
     renderChoices([
-        { text: "🔄 Play Again", action: restartGame }
+        { text: "Return to Main Menu", action: exitToMainMenu }
     ]);
 }
 
@@ -1433,7 +1433,7 @@ function winGame() {
     if (victoryModalEl) victoryModalEl.classList.remove("hidden");
 
     renderChoices([
-        { text: "🏰 Return to Main Menu", action: exitToMainMenu }
+        { text: "Return to Main Menu", action: exitToMainMenu }
     ]);
 }
 
