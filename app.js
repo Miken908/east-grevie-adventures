@@ -1210,6 +1210,7 @@ function usePotionWilderness() {
 function battleDragon() {
     sfx.playClick();
     state.location = "lair";
+    state.catEyesGlowing = false;
     sfx.playMusic("battle");
     setScene("lair", "CAT'S HALL");
     clearLog();
@@ -1225,9 +1226,13 @@ function battleDragon() {
 
 function renderDragonTurn() {
     addLog(`🐾 RODRIGUES HP: ${state.dragonHp} | YOUR HP: ${state.hp}`);
+    if (state.catEyesGlowing) {
+        addLog("🔴 DANGER! RODRIGUES'S EYES GLOW FIERY CRIMSON! HE IS ABOUT TO EXECUTE A LETHAL SHADOW POUNCE!", "alert");
+    }
+
     const choices = [
         { text: "1. Slash with Weapon", action: attackDragon },
-        { text: "2. Raise Shield to Defend & Charge", action: defendDragon },
+        { text: "2. Raise Shield to Defend & Block", action: defendDragon },
         { text: "3. Drink Healing Potion", action: useHealDragon },
         { text: "4. Flee to Mountain Pass", action: renderMountain }
     ];
@@ -1278,15 +1283,32 @@ function attackDragon() {
         return;
     }
 
-    // Cat counter attack
-    const dDmg = mitigate(Math.floor(Math.random() * 16) + 20);
-    state.hp -= dDmg;
-    addLog(`Rodrigues slashes with razor claws! You take ${dDmg} damage!`, "alert");
-    updateHUD();
-
-    if (state.hp <= 0) {
-        gameOver("You fell in battle against Rodrigues the Shadow Cat.");
-        return;
+    // Check if Cat was glowing crimson eyes
+    if (state.catEyesGlowing) {
+        state.catEyesGlowing = false;
+        const lethalDmg = 120;
+        state.hp -= lethalDmg;
+        addLog(`💥 LETHAL SHADOW POUNCE! You failed to raise your shield! Rodrigues leaps through the shadows and pounces with unblocked killer force for ${lethalDmg} DAMAGE!`, "alert");
+        updateHUD();
+        if (state.hp <= 0) {
+            gameOver("You were slain by Lord Rodrigues's unblocked Crimson Shadow Pounce! (Tip: Raise your shield when his eyes glow!)");
+            return;
+        }
+    } else {
+        // Cat counter attack or charge crimson eyes
+        if (Math.random() < 0.45) {
+            state.catEyesGlowing = true;
+            addLog("🔴 RODRIGUES CROUCHES LOW! HIS EYES BEGIN TO GLOW FIERY CRIMSON!", "alert");
+        } else {
+            const dDmg = mitigate(Math.floor(Math.random() * 16) + 20);
+            state.hp -= dDmg;
+            addLog(`Rodrigues slashes with razor claws! You take ${dDmg} damage!`, "alert");
+            updateHUD();
+            if (state.hp <= 0) {
+                gameOver("You fell in battle against Rodrigues the Shadow Cat.");
+                return;
+            }
+        }
     }
 
     renderDragonTurn();
@@ -1294,13 +1316,23 @@ function attackDragon() {
 
 function defendDragon() {
     sfx.playClick();
-    addLog("🛡️ YOU RAISE YOUR SHIELD TO BLOCK RODRIGUES'S RAZOR CLAWS!", "event");
-    const rawDmg = Math.floor(Math.random() * 8) + 12;
-    const dDmg = Math.max(1, Math.floor(rawDmg * 0.20));
-    state.hp -= dDmg;
-    addLog(`Your shield absorbs 80% of the cat's strike! You take only ${dDmg} damage!`, "event");
-    addLog("✨ RODRIGUES EXPOSES A VULNERABLE WEAK SPOT IN ITS CHEST FUR! Your next attack will deal +50% EXTRA DAMAGE!", "victory");
-    state.dragonExposed = true;
+    if (state.catEyesGlowing) {
+        state.catEyesGlowing = false;
+        addLog("🛡️ PERFECT BLOCK! You raise your shield high just as Rodrigues executes his Crimson Shadow Pounce!", "victory");
+        addLog("💥 The lethal dark strike shatters harmlessly against your shield guard! Rodrigues is stunned!", "victory");
+        addLog("✨ RODRIGUES IS STUNNED & EXPOSES HIS CHEST WEAK SPOT! Your next attack deals +50% BONUS DAMAGE!", "event");
+        state.dragonExposed = true;
+        state.hp -= 2; // Minimal chip damage
+    } else {
+        addLog("🛡️ YOU RAISE YOUR SHIELD TO BLOCK RODRIGUES'S RAZOR CLAWS!", "event");
+        const rawDmg = Math.floor(Math.random() * 8) + 12;
+        const dDmg = Math.max(1, Math.floor(rawDmg * 0.20));
+        state.hp -= dDmg;
+        addLog(`Your shield absorbs 80% of the cat's strike! You take only ${dDmg} damage!`, "event");
+        addLog("✨ RODRIGUES EXPOSES A VULNERABLE WEAK SPOT IN ITS CHEST FUR! Your next attack deals +50% EXTRA DAMAGE!", "victory");
+        state.dragonExposed = true;
+    }
+
     updateHUD();
 
     if (state.hp <= 0) {
@@ -1316,17 +1348,32 @@ function useHealDragon() {
     if (idx !== -1) {
         state.inventory.splice(idx, 1);
         healPlayer(60);
-        renderDragonTurn();
-        return;
+    } else {
+        idx = state.inventory.indexOf("Healing Potion");
+        if (idx !== -1) {
+            state.inventory.splice(idx, 1);
+            healPlayer(40);
+        } else {
+            addLog("You have no healing items left!", "alert");
+            renderDragonTurn();
+            return;
+        }
     }
-    idx = state.inventory.indexOf("Healing Potion");
-    if (idx !== -1) {
-        state.inventory.splice(idx, 1);
-        healPlayer(40);
-        renderDragonTurn();
-        return;
+
+    // Check if Cat was glowing crimson eyes
+    if (state.catEyesGlowing) {
+        state.catEyesGlowing = false;
+        const lethalDmg = 120;
+        state.hp -= lethalDmg;
+        addLog(`💥 LETHAL SHADOW POUNCE! While you drank a potion, Rodrigues pounced with unblocked killer force for ${lethalDmg} DAMAGE!`, "alert");
+        updateHUD();
+        if (state.hp <= 0) {
+            gameOver("You were slain by Lord Rodrigues's unblocked Crimson Shadow Pounce! (Tip: Raise your shield when his eyes glow!)");
+            return;
+        }
     }
-    addLog("You have no healing items left!", "alert");
+
+    renderDragonTurn();
 }
 
 function gameOver(reason) {
