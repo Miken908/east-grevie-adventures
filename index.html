@@ -132,40 +132,47 @@
 
     <!-- Screen 2: Character Creation & Class Selection Modal -->
     <div id="name-modal" class="modal-overlay hidden">
-        <div class="modal-content crt-box intro-box">
+        <div class="modal-content crt-box creation-modal-box">
             <div class="intro-header">
                 <h2 class="intro-title">HERO ARCHETYPE & NAME SELECTION</h2>
             </div>
 
-            <!-- Dynamic Class Portrait Preview Frame -->
-            <div class="intro-image-frame creation-portrait-frame" id="creation-portrait-frame" title="Click to view hero portrait in full screen">
-                <img id="creation-portrait-img" src="assets/images/portrait_paladin.jpg" alt="Selected Hero Portrait">
-                <div class="zoom-hint-badge">🔍 ENLARGE PORTRAIT</div>
-                <div id="creation-class-badge" class="location-badge">SUNBLADE PALADIN</div>
-            </div>
-
-            <div class="name-input-group">
-                <label for="name-input">HERO NAME:</label>
-                <input type="text" id="name-input" maxlength="16" placeholder="Sir Ario" value="Sir Ario">
-            </div>
-
-            <div class="class-selection-container">
-                <label class="class-select-label">SELECT HERO CLASS:</label>
-                <div class="class-selection-grid">
-                    <div class="class-card selected" data-class="paladin">
-                        <div class="class-card-header">SUNBLADE PALADIN</div>
-                        <div class="class-card-perk"><strong>Holy Guard:</strong> Takes -3 less damage</div>
-                        <div class="class-card-stats">+3 END | High Defense | 200 HP</div>
+            <div class="creation-layout-grid">
+                <!-- Left Column: Full Hero Portrait Frame -->
+                <div class="creation-left-col">
+                    <div class="intro-image-frame creation-portrait-frame" id="creation-portrait-frame" title="Click to view hero portrait in full screen">
+                        <img id="creation-portrait-img" src="assets/images/portrait_paladin.jpg" alt="Selected Hero Portrait">
+                        <div class="zoom-hint-badge">🔍 ENLARGE PORTRAIT</div>
+                        <div id="creation-class-badge" class="location-badge">SUNBLADE PALADIN</div>
                     </div>
-                    <div class="class-card" data-class="ranger">
-                        <div class="class-card-header">WOODLAND RANGER</div>
-                        <div class="class-card-perk"><strong>Eagle Eye:</strong> +10% Critical Chance</div>
-                        <div class="class-card-stats">+2 AGI, +1 LCK | High Dodge</div>
+                </div>
+
+                <!-- Right Column: Hero Name Input & Class Selection -->
+                <div class="creation-right-col">
+                    <div class="name-input-group">
+                        <label for="name-input">ENTER HERO NAME:</label>
+                        <input type="text" id="name-input" maxlength="16" placeholder="Sir Ario" value="Sir Ario">
                     </div>
-                    <div class="class-card" data-class="alchemist">
-                        <div class="class-card-header">ROYAL ALCHEMIST</div>
-                        <div class="class-card-perk"><strong>Elixir Master:</strong> Potions heal +60 HP</div>
-                        <div class="class-card-stats">+1 All Stats | 3 Potions | 75 Gold</div>
+
+                    <div class="class-selection-container">
+                        <label class="class-select-label">CHOOSE HERO CLASS:</label>
+                        <div class="class-selection-grid">
+                            <div class="class-card selected" data-class="paladin">
+                                <div class="class-card-header">SUNBLADE PALADIN</div>
+                                <div class="class-card-perk"><strong>Holy Guard:</strong> Takes -3 less damage</div>
+                                <div class="class-card-stats">+3 END | High Defense | 200 HP</div>
+                            </div>
+                            <div class="class-card" data-class="ranger">
+                                <div class="class-card-header">WOODLAND RANGER</div>
+                                <div class="class-card-perk"><strong>Eagle Eye:</strong> +10% Critical Chance</div>
+                                <div class="class-card-stats">+2 AGI, +1 LCK | High Dodge</div>
+                            </div>
+                            <div class="class-card" data-class="alchemist">
+                                <div class="class-card-header">ROYAL ALCHEMIST</div>
+                                <div class="class-card-perk"><strong>Elixir Master:</strong> Potions heal +60 HP</div>
+                                <div class="class-card-stats">+1 All Stats | 3 Potions | 75 Gold</div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
