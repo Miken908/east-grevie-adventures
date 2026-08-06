@@ -186,6 +186,7 @@ check("Main menu start button click listener bound in JS", jsContent.includes('m
 check("Main menu gallery button click listener bound in JS", jsContent.includes('menuGalleryBtnEl.addEventListener'));
 check("Main menu credits button click listener bound in JS", jsContent.includes('menuCreditsBtnEl.addEventListener'));
 check("Body background purged of radial-gradient dots", !cssContent.includes("radial-gradient"));
+check("CRT Bezel frame background is transparent", cssContent.includes("background: transparent;\n    border: none;"));
 
 console.log("\n==================================================");
 console.log("📊 SUMMARY OF FULL QA & BALANCE SIMULATION RESULTS");
