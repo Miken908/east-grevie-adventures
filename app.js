@@ -253,7 +253,7 @@ class SoundEffects {
 
 const sfx = new SoundEffects();
 
-// --- Web Speech API Voice Narrator (Gandalf / Ian McKellen Style) ---
+// --- Web Speech API Voice Narrator (Mystical Storyteller) ---
 class VoiceNarrator {
     constructor() {
         this.synth = window.speechSynthesis || null;
@@ -267,10 +267,17 @@ class VoiceNarrator {
         const loadVoices = () => {
             const voices = this.synth.getVoices();
             if (!voices || voices.length === 0) return;
-            // Prefer deep English male voices (e.g. Google UK English Male, Daniel, George, Microsoft David/Mark)
+            // Prioritize high-quality natural/neural English voices for a warm, mystical fairytale storyteller tone
             this.selectedVoice = voices.find(v => v.lang.startsWith('en') && (
-                v.name.includes('Male') || v.name.includes('David') || v.name.includes('Daniel') || v.name.includes('George') || v.name.includes('Ian') || v.name.includes('UK')
-            )) || voices.find(v => v.lang.startsWith('en')) || voices[0];
+                v.name.includes('Natural') || v.name.includes('Neural') || v.name.includes('Online')
+            ) && (v.name.includes('Male') || v.name.includes('UK') || v.name.includes('Ryan') || v.name.includes('Guy') || v.name.includes('George')))
+            || voices.find(v => v.lang.startsWith('en') && (
+                v.name.includes('Google UK English Male') || v.name.includes('Daniel') || v.name.includes('George') || v.name.includes('Oliver') || v.name.includes('Arthur') || v.name.includes('Male')
+            ))
+            || voices.find(v => v.lang.startsWith('en') && (v.name.includes('Natural') || v.name.includes('Neural')))
+            || voices.find(v => v.lang.startsWith('en') && v.name.includes('UK'))
+            || voices.find(v => v.lang.startsWith('en'))
+            || voices[0];
         };
 
         loadVoices();
@@ -283,13 +290,20 @@ class VoiceNarrator {
         if (!this.enabled || !this.synth) return;
         this.stop();
 
+        // Play a warm, mystical ambient chime note before storytelling begins
+        if (typeof sfx !== 'undefined' && sfx.playHeal) {
+            sfx.playHeal();
+        }
+
         const cleanText = text.replace(/[\u{1F600}-\u{1F64F}\u{1F300}-\u{1F5FF}\u{1F680}-\u{1F6FF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}]/gu, '');
         const utterance = new SpeechSynthesisUtterance(cleanText);
         if (this.selectedVoice) {
             utterance.voice = this.selectedVoice;
         }
-        utterance.pitch = 0.72; // Deep voice pitch
-        utterance.rate = 0.83;  // Slower, majestic cadence
+
+        // Mystical fairytale storyteller voice tuning (warm, resonant pitch and captivating pacing)
+        utterance.pitch = 0.88; // Deep, warm fairytale storyteller resonance
+        utterance.rate = 0.88;  // Captivating, deliberate storytelling tempo
         utterance.volume = 1.0;
 
         try {
