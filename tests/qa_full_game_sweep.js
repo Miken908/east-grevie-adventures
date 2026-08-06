@@ -141,7 +141,6 @@ console.log("\n--- TEST GROUP 9: Victory Panel Redesign & Victory Artwork ---");
 check("Victory artwork image present in victory modal HTML", htmlContent.includes('src="assets/images/victory.jpg"'));
 check("Victory image frame container present (#victory-image-frame-container)", htmlContent.includes('id="victory-image-frame-container"'));
 check("Victory art overlay badge removed for clean artwork view", !htmlContent.includes('victory-art-badge'));
-check("Victory Lightbox button present in HTML (#victory-lightbox-btn)", htmlContent.includes('id="victory-lightbox-btn"'));
 
 // 10. Verify 2-Step Intro Sequence (Prologue & Character Creation Modals)
 console.log("\n--- TEST GROUP 10: 2-Step Intro Sequence Verification ---");
@@ -166,7 +165,6 @@ check("Header Map button click listener bound", jsContent.includes('mapBtnEl.add
 check("Header Audio button click listener bound", jsContent.includes('audioSettingsBtnEl.addEventListener'));
 check("Header Reset button click listener bound", jsContent.includes('resetBtnEl.addEventListener'));
 check("Intro image frame click listener bound", jsContent.includes('introImgFrameEl.addEventListener'));
-check("Intro Lightbox button click listener bound", jsContent.includes('introLightboxBtnEl.addEventListener'));
 check("Main scene image frame click listener bound", jsContent.includes('imageFrameEl.addEventListener'));
 
 // 12. New Overworld Map Artwork & Location Pin Mapping

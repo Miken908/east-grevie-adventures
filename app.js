@@ -2454,7 +2454,6 @@ if (imageFrameEl) {
 // Intro Image Frame Lightbox Triggers (Prologue Modal)
 const introImgFrameEl = document.getElementById("prologue-image-frame-container");
 const introImgEl = document.getElementById("intro-image");
-const introLightboxBtnEl = document.getElementById("intro-lightbox-btn");
 
 if (introImgFrameEl) {
     introImgFrameEl.addEventListener("click", () => {
@@ -2464,32 +2463,15 @@ if (introImgFrameEl) {
     });
 }
 
-if (introLightboxBtnEl) {
-    introLightboxBtnEl.addEventListener("click", () => {
-        if (introImgEl) {
-            openLightbox(introImgEl.src, "THE ABDUCTION OF PRINCESS ELSA");
-        }
-    });
-}
-
 // Victory Image Frame Lightbox Triggers (Victory Modal)
 const victoryNarrateBtnEl = document.getElementById("victory-narrate-btn");
 const victoryRestartBtnEl = document.getElementById("victory-restart-btn");
-const victoryLightboxBtnEl = document.getElementById("victory-lightbox-btn");
 const victoryImgFrameEl = document.getElementById("victory-image-frame-container");
 const victoryImgEl = document.getElementById("victory-image");
 const victoryLoreCardEl = document.querySelector(".victory-lore-card");
 
 if (victoryImgFrameEl) {
     victoryImgFrameEl.addEventListener("click", () => {
-        if (victoryImgEl) {
-            openLightbox(victoryImgEl.src, "EAST GREVIE VILLAGE - PRINCESS ELSA RESCUED");
-        }
-    });
-}
-
-if (victoryLightboxBtnEl) {
-    victoryLightboxBtnEl.addEventListener("click", () => {
         if (victoryImgEl) {
             openLightbox(victoryImgEl.src, "EAST GREVIE VILLAGE - PRINCESS ELSA RESCUED");
         }
