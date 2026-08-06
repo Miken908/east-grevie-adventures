@@ -1940,10 +1940,10 @@ function gameOver(reason) {
 }
 
 function getHeroRating(score) {
-    if (score >= 1000) return "GRAND HERO OF EAST GREVIE";
+    if (score >= 1000) return "GRAND HERO OF THE REALM";
     if (score >= 700) return "MASTER DRAGON SLAYER";
     if (score >= 400) return "VALIANT DEFENDER OF THE REALM";
-    return "NOVICE ADVENTURER OF EAST GREVIE";
+    return "NOVICE ADVENTURER OF THE REALM";
 }
 
 function winGame() {
@@ -1956,10 +1956,10 @@ function winGame() {
     addLog("============================================================", "victory");
     addLog("           VICTORY! THE KINGDOM IS SAVED!", "victory");
     addLog("============================================================", "victory");
-    addLog("You vanquished Rodrigues the Shadow Cat, rescued Princess Elsa, and saved East Grevie!", "event");
+    addLog("You vanquished Rodrigues the Shadow Cat, rescued Princess Elsa, and saved the kingdom!", "event");
     unlockAchievement("savior_of_realm");
 
-    let speechText = `Sunlight breaks over the Village of East Grevie as ${state.name} returns triumphant! With Princess Elsa rescued and Lord Rodrigues vanquished, peace is restored to the realm.`;
+    let speechText = `Sunlight breaks as ${state.name} returns triumphant! With Princess Elsa rescued and Lord Rodrigues vanquished, peace is restored to the realm.`;
     if (state.knightFreed) {
         speechText += " Sir Johan rides proud at your flank, his sworn oath honored.";
         addLog("Sir Johan rides beside you into the Citadel, his life-debt repaid in blood and fire.", "event");
@@ -1970,7 +1970,7 @@ function winGame() {
     } else if (state.goblinDefeated) {
         addLog("Tales of the Goblin Rogue you slew in the misty forest travel far and wide.", "event");
     }
-    speechText += ` Your courage will echo through legend forever as the ${rating}!`;
+    speechText += " Your courage will echo through legend forever!";
 
     addLog(`FINAL SCORE: ${state.score} PTS | RATING: ${rating}`, "victory");
 
