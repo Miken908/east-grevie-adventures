@@ -136,7 +136,7 @@ check("Victory Lightbox button present in HTML (#victory-lightbox-btn)", htmlCon
 
 // 10. Verify Intro Panel Redesign & Intro Artwork (Regression Prevention)
 console.log("\n--- TEST GROUP 10: Intro Panel Redesign & Intro Artwork ---");
-check("Intro artwork image present in name modal HTML", htmlContent.includes('src="assets/images/Intro.jpg"'));
+check("Intro artwork image present in name modal HTML", htmlContent.includes('src="assets/images/abduction_of_princess_anna.jpg"'));
 check("Intro image frame container present (#intro-image-frame-container)", htmlContent.includes('id="intro-image-frame-container"'));
 check("Intro Lightbox button present in HTML (#intro-lightbox-btn)", htmlContent.includes('id="intro-lightbox-btn"'));
 
@@ -180,7 +180,7 @@ check("Main menu start game button present (#menu-start-btn)", htmlContent.inclu
 check("Main menu art gallery button present (#menu-gallery-btn)", htmlContent.includes('id="menu-gallery-btn"'));
 check("Main menu credits button present (#menu-credits-btn)", htmlContent.includes('id="menu-credits-btn"'));
 check("Art gallery modal present in HTML (#gallery-modal)", htmlContent.includes('id="gallery-modal"'));
-check("Art gallery grid contains 14 artwork cards", (htmlContent.match(/class="gallery-item"/g) || []).length === 14);
+check("Art gallery grid contains 15 artwork cards", (htmlContent.match(/class="gallery-item"/g) || []).length === 15);
 check("Credits modal present in HTML (#credits-modal)", htmlContent.includes('id="credits-modal"'));
 check("Main menu start button click listener bound in JS", jsContent.includes('menuStartBtnEl.addEventListener'));
 check("Main menu gallery button click listener bound in JS", jsContent.includes('menuGalleryBtnEl.addEventListener'));

@@ -1566,7 +1566,7 @@ const introLightboxBtnEl = document.getElementById("intro-lightbox-btn");
 if (introImgFrameEl) {
     introImgFrameEl.addEventListener("click", () => {
         if (introImgEl) {
-            openLightbox(introImgEl.src, "EAST GREVIE ADVENTURES - LEGEND INTRO");
+            openLightbox(introImgEl.src, "THE ABDUCTION OF PRINCESS ANNA");
         }
     });
 }
@@ -1574,7 +1574,7 @@ if (introImgFrameEl) {
 if (introLightboxBtnEl) {
     introLightboxBtnEl.addEventListener("click", () => {
         if (introImgEl) {
-            openLightbox(introImgEl.src, "EAST GREVIE ADVENTURES - LEGEND INTRO");
+            openLightbox(introImgEl.src, "THE ABDUCTION OF PRINCESS ANNA");
         }
     });
 }
