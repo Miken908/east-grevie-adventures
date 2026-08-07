@@ -302,7 +302,10 @@ console.log("\n==================================================");
 console.log("📊 SUMMARY OF FULL QA & BALANCE SIMULATION RESULTS");
 console.log("==================================================");
 const passedCount = testResults.filter(r => r.status === "PASS").length;
-console.log(`TOTAL TESTS EXECUTED: ${testResults.length}`);
+console.log(`TOTAL STATIC CHECKS EXECUTED: ${testResults.length}`);
 console.log(`PASSED: ${passedCount}`);
 console.log(`FAILED: ${testResults.length - passedCount}`);
 console.log(`SUCCESS RATE: ${((passedCount / testResults.length) * 100).toFixed(1)}%\n`);
+
+// Run Dynamic State Simulation Suite
+require('./qa_simulation_suite.js');

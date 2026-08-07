@@ -3190,3 +3190,17 @@ if (questsModalEl) {
 loadAchievementsFromStorage();
 updateAchievementsUI();
 updateQuestsUI();
+
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = {
+        state,
+        QUESTS_DATA,
+        speakToElder,
+        renderBlacksmith,
+        battleGoblin,
+        resetAdventureState,
+        isQuestDiscovered,
+        isQuestCompleted,
+        updateQuestsUI
+    };
+}
