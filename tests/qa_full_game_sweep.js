@@ -278,6 +278,18 @@ check("resetAchievementsData function defined in JS", jsContent.includes('functi
 check("Reset trophies button present in HTML (#reset-achievements-btn)", htmlContent.includes('id="reset-achievements-btn"'));
 check("Achievement & kill storage persistence functions defined in JS", jsContent.includes('loadAchievementsFromStorage()') && jsContent.includes('saveAchievementsToStorage()'));
 
+// 22. Interactive Quest Log & Journal Verification
+console.log("\n--- TEST GROUP 22: Interactive Quest Log & Journal Verification ---");
+check("Header Quests button present in HTML (#quests-btn)", htmlContent.includes('id="quests-btn"'));
+check("Quests badge present in HTML (#quests-badge)", htmlContent.includes('id="quests-badge"'));
+check("Quests modal present in HTML (#quests-modal)", htmlContent.includes('id="quests-modal"'));
+check("QUESTS_DATA dictionary defined in JS with 5 quests", jsContent.includes('const QUESTS_DATA = [') && jsContent.includes('goblin_mercy'));
+check("updateQuestsUI function defined in JS", jsContent.includes('function updateQuestsUI()'));
+check("renderQuestDetail function defined in JS", jsContent.includes('function renderQuestDetail()'));
+check("isQuestDiscovered function defined in JS", jsContent.includes('function isQuestDiscovered('));
+check("isQuestCompleted function defined in JS", jsContent.includes('function isQuestCompleted('));
+check("Quests modal click listeners bound in JS", jsContent.includes('questsBtnEl.addEventListener') && jsContent.includes('closeQuestsModalBtn.addEventListener'));
+
 console.log("\n==================================================");
 console.log("📊 SUMMARY OF FULL QA & BALANCE SIMULATION RESULTS");
 console.log("==================================================");

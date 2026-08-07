@@ -20,6 +20,7 @@
                 <h1 class="game-title" id="location-name">VILLAGE SQUARE</h1>
                 <div class="header-controls">
                     <button id="stats-btn" class="arcade-btn-sm primary" title="Hero Stats & Attributes">STATS <span id="ap-badge" class="ap-badge hidden">0</span></button>
+                    <button id="quests-btn" class="arcade-btn-sm primary" title="View Kingdom Quests & Objectives">QUESTS <span id="quests-badge" class="quests-badge">1</span></button>
                     <button id="map-btn" class="arcade-btn-sm primary" title="Open World Map">WORLD MAP</button>
                     <button id="achievements-btn" class="arcade-btn-sm primary" title="View Trophy Room & Achievements">TROPHIES <span id="achievements-badge" class="achievements-badge">0/15</span></button>
                     <button id="audio-settings-btn" class="arcade-btn-sm primary" title="Audio & Voice Settings">AUDIO</button>
@@ -592,6 +593,34 @@
             <div class="lightbox-footer">
                 <p class="lightbox-hint">Use ◄ / ► arrow keys to browse | Click outside or ESC to close</p>
                 <div id="lightbox-counter" class="lightbox-counter">1 / 23</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Interactive Quest Log & Journal Modal -->
+    <div id="quests-modal" class="modal-overlay hidden">
+        <div class="modal-content crt-box quests-box">
+            <div class="quests-header">
+                <h2 class="quests-title">📜 KINGDOM QUEST JOURNAL</h2>
+                <button id="close-quests-modal-btn" class="arcade-btn-sm warning">✖ CLOSE</button>
+            </div>
+
+            <div class="quests-layout-grid">
+                <!-- Left Column: Quest List -->
+                <div class="quests-list-col">
+                    <h3 class="quests-col-heading">ACTIVE & DISCOVERED QUESTS</h3>
+                    <div id="quests-list" class="quests-list">
+                        <!-- Quest items populated by JS -->
+                    </div>
+                </div>
+
+                <!-- Right Column: Quest Details & Objectives -->
+                <div class="quests-detail-col">
+                    <h3 class="quests-col-heading">QUEST DETAILS & OBJECTIVES</h3>
+                    <div id="quest-detail-content" class="quest-detail-content">
+                        <!-- Selected quest details populated by JS -->
+                    </div>
+                </div>
             </div>
         </div>
     </div>

@@ -750,6 +750,177 @@ function updateAchievementsUI() {
     }
 }
 
+// --- Quest Journal System Data & Rendering Engine ---
+const QUESTS_DATA = [
+    {
+        id: "main_elsa",
+        title: "👑 Rescue Princess Elsa",
+        type: "main",
+        discovered: true,
+        giver: "Kingdom Legend",
+        summary: "Lord Rodrigues the Shadow Cat abducted Princess Elsa. Journey across the realm to Cat's Hall to save her.",
+        lore: "\"Shadows fall over the realm. Cat Rodrigues holds Princess Elsa captive in his fortress. Prepare your weapons and bring an end to his terror!\"",
+        objectives: [
+            { text: "Speak with the Village Elder in East Grevie Square", check: (s) => Boolean(s.elderTalked) },
+            { text: "Locate Cat's Hall on the Kingdom World Map", check: (s) => Boolean(s.visitedLocations && s.visitedLocations.includes("lair")) },
+            { text: "Vanquish Lord Rodrigues & rescue Princess Elsa", check: (s) => Boolean(s.bossDefeated) }
+        ]
+    },
+    {
+        id: "celestial_sunblade",
+        title: "☀️ Trial of Three Relics",
+        type: "subquest",
+        discovered: false,
+        giver: "Village Elder",
+        summary: "Gather the 3 celestial relics scattered across the realm to reforge and consecrate the legendary Sunblade.",
+        lore: "\"Only the holy Sunblade can pierce Rodrigues's enchanted cat fur. Find the Sun Crystal, the Hilt of Dawn, and the Forge Blueprint to reforge the blade!\"",
+        objectives: [
+            { text: "Retrieve Sun Crystal Core from Mountain Cave", check: (s) => Boolean(s.hasSunCrystal) },
+            { text: "Retrieve Hilt of Dawn from Secret Fairy Fountain", check: (s) => Boolean(s.hasHiltOfDawn) },
+            { text: "Recover Forge Blueprint from Old Watchtower Ruins", check: (s) => Boolean(s.hasBlueprint) },
+            { text: "Reforge Dormant Sunblade at Village Blacksmith", check: (s) => Boolean(s.hasDormantSunblade || s.hasSword) },
+            { text: "Consecrate blade at Temple Sanctum Altar", check: (s) => Boolean(s.hasSword) }
+        ]
+    },
+    {
+        id: "blacksmith_blueprint",
+        title: "🔨 Stolen Mastercraft Blueprint",
+        type: "subquest",
+        discovered: false,
+        giver: "Village Blacksmith",
+        summary: "Track down the Goblin Rogue in the Whispering Forest to recover the Blacksmith's stolen blueprint.",
+        lore: "\"A sly Goblin Rogue robbed my forge and fled into the misty forest. Recover my stolen blueprint so I can open my mastercraft shop!\"",
+        objectives: [
+            { text: "Locate the Goblin Rogue in the Whispering Forest", check: (s) => Boolean(s.goblinDefeated || s.goblinSpared) },
+            { text: "Return the Stolen Blueprint to the Village Blacksmith", check: (s) => Boolean(s.blueprintReturned || s.hasBlueprint) }
+        ]
+    },
+    {
+        id: "sir_johan",
+        title: "⚔️ The Oath of Sir Johan",
+        type: "sidequest",
+        discovered: false,
+        giver: "Sir Johan",
+        summary: "Free Sir Johan from his blood-iron chains in the Old Watchtower ruins.",
+        lore: "\"Sir Johan lies bound by cursed shackles in the ruined tower. Strike the blood-iron link-pin to set the veteran knight free!\"",
+        objectives: [
+            { text: "Infiltrate the Old Watchtower Ruins", check: (s) => Boolean(s.visitedLocations && s.visitedLocations.includes("watchtower")) },
+            { text: "Shatter the blood-iron link-pin to free Sir Johan", check: (s) => Boolean(s.knightFreed) }
+        ]
+    },
+    {
+        id: "goblin_mercy",
+        title: "🍞 The Goblin's Mercy",
+        type: "sidequest",
+        discovered: false,
+        giver: "Grik the Goblin",
+        summary: "Show mercy to Grik the Goblin Rogue in the Whispering Forest.",
+        lore: "\"Rather than drawing your blade against Grik, offer him fresh food from your inventory to forge a peaceful bond.\"",
+        objectives: [
+            { text: "Share a fresh loaf of Bread with Grik the Goblin", check: (s) => Boolean(s.goblinSpared) }
+        ]
+    }
+];
+
+let selectedQuestId = "main_elsa";
+
+function isQuestDiscovered(q) {
+    if (q.discovered) return true;
+    if (q.id === "celestial_sunblade" && (state.elderTalked || state.hasSunCrystal || state.hasHiltOfDawn || state.hasBlueprint || state.hasDormantSunblade || state.hasSword)) return true;
+    if (q.id === "blacksmith_blueprint" && (state.blueprintReturned || state.hasBlueprint || state.goblinDefeated || state.goblinSpared || (state.inventory && state.inventory.includes("Stolen Blacksmith Blueprint")))) return true;
+    if (q.id === "sir_johan" && (state.knightFreed || (state.visitedLocations && state.visitedLocations.includes("watchtower")))) return true;
+    if (q.id === "goblin_mercy" && (state.goblinSpared || (state.visitedLocations && state.visitedLocations.includes("forest")))) return true;
+    return q.objectives.some(obj => obj.check(state));
+}
+
+function isQuestCompleted(q) {
+    return q.objectives.every(obj => obj.check(state));
+}
+
+function updateQuestsUI() {
+    const discoveredQuests = QUESTS_DATA.filter(q => isQuestDiscovered(q));
+    const activeQuests = discoveredQuests.filter(q => !isQuestCompleted(q));
+
+    const badgeEl = document.getElementById("quests-badge");
+    if (badgeEl) {
+        badgeEl.textContent = activeQuests.length;
+    }
+
+    const listEl = document.getElementById("quests-list");
+    if (listEl) {
+        listEl.innerHTML = "";
+        discoveredQuests.forEach(q => {
+            const completed = isQuestCompleted(q);
+            const isSelected = q.id === selectedQuestId;
+            const card = document.createElement("div");
+            card.className = `quest-card ${isSelected ? 'selected' : ''}`;
+            
+            let tagClass = "active";
+            let tagText = "ACTIVE";
+            if (completed) {
+                tagClass = "completed";
+                tagText = "COMPLETED";
+            } else if (q.type === "main") {
+                tagClass = "main";
+                tagText = "MAIN QUEST";
+            }
+
+            card.innerHTML = `
+                <div class="quest-card-header">
+                    <span class="quest-card-title">${q.title}</span>
+                    <span class="quest-tag ${tagClass}">${tagText}</span>
+                </div>
+                <div class="quest-card-desc">${q.summary}</div>
+            `;
+
+            card.addEventListener("click", () => {
+                sfx.playClick();
+                selectedQuestId = q.id;
+                updateQuestsUI();
+            });
+
+            listEl.appendChild(card);
+        });
+    }
+
+    renderQuestDetail();
+}
+
+function renderQuestDetail() {
+    const detailEl = document.getElementById("quest-detail-content");
+    if (!detailEl) return;
+
+    const currentQuest = QUESTS_DATA.find(q => q.id === selectedQuestId) || QUESTS_DATA[0];
+    const completed = isQuestCompleted(currentQuest);
+
+    let objectivesHtml = "";
+    currentQuest.objectives.forEach(obj => {
+        const done = obj.check(state);
+        objectivesHtml += `
+            <div class="objective-item ${done ? 'done' : ''}">
+                <span class="objective-icon">${done ? '✔' : '⚪'}</span>
+                <span>${obj.text}</span>
+            </div>
+        `;
+    });
+
+    detailEl.innerHTML = `
+        <div class="quest-detail-box">
+            <div>
+                <h3 class="quest-detail-title">${currentQuest.title}</h3>
+                <div class="quest-detail-giver">QUEST GIVER: ${currentQuest.giver} | STATUS: ${completed ? 'COMPLETED' : 'IN PROGRESS'}</div>
+                <div class="quest-detail-lore">${currentQuest.lore}</div>
+            </div>
+            <div>
+                <h4 style="font-family:var(--font-display); font-size:0.9rem; color:var(--gold-bright); margin-bottom:6px;">OBJECTIVES:</h4>
+                <div class="quest-objectives-list">
+                    ${objectivesHtml}
+                </div>
+            </div>
+        </div>
+    `;
+}
+
 // --- Proposal 1: Heroic Attribute, Equipment & Combat Formulas ---
 
 function calculateEquipmentBonuses() {
@@ -993,6 +1164,10 @@ function updateHUD() {
         } else {
             apBadgeEl.classList.add("hidden");
         }
+    }
+
+    if (typeof updateQuestsUI === "function") {
+        updateQuestsUI();
     }
 
     inventoryListEl.innerHTML = "";
@@ -3003,6 +3178,35 @@ if (resetAchievementsBtnEl) {
     });
 }
 
+// Quest Journal Modal Handlers
+const questsBtnEl = document.getElementById("quests-btn");
+const questsModalEl = document.getElementById("quests-modal");
+const closeQuestsModalBtn = document.getElementById("close-quests-modal-btn");
+
+if (questsBtnEl && questsModalEl) {
+    questsBtnEl.addEventListener("click", () => {
+        sfx.playClick();
+        updateQuestsUI();
+        questsModalEl.classList.remove("hidden");
+    });
+}
+
+if (closeQuestsModalBtn && questsModalEl) {
+    closeQuestsModalBtn.addEventListener("click", () => {
+        sfx.playClick();
+        questsModalEl.classList.add("hidden");
+    });
+}
+
+if (questsModalEl) {
+    questsModalEl.addEventListener("click", (e) => {
+        if (e.target === questsModalEl) {
+            questsModalEl.classList.add("hidden");
+        }
+    });
+}
+
 // Initial achievements load from browser storage
 loadAchievementsFromStorage();
 updateAchievementsUI();
+updateQuestsUI();
