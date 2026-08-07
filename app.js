@@ -1035,7 +1035,7 @@ const sceneImages = {
     goblin: "assets/images/goblin.jpg",
     temple: "assets/images/temple_sanctum.jpg",
     mountain: "assets/images/rocky_mountain_pass.jpg",
-    lair: "assets/images/final_boss_rodrigues_solo_1785946852711.jpg",
+    lair: "assets/images/final_boss_rodrigues.jpg",
     watchtower: "assets/images/old_watchtower.jpg",
     blacksmith: "assets/images/blacksmith.jpg",
     wilderness: "assets/images/wilderness_trail.jpg",
@@ -1043,7 +1043,7 @@ const sceneImages = {
     cave: "assets/images/snake_cave_treasure_draft.jpg",
     map: "assets/images/map.jpg",
     fairy: "assets/images/secret_fairy_fountain.jpg",
-    victory: "assets/images/final_boss_rodrigues_solo_1785946852711.jpg"
+    victory: "assets/images/final_boss_rodrigues.jpg"
 };
 
 // UI Elements
@@ -3105,7 +3105,7 @@ const heroPortraitFrameEl = document.getElementById("hero-portrait-frame");
 if (heroPortraitFrameEl) {
     heroPortraitFrameEl.addEventListener("click", () => {
         const portraitImgEl = document.querySelector("#hero-portrait-frame img");
-        const currentSrc = portraitImgEl ? portraitImgEl.src : "assets/images/portrait.jpg";
+        const currentSrc = portraitImgEl ? portraitImgEl.src : "assets/images/portrait_knight.jpg";
         const className = state.heroClass ? state.heroClass.toUpperCase() : "PALADIN";
         openLightbox(currentSrc, `${state.name} - ${className} PORTRAIT`);
     });
