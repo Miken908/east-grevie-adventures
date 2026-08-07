@@ -283,7 +283,7 @@ console.log("\n--- TEST GROUP 22: Interactive Quest Log & Journal Verification -
 check("Header Quests button present in HTML (#quests-btn)", htmlContent.includes('id="quests-btn"'));
 check("Quests badge present in HTML (#quests-badge)", htmlContent.includes('id="quests-badge"'));
 check("Quests modal present in HTML (#quests-modal)", htmlContent.includes('id="quests-modal"'));
-check("QUESTS_DATA dictionary defined in JS with 4 core quests", jsContent.includes('const QUESTS_DATA = [') && jsContent.includes('sir_johan'));
+check("QUESTS_DATA dictionary defined in JS with 3 core long-form quests", jsContent.includes('const QUESTS_DATA = [') && jsContent.includes('blacksmith_blueprint'));
 check("updateQuestsUI function defined in JS", jsContent.includes('function updateQuestsUI()'));
 check("renderQuestDetail function defined in JS", jsContent.includes('function renderQuestDetail()'));
 check("isQuestDiscovered function defined in JS", jsContent.includes('function isQuestDiscovered('));

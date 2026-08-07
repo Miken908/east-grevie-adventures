@@ -794,19 +794,6 @@ const QUESTS_DATA = [
             { text: "Locate the Goblin Rogue in the Whispering Forest", check: (s) => Boolean(s.goblinDefeated || s.goblinSpared) },
             { text: "Return the Stolen Blueprint to the Village Blacksmith", check: (s) => Boolean(s.blueprintReturned || s.hasBlueprint) }
         ]
-    },
-    {
-        id: "sir_johan",
-        title: "The Oath of Sir Johan",
-        type: "sidequest",
-        discovered: false,
-        giver: "Sir Johan",
-        summary: "Free Sir Johan from his blood-iron chains in the Old Watchtower ruins.",
-        lore: "\"Sir Johan lies bound by cursed shackles in the ruined tower. Strike the blood-iron link-pin to set the veteran knight free!\"",
-        objectives: [
-            { text: "Infiltrate the Old Watchtower Ruins", check: (s) => Boolean(s.visitedLocations && s.visitedLocations.includes("watchtower")) },
-            { text: "Shatter the blood-iron link-pin to free Sir Johan", check: (s) => Boolean(s.knightFreed) }
-        ]
     }
 ];
 
@@ -816,7 +803,6 @@ function isQuestDiscovered(q) {
     if (q.discovered) return true;
     if (q.id === "celestial_sunblade" && (state.elderTalked || state.hasRuneScroll || state.hasSunCrystal || state.hasHiltOfDawn || state.hasBlueprint || state.hasDormantSunblade || state.hasSword)) return true;
     if (q.id === "blacksmith_blueprint" && (state.blacksmithTalked || state.blueprintReturned || state.hasBlueprint || state.goblinDefeated || state.goblinSpared || (state.inventory && state.inventory.includes("Stolen Blacksmith Blueprint")))) return true;
-    if (q.id === "sir_johan" && (state.knightFreed || (state.visitedLocations && state.visitedLocations.includes("watchtower")))) return true;
     return q.objectives.some(obj => obj.check(state));
 }
 
