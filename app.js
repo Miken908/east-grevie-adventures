@@ -2135,9 +2135,9 @@ function gameOver(reason) {
 }
 
 function getHeroRating(score) {
-    if (score >= 1000) return "GRAND HERO OF THE REALM";
-    if (score >= 700) return "MASTER DRAGON SLAYER";
-    if (score >= 400) return "VALIANT DEFENDER OF THE REALM";
+    if (score >= 1800) return "GRAND HERO OF THE REALM";
+    if (score >= 1400) return "MASTER CAT SLAYER";
+    if (score >= 1100) return "VALIANT DEFENDER OF THE REALM";
     return "NOVICE ADVENTURER OF THE REALM";
 }
 
@@ -3222,6 +3222,7 @@ if (typeof module !== 'undefined' && module.exports) {
         resetAdventureState,
         isQuestDiscovered,
         isQuestCompleted,
-        updateQuestsUI
+        updateQuestsUI,
+        getHeroRating
     };
 }

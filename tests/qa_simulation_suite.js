@@ -68,7 +68,8 @@ const {
     resetAdventureState,
     isQuestDiscovered,
     isQuestCompleted,
-    updateQuestsUI
+    updateQuestsUI,
+    getHeroRating
 } = require('../app.js');
 
 const testResults = [];
@@ -118,6 +119,12 @@ checkSim("resetAdventureState clears state.goblinEncountered to false", state.go
 checkSim("Celestial subquest returns to undiscovered after reset", !isQuestDiscovered(QUESTS_DATA[1]));
 checkSim("Blacksmith subquest returns to undiscovered after reset", !isQuestDiscovered(QUESTS_DATA[2]));
 checkSim("Active quests badge resets back to 1", document.getElementById("quests-badge").textContent == "1");
+
+console.log("\n--- SIMULATION STEP 6: Hero Rating Thresholds & MASTER CAT SLAYER ---");
+checkSim("Score 1850 grants GRAND HERO OF THE REALM", getHeroRating(1850) === "GRAND HERO OF THE REALM");
+checkSim("Score 1500 grants MASTER CAT SLAYER", getHeroRating(1500) === "MASTER CAT SLAYER");
+checkSim("Score 1200 grants VALIANT DEFENDER OF THE REALM", getHeroRating(1200) === "VALIANT DEFENDER OF THE REALM");
+checkSim("Score 900 grants NOVICE ADVENTURER OF THE REALM", getHeroRating(900) === "NOVICE ADVENTURER OF THE REALM");
 
 console.log("\n==================================================");
 console.log("📊 SUMMARY OF DYNAMIC SIMULATION RESULTS");
