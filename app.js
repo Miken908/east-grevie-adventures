@@ -988,13 +988,13 @@ function rollAttack() {
     if (isCrit) {
         finalDmg = Math.floor(baseOutput * calculateCritMultiplier());
         if (state.heroClass === "ranger") {
-            spawnFloatingText("🎯 Eagle Eye Crit!", "crit", 50, 40);
+            spawnFloatingText("🎯 EAGLE EYE CRIT!", "crit", 50, 24);
             addLog("🎯 Eagle Eye Perk strikes critical vulnerability (+10% Crit Rate)!", "victory");
         }
     }
     if (state.heroClass === "paladin" && (state.hasSword || state.hasDormantSunblade)) {
         finalDmg += 10;
-        spawnFloatingText("✨ Holy Cleave (+10)", "crit", 50, 40);
+        spawnFloatingText("✨ Holy Cleave (+10)", "crit", 50, 28);
         addLog("✨ Sunfire Ascendant Perk ignites blade (+10 Holy Sunfire Cleave)!", "event");
     }
     return { dmg: finalDmg, crit: isCrit };
