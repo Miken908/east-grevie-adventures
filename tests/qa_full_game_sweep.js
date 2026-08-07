@@ -169,8 +169,8 @@ check("Main scene image frame click listener bound", jsContent.includes('imageFr
 
 // 12. New Overworld Map Artwork & Location Pin Mapping
 console.log("\n--- TEST GROUP 12: New Overworld Map Artwork & Location Pin Mapping ---");
-check("Map modal uses new Map.jpg image asset", htmlContent.includes('src="assets/images/Map.jpg"'));
-check("Map asset dictionary uses Map.jpg in JS", jsContent.includes('map: "assets/images/Map.jpg"'));
+check("Map modal uses new map.jpg image asset", htmlContent.includes('src="assets/images/map.jpg"'));
+check("Map asset dictionary uses map.jpg in JS", jsContent.includes('map: "assets/images/map.jpg"'));
 check("Village pin centered (50%, 50%) on map", htmlContent.includes('style="top: 50%; left: 50%;" data-location="village"'));
 check("Forest pin located north of village (32%, 50%)", htmlContent.includes('style="top: 32%; left: 50%;" data-location="forest"'));
 check("Temple pin located north of forest (14%, 50%)", htmlContent.includes('style="top: 14%; left: 50%;" data-location="temple"'));
