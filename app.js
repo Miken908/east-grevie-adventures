@@ -967,8 +967,15 @@ function calculateMitigation() {
 function mitigate(damage) {
     const totalArmor = calculateMitigation();
     let mitigated = Math.max(1, damage - Math.floor(totalArmor * 0.45));
-    if (state.heroClass === "knight") mitigated = Math.max(1, mitigated - 2); // Royal Knight Perk: Bastion Shield (-2 Damage Taken)
-    if (state.heroClass === "paladin") mitigated = Math.max(1, mitigated - 3); // Sunblade Paladin Perk: Sunfire Ascendant (-3 Damage Taken)
+    if (state.heroClass === "knight") {
+        mitigated = Math.max(1, mitigated - 2); // Royal Knight Perk: Bastion Shield (-2 Damage Taken)
+        spawnFloatingText("🛡️ Bastion Shield (-2)", "event", 40, 50);
+        addLog("🛡️ Bastion Shield Perk mitigates -2 physical damage!", "event");
+    } else if (state.heroClass === "paladin") {
+        mitigated = Math.max(1, mitigated - 3); // Sunblade Paladin Perk: Sunfire Ascendant (-3 Damage Taken)
+        spawnFloatingText("✨ Sunfire Shield (-3)", "event", 40, 50);
+        addLog("✨ Sunfire Ascendant Perk mitigates -3 incoming damage!", "event");
+    }
     return Math.max(1, mitigated);
 }
 
@@ -980,6 +987,15 @@ function rollAttack() {
     let finalDmg = baseOutput;
     if (isCrit) {
         finalDmg = Math.floor(baseOutput * calculateCritMultiplier());
+        if (state.heroClass === "ranger") {
+            spawnFloatingText("🎯 Eagle Eye Crit!", "crit", 50, 40);
+            addLog("🎯 Eagle Eye Perk strikes critical vulnerability (+10% Crit Rate)!", "victory");
+        }
+    }
+    if (state.heroClass === "paladin" && (state.hasSword || state.hasDormantSunblade)) {
+        finalDmg += 10;
+        spawnFloatingText("✨ Holy Cleave (+10)", "crit", 50, 40);
+        addLog("✨ Sunfire Ascendant Perk ignites blade (+10 Holy Sunfire Cleave)!", "event");
     }
     return { dmg: finalDmg, crit: isCrit };
 }
@@ -1096,8 +1112,13 @@ function spawnFloatingText(text, type = "damage", customX = 50, customY = 45) {
 function healPlayer(amount) {
     state.maxHp = calculateMaxHp();
     state.hp = Math.min(state.maxHp, state.hp + amount);
-    addLog(`💚 Restored ${amount} HP! Current HP: ${state.hp}/${state.maxHp}`, "event");
-    spawnFloatingText(`+${amount} HP`, "heal", 50, 45);
+    if (state.heroClass === "alchemist" && amount >= 60) {
+        addLog(`🧪 Elixir Master Perk empowers potion (+${amount} HP Restored!)`, "victory");
+        spawnFloatingText(`🧪 Elixir Master (+${amount} HP)`, "heal", 50, 45);
+    } else {
+        addLog(`💚 Restored ${amount} HP! Current HP: ${state.hp}/${state.maxHp}`, "event");
+        spawnFloatingText(`+${amount} HP`, "heal", 50, 45);
+    }
     sfx.playHeal();
     updateHUD();
 }
