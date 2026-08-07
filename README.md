@@ -8,15 +8,18 @@
 
 An immersive retro Web RPG featuring **25 Vanillaware-style hand-drawn 2D illustrations**, **neural storyteller voice narration**, an interactive **overworld map**, **4 playable hero classes**, **15 unlockable achievement trophies**, and a **headless 200+ automated simulation test suite**.
 
-![Overworld Map Banner](assets/images/map.jpg)
+<p align="center">
+  <img src="assets/images/map.jpg" width="49%" alt="Overworld Map" />
+  <img src="assets/images/intro.jpg" width="49%" alt="Opening Intro Scene" />
+</p>
 
 ---
 
-### ⚔️ [Play Game Live in Browser](https://miken908.github.io/east-grevie-adventures/)
+### [Play Game Live in Browser](https://miken908.github.io/east-grevie-adventures/)
 
 ---
 
-## 📋 Production & Engineering Retrospective
+## Production & Engineering Retrospective
 
 * **Delivery Sprint**: Rapid pre-production & delivery sprint.
 * **Production Workflow**: Executed with a Lead Producer & Product Owner mindset, harnessing GenAI tools (Antigravity & Gemini) as an accelerated virtual engineering and art pipeline across 100+ iterative commits.
