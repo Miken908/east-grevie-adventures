@@ -2165,8 +2165,37 @@ function winGame() {
     ]);
 }
 
+function resetAdventureState() {
+    state.visitedLocations = ["village"];
+    state.elderTalked = false;
+    state.blacksmithTalked = false;
+    state.hasRuneScroll = false;
+    state.hasSunCrystal = false;
+    state.hasHiltOfDawn = false;
+    state.hasBlueprint = false;
+    state.hasDormantSunblade = false;
+    state.hasSword = false;
+    state.hasKey = false;
+    state.blueprintReturned = false;
+    state.goblinDefeated = false;
+    state.goblinSpared = false;
+    state.stumpSearched = false;
+    state.caveSearched = false;
+    state.knightFreed = false;
+    state.knightAllyUsed = false;
+    state.hasIronShield = false;
+    state.fairyVisited = false;
+    state.bossDefeated = false;
+    state.goblinHp = 35;
+    state.dragonHp = 120;
+    state.trollHp = 60;
+    state.wilderness = null;
+    selectedQuestId = "main_elsa";
+}
+
 function exitToMainMenu() {
     narrator.stop();
+    resetAdventureState();
     state.str = 3;
     state.agi = 3;
     state.end = 3;
@@ -2184,23 +2213,8 @@ function exitToMainMenu() {
         armor: { name: "Traveler's Tunic", bonusArmor: 1, bonusAgi: 0 },
         accessory: null
     };
-    state.blueprintReturned = false;
     state.maxHp = calculateMaxHp();
     state.hp = state.maxHp;
-    state.hasSword = false;
-    state.hasKey = false;
-    state.goblinDefeated = false;
-    state.stumpSearched = false;
-    state.caveSearched = false;
-    state.goblinSpared = false;
-    state.knightFreed = false;
-    state.knightAllyUsed = false;
-    state.hasIronShield = false;
-    state.goblinHp = 35;
-    state.dragonHp = 120;
-    state.trollHp = 60;
-    state.wilderness = null;
-    state.fairyVisited = false;
     updateHUD();
     updateStatsModalUI();
 
@@ -2217,6 +2231,7 @@ function exitToMainMenu() {
 }
 
 function restartGame() {
+    resetAdventureState();
     const cls = state.heroClass || "paladin";
     if (cls === "paladin") {
         state.str = 3; state.agi = 3; state.end = 6; state.lck = 3; state.gold = 50;
@@ -2251,23 +2266,8 @@ function restartGame() {
     state.exp = 0;
     state.expToNextLevel = 100;
     state.score = 0;
-    state.blueprintReturned = false;
     state.maxHp = calculateMaxHp();
     state.hp = state.maxHp;
-    state.hasSword = false;
-    state.hasKey = false;
-    state.goblinDefeated = false;
-    state.stumpSearched = false;
-    state.caveSearched = false;
-    state.goblinSpared = false;
-    state.knightFreed = false;
-    state.knightAllyUsed = false;
-    state.hasIronShield = false;
-    state.goblinHp = 35;
-    state.dragonHp = 120;
-    state.trollHp = 60;
-    state.wilderness = null;
-    state.fairyVisited = false;
     updateHUD();
     updateStatsModalUI();
     renderVillage();
@@ -2348,6 +2348,7 @@ if (creationPortraitFrameEl) {
 }
 
 startBtnEl.addEventListener("click", () => {
+    resetAdventureState();
     state.name = nameInputEl.value.trim() || "Sir Ario";
 
     const selectedCard = document.querySelector(".class-card.selected");
