@@ -826,8 +826,8 @@ let selectedQuestId = "main_elsa";
 
 function isQuestDiscovered(q) {
     if (q.discovered) return true;
-    if (q.id === "celestial_sunblade" && (state.elderTalked || state.hasSunCrystal || state.hasHiltOfDawn || state.hasBlueprint || state.hasDormantSunblade || state.hasSword)) return true;
-    if (q.id === "blacksmith_blueprint" && (state.blueprintReturned || state.hasBlueprint || state.goblinDefeated || state.goblinSpared || (state.inventory && state.inventory.includes("Stolen Blacksmith Blueprint")))) return true;
+    if (q.id === "celestial_sunblade" && (state.elderTalked || state.hasRuneScroll || state.hasSunCrystal || state.hasHiltOfDawn || state.hasBlueprint || state.hasDormantSunblade || state.hasSword)) return true;
+    if (q.id === "blacksmith_blueprint" && (state.blacksmithTalked || state.blueprintReturned || state.hasBlueprint || state.goblinDefeated || state.goblinSpared || (state.inventory && state.inventory.includes("Stolen Blacksmith Blueprint")))) return true;
     if (q.id === "sir_johan" && (state.knightFreed || (state.visitedLocations && state.visitedLocations.includes("watchtower")))) return true;
     if (q.id === "goblin_mercy" && (state.goblinSpared || (state.visitedLocations && state.visitedLocations.includes("forest")))) return true;
     return q.objectives.some(obj => obj.check(state));
@@ -1279,6 +1279,7 @@ function goBlacksmith() {
 
 function renderBlacksmith() {
     state.location = "blacksmith";
+    state.blacksmithTalked = true;
     sfx.playMusic("village");
     setScene("blacksmith", "BLACKSMITH'S FORGE & SHOP");
     clearLog();
@@ -1288,6 +1289,7 @@ function renderBlacksmith() {
     if (!state.blueprintReturned && !state.inventory.includes("Stolen Blacksmith Blueprint")) {
         addLog("Blacksmith: 'A treacherous Goblin Rogue stole my Mastercraft Blueprint in the Whispering Forest!'", "alert");
         addLog("Blacksmith: 'Track down that rogue, recover my blueprint, and return it to me so I can open my forge and craft equipment for you!'");
+        updateHUD();
         renderChoices([{ text: "Return to Village Square", action: renderVillage }]);
         return;
     }
@@ -1417,6 +1419,7 @@ function buyPotion(cost) {
 function speakToElder() {
     sfx.playClick();
     clearLog();
+    state.elderTalked = true;
     addLog("Elder: 'Brave adventurer! The Sunblade was shattered into three celestial relics to prevent Lord Rodrigues from stealing it:'", "event");
     addLog("Elder: '1. Sun Crystal Core (Mountain Cave) | 2. Hilt of Dawn (Fairy Fountain) | 3. Forge Blueprint (Old Watchtower)'");
 
@@ -1440,6 +1443,7 @@ function speakToElder() {
         } else {
             addLog(`Elder: 'You carry ${count}/3 relics in your inventory. Find the rest, then bring them to the Village Blacksmith to reforge the blade!'`, "event");
         }
+        updateHUD();
     }
 
     if (storyLogEl) storyLogEl.scrollTop = 0;

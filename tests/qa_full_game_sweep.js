@@ -289,6 +289,10 @@ check("renderQuestDetail function defined in JS", jsContent.includes('function r
 check("isQuestDiscovered function defined in JS", jsContent.includes('function isQuestDiscovered('));
 check("isQuestCompleted function defined in JS", jsContent.includes('function isQuestCompleted('));
 check("Quests modal click listeners bound in JS", jsContent.includes('questsBtnEl.addEventListener') && jsContent.includes('closeQuestsModalBtn.addEventListener'));
+check("speakToElder sets state.elderTalked = true", jsContent.includes('state.elderTalked = true'));
+check("renderBlacksmith sets state.blacksmithTalked = true", jsContent.includes('state.blacksmithTalked = true'));
+check("isQuestDiscovered checks state.elderTalked for celestial subquest", jsContent.includes('state.elderTalked || state.hasRuneScroll'));
+check("isQuestDiscovered checks state.blacksmithTalked for blacksmith subquest", jsContent.includes('state.blacksmithTalked || state.blueprintReturned'));
 
 console.log("\n==================================================");
 console.log("📊 SUMMARY OF FULL QA & BALANCE SIMULATION RESULTS");
