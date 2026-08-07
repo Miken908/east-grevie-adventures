@@ -791,7 +791,7 @@ const QUESTS_DATA = [
         summary: "Track down the Goblin Rogue in the Whispering Forest to recover the Blacksmith's stolen blueprint.",
         lore: "\"A sly Goblin Rogue robbed my forge and fled into the misty forest. Recover my stolen blueprint so I can open my mastercraft shop!\"",
         objectives: [
-            { text: "Locate the Goblin Rogue in the Whispering Forest", check: (s) => Boolean(s.goblinDefeated || s.goblinSpared) },
+            { text: "Locate the Goblin Rogue in the Whispering Forest", check: (s) => Boolean(s.goblinEncountered || s.goblinDefeated || s.goblinSpared || s.hasBlueprint || s.blueprintReturned) },
             { text: "Return the Stolen Blueprint to the Village Blacksmith", check: (s) => Boolean(s.blueprintReturned || s.hasBlueprint) }
         ]
     }
@@ -1540,6 +1540,8 @@ function battleGoblin() {
     }
 
     state.location = "goblin";
+    state.goblinEncountered = true;
+    updateHUD();
     sfx.playMusic("battle");
     setScene("goblin", "GOBLIN ROGUE ENCOUNTER");
     clearLog();
@@ -2179,6 +2181,7 @@ function resetAdventureState() {
     state.blueprintReturned = false;
     state.goblinDefeated = false;
     state.goblinSpared = false;
+    state.goblinEncountered = false;
     state.stumpSearched = false;
     state.caveSearched = false;
     state.knightFreed = false;

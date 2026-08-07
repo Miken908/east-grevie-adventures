@@ -295,6 +295,8 @@ check("isQuestDiscovered checks state.elderTalked for celestial subquest", jsCon
 check("isQuestDiscovered checks state.blacksmithTalked for blacksmith subquest", jsContent.includes('state.blacksmithTalked || state.blueprintReturned'));
 check("resetAdventureState function defined in JS to reset quest/adventure flags between playthroughs", jsContent.includes('function resetAdventureState()'));
 check("startBtnEl calls resetAdventureState when launching a new hero", jsContent.includes('startBtnEl.addEventListener') && jsContent.includes('resetAdventureState()'));
+check("battleGoblin sets state.goblinEncountered = true", jsContent.includes('state.goblinEncountered = true'));
+check("Locate Goblin Rogue objective check evaluates s.goblinEncountered", jsContent.includes('s.goblinEncountered || s.goblinDefeated'));
 
 console.log("\n==================================================");
 console.log("📊 SUMMARY OF FULL QA & BALANCE SIMULATION RESULTS");
