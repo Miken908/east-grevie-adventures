@@ -754,7 +754,7 @@ function updateAchievementsUI() {
 const QUESTS_DATA = [
     {
         id: "main_elsa",
-        title: "👑 Rescue Princess Elsa",
+        title: "Rescue Princess Elsa",
         type: "main",
         discovered: true,
         giver: "Kingdom Legend",
@@ -768,7 +768,7 @@ const QUESTS_DATA = [
     },
     {
         id: "celestial_sunblade",
-        title: "☀️ Trial of Three Relics",
+        title: "Trial of Three Relics",
         type: "subquest",
         discovered: false,
         giver: "Village Elder",
@@ -784,7 +784,7 @@ const QUESTS_DATA = [
     },
     {
         id: "blacksmith_blueprint",
-        title: "🔨 Stolen Mastercraft Blueprint",
+        title: "Stolen Mastercraft Blueprint",
         type: "subquest",
         discovered: false,
         giver: "Village Blacksmith",
@@ -797,7 +797,7 @@ const QUESTS_DATA = [
     },
     {
         id: "sir_johan",
-        title: "⚔️ The Oath of Sir Johan",
+        title: "The Oath of Sir Johan",
         type: "sidequest",
         discovered: false,
         giver: "Sir Johan",
@@ -810,7 +810,7 @@ const QUESTS_DATA = [
     },
     {
         id: "goblin_mercy",
-        title: "🍞 The Goblin's Mercy",
+        title: "The Goblin's Mercy",
         type: "sidequest",
         discovered: false,
         giver: "Grik the Goblin",
