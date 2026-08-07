@@ -3170,12 +3170,60 @@ if (achievementsModalEl) {
     });
 }
 
+const confirmModalEl = document.getElementById("confirm-modal");
+const confirmModalTitleEl = document.getElementById("confirm-modal-title");
+const confirmModalTextEl = document.getElementById("confirm-modal-text");
+const confirmCancelBtnEl = document.getElementById("confirm-cancel-btn");
+const confirmOkBtnEl = document.getElementById("confirm-ok-btn");
+let currentConfirmCallback = null;
+
+function showCustomConfirmModal(title, text, onConfirm) {
+    if (!confirmModalEl) return;
+    if (confirmModalTitleEl) confirmModalTitleEl.textContent = title;
+    if (confirmModalTextEl) confirmModalTextEl.textContent = text;
+    currentConfirmCallback = onConfirm;
+    confirmModalEl.classList.remove("hidden");
+    sfx.playClick();
+}
+
+if (confirmCancelBtnEl && confirmModalEl) {
+    confirmCancelBtnEl.addEventListener("click", () => {
+        sfx.playClick();
+        confirmModalEl.classList.add("hidden");
+        currentConfirmCallback = null;
+    });
+}
+
+if (confirmOkBtnEl && confirmModalEl) {
+    confirmOkBtnEl.addEventListener("click", () => {
+        sfx.playClick();
+        confirmModalEl.classList.add("hidden");
+        if (typeof currentConfirmCallback === "function") {
+            currentConfirmCallback();
+        }
+        currentConfirmCallback = null;
+    });
+}
+
+if (confirmModalEl) {
+    confirmModalEl.addEventListener("click", (e) => {
+        if (e.target === confirmModalEl) {
+            confirmModalEl.classList.add("hidden");
+            currentConfirmCallback = null;
+        }
+    });
+}
+
 const resetAchievementsBtnEl = document.getElementById("reset-achievements-btn");
 if (resetAchievementsBtnEl) {
     resetAchievementsBtnEl.addEventListener("click", () => {
-        if (confirm("Are you sure you want to reset all 15 trophies and kill counts? This action cannot be undone.")) {
-            resetAchievementsData();
-        }
+        showCustomConfirmModal(
+            "RESET ALL TROPHIES?",
+            "Are you sure you want to reset all 15 trophies, kill records, and hero unlocks? This action cannot be undone.",
+            () => {
+                resetAchievementsData();
+            }
+        );
     });
 }
 
