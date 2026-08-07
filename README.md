@@ -1,4 +1,4 @@
-# 👑 East Grevie Adventures
+# East Grevie Adventures
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=flat&logo=html5&logoColor=white)](https://developer.mozilla.org/en-US/docs/Web/HTML)
@@ -10,47 +10,47 @@ An immersive retro Web RPG featuring **24 HD hand-painted artworks**, **neural s
 
 ---
 
-### 🎮 [Play Game Live in Browser](https://miken908.github.io/east-grevie-adventures/)
+### [Play Game Live in Browser](https://miken908.github.io/east-grevie-adventures/)
 
 ---
 
-## 🌟 Key Features
+## Core Features
 
-### 🎨 AAA Hand-Painted Visuals & Lightbox Gallery
+### Hand-Painted Visuals & Lightbox Gallery
 - **24 HD Artworks**: Custom hand-painted illustrations for every location, character, and key story beat.
 - **Widescreen 1240px Layout**: High-definition display container purged of legacy CRT distortion or pixelation blur.
 - **Interactive Lightbox**: Fullscreen artwork modal with arrow key navigation (`◄` / `►`) and active image counter (`1 / 24`).
 
-### 🛡️ 4 Playable Hero Archetypes & Passive Perks
+### Playable Hero Archetypes & Passive Perks
 - **Royal Knight**: Starter class featuring the `Bastion Shield` perk (-2 damage taken).
 - **Woodland Ranger**: High agility starter class featuring `Eagle Eye` (+10% Crit Chance & +10% Dodge).
 - **Royal Alchemist**: Resource master class featuring `Elixir Master` (+60 HP potions & extra merchant gold).
 - **Sunblade Paladin**: Exclusive **New Game+** hero unlocked by claiming all 15 Achievement Trophies (`Holy Guard` & `Sunfire Cleave`).
 
-### ⚔️ Dynamic Combat & Real-Time Juiced Feedback
+### Dynamic Combat & Real-Time Feedback
 - Multi-tiered floating combat text for critical hits, damage mitigation, dodging, and healing.
 - Dynamic combat log with real-time class passive perk activation notifications.
 
-### 📜 Interactive Quest Journal System
+### Quest Journal System
 - Fail-proof 3 core long-form quests:
   1. **MAIN QUEST**: *Rescue Princess Elsa*
   2. **CELESTIAL SUBQUEST**: *Trial of Three Relics (Sunblade)*
   3. **BLACKSMITH SUBQUEST**: *Stolen Mastercraft Blueprint*
 - Real-time status badges, objective tracking, and clean slate UI aligned with the game's dark blue/cyan design system.
 
-### 🏆 Achievement Trophy Room & Meta-Progression
+### Achievement Trophy Room & Meta-Progression
 - **15 Unlockable Trophies**: Persistent progress saved across sessions in browser `localStorage`.
 - **Animated Toast Banners**: Real-time sliding notification banners when achievements trigger.
 - **New Game+ Unlock**: Reaching 15 trophies awakens the legendary Sunblade Paladin on the hero selection screen.
 
-### 🎙️ Neural Voice Narration & Web Audio Synthesizer
+### Neural Voice Narration & Web Audio Synthesizer
 - **HD Neural Voice Synthesis**: Web Speech API integration with voice selector dropdown and preview button.
 - **Audio Ducking Engine**: Music automatically ducks volume during voiceover lines for cinematic clarity.
 - **Audio Control Center**: Independent volume sliders for Master, Music, SFX, and Narration Voice.
 
 ---
 
-## 🛠️ Technology Stack
+## Technology Stack
 
 - **Frontend**: Vanilla HTML5, CSS3 (Modern Flexbox & CSS Grid), JavaScript (ES6+).
 - **Audio Engine**: Web Audio API Synthesizer & SpeechSynthesis Neural Voice Engine.
@@ -59,7 +59,7 @@ An immersive retro Web RPG featuring **24 HD hand-painted artworks**, **neural s
 
 ---
 
-## 🧪 Automated Testing & QA Suite
+## Automated Testing & QA Suite
 
 This repository includes a comprehensive 2-tier automated testing suite in Node.js:
 
@@ -74,7 +74,7 @@ node tests/qa_full_game_sweep.js
 
 ---
 
-## 🚀 Getting Started Locally
+## Getting Started Locally
 
 1. **Clone the Repository**:
    ```bash
@@ -92,7 +92,7 @@ node tests/qa_full_game_sweep.js
 
 ---
 
-## 📄 License & Credits
+## License & Credits
 
 - **Game Creator & Lead Director**: Miken908
 - **AI Development Partner**: Antigravity (Google DeepMind)
