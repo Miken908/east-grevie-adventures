@@ -6,20 +6,31 @@
 [![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=flat&logo=javascript&logoColor=black)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
 [![Tests: 203 Passed](https://img.shields.io/badge/QA%20Tests-203%20Passed-success.svg)](tests/qa_full_game_sweep.js)
 
-An immersive retro Web RPG featuring **24 HD hand-painted artworks**, **neural storyteller voice narration**, an interactive **overworld map**, **4 playable hero classes**, **15 unlockable achievement trophies**, and a **headless 200+ automated simulation test suite**.
+An immersive retro Web RPG featuring **25 Vanillaware-style hand-drawn 2D illustrations**, **neural storyteller voice narration**, an interactive **overworld map**, **4 playable hero classes**, **15 unlockable achievement trophies**, and a **headless 200+ automated simulation test suite**.
+
+![Overworld Map Banner](assets/images/map.jpg)
 
 ---
 
-### [Play Game Live in Browser](https://miken908.github.io/east-grevie-adventures/)
+### ⚔️ [Play Game Live in Browser](https://miken908.github.io/east-grevie-adventures/)
+
+---
+
+## 📋 Production & Engineering Retrospective
+
+* **Delivery Sprint**: Rapid pre-production & delivery sprint.
+* **Production Workflow**: Executed with a Lead Producer & Product Owner mindset, harnessing GenAI tools (Antigravity & Gemini) as an accelerated virtual engineering and art pipeline across 100+ iterative commits.
+* **Architecture Strategy**: Zero-dependency vanilla ES6+ stack ensuring instant zero-config browser loading with zero build-step overhead.
+* **Scope & Risk Management**: Designed a modular state machine with a fail-proof quest state tree and `localStorage` meta-progression to guarantee zero softlocks or state corruption.
 
 ---
 
 ## Core Features
 
-### Hand-Painted Visuals & Lightbox Gallery
-- **24 HD Artworks**: Custom hand-painted illustrations for every location, character, and key story beat.
+### Vanillaware-Style 2D Artworks & Lightbox Gallery
+- **25 2D Illustrations**: Custom hand-drawn style artwork (inspired by *Odin Sphere* and *GrimGrimoire*) for every location, character, enemy encounter, and key story beat.
 - **Widescreen 1240px Layout**: High-definition display container purged of legacy CRT distortion or pixelation blur.
-- **Interactive Lightbox**: Fullscreen artwork modal with arrow key navigation (`◄` / `►`) and active image counter (`1 / 24`).
+- **Interactive Lightbox**: Fullscreen artwork modal with arrow key navigation (`◄` / `►`) and active image counter (`1 / 25`).
 
 ### Playable Hero Archetypes & Passive Perks
 - **Royal Knight**: Starter class featuring the `Bastion Shield` perk (-2 damage taken).
@@ -96,5 +107,5 @@ node tests/qa_full_game_sweep.js
 
 - **Game Creator & Lead Director**: Miken908
 - **AI Development Partner**: Antigravity (Google DeepMind)
-- **Visual Art & Soundscapes**: Created with Google Gemini AI & Web Audio Engine
+- **Visual Art & Soundscapes**: Created with Google Gemini AI (Vanillaware 2D Illustration Style) & Web Audio Engine
 - **License**: [MIT](LICENSE)
