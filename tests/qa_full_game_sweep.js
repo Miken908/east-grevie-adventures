@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 
 console.log("==================================================");
-console.log("🎮 EAST GREVIE ADVENTURES (1984) - FULL QA PLAYTHROUGH & BALANCE TEST");
+console.log("🎮 EAST GREVIE ADVENTURES - FULL QA PLAYTHROUGH & BALANCE TEST");
 console.log("==================================================\n");
 
 const projectDir = path.resolve(__dirname, '..');

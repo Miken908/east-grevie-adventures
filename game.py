@@ -1,6 +1,6 @@
 """
 ===================================================================
- EAST GREVIE ADVENTURES: THE QUEST FOR THE PRINCESS (1984 RETRO EDITION)
+ EAST GREVIE ADVENTURES: THE QUEST FOR THE PRINCESS
 ===================================================================
  A classic 1980s style interactive text adventure RPG.
 """

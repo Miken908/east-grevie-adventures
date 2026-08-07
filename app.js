@@ -1,5 +1,5 @@
 /* ==========================================================================
-   EAST GREVIE ADVENTURES (1984) - RETRO GAME ENGINE, HEROIC ATTRIBUTES & AUDIO SYNTHESIZER
+   EAST GREVIE ADVENTURES - RETRO GAME ENGINE, HEROIC ATTRIBUTES & AUDIO SYNTHESIZER
    ========================================================================== */
 
 // --- Modern Web Audio Soundscape & Audio Processing Engine ---
