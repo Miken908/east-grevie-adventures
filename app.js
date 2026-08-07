@@ -2971,17 +2971,17 @@ function updateStatsModalUI() {
 
     const heroClass = state.heroClass || "knight";
     if (statHeroClassBadgeEl) {
-        if (heroClass === "knight") statHeroClassBadgeEl.textContent = "🛡️ ROYAL KNIGHT";
-        else if (heroClass === "paladin") statHeroClassBadgeEl.textContent = "⚔️ SUNBLADE PALADIN";
-        else if (heroClass === "ranger") statHeroClassBadgeEl.textContent = "🏹 WOODLAND RANGER";
-        else if (heroClass === "alchemist") statHeroClassBadgeEl.textContent = "🧪 ROYAL ALCHEMIST";
+        if (heroClass === "knight") statHeroClassBadgeEl.textContent = "ROYAL KNIGHT";
+        else if (heroClass === "paladin") statHeroClassBadgeEl.textContent = "SUNBLADE PALADIN";
+        else if (heroClass === "ranger") statHeroClassBadgeEl.textContent = "WOODLAND RANGER";
+        else if (heroClass === "alchemist") statHeroClassBadgeEl.textContent = "ROYAL ALCHEMIST";
     }
 
     if (statPassivePerkTextEl) {
-        if (heroClass === "knight") statPassivePerkTextEl.textContent = "🛡️ Bastion Shield (-2 Physical Damage Taken)";
-        else if (heroClass === "paladin") statPassivePerkTextEl.textContent = "✨ Sunfire Ascendant (-3 Damage, Radiant Sunfire Blade)";
-        else if (heroClass === "ranger") statPassivePerkTextEl.textContent = "🎯 Eagle Eye (+10% Critical Chance)";
-        else if (heroClass === "alchemist") statPassivePerkTextEl.textContent = "🧪 Elixir Master (Potions Heal +60 HP & Extra Gold)";
+        if (heroClass === "knight") statPassivePerkTextEl.textContent = "Bastion Shield (-2 Physical Damage Taken)";
+        else if (heroClass === "paladin") statPassivePerkTextEl.textContent = "Sunfire Ascendant (-3 Damage, Radiant Sunfire Blade)";
+        else if (heroClass === "ranger") statPassivePerkTextEl.textContent = "Eagle Eye (+10% Critical Chance)";
+        else if (heroClass === "alchemist") statPassivePerkTextEl.textContent = "Elixir Master (Potions Heal +60 HP & Extra Gold)";
     }
 
     if (portraitImgEl) {
