@@ -6,7 +6,7 @@
 [![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=flat&logo=javascript&logoColor=black)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
 [![Tests: 203 Passed](https://img.shields.io/badge/QA%20Tests-203%20Passed-success.svg)](tests/qa_full_game_sweep.js)
 
-An immersive retro Web RPG featuring **25 Vanillaware-style hand-drawn 2D illustrations**, **neural storyteller voice narration**, an interactive **overworld map**, **4 playable hero classes**, **15 unlockable achievement trophies**, and a **headless 200+ automated simulation test suite**.
+An immersive retro Web RPG featuring **24 Vanillaware-style hand-drawn 2D illustrations**, **neural storyteller voice narration**, an interactive **overworld map**, **4 playable hero classes**, **15 unlockable achievement trophies**, and a **headless 200+ automated simulation test suite**.
 
 <p align="center">
   <img src="assets/images/map.jpg" width="49%" alt="Overworld Map" />
@@ -31,7 +31,7 @@ An immersive retro Web RPG featuring **25 Vanillaware-style hand-drawn 2D illust
 ## Core Features
 
 ### Vanillaware-Style 2D Artworks & Lightbox Gallery
-- **25 2D Illustrations**: Custom hand-drawn style artwork (inspired by *Odin Sphere* and *GrimGrimoire*) for every location, character, enemy encounter, and key story beat.
+- **24 2D Illustrations**: Custom hand-drawn style artwork (inspired by *Odin Sphere* and *GrimGrimoire*) for every location, character, enemy encounter, and key story beat.
 - **Widescreen 1240px Layout**: High-definition display container purged of legacy CRT distortion or pixelation blur.
 - **Interactive Lightbox**: Fullscreen artwork modal with arrow key navigation (`◄` / `►`) and active image counter (`1 / 25`).
 
