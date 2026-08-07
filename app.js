@@ -807,18 +807,6 @@ const QUESTS_DATA = [
             { text: "Infiltrate the Old Watchtower Ruins", check: (s) => Boolean(s.visitedLocations && s.visitedLocations.includes("watchtower")) },
             { text: "Shatter the blood-iron link-pin to free Sir Johan", check: (s) => Boolean(s.knightFreed) }
         ]
-    },
-    {
-        id: "goblin_mercy",
-        title: "The Goblin's Mercy",
-        type: "sidequest",
-        discovered: false,
-        giver: "Grik the Goblin",
-        summary: "Show mercy to Grik the Goblin Rogue in the Whispering Forest.",
-        lore: "\"Rather than drawing your blade against Grik, offer him fresh food from your inventory to forge a peaceful bond.\"",
-        objectives: [
-            { text: "Share a fresh loaf of Bread with Grik the Goblin", check: (s) => Boolean(s.goblinSpared) }
-        ]
     }
 ];
 
@@ -829,7 +817,6 @@ function isQuestDiscovered(q) {
     if (q.id === "celestial_sunblade" && (state.elderTalked || state.hasRuneScroll || state.hasSunCrystal || state.hasHiltOfDawn || state.hasBlueprint || state.hasDormantSunblade || state.hasSword)) return true;
     if (q.id === "blacksmith_blueprint" && (state.blacksmithTalked || state.blueprintReturned || state.hasBlueprint || state.goblinDefeated || state.goblinSpared || (state.inventory && state.inventory.includes("Stolen Blacksmith Blueprint")))) return true;
     if (q.id === "sir_johan" && (state.knightFreed || (state.visitedLocations && state.visitedLocations.includes("watchtower")))) return true;
-    if (q.id === "goblin_mercy" && (state.goblinSpared || (state.visitedLocations && state.visitedLocations.includes("forest")))) return true;
     return q.objectives.some(obj => obj.check(state));
 }
 
