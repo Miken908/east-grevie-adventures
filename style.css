@@ -2050,16 +2050,15 @@ body {
     width: 95vw;
     max-height: 92vh;
     overflow-y: auto;
-    border-color: var(--gold-primary);
-    box-shadow: 0 0 40px var(--gold-glow);
+    border: 2px solid var(--gold-border);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.8), 0 0 20px rgba(90, 138, 158, 0.2);
 }
 
 .quests-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-bottom: 2px solid rgba(212, 175, 55, 0.4);
-    padding-bottom: 12px;
+    padding-bottom: 8px;
     margin-bottom: 16px;
 }
 
@@ -2068,7 +2067,7 @@ body {
     font-weight: 700;
     font-size: 1.3rem;
     color: var(--gold-bright);
-    text-shadow: 0 0 10px rgba(245, 197, 66, 0.4);
+    letter-spacing: 0.5px;
 }
 
 .quests-layout-grid {
@@ -2081,8 +2080,7 @@ body {
     font-family: var(--font-display);
     font-size: 0.95rem;
     color: var(--gold-bright);
-    border-bottom: 1px dashed rgba(212, 175, 55, 0.3);
-    padding-bottom: 6px;
+    padding-bottom: 4px;
     margin-bottom: 12px;
     letter-spacing: 1px;
 }
@@ -2094,8 +2092,8 @@ body {
 }
 
 .quest-card {
-    background: rgba(18, 14, 8, 0.85);
-    border: 1px solid rgba(212, 175, 55, 0.3);
+    background: rgba(18, 22, 32, 0.85);
+    border: 1px solid var(--gold-border);
     border-radius: 6px;
     padding: 12px;
     cursor: pointer;
@@ -2103,14 +2101,14 @@ body {
 }
 
 .quest-card:hover {
-    border-color: var(--gold-bright);
-    background: rgba(35, 26, 12, 0.9);
+    border-color: var(--cyan-accent);
+    background: rgba(28, 36, 52, 0.9);
 }
 
 .quest-card.selected {
-    border-color: var(--gold-bright);
-    background: linear-gradient(180deg, #322510, #171006);
-    box-shadow: 0 0 12px var(--gold-glow);
+    border-color: var(--cyan-accent);
+    background: rgba(56, 189, 248, 0.12);
+    box-shadow: 0 0 12px rgba(56, 189, 248, 0.25);
 }
 
 .quest-card-header {
@@ -2136,9 +2134,9 @@ body {
 }
 
 .quest-tag.active {
-    background: rgba(212, 175, 55, 0.25);
-    color: #ffdf7a;
-    border: 1px solid #d4af37;
+    background: rgba(56, 189, 248, 0.2);
+    color: var(--cyan-accent);
+    border: 1px solid var(--cyan-accent);
 }
 
 .quest-tag.completed {
@@ -2160,7 +2158,7 @@ body {
 }
 
 .quest-detail-box {
-    background: rgba(12, 9, 5, 0.9);
+    background: rgba(18, 22, 32, 0.85);
     border: 1px solid var(--gold-border);
     border-radius: 8px;
     padding: 20px;
@@ -2178,7 +2176,7 @@ body {
 
 .quest-detail-giver {
     font-size: 0.85rem;
-    color: var(--gold-primary);
+    color: var(--cyan-accent);
     margin-bottom: 8px;
 }
 
@@ -2187,9 +2185,9 @@ body {
     color: #d1d5db;
     line-height: 1.5;
     font-style: italic;
-    background: rgba(0, 0, 0, 0.5);
+    background: rgba(10, 14, 22, 0.6);
     padding: 12px 14px;
-    border-left: 3px solid var(--gold-primary);
+    border-left: 3px solid var(--cyan-accent);
     border-radius: 4px;
 }
 
