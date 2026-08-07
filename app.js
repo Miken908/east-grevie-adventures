@@ -908,7 +908,6 @@ function renderQuestDetail() {
         <div class="quest-detail-box">
             <div>
                 <h3 class="quest-detail-title">${currentQuest.title}</h3>
-                <div class="quest-detail-giver">QUEST GIVER: ${currentQuest.giver} | STATUS: ${completed ? 'COMPLETED' : 'IN PROGRESS'}</div>
                 <div class="quest-detail-lore">${currentQuest.lore}</div>
             </div>
             <div>
