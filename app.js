@@ -2973,7 +2973,7 @@ if (mapModalEl) {
     });
 }
 
-document.querySelectorAll(".map-pin, .map-dest-btn").forEach(btn => {
+document.querySelectorAll(".map-pin").forEach(btn => {
     btn.addEventListener("click", () => {
         const loc = btn.getAttribute("data-location");
         if (loc) {
