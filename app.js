@@ -1066,9 +1066,17 @@ const resetBtnEl = document.getElementById("reset-btn");
 // Helper Functions
 function addLog(text, type = "normal") {
     const p = document.createElement("p");
-    if (type === "event") p.className = "log-event";
-    if (type === "alert") p.className = "log-alert";
-    if (type === "victory") p.className = "log-victory";
+    if (type === "dialogue" || type === "event") {
+        p.className = "log-dialogue";
+    } else if (type === "alert" || type === "enemy" || type === "warning") {
+        p.className = "log-alert";
+    } else if (type === "victory" || type === "milestone") {
+        p.className = "log-victory";
+    } else if (type === "action" || type === "player") {
+        p.className = "log-action";
+    } else {
+        p.className = "log-lore";
+    }
     p.textContent = text;
     storyLogEl.appendChild(p);
     storyLogEl.scrollTop = storyLogEl.scrollHeight;
@@ -1601,10 +1609,10 @@ function attackGoblin() {
     const { dmg, crit } = rollAttack();
     state.goblinHp -= dmg;
     if (crit) {
-        addLog(`💥 CRITICAL HIT! You strike the Goblin for ${dmg} damage!`, "victory");
+        addLog(`💥 CRITICAL HIT! You strike the Goblin for ${dmg} damage!`, "action");
         spawnFloatingText(`💥 -${dmg} HP`, "crit", 50, 40);
     } else {
-        addLog(`You strike the Goblin for ${dmg} damage!`, "event");
+        addLog(`You strike the Goblin for ${dmg} damage!`, "action");
         spawnFloatingText(`-${dmg} HP`, "damage", 50, 40);
     }
 
@@ -1830,10 +1838,10 @@ function attackTroll() {
     const { dmg, crit } = rollAttack(low, high);
     state.trollHp -= dmg;
     if (crit) {
-        addLog(`💥 CRITICAL HIT! You strike the Mountain Snake for ${dmg} damage!`, "victory");
+        addLog(`💥 CRITICAL HIT! You strike the Mountain Snake for ${dmg} damage!`, "action");
         spawnFloatingText(`💥 -${dmg} HP`, "crit", 50, 40);
     } else {
-        addLog(`You strike the Mountain Snake for ${dmg} damage!`, "event");
+        addLog(`You strike the Mountain Snake for ${dmg} damage!`, "action");
         spawnFloatingText(`-${dmg} HP`, "damage", 50, 40);
     }
 
@@ -1920,10 +1928,10 @@ function attackWilderness() {
     const { dmg, crit } = rollAttack(low, high);
     w.hp -= dmg;
     if (crit) {
-        addLog(`💥 CRITICAL HIT! You strike the ${w.name} for ${dmg} damage!`, "victory");
+        addLog(`💥 CRITICAL HIT! You strike the ${w.name} for ${dmg} damage!`, "action");
         spawnFloatingText(`💥 -${dmg} HP`, "crit", 50, 40);
     } else {
-        addLog(`You strike the ${w.name} for ${dmg} damage!`, "event");
+        addLog(`You strike the ${w.name} for ${dmg} damage!`, "action");
         spawnFloatingText(`-${dmg} HP`, "damage", 50, 40);
     }
 
