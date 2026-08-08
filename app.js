@@ -1928,6 +1928,7 @@ function attackWilderness() {
     }
 
     if (w.hp <= 0) {
+        setScene("wilderness", "WILDERNESS TRAIL");
         addLog(`🎉 You defeated the ${w.name}!`, "victory");
         addGold(30);
         addScore(w.reward);
