@@ -2838,7 +2838,14 @@ if (voiceVolEl && voiceVolValEl) {
 if (resetBtnEl) {
     resetBtnEl.addEventListener("click", () => {
         sfx.playClick();
-        exitToMainMenu();
+        showCustomConfirmModal(
+            "EXIT TO MAIN MENU?",
+            "Are you sure you want to exit to the main menu? Progress for your current run will be lost.",
+            () => {
+                exitToMainMenu();
+            },
+            "EXIT GAME"
+        );
     });
 }
 
@@ -3177,10 +3184,11 @@ const confirmCancelBtnEl = document.getElementById("confirm-cancel-btn");
 const confirmOkBtnEl = document.getElementById("confirm-ok-btn");
 let currentConfirmCallback = null;
 
-function showCustomConfirmModal(title, text, onConfirm) {
+function showCustomConfirmModal(title, text, onConfirm, okText = "CONFIRM RESET") {
     if (!confirmModalEl) return;
     if (confirmModalTitleEl) confirmModalTitleEl.textContent = title;
     if (confirmModalTextEl) confirmModalTextEl.textContent = text;
+    if (confirmOkBtnEl) confirmOkBtnEl.textContent = okText;
     currentConfirmCallback = onConfirm;
     confirmModalEl.classList.remove("hidden");
     sfx.playClick();
