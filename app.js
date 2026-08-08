@@ -585,11 +585,11 @@ const ACHIEVEMENTS_DATA = [
     { id: "sunfire_awakened", icon: "✨", title: "Sunfire Ascendant", desc: "Consecrate the Dormant Sunblade on the Altar of Dawn." },
     { id: "perfect_guard", icon: "🛡️", title: "Perfect Counter", desc: "Successfully block Lord Rodrigues's Crimson Shadow Pounce." },
     { id: "savior_of_realm", icon: "🏆", title: "Savior of East Grevie", desc: "Vanquish Lord Rodrigues and rescue Princess Elsa." },
-    { id: "weasel_hunter", icon: "🦦", title: "Weasel Exterminator", desc: "Defeat 5 Wild Weasels on the Wilderness Trail.", enemyName: "Wild Weasel", targetCount: 5 },
-    { id: "owl_hunter", icon: "🦉", title: "Owl Tracker", desc: "Defeat 5 Barn Owls on the Wilderness Trail.", enemyName: "Barn Owl", targetCount: 5 },
-    { id: "toad_hunter", icon: "🐸", title: "Toad Vanquisher", desc: "Defeat 5 Giant Garden Toads on the Wilderness Trail.", enemyName: "Giant Garden Toad", targetCount: 5 },
-    { id: "rat_hunter", icon: "🐀", title: "Rat Catcher", desc: "Defeat 5 Alley Rat Rogues on the Wilderness Trail.", enemyName: "Alley Rat Rogue", targetCount: 5 },
-    { id: "cat_hunter", icon: "🐈", title: "Wilderness Predator", desc: "Defeat 5 Feral Farm Cats on the Wilderness Trail.", enemyName: "Feral Farm Cat", targetCount: 5 }
+    { id: "weasel_hunter", icon: "🦦", title: "Weasel Exterminator", desc: "Defeat 3 Wild Weasels on the Wilderness Trail.", enemyName: "Wild Weasel", targetCount: 3 },
+    { id: "owl_hunter", icon: "🦉", title: "Owl Tracker", desc: "Defeat 3 Barn Owls on the Wilderness Trail.", enemyName: "Barn Owl", targetCount: 3 },
+    { id: "toad_hunter", icon: "🐸", title: "Toad Vanquisher", desc: "Defeat 3 Giant Garden Toads on the Wilderness Trail.", enemyName: "Giant Garden Toad", targetCount: 3 },
+    { id: "rat_hunter", icon: "🐀", title: "Rat Catcher", desc: "Defeat 3 Alley Rat Rogues on the Wilderness Trail.", enemyName: "Alley Rat Rogue", targetCount: 3 },
+    { id: "cat_hunter", icon: "🐈", title: "Wilderness Predator", desc: "Defeat 3 Feral Farm Cats on the Wilderness Trail.", enemyName: "Feral Farm Cat", targetCount: 3 }
 ];
 
 function loadAchievementsFromStorage() {
@@ -632,11 +632,10 @@ function recordWildernessKill(enemyName) {
     saveAchievementsToStorage();
 
     const count = state.killCounts[enemyName];
-    if (enemyName === "Wild Weasel" && count >= 5) unlockAchievement("weasel_hunter");
-    if (enemyName === "Barn Owl" && count >= 5) unlockAchievement("owl_hunter");
-    if (enemyName === "Giant Garden Toad" && count >= 5) unlockAchievement("toad_hunter");
-    if (enemyName === "Alley Rat Rogue" && count >= 5) unlockAchievement("rat_hunter");
-    if (enemyName === "Feral Farm Cat" && count >= 5) unlockAchievement("cat_hunter");
+    const ach = ACHIEVEMENTS_DATA.find(a => a.enemyName === enemyName);
+    if (ach && count >= ach.targetCount) {
+        unlockAchievement(ach.id);
+    }
 
     updateAchievementsUI();
 }
