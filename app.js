@@ -548,9 +548,9 @@ const state = {
     knightFreed: false,
     knightAllyUsed: false,
     hasIronShield: false,
-    goblinHp: 35,
-    dragonHp: 120,
-    trollHp: 60,
+    goblinHp: 70,
+    dragonHp: 240,
+    trollHp: 120,
     wilderness: null,
     fairyVisited: false,
     dragonExposed: false,
@@ -1020,11 +1020,11 @@ function gainExp(amount) {
 }
 
 const ENEMY_POOL = [
-    { name: "Wild Weasel", hp: 38, dmgLow: 12, dmgHigh: 20, image: "assets/images/wild_weasel.jpg" },
-    { name: "Barn Owl", hp: 45, dmgLow: 14, dmgHigh: 24, image: "assets/images/barn_owl.jpg" },
-    { name: "Giant Garden Toad", hp: 35, dmgLow: 10, dmgHigh: 18, image: "assets/images/giant_garden_toad.jpg" },
-    { name: "Alley Rat Rogue", hp: 50, dmgLow: 15, dmgHigh: 26, image: "assets/images/alley_rat_rogue.jpg" },
-    { name: "Feral Farm Cat", hp: 60, dmgLow: 18, dmgHigh: 30, image: "assets/images/feral_farm_cat.jpg" }
+    { name: "Wild Weasel", hp: 76, dmgLow: 12, dmgHigh: 20, image: "assets/images/wild_weasel.jpg" },
+    { name: "Barn Owl", hp: 90, dmgLow: 14, dmgHigh: 24, image: "assets/images/barn_owl.jpg" },
+    { name: "Giant Garden Toad", hp: 70, dmgLow: 10, dmgHigh: 18, image: "assets/images/giant_garden_toad.jpg" },
+    { name: "Alley Rat Rogue", hp: 100, dmgLow: 15, dmgHigh: 26, image: "assets/images/alley_rat_rogue.jpg" },
+    { name: "Feral Farm Cat", hp: 120, dmgLow: 18, dmgHigh: 30, image: "assets/images/feral_farm_cat.jpg" }
 ];
 
 // Image assets mapping

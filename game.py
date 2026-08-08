@@ -61,11 +61,11 @@ def roll_attack(low, high, player):
     return damage, crit
 
 ENEMY_POOL = [
-    {"name": "Wild Weasel", "hp": 28, "dmg_low": 6, "dmg_high": 12},
-    {"name": "Barn Owl", "hp": 35, "dmg_low": 8, "dmg_high": 14},
-    {"name": "Giant Garden Toad", "hp": 24, "dmg_low": 4, "dmg_high": 9},
-    {"name": "Alley Rat Rogue", "hp": 38, "dmg_low": 7, "dmg_high": 13},
-    {"name": "Feral Farm Cat", "hp": 45, "dmg_low": 9, "dmg_high": 15},
+    {"name": "Wild Weasel", "hp": 56, "dmg_low": 6, "dmg_high": 12},
+    {"name": "Barn Owl", "hp": 70, "dmg_low": 8, "dmg_high": 14},
+    {"name": "Giant Garden Toad", "hp": 48, "dmg_low": 4, "dmg_high": 9},
+    {"name": "Alley Rat Rogue", "hp": 76, "dmg_low": 7, "dmg_high": 13},
+    {"name": "Feral Farm Cat", "hp": 90, "dmg_low": 9, "dmg_high": 15},
 ]
 
 def wilderness_trail(player):
@@ -379,7 +379,7 @@ def goblin_fight(player):
         return
 
     slow_print("\n⚔️ A Goblin Rogue leaps out with drawn daggers!")
-    goblin_hp = 35
+    goblin_hp = 70
     while goblin_hp > 0 and player.hp > 0:
         print(f"\nGoblin HP: {goblin_hp} | Your HP: {player.hp}")
         print("1. Attack with weapon")
@@ -513,7 +513,7 @@ def mountain_cave(player):
         return
 
     slow_print(f"\n{RED}The Mountain Snake rattles its tail and strikes forward!{RESET}")
-    troll_hp = 60
+    troll_hp = 120
     while troll_hp > 0 and player.hp > 0:
         print(f"\nMountain Snake HP: {troll_hp} | Your HP: {player.hp}")
         print("1. Attack Snake with weapon")
@@ -586,7 +586,7 @@ def dragons_lair(player):
     if not player.has_sword:
         slow_print(f"\n{RED}⚠️ WARNING: You do not possess the Legendary Sunblade! Your mundane attacks cannot harm Rodrigues!{RESET}")
 
-    dragon_hp = 120
+    dragon_hp = 240
     while dragon_hp > 0 and player.hp > 0:
         knight_available = player.knight_freed and not player.knight_ally_used
         print(f"\n{RED}SHADOW CAT RODRIGUES HP: {dragon_hp}{RESET} | {GREEN}YOUR HP: {player.hp}{RESET}")
