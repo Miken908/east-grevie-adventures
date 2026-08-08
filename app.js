@@ -969,11 +969,11 @@ function mitigate(damage) {
     if (state.heroClass === "knight") {
         mitigated = Math.max(1, mitigated - 2); // Royal Knight Perk: Bastion Shield (-2 Damage Taken)
         spawnFloatingText("🛡️ Bastion Shield (-2)", "event", 40, 50);
-        addLog("🛡️ Bastion Shield Perk mitigates -2 physical damage!", "event");
+        addLog("Bastion Shield Perk mitigates -2 physical damage!", "event");
     } else if (state.heroClass === "paladin") {
         mitigated = Math.max(1, mitigated - 3); // Sunblade Paladin Perk: Sunfire Ascendant (-3 Damage Taken)
         spawnFloatingText("✨ Sunfire Shield (-3)", "event", 40, 50);
-        addLog("✨ Sunfire Ascendant Perk mitigates -3 incoming damage!", "event");
+        addLog("Sunfire Ascendant Perk mitigates -3 incoming damage!", "event");
     }
     return Math.max(1, mitigated);
 }
@@ -988,13 +988,13 @@ function rollAttack() {
         finalDmg = Math.floor(baseOutput * calculateCritMultiplier());
         if (state.heroClass === "ranger") {
             spawnFloatingText("🎯 EAGLE EYE CRIT!", "crit", 50, 24);
-            addLog("🎯 Eagle Eye Perk strikes critical vulnerability (+10% Crit Rate)!", "victory");
+            addLog("Eagle Eye Perk strikes critical vulnerability (+10% Crit Rate)!", "victory");
         }
     }
     if (state.heroClass === "paladin" && (state.hasSword || state.hasDormantSunblade)) {
         finalDmg += 10;
         spawnFloatingText("✨ Holy Cleave (+10)", "crit", 50, 28);
-        addLog("✨ Sunfire Ascendant Perk ignites blade (+10 Holy Sunfire Cleave)!", "event");
+        addLog("Sunfire Ascendant Perk ignites blade (+10 Holy Sunfire Cleave)!", "event");
     }
     return { dmg: finalDmg, crit: isCrit };
 }
@@ -1013,7 +1013,7 @@ function gainExp(amount) {
         state.expToNextLevel = Math.floor(100 * Math.pow(state.level, 1.4));
         state.maxHp = calculateMaxHp();
         state.hp = Math.min(state.maxHp, state.hp + 25);
-        addLog(`⭐ LEVEL UP! You reached Level ${state.level}! Granted +3 Attribute Points (+25 HP restored)!`, "event");
+        addLog(`LEVEL UP! You reached Level ${state.level}! Granted +3 Attribute Points (+25 HP restored)!`, "event");
     }
     updateHUD();
     updateStatsModalUI();
@@ -1065,6 +1065,10 @@ const resetBtnEl = document.getElementById("reset-btn");
 
 // Helper Functions
 function addLog(text, type = "normal") {
+    const cleanText = text
+        .replace(/[\u{1F300}-\u{1F9FF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}\u{1F600}-\u{1F64F}\u{1F680}-\u{1F6FF}\u{1F1E6}-\u{1F1FF}]/gu, '')
+        .trim();
+
     const p = document.createElement("p");
     if (type === "dialogue" || type === "event") {
         p.className = "log-dialogue";
@@ -1077,7 +1081,7 @@ function addLog(text, type = "normal") {
     } else {
         p.className = "log-lore";
     }
-    p.textContent = text;
+    p.textContent = cleanText;
     storyLogEl.appendChild(p);
     storyLogEl.scrollTop = storyLogEl.scrollHeight;
 }
@@ -1128,10 +1132,10 @@ function healPlayer(amount) {
     state.maxHp = calculateMaxHp();
     state.hp = Math.min(state.maxHp, state.hp + amount);
     if (state.heroClass === "alchemist" && amount >= 60) {
-        addLog(`🧪 Elixir Master Perk empowers potion (+${amount} HP Restored!)`, "victory");
+        addLog(`Elixir Master Perk empowers potion (+${amount} HP Restored!)`, "victory");
         spawnFloatingText(`🧪 Elixir Master (+${amount} HP)`, "heal", 50, 45);
     } else {
-        addLog(`💚 Restored ${amount} HP! Current HP: ${state.hp}/${state.maxHp}`, "event");
+        addLog(`Restored ${amount} HP! Current HP: ${state.hp}/${state.maxHp}`, "event");
         spawnFloatingText(`+${amount} HP`, "heal", 50, 45);
     }
     sfx.playHeal();
@@ -1397,9 +1401,9 @@ function reforgeSunblade() {
     updateHUD();
     renderBlacksmith();
 
-    addLog("🔨 THE BLACKSMITH STRIKES HIS HEARTH ANVIL!", "victory");
+    addLog("THE BLACKSMITH STRIKES HIS HEARTH ANVIL!", "victory");
     addLog("Sparks fly as the Sun Crystal Core fuses with the Hilt of Dawn according to the ancient blueprint!", "event");
-    addLog("🎒 YOU OBTAINED: Dormant Sunblade (Added to Inventory!)", "victory");
+    addLog("YOU OBTAINED: Dormant Sunblade (Added to Inventory!)", "victory");
     addLog("Take the Dormant Sunblade to the Temple Sanctum altar to ignite its holy sunfire!", "event");
     unlockAchievement("master_craftsman");
 }
@@ -1407,11 +1411,11 @@ function reforgeSunblade() {
 function buyEquipment(slot, itemObj, cost) {
     sfx.playClick();
     if (state.gold < cost) {
-        addLog(`Blacksmith: 'You don't have enough Gold! You need 💰 ${cost} Gold.'`, "alert");
+        addLog(`Blacksmith: 'You don't have enough Gold! You need ${cost} Gold.'`, "alert");
     } else {
         state.gold -= cost;
         state.equipment[slot] = itemObj;
-        addLog(`✨ Purchased & equipped ${itemObj.name}!`, "victory");
+        addLog(`Purchased & equipped ${itemObj.name}!`, "victory");
         sfx.playItem();
         updateHUD();
     }
@@ -1421,11 +1425,11 @@ function buyEquipment(slot, itemObj, cost) {
 function buyPotion(cost) {
     sfx.playClick();
     if (state.gold < cost) {
-        addLog(`Blacksmith: 'You don't have enough Gold! You need 💰 ${cost} Gold.'`, "alert");
+        addLog(`Blacksmith: 'You don't have enough Gold! You need ${cost} Gold.'`, "alert");
     } else {
         state.gold -= cost;
         state.inventory.push("Healing Potion");
-        addLog("🧪 Purchased 1 Healing Potion!", "event");
+        addLog("Purchased 1 Healing Potion!", "event");
         sfx.playItem();
         updateHUD();
     }
@@ -1564,7 +1568,7 @@ function consecrateSunblade() {
     sfx.playHeal();
     addScore(300);
     clearLog();
-    addLog("✨ A DAZZLING BEAM OF HOLY SUNLIGHT PIERCES THE TEMPLE VAULT!", "event");
+    addLog("A DAZZLING BEAM OF HOLY SUNLIGHT PIERCES THE TEMPLE VAULT!", "event");
     addLog("The Dormant Sunblade ignites with celestial sunfire!", "event");
     addLog("YOU HAVE AWAKENED THE LEGENDARY SUNBLADE! (+25 STR | Holy Sunfire Cleave)", "victory");
     updateHUD();
@@ -1589,7 +1593,7 @@ function battleGoblin() {
     sfx.playMusic("battle");
     setScene("goblin", "GOBLIN ROGUE ENCOUNTER");
     clearLog();
-    addLog("⚔️ A sly, green-skinned Goblin Rogue emerges from the shadows of the brush, clutching stolen scrolls and baring sharp daggers!", "alert");
+    addLog("A sly, green-skinned Goblin Rogue emerges from the shadows of the brush, clutching stolen scrolls and baring sharp daggers!", "alert");
 
     renderGoblinTurn();
 }
@@ -1609,7 +1613,7 @@ function attackGoblin() {
     const { dmg, crit } = rollAttack();
     state.goblinHp -= dmg;
     if (crit) {
-        addLog(`💥 CRITICAL HIT! You strike the Goblin for ${dmg} damage!`, "action");
+        addLog(`CRITICAL HIT! You strike the Goblin for ${dmg} damage!`, "action");
         spawnFloatingText(`💥 -${dmg} HP`, "crit", 50, 40);
     } else {
         addLog(`You strike the Goblin for ${dmg} damage!`, "action");
@@ -1617,8 +1621,8 @@ function attackGoblin() {
     }
 
     if (state.goblinHp <= 0) {
-        addLog("🎉 You defeated the Goblin Rogue!", "victory");
-        addLog("📜 You retrieved the STOLEN BLACKSMITH BLUEPRINT from the Goblin Rogue!", "event");
+        addLog("You defeated the Goblin Rogue!", "victory");
+        addLog("You retrieved the STOLEN BLACKSMITH BLUEPRINT from the Goblin Rogue!", "event");
         state.goblinDefeated = true;
         state.inventory.push("Stolen Blacksmith Blueprint");
         addGold(50);
@@ -1630,7 +1634,7 @@ function attackGoblin() {
 
     // Goblin counter attack with Dodge check
     if (checkDodge()) {
-        addLog("💨 DODGED! You leap clear of the Goblin's attack!", "victory");
+        addLog("DODGED! You leap clear of the Goblin's attack!", "victory");
         spawnFloatingText("💨 DODGE!", "dodge", 30, 50);
     } else {
         const gDmg = mitigate(Math.floor(Math.random() * 8) + 5);
@@ -1838,7 +1842,7 @@ function attackTroll() {
     const { dmg, crit } = rollAttack(low, high);
     state.trollHp -= dmg;
     if (crit) {
-        addLog(`💥 CRITICAL HIT! You strike the Mountain Snake for ${dmg} damage!`, "action");
+        addLog(`CRITICAL HIT! You strike the Mountain Snake for ${dmg} damage!`, "action");
         spawnFloatingText(`💥 -${dmg} HP`, "crit", 50, 40);
     } else {
         addLog(`You strike the Mountain Snake for ${dmg} damage!`, "action");
@@ -1846,14 +1850,14 @@ function attackTroll() {
     }
 
     if (state.trollHp <= 0) {
-        addLog("🎉 You defeated the Mountain Snake!", "victory");
+        addLog("You defeated the Mountain Snake!", "victory");
         state.caveSearched = true;
         state.inventory.push("Elixir of Life");
         if (!state.hasSunCrystal) {
             state.hasSunCrystal = true;
             state.inventory.push("Sun Crystal Core");
             const count = getRelicCount();
-            addLog(`💎 You discover the Sun Crystal Core glowing brilliantly amongst the cave gold! (Sunblade Relic ${count}/3)`, "victory");
+            addLog(`You discover the Sun Crystal Core glowing brilliantly amongst the cave gold! (Sunblade Relic ${count}/3)`, "victory");
         }
         healPlayer(50);
         addGold(100);
@@ -1928,7 +1932,7 @@ function attackWilderness() {
     const { dmg, crit } = rollAttack(low, high);
     w.hp -= dmg;
     if (crit) {
-        addLog(`💥 CRITICAL HIT! You strike the ${w.name} for ${dmg} damage!`, "action");
+        addLog(`CRITICAL HIT! You strike the ${w.name} for ${dmg} damage!`, "action");
         spawnFloatingText(`💥 -${dmg} HP`, "crit", 50, 40);
     } else {
         addLog(`You strike the ${w.name} for ${dmg} damage!`, "action");
@@ -1937,7 +1941,7 @@ function attackWilderness() {
 
     if (w.hp <= 0) {
         setScene("wilderness", "WILDERNESS TRAIL");
-        addLog(`🎉 You defeated the ${w.name}!`, "victory");
+        addLog(`You defeated the ${w.name}!`, "victory");
         addGold(30);
         addScore(w.reward);
         unlockAchievement("first_blood");
@@ -2014,7 +2018,7 @@ function callKnightAlly() {
     const dmg = Math.floor(Math.random() * 11) + 25;
     state.dragonHp -= dmg;
     state.knightAllyUsed = true;
-    addLog(`⚔️ Sir Johan charges in and strikes Rodrigues for ${dmg} damage - the cat has no chance to retaliate!`, "victory");
+    addLog(`Sir Johan charges in and strikes Rodrigues for ${dmg} damage - the cat has no chance to retaliate!`, "victory");
 
     if (state.dragonHp <= 0) {
         winGame();
@@ -2032,18 +2036,18 @@ function attackDragon() {
         if (state.dragonExposed) {
             dmg = Math.floor(dmg * 1.5);
             state.dragonExposed = false;
-            addLog(`🎯 WEAK SPOT STRICKEN! You deal ${dmg} EXTRA CRITICAL DAMAGE!`, "victory");
+            addLog(`WEAK SPOT STRICKEN! You deal ${dmg} EXTRA CRITICAL DAMAGE!`, "victory");
             spawnFloatingText(`🎯 -${dmg} HP!`, "crit", 50, 40);
         } else if (rolled.crit) {
-            addLog(`💥⚔️ CRITICAL HIT! The Sunblade cleaves through the cat's thick fur for ${dmg} massive damage!`, "victory");
+            addLog(`CRITICAL HIT! The Sunblade cleaves through the cat's thick fur for ${dmg} massive damage!`, "victory");
             spawnFloatingText(`💥 -${dmg} HP`, "crit", 50, 40);
         } else {
-            addLog(`💥 The Sunblade pierces the cat's thick fur for ${dmg} DAMAGE!`, "victory");
+            addLog(`The Sunblade pierces the cat's thick fur for ${dmg} DAMAGE!`, "victory");
             spawnFloatingText(`-${dmg} HP`, "damage", 50, 40);
         }
         state.dragonHp -= dmg;
     } else {
-        addLog("🛡️ YOUR WEAPON REBOUNDS HARMLESSLY OFF RODRIGUES'S THICK FUR! (0 Damage)", "alert");
+        addLog("YOUR WEAPON REBOUNDS HARMLESSLY OFF RODRIGUES'S THICK FUR! (0 Damage)", "alert");
         addLog("Without the Legendary Sunblade, no mortal weapon can pierce the cat's fur!", "alert");
         spawnFloatingText("🛡️ IMMUNE! (0 HP)", "event", 50, 40);
         state.dragonExposed = false;
