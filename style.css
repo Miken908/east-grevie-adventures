@@ -1405,36 +1405,6 @@ body {
     text-align: center;
 }
 
-@keyframes titleBannerKenBurns {
-    0% {
-        transform: scale(1) translate(0, 0);
-    }
-    50% {
-        transform: scale(1.06) translate(-1.2%, -1.2%);
-    }
-    100% {
-        transform: scale(1) translate(0, 0);
-    }
-}
-
-@keyframes titleCloudDrift {
-    0% {
-        background-position: 0 0;
-    }
-    100% {
-        background-position: 1200px 0;
-    }
-}
-
-@keyframes titleShimmerPulse {
-    0%, 100% {
-        opacity: 0.35;
-    }
-    50% {
-        opacity: 0.85;
-    }
-}
-
 .title-banner-frame {
     width: 100%;
     height: 48vh;
@@ -1448,18 +1418,6 @@ body {
     box-shadow: 0 0 35px rgba(0, 0, 0, 0.95), inset 0 0 20px rgba(0, 0, 0, 0.8);
     cursor: pointer;
     transition: all 0.25s ease;
-}
-
-.title-banner-frame::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    box-shadow: inset 0 0 45px rgba(0, 0, 0, 0.6), inset 0 0 20px rgba(255, 215, 0, 0.15);
-    animation: titleShimmerPulse 7s ease-in-out infinite alternate;
 }
 
 .title-banner-frame:hover {
@@ -1476,24 +1434,6 @@ body {
     height: 100%;
     object-fit: cover;
     display: block;
-    animation: titleBannerKenBurns 28s ease-in-out infinite alternate;
-    will-change: transform;
-}
-
-.title-banner-cloud-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.12) 0%, transparent 50%, rgba(255, 255, 255, 0.08) 100%),
-                linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
-    background-size: 900px 100%;
-    animation: titleCloudDrift 32s linear infinite;
-    mix-blend-mode: overlay;
-    opacity: 0.75;
-    z-index: 2;
 }
 
 .main-menu-header {
