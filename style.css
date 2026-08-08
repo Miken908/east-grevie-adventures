@@ -1832,6 +1832,64 @@ body {
     font-size: 1.4rem;
 }
 
+.floating-text.ft-gold {
+    color: #ffea00;
+    font-size: 1.5rem;
+    text-shadow: 0 0 16px #ffea00, 0 0 25px #ff9900, 0 2px 8px rgba(0,0,0,0.95);
+}
+
+.floating-text.ft-score {
+    color: #00f3ff;
+    font-size: 1.4rem;
+    text-shadow: 0 0 14px #00f3ff, 0 0 20px #0088ff, 0 2px 8px rgba(0,0,0,0.95);
+}
+
+@keyframes hudBadgePulseGold {
+    0% {
+        transform: scale(1);
+        color: var(--gold-bright);
+        text-shadow: 0 0 8px rgba(245, 197, 66, 0.5);
+    }
+    35% {
+        transform: scale(1.35);
+        color: #ffffff;
+        text-shadow: 0 0 22px #ffe600, 0 0 35px #ffaa00;
+    }
+    100% {
+        transform: scale(1);
+        color: var(--gold-bright);
+        text-shadow: 0 0 8px rgba(245, 197, 66, 0.5);
+    }
+}
+
+.hud-pulse-gold {
+    animation: hudBadgePulseGold 0.55s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    display: inline-block;
+}
+
+@keyframes hudBadgePulseScore {
+    0% {
+        transform: scale(1);
+        color: var(--gold-bright);
+        text-shadow: 0 0 8px rgba(245, 197, 66, 0.5);
+    }
+    35% {
+        transform: scale(1.35);
+        color: #00ffff;
+        text-shadow: 0 0 22px #00ffff, 0 0 35px #0088ff;
+    }
+    100% {
+        transform: scale(1);
+        color: var(--gold-bright);
+        text-shadow: 0 0 8px rgba(245, 197, 66, 0.5);
+    }
+}
+
+.hud-pulse-score {
+    animation: hudBadgePulseScore 0.55s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    display: inline-block;
+}
+
 @keyframes floatAndFade {
     0% {
         opacity: 0;

@@ -1080,8 +1080,16 @@ function clearLog() {
 
 function addScore(points) {
     state.score += points;
-    addLog(`★ +${points} Points! (Total: ${state.score} PTS)`, "event");
-    sfx.playItem();
+    updateHUD();
+
+    const scoreTextEl = document.getElementById("score-text");
+    if (scoreTextEl) {
+        scoreTextEl.classList.remove("hud-pulse-score");
+        void scoreTextEl.offsetWidth;
+        scoreTextEl.classList.add("hud-pulse-score");
+    }
+
+    spawnFloatingText(`+${points} PTS`, "score", 68, 12);
     gainExp(points);
 }
 
@@ -1130,9 +1138,17 @@ function addGold(baseGold) {
     const lckBonusMult = 1 + (state.lck * 0.08);
     const finalGold = Math.round(baseGold * lckBonusMult);
     state.gold += finalGold;
-    addLog(`💰 Received +${finalGold} Gold! [Total: 💰 ${state.gold}]`, "event");
     sfx.playItem();
     updateHUD();
+
+    const goldTextEl = document.getElementById("gold-text");
+    if (goldTextEl) {
+        goldTextEl.classList.remove("hud-pulse-gold");
+        void goldTextEl.offsetWidth;
+        goldTextEl.classList.add("hud-pulse-gold");
+    }
+
+    spawnFloatingText(`+💰 ${finalGold}`, "gold", 82, 12);
     return finalGold;
 }
 
