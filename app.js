@@ -2013,6 +2013,23 @@ function renderDragonTurn() {
     renderChoices(choices);
 }
 
+function triggerBossDefeatSequence() {
+    sfx.playVictory();
+    renderChoices([
+        { text: "[ VANQUISHING LORD RODRIGUES... ]", action: () => {} }
+    ]);
+    spawnFloatingText("FINAL SUNBLADE STRIKE!", "crit", 50, 35);
+    setTimeout(() => {
+        spawnFloatingText("SHADOW CAT DISSOLVES IN SUNFIRE!", "victory", 50, 45);
+    }, 600);
+
+    addLog("Lord Rodrigues lets out a final roaring hiss as his shadow form dissolves in celestial light! Princess Elsa is freed from her chains!", "victory");
+
+    setTimeout(() => {
+        winGame();
+    }, 2500);
+}
+
 function callKnightAlly() {
     sfx.playSlash();
     const dmg = Math.floor(Math.random() * 11) + 25;
@@ -2021,7 +2038,7 @@ function callKnightAlly() {
     addLog(`Sir Johan charges in and strikes Rodrigues for ${dmg} damage - the cat has no chance to retaliate!`, "victory");
 
     if (state.dragonHp <= 0) {
-        winGame();
+        triggerBossDefeatSequence();
         return;
     }
     renderDragonTurn();
@@ -2054,7 +2071,7 @@ function attackDragon() {
     }
 
     if (state.dragonHp <= 0) {
-        winGame();
+        triggerBossDefeatSequence();
         return;
     }
 
