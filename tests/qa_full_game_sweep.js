@@ -171,14 +171,14 @@ check("Main scene image frame click listener bound", jsContent.includes('imageFr
 console.log("\n--- TEST GROUP 12: New Overworld Map Artwork & Location Pin Mapping ---");
 check("Map modal uses new map.jpg image asset", htmlContent.includes('src="assets/images/map.jpg"'));
 check("Map asset dictionary uses map.jpg in JS", jsContent.includes('map: "assets/images/map.jpg"'));
-check("Village pin centered (50%, 50%) on map", htmlContent.includes('style="top: 50%; left: 50%;" data-location="village"'));
+check("Village pin located below village icon over hearth fire (58%, 44%)", htmlContent.includes('style="top: 58%; left: 44%;" data-location="village"'));
 check("Forest pin located northeast of village (26%, 58%)", htmlContent.includes('style="top: 26%; left: 58%;" data-location="forest"'));
 check("Temple pin located north of forest (8%, 38%)", htmlContent.includes('style="top: 8%; left: 38%;" data-location="temple"'));
 check("Wilderness pin located south field (88%, 76%)", htmlContent.includes('style="top: 88%; left: 76%;" data-location="wilderness"'));
-check("Mountain pin located northeast on mountains (79%, 22%)", htmlContent.includes('style="top: 79%; left: 22%;" data-location="mountain"'));
+check("Mountain pin located west on mountains (79%, 12%)", htmlContent.includes('style="top: 79%; left: 12%;" data-location="mountain"'));
 check("Watchtower pin located at 80%, 34%", htmlContent.includes('style="top: 80%; left: 34%;" data-location="watchtower"'));
 check("Cat's Hall pin located west/northwest of watchtower (48%, 15%)", htmlContent.includes('style="top: 48%; left: 15%;" data-location="lair"'));
-check("Fairy Fountain pin located north glade (29%, 82%)", htmlContent.includes('style="top: 29%; left: 82%;" data-location="fairy"'));
+check("Fairy Fountain pin located east glade (29%, 88%)", htmlContent.includes('style="top: 29%; left: 88%;" data-location="fairy"'));
 
 // 13. AAA Title Screen, Art Gallery, & Credits Modals
 console.log("\n--- TEST GROUP 13: AAA Title Screen, Art Gallery, & Credits Modals ---");
