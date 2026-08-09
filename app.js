@@ -2928,10 +2928,10 @@ const heroMapTokenEl = document.getElementById("hero-map-token");
 const mapWaypoints = {
     village: { top: "50%", left: "50%" },
     blacksmith: { top: "50%", left: "50%" },
-    forest: { top: "32%", left: "50%" },
-    goblin: { top: "32%", left: "50%" },
+    forest: { top: "26%", left: "58%" },
+    goblin: { top: "26%", left: "58%" },
     temple: { top: "8%", left: "38%" },
-    wilderness: { top: "70%", left: "78%" },
+    wilderness: { top: "82%", left: "74%" },
     mountain: { top: "85%", left: "18%" },
     cave: { top: "85%", left: "18%" },
     watchtower: { top: "80%", left: "34%" },
