@@ -2451,83 +2451,73 @@ if (creationPortraitFrameEl) {
 }
 
 startBtnEl.addEventListener("click", () => {
-    sfx.playClick();
-    const fadeOverlay = document.getElementById("screen-fade-overlay");
-    if (fadeOverlay) fadeOverlay.classList.add("active");
+    resetAdventureState();
+    state.name = nameInputEl.value.trim() || "Sir Ario";
 
-    setTimeout(() => {
-        resetAdventureState();
-        state.name = nameInputEl.value.trim() || "Sir Ario";
+    const selectedCard = document.querySelector(".class-card.selected");
+    const chosenClass = selectedCard ? (selectedCard.getAttribute("data-class") || "knight") : "knight";
+    state.heroClass = chosenClass;
 
-        const selectedCard = document.querySelector(".class-card.selected");
-        const chosenClass = selectedCard ? (selectedCard.getAttribute("data-class") || "knight") : "knight";
-        state.heroClass = chosenClass;
+    if (chosenClass === "knight") {
+        state.end = 5;
+        state.str = 4;
+        state.agi = 3;
+        state.lck = 3;
+        state.equipment = {
+            weapon: { name: "Steel Longsword", bonusStr: 0, bonusMinDmg: 9, bonusMaxDmg: 16 },
+            shield: { name: "Iron Kite Shield", bonusArmor: 4, bonusEnd: 0 },
+            armor: { name: "Knight's Chainmail", bonusArmor: 2, bonusAgi: 0 },
+            accessory: null
+        };
+    } else if (chosenClass === "paladin") {
+        state.end = 7;
+        state.str = 5;
+        state.agi = 4;
+        state.lck = 4;
+        state.gold = 300;
+        state.ap = 3;
+        state.equipment = {
+            weapon: { name: "Sunfire Blade", bonusStr: 2, bonusMinDmg: 16, bonusMaxDmg: 26 },
+            shield: { name: "Radiant Aegis", bonusArmor: 6, bonusEnd: 1 },
+            armor: { name: "Sunfire Plate Armor", bonusArmor: 4, bonusAgi: 0 },
+            accessory: { name: "Sunfire Sigil", bonusStr: 2, bonusAgi: 2, bonusEnd: 2, bonusLck: 2 }
+        };
+    } else if (chosenClass === "ranger") {
+        state.end = 3;
+        state.str = 3;
+        state.agi = 5;
+        state.lck = 4;
+        state.equipment = {
+            weapon: { name: "Hunter's Shortbow", bonusStr: 0, bonusMinDmg: 8, bonusMaxDmg: 15 },
+            shield: { name: "Leather Quiver Guard", bonusArmor: 5, bonusEnd: 0 },
+            armor: { name: "Scout's Cloak", bonusArmor: 1, bonusAgi: 0 },
+            accessory: null
+        };
+    } else if (chosenClass === "alchemist") {
+        state.str = 4;
+        state.agi = 4;
+        state.end = 4;
+        state.lck = 4;
+        state.gold = 75;
+        state.inventory = ["Bread", "Healing Potion", "Healing Potion", "Healing Potion"];
+        state.equipment = {
+            weapon: { name: "Catalyst Wand", bonusStr: 0, bonusMinDmg: 8, bonusMaxDmg: 15 },
+            shield: { name: "Rune Codex", bonusArmor: 5, bonusEnd: 0 },
+            armor: { name: "Scholar's Robe", bonusArmor: 1, bonusAgi: 0 },
+            accessory: null
+        };
+    }
 
-        if (chosenClass === "knight") {
-            state.end = 5;
-            state.str = 4;
-            state.agi = 3;
-            state.lck = 3;
-            state.equipment = {
-                weapon: { name: "Steel Longsword", bonusStr: 0, bonusMinDmg: 9, bonusMaxDmg: 16 },
-                shield: { name: "Iron Kite Shield", bonusArmor: 4, bonusEnd: 0 },
-                armor: { name: "Knight's Chainmail", bonusArmor: 2, bonusAgi: 0 },
-                accessory: null
-            };
-        } else if (chosenClass === "paladin") {
-            state.end = 7;
-            state.str = 5;
-            state.agi = 4;
-            state.lck = 4;
-            state.gold = 300;
-            state.ap = 3;
-            state.equipment = {
-                weapon: { name: "Sunfire Blade", bonusStr: 2, bonusMinDmg: 16, bonusMaxDmg: 26 },
-                shield: { name: "Radiant Aegis", bonusArmor: 6, bonusEnd: 1 },
-                armor: { name: "Sunfire Plate Armor", bonusArmor: 4, bonusAgi: 0 },
-                accessory: { name: "Sunfire Sigil", bonusStr: 2, bonusAgi: 2, bonusEnd: 2, bonusLck: 2 }
-            };
-        } else if (chosenClass === "ranger") {
-            state.end = 3;
-            state.str = 3;
-            state.agi = 5;
-            state.lck = 4;
-            state.equipment = {
-                weapon: { name: "Hunter's Shortbow", bonusStr: 0, bonusMinDmg: 8, bonusMaxDmg: 15 },
-                shield: { name: "Leather Quiver Guard", bonusArmor: 5, bonusEnd: 0 },
-                armor: { name: "Scout's Cloak", bonusArmor: 1, bonusAgi: 0 },
-                accessory: null
-            };
-        } else if (chosenClass === "alchemist") {
-            state.str = 4;
-            state.agi = 4;
-            state.end = 4;
-            state.lck = 4;
-            state.gold = 75;
-            state.inventory = ["Bread", "Healing Potion", "Healing Potion", "Healing Potion"];
-            state.equipment = {
-                weapon: { name: "Catalyst Wand", bonusStr: 0, bonusMinDmg: 8, bonusMaxDmg: 15 },
-                shield: { name: "Rune Codex", bonusArmor: 5, bonusEnd: 0 },
-                armor: { name: "Scholar's Robe", bonusArmor: 1, bonusAgi: 0 },
-                accessory: null
-            };
-        }
+    state.maxHp = calculateMaxHp();
+    state.hp = state.maxHp;
 
-        state.maxHp = calculateMaxHp();
-        state.hp = state.maxHp;
-
-        narrator.stop();
-        if (introLoreCardEl) introLoreCardEl.classList.remove("speaking");
-        nameModalEl.classList.add("hidden");
-        updateHUD();
-        updateStatsModalUI();
-        sfx.init();
-        renderVillage();
-
-        setTimeout(() => {
-            if (fadeOverlay) fadeOverlay.classList.remove("active");
-        }, 150);
-    }, 350);
+    narrator.stop();
+    if (introLoreCardEl) introLoreCardEl.classList.remove("speaking");
+    nameModalEl.classList.add("hidden");
+    updateHUD();
+    updateStatsModalUI();
+    sfx.init();
+    renderVillage();
 });
 
 // --- Main Menu Title Screen Starter Panel Event Handlers ---
@@ -2551,35 +2541,19 @@ const closeCreditsModalBtn = document.getElementById("close-credits-modal-btn");
 
 if (menuStartBtnEl) {
     menuStartBtnEl.addEventListener("click", () => {
+        if (mainMenuModalEl) mainMenuModalEl.classList.add("hidden");
+        if (prologueModalEl) prologueModalEl.classList.remove("hidden");
         sfx.playClick();
-        const fadeOverlay = document.getElementById("screen-fade-overlay");
-        if (fadeOverlay) fadeOverlay.classList.add("active");
-
-        setTimeout(() => {
-            if (mainMenuModalEl) mainMenuModalEl.classList.add("hidden");
-            if (prologueModalEl) prologueModalEl.classList.remove("hidden");
-            setTimeout(() => {
-                if (fadeOverlay) fadeOverlay.classList.remove("active");
-            }, 150);
-        }, 350);
     });
 }
 
 if (prologueContinueBtnEl) {
     prologueContinueBtnEl.addEventListener("click", () => {
-        sfx.playClick();
         narrator.stop();
         if (introLoreCardEl) introLoreCardEl.classList.remove("speaking");
-        const fadeOverlay = document.getElementById("screen-fade-overlay");
-        if (fadeOverlay) fadeOverlay.classList.add("active");
-
-        setTimeout(() => {
-            if (prologueModalEl) prologueModalEl.classList.add("hidden");
-            if (nameModalEl) nameModalEl.classList.remove("hidden");
-            setTimeout(() => {
-                if (fadeOverlay) fadeOverlay.classList.remove("active");
-            }, 150);
-        }, 350);
+        if (prologueModalEl) prologueModalEl.classList.add("hidden");
+        if (nameModalEl) nameModalEl.classList.remove("hidden");
+        sfx.playClick();
     });
 }
 
