@@ -1146,6 +1146,17 @@ function getPotionHealAmount() {
     return state.heroClass === "alchemist" ? 60 : 40;
 }
 
+function usePotionCombat(turnCallback) {
+    const idx = state.inventory.indexOf("Healing Potion");
+    if (idx !== -1) {
+        state.inventory.splice(idx, 1);
+        healPlayer(getPotionHealAmount());
+        if (typeof turnCallback === "function") turnCallback();
+    } else {
+        addLog("No Healing Potions in inventory!", "alert");
+    }
+}
+
 function addGold(baseGold) {
     const lckBonusMult = 1 + (state.lck * 0.08);
     const finalGold = Math.round(baseGold * lckBonusMult);
@@ -1680,14 +1691,7 @@ function reasonWithGoblin() {
 }
 
 function usePotionGoblin() {
-    const idx = state.inventory.indexOf("Healing Potion");
-    if (idx !== -1) {
-        state.inventory.splice(idx, 1);
-        healPlayer(getPotionHealAmount());
-        renderGoblinTurn();
-    } else {
-        addLog("No Healing Potions in inventory!", "alert");
-    }
+    usePotionCombat(renderGoblinTurn);
 }
 
 function goMountain() {
@@ -1884,14 +1888,7 @@ function attackTroll() {
 }
 
 function usePotionTroll() {
-    const idx = state.inventory.indexOf("Healing Potion");
-    if (idx !== -1) {
-        state.inventory.splice(idx, 1);
-        healPlayer(getPotionHealAmount());
-        renderTrollTurn();
-    } else {
-        addLog("No Healing Potions in inventory!", "alert");
-    }
+    usePotionCombat(renderTrollTurn);
 }
 
 function goWilderness() {
@@ -1968,14 +1965,7 @@ function attackWilderness() {
 }
 
 function usePotionWilderness() {
-    const idx = state.inventory.indexOf("Healing Potion");
-    if (idx !== -1) {
-        state.inventory.splice(idx, 1);
-        healPlayer(getPotionHealAmount());
-        renderWildernessTurn();
-    } else {
-        addLog("No Healing Potions in inventory!", "alert");
-    }
+    usePotionCombat(renderWildernessTurn);
 }
 
 function battleCat() {
