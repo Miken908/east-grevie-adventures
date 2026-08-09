@@ -171,9 +171,9 @@ check("Main scene image frame click listener bound", jsContent.includes('imageFr
 console.log("\n--- TEST GROUP 12: New Overworld Map Artwork & Location Pin Mapping ---");
 check("Map modal uses new map.jpg image asset", htmlContent.includes('src="assets/images/map.jpg"'));
 check("Map asset dictionary uses map.jpg in JS", jsContent.includes('map: "assets/images/map.jpg"'));
-check("Village pin located south of village icon (63%, 58%)", htmlContent.includes('style="top: 63%; left: 58%;" data-location="village"'));
+check("Village pin located south of village icon (67%, 58%)", htmlContent.includes('style="top: 67%; left: 58%;" data-location="village"'));
 check("Forest pin located northeast of village (26%, 58%)", htmlContent.includes('style="top: 26%; left: 58%;" data-location="forest"'));
-check("Temple pin located north of forest (8%, 38%)", htmlContent.includes('style="top: 8%; left: 38%;" data-location="temple"'));
+check("Temple pin located north of forest (8%, 36%)", htmlContent.includes('style="top: 8%; left: 36%;" data-location="temple"'));
 check("Wilderness pin located south field (88%, 81%)", htmlContent.includes('style="top: 88%; left: 81%;" data-location="wilderness"'));
 check("Mountain pin located west on mountains (79%, 12%)", htmlContent.includes('style="top: 79%; left: 12%;" data-location="mountain"'));
 check("Watchtower pin located at 80%, 34%", htmlContent.includes('style="top: 80%; left: 34%;" data-location="watchtower"'));

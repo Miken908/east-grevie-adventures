@@ -1,14 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>East Grevie Adventures</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
     <!-- Retro CRT Bezel Container -->
     <div class="crt-bezel">
@@ -19,11 +23,17 @@
             <header class="game-header">
                 <h1 class="game-title" id="location-name">VILLAGE SQUARE</h1>
                 <div class="header-controls">
-                    <button id="stats-btn" class="arcade-btn-sm primary" title="Hero Stats & Attributes">STATS <span id="ap-badge" class="ap-badge hidden">0</span></button>
-                    <button id="quests-btn" class="arcade-btn-sm primary" title="View Kingdom Quests & Objectives">QUESTS <span id="quests-badge" class="quests-badge">1</span></button>
+                    <button id="stats-btn" class="arcade-btn-sm primary" title="Hero Stats & Attributes">STATS <span
+                            id="ap-badge" class="ap-badge hidden">0</span></button>
+                    <button id="quests-btn" class="arcade-btn-sm primary"
+                        title="View Kingdom Quests & Objectives">QUESTS <span id="quests-badge"
+                            class="quests-badge">1</span></button>
                     <button id="map-btn" class="arcade-btn-sm primary" title="Open World Map">WORLD MAP</button>
-                    <button id="achievements-btn" class="arcade-btn-sm primary" title="View Trophy Room & Achievements">TROPHIES <span id="achievements-badge" class="achievements-badge">0/15</span></button>
-                    <button id="audio-settings-btn" class="arcade-btn-sm primary" title="Audio & Voice Settings">AUDIO</button>
+                    <button id="achievements-btn" class="arcade-btn-sm primary"
+                        title="View Trophy Room & Achievements">TROPHIES <span id="achievements-badge"
+                            class="achievements-badge">0/15</span></button>
+                    <button id="audio-settings-btn" class="arcade-btn-sm primary"
+                        title="Audio & Voice Settings">AUDIO</button>
                     <button id="reset-btn" class="arcade-btn-sm warning" title="Exit to Main Menu">EXIT</button>
                 </div>
             </header>
@@ -113,13 +123,17 @@
             </div>
 
             <!-- Heroic Intro Artwork Centerpiece -->
-            <div class="intro-image-frame" id="prologue-image-frame-container" title="Click to view artwork in full screen">
-                <img id="intro-image" src="assets/images/abduction_of_princess_elsa.jpg" alt="Abduction of Princess Elsa Artwork">
+            <div class="intro-image-frame" id="prologue-image-frame-container"
+                title="Click to view artwork in full screen">
+                <img id="intro-image" src="assets/images/abduction_of_princess_elsa.jpg"
+                    alt="Abduction of Princess Elsa Artwork">
                 <div class="zoom-hint-badge">🔍 ENLARGE ART</div>
             </div>
 
             <div class="intro-lore-card">
-                <p id="intro-lore-text"><em>"Shadows fall over the Village of East Grevie. The ruthless Cat Rodrigues has abducted Princess Elsa to his cursed lair. Only the Legendary Sunblade can pierce the beast's thick fur. Hero, your quest begins now..."</em></p>
+                <p id="intro-lore-text"><em>"Shadows fall over the Village of East Grevie. The ruthless Cat Rodrigues
+                        has abducted Princess Elsa to his cursed lair. Only the Legendary Sunblade can pierce the
+                        beast's thick fur. Hero, your quest begins now..."</em></p>
             </div>
 
             <div class="intro-btn-group">
@@ -140,8 +154,10 @@
             <div class="creation-layout-grid">
                 <!-- Left Column: Full Hero Portrait Frame -->
                 <div class="creation-left-col">
-                    <div class="intro-image-frame creation-portrait-frame" id="creation-portrait-frame" title="Click to view hero portrait in full screen">
-                        <img id="creation-portrait-img" src="assets/images/portrait_knight.jpg" alt="Selected Hero Portrait">
+                    <div class="intro-image-frame creation-portrait-frame" id="creation-portrait-frame"
+                        title="Click to view hero portrait in full screen">
+                        <img id="creation-portrait-img" src="assets/images/portrait_knight.jpg"
+                            alt="Selected Hero Portrait">
                         <div class="zoom-hint-badge">🔍 ENLARGE PORTRAIT</div>
                         <div id="creation-class-badge" class="location-badge">ROYAL KNIGHT</div>
                     </div>
@@ -159,7 +175,8 @@
                         <div class="class-selection-grid creation-2x2-grid">
                             <div class="class-card selected" data-class="knight">
                                 <div class="class-card-header">ROYAL KNIGHT</div>
-                                <div class="class-card-perk"><strong>Bastion Shield:</strong> Takes -2 physical damage</div>
+                                <div class="class-card-perk"><strong>Bastion Shield:</strong> Takes -2 physical damage
+                                </div>
                                 <div class="class-card-stats">+2 END, +1 STR | High Armor & HP</div>
                             </div>
                             <div class="class-card" data-class="ranger">
@@ -174,7 +191,8 @@
                             </div>
                             <div class="class-card ng-plus-class locked" id="paladin-class-card" data-class="paladin">
                                 <div class="class-card-header">SUNBLADE PALADIN</div>
-                                <div class="class-card-perk"><strong>Sunfire Ascendant:</strong> +3 AP, Radiant Blade & +250 Gold</div>
+                                <div class="class-card-perk"><strong>Sunfire Ascendant:</strong> +3 AP, Radiant Blade &
+                                    +250 Gold</div>
                                 <div class="class-card-stats" id="paladin-card-status">🔒 UNLOCK 15/15 TROPHIES</div>
                             </div>
                         </div>
@@ -198,18 +216,24 @@
             </div>
 
             <!-- Heroic Artwork Centerpiece -->
-            <div class="victory-image-frame" id="victory-image-frame-container" title="Click to view artwork in full screen">
-                <img id="victory-image" src="assets/images/victory.jpg" alt="Princess Elsa Rescued in East Grevie Village">
+            <div class="victory-image-frame" id="victory-image-frame-container"
+                title="Click to view artwork in full screen">
+                <img id="victory-image" src="assets/images/victory.jpg"
+                    alt="Princess Elsa Rescued in East Grevie Village">
                 <div class="zoom-hint-badge">🔍 ENLARGE ART</div>
             </div>
 
             <div class="victory-lore-card">
-                <p id="victory-lore-text"><em>"Sunlight breaks as Sir Ario returns triumphant! With Princess Elsa rescued and Lord Rodrigues vanquished, peace is restored to the realm. Your courage will echo through legend forever!"</em></p>
+                <p id="victory-lore-text"><em>"Sunlight breaks as Sir Ario returns triumphant! With Princess Elsa
+                        rescued and Lord Rodrigues vanquished, peace is restored to the realm. Your courage will echo
+                        through legend forever!"</em></p>
             </div>
 
             <div class="victory-stats-hud">
-                <div class="stat-badge"><span class="stat-lbl">FINAL SCORE:</span> <span id="victory-score" class="gold">000000</span></div>
-                <div class="stat-badge"><span class="stat-lbl">HERO LEVEL:</span> <span id="victory-level" class="hud-value">LVL 1</span></div>
+                <div class="stat-badge"><span class="stat-lbl">FINAL SCORE:</span> <span id="victory-score"
+                        class="gold">000000</span></div>
+                <div class="stat-badge"><span class="stat-lbl">HERO LEVEL:</span> <span id="victory-level"
+                        class="hud-value">LVL 1</span></div>
             </div>
 
             <div class="intro-btn-group">
@@ -226,23 +250,32 @@
                 <h2 class="map-modal-title">MAP OF EAST GREVIE</h2>
                 <button id="close-map-modal-btn" class="arcade-btn-sm warning" title="Close World Map">✖ CLOSE</button>
             </div>
-            
+
             <div class="map-modal-canvas-frame">
                 <img id="map-modal-image" src="assets/images/map.jpg" alt="Kingdom of East Grevie World Map">
-                
+
                 <!-- Animated Hero Token -->
-                <div id="hero-map-token" class="hero-map-token" style="top: 50%; left: 50%;" title="Your Hero Position">🗡️</div>
+                <div id="hero-map-token" class="hero-map-token" style="top: 50%; left: 50%;" title="Your Hero Position">
+                    🗡️</div>
 
                 <!-- Spaced Interactive Pins Overlay -->
                 <div id="modal-map-pins" class="map-pins-overlay">
-                    <button class="map-pin" style="top: 63%; left: 58%;" data-location="village" title="East Grevie Village Square"><span>East Grevie Village</span></button>
-                    <button class="map-pin" style="top: 26%; left: 58%;" data-location="forest" title="Whispering Forest"><span>Whispering Forest</span></button>
-                    <button class="map-pin" style="top: 8%; left: 38%;" data-location="temple" title="The Temple Sanctum"><span>Temple Sanctum</span></button>
-                    <button class="map-pin" style="top: 88%; left: 81%;" data-location="wilderness" title="Wilderness Trail"><span>Wilderness Trail</span></button>
-                    <button class="map-pin" style="top: 79%; left: 12%;" data-location="mountain" title="Rocky Mountain Pass"><span>Rocky Mountains</span></button>
-                    <button class="map-pin" style="top: 80%; left: 34%;" data-location="watchtower" title="Old Watchtower Ruins"><span>Old Watchtower</span></button>
-                    <button class="map-pin" style="top: 45%; left: 20%;" data-location="lair" title="Cat's Hall"><span>Cat's Hall</span></button>
-                    <button class="map-pin secret" style="top: 29%; left: 88%;" data-location="fairy" title="Secret Fairy Fountain"><span>Fairy Fountain</span></button>
+                    <button class="map-pin" style="top: 67%; left: 58%;" data-location="village"
+                        title="East Grevie Village Square"><span>East Grevie Village</span></button>
+                    <button class="map-pin" style="top: 26%; left: 58%;" data-location="forest"
+                        title="Whispering Forest"><span>Whispering Forest</span></button>
+                    <button class="map-pin" style="top: 8%; left: 36%;" data-location="temple"
+                        title="The Temple Sanctum"><span>Temple Sanctum</span></button>
+                    <button class="map-pin" style="top: 88%; left: 81%;" data-location="wilderness"
+                        title="Wilderness Trail"><span>Wilderness Trail</span></button>
+                    <button class="map-pin" style="top: 79%; left: 12%;" data-location="mountain"
+                        title="Rocky Mountain Pass"><span>Rocky Mountains</span></button>
+                    <button class="map-pin" style="top: 80%; left: 34%;" data-location="watchtower"
+                        title="Old Watchtower Ruins"><span>Old Watchtower</span></button>
+                    <button class="map-pin" style="top: 45%; left: 20%;" data-location="lair"
+                        title="Cat's Hall"><span>Cat's Hall</span></button>
+                    <button class="map-pin secret" style="top: 29%; left: 88%;" data-location="fairy"
+                        title="Secret Fairy Fountain"><span>Fairy Fountain</span></button>
                 </div>
             </div>
         </div>
@@ -257,12 +290,13 @@
                 </div>
                 <button id="close-stats-modal-btn" class="arcade-btn-sm warning" title="Close Stats">✖ CLOSE</button>
             </div>
-            
+
             <div class="stats-layout-columns">
                 <!-- Column 1: Hero Identity & Core Stats -->
                 <div class="stats-col hero-identity-col">
                     <div class="hero-avatar-badge">
-                        <div class="hero-portrait-frame" id="hero-portrait-frame" title="Click to enlarge hero portrait">
+                        <div class="hero-portrait-frame" id="hero-portrait-frame"
+                            title="Click to enlarge hero portrait">
                             <img src="assets/images/portrait_knight.jpg" alt="Hero Portrait" class="hero-portrait-img">
                             <div class="portrait-zoom-badge">🔍 ZOOM</div>
                         </div>
@@ -275,8 +309,10 @@
                     </div>
 
                     <div class="hero-progress-card">
-                        <div class="summary-row"><span class="lbl">HERO LEVEL:</span> <span id="stat-hero-lvl" class="val gold">1</span></div>
-                        <div class="summary-row"><span class="lbl">EXP PROGRESS:</span> <span id="stat-hero-exp" class="val">0 / 100</span></div>
+                        <div class="summary-row"><span class="lbl">HERO LEVEL:</span> <span id="stat-hero-lvl"
+                                class="val gold">1</span></div>
+                        <div class="summary-row"><span class="lbl">EXP PROGRESS:</span> <span id="stat-hero-exp"
+                                class="val">0 / 100</span></div>
                     </div>
 
                     <div class="ap-status-banner">
@@ -297,7 +333,8 @@
                                 </div>
                                 <div class="attr-controls">
                                     <span id="attr-str-val" class="attr-val">3</span>
-                                    <button class="arcade-btn-sm primary add-ap-btn" data-attr="str" title="Add 1 STR Point">+</button>
+                                    <button class="arcade-btn-sm primary add-ap-btn" data-attr="str"
+                                        title="Add 1 STR Point">+</button>
                                 </div>
                             </div>
                             <p class="attr-desc">Boosts attack damage (+1.2 Min / +2.0 Max Dmg per point).</p>
@@ -310,7 +347,8 @@
                                 </div>
                                 <div class="attr-controls">
                                     <span id="attr-agi-val" class="attr-val">3</span>
-                                    <button class="arcade-btn-sm primary add-ap-btn" data-attr="agi" title="Add 1 AGI Point">+</button>
+                                    <button class="arcade-btn-sm primary add-ap-btn" data-attr="agi"
+                                        title="Add 1 AGI Point">+</button>
                                 </div>
                             </div>
                             <p class="attr-desc">Increases Dodge chance (+1.5%) and Critical Damage (+0.05x).</p>
@@ -323,7 +361,8 @@
                                 </div>
                                 <div class="attr-controls">
                                     <span id="attr-end-val" class="attr-val">3</span>
-                                    <button class="arcade-btn-sm primary add-ap-btn" data-attr="end" title="Add 1 END Point">+</button>
+                                    <button class="arcade-btn-sm primary add-ap-btn" data-attr="end"
+                                        title="Add 1 END Point">+</button>
                                 </div>
                             </div>
                             <p class="attr-desc">Increases Max HP (+15 HP) and Armor Mitigation (+0.8).</p>
@@ -336,7 +375,8 @@
                                 </div>
                                 <div class="attr-controls">
                                     <span id="attr-lck-val" class="attr-val">3</span>
-                                    <button class="arcade-btn-sm primary add-ap-btn" data-attr="lck" title="Add 1 LCK Point">+</button>
+                                    <button class="arcade-btn-sm primary add-ap-btn" data-attr="lck"
+                                        title="Add 1 LCK Point">+</button>
                                 </div>
                             </div>
                             <p class="attr-desc">Increases Crit Chance (+2.0%) and Merchant Gold Discounts.</p>
@@ -349,20 +389,28 @@
                     <div class="combat-stats-block">
                         <h3 class="stats-col-heading">DERIVED COMBAT STATS</h3>
                         <div class="derived-list">
-                            <div class="derived-row"><span>ATTACK POWER:</span> <span id="derived-dmg-val" class="val gold">8 - 15</span></div>
-                            <div class="derived-row"><span>CRIT CHANCE:</span> <span id="derived-crit-val" class="val gold">14.0%</span></div>
-                            <div class="derived-row"><span>DODGE CHANCE:</span> <span id="derived-dodge-val" class="val gold">4.5%</span></div>
-                            <div class="derived-row"><span>ARMOR MITIGATION:</span> <span id="derived-armor-val" class="val gold">7.4</span></div>
+                            <div class="derived-row"><span>ATTACK POWER:</span> <span id="derived-dmg-val"
+                                    class="val gold">8 - 15</span></div>
+                            <div class="derived-row"><span>CRIT CHANCE:</span> <span id="derived-crit-val"
+                                    class="val gold">14.0%</span></div>
+                            <div class="derived-row"><span>DODGE CHANCE:</span> <span id="derived-dodge-val"
+                                    class="val gold">4.5%</span></div>
+                            <div class="derived-row"><span>ARMOR MITIGATION:</span> <span id="derived-armor-val"
+                                    class="val gold">7.4</span></div>
                         </div>
                     </div>
 
                     <div class="equipment-block">
                         <h3 class="stats-col-heading">EQUIPPED GEAR</h3>
                         <div class="equipment-list">
-                            <div class="equip-row"><span>WEAPON:</span> <span id="equip-weapon-val" class="val gold">Wooden Sword</span></div>
-                            <div class="equip-row"><span>SHIELD:</span> <span id="equip-shield-val" class="val gold">Wooden Shield</span></div>
-                            <div class="equip-row"><span>ARMOR:</span> <span id="equip-armor-val" class="val gold">Traveler's Tunic</span></div>
-                            <div class="equip-row"><span>ACCESSORY:</span> <span id="equip-accessory-val" class="val gold">None</span></div>
+                            <div class="equip-row"><span>WEAPON:</span> <span id="equip-weapon-val"
+                                    class="val gold">Wooden Sword</span></div>
+                            <div class="equip-row"><span>SHIELD:</span> <span id="equip-shield-val"
+                                    class="val gold">Wooden Shield</span></div>
+                            <div class="equip-row"><span>ARMOR:</span> <span id="equip-armor-val"
+                                    class="val gold">Traveler's Tunic</span></div>
+                            <div class="equip-row"><span>ACCESSORY:</span> <span id="equip-accessory-val"
+                                    class="val gold">None</span></div>
                         </div>
                     </div>
                 </div>
@@ -381,29 +429,35 @@
 
             <div class="gallery-grid">
                 <!-- 1. Prologue & Main Lore -->
-                <div class="gallery-item" data-src="assets/images/intro.jpg" data-title="The Quest Begins - Intro Legend">
+                <div class="gallery-item" data-src="assets/images/intro.jpg"
+                    data-title="The Quest Begins - Intro Legend">
                     <img src="assets/images/intro.jpg" alt="Intro Legend">
                     <div class="gallery-item-title">The Legend Begins</div>
                 </div>
-                <div class="gallery-item" data-src="assets/images/abduction_of_princess_elsa.jpg" data-title="The Abduction of Princess Elsa">
+                <div class="gallery-item" data-src="assets/images/abduction_of_princess_elsa.jpg"
+                    data-title="The Abduction of Princess Elsa">
                     <img src="assets/images/abduction_of_princess_elsa.jpg" alt="Abduction of Princess Elsa">
                     <div class="gallery-item-title">Abduction of Elsa</div>
                 </div>
 
                 <!-- 2. Hero Class Portraits -->
-                <div class="gallery-item" data-src="assets/images/portrait_knight.jpg" data-title="Royal Knight Hero Portrait">
+                <div class="gallery-item" data-src="assets/images/portrait_knight.jpg"
+                    data-title="Royal Knight Hero Portrait">
                     <img src="assets/images/portrait_knight.jpg" alt="Royal Knight">
                     <div class="gallery-item-title">Royal Knight</div>
                 </div>
-                <div class="gallery-item" data-src="assets/images/portrait_paladin.jpg" data-title="Sunblade Paladin Hero Portrait">
+                <div class="gallery-item" data-src="assets/images/portrait_paladin.jpg"
+                    data-title="Sunblade Paladin Hero Portrait">
                     <img src="assets/images/portrait_paladin.jpg" alt="Sunblade Paladin">
                     <div class="gallery-item-title">Sunblade Paladin</div>
                 </div>
-                <div class="gallery-item" data-src="assets/images/portrait_ranger.jpg" data-title="Woodland Ranger Hero Portrait">
+                <div class="gallery-item" data-src="assets/images/portrait_ranger.jpg"
+                    data-title="Woodland Ranger Hero Portrait">
                     <img src="assets/images/portrait_ranger.jpg" alt="Woodland Ranger">
                     <div class="gallery-item-title">Woodland Ranger</div>
                 </div>
-                <div class="gallery-item" data-src="assets/images/portrait_alchemist.jpg" data-title="Royal Alchemist Hero Portrait">
+                <div class="gallery-item" data-src="assets/images/portrait_alchemist.jpg"
+                    data-title="Royal Alchemist Hero Portrait">
                     <img src="assets/images/portrait_alchemist.jpg" alt="Royal Alchemist">
                     <div class="gallery-item-title">Royal Alchemist</div>
                 </div>
@@ -425,7 +479,8 @@
                     <img src="assets/images/temple_sanctum.jpg" alt="Temple Sanctum">
                     <div class="gallery-item-title">Temple Sanctum</div>
                 </div>
-                <div class="gallery-item" data-src="assets/images/secret_fairy_fountain.jpg" data-title="Secret Fairy Fountain">
+                <div class="gallery-item" data-src="assets/images/secret_fairy_fountain.jpg"
+                    data-title="Secret Fairy Fountain">
                     <img src="assets/images/secret_fairy_fountain.jpg" alt="Fairy Fountain">
                     <div class="gallery-item-title">Fairy Fountain</div>
                 </div>
@@ -433,15 +488,18 @@
                     <img src="assets/images/old_watchtower.jpg" alt="Old Watchtower">
                     <div class="gallery-item-title">Old Watchtower</div>
                 </div>
-                <div class="gallery-item" data-src="assets/images/rocky_mountain_pass.jpg" data-title="Rocky Mountain Pass">
+                <div class="gallery-item" data-src="assets/images/rocky_mountain_pass.jpg"
+                    data-title="Rocky Mountain Pass">
                     <img src="assets/images/rocky_mountain_pass.jpg" alt="Rocky Mountains">
                     <div class="gallery-item-title">Rocky Mountains</div>
                 </div>
-                <div class="gallery-item" data-src="assets/images/snake_cave_treasure_draft.jpg" data-title="Mountain Snake Cave">
+                <div class="gallery-item" data-src="assets/images/snake_cave_treasure_draft.jpg"
+                    data-title="Mountain Snake Cave">
                     <img src="assets/images/snake_cave_treasure_draft.jpg" alt="Snake Cave">
                     <div class="gallery-item-title">Snake Cave</div>
                 </div>
-                <div class="gallery-item" data-src="assets/images/final_boss_rodrigues.jpg" data-title="Cat's Hall - Lord Rodrigues">
+                <div class="gallery-item" data-src="assets/images/final_boss_rodrigues.jpg"
+                    data-title="Cat's Hall - Lord Rodrigues">
                     <img src="assets/images/final_boss_rodrigues.jpg" alt="Lord Rodrigues">
                     <div class="gallery-item-title">Lord Rodrigues</div>
                 </div>
@@ -461,7 +519,8 @@
                     <img src="assets/images/wilderness_trail.jpg" alt="Wilderness Trail">
                     <div class="gallery-item-title">Wilderness Trail</div>
                 </div>
-                <div class="gallery-item" data-src="assets/images/wild_weasel.jpg" data-title="Wild Weasel - Forest Trail Predator">
+                <div class="gallery-item" data-src="assets/images/wild_weasel.jpg"
+                    data-title="Wild Weasel - Forest Trail Predator">
                     <img src="assets/images/wild_weasel.jpg" alt="Wild Weasel">
                     <div class="gallery-item-title">Wild Weasel</div>
                 </div>
@@ -469,21 +528,25 @@
                     <img src="assets/images/barn_owl.jpg" alt="Barn Owl">
                     <div class="gallery-item-title">Barn Owl</div>
                 </div>
-                <div class="gallery-item" data-src="assets/images/giant_garden_toad.jpg" data-title="Giant Garden Toad - Swamp Beast">
+                <div class="gallery-item" data-src="assets/images/giant_garden_toad.jpg"
+                    data-title="Giant Garden Toad - Swamp Beast">
                     <img src="assets/images/giant_garden_toad.jpg" alt="Giant Garden Toad">
                     <div class="gallery-item-title">Giant Garden Toad</div>
                 </div>
-                <div class="gallery-item" data-src="assets/images/alley_rat_rogue.jpg" data-title="Alley Rat Rogue - Trail Bandit">
+                <div class="gallery-item" data-src="assets/images/alley_rat_rogue.jpg"
+                    data-title="Alley Rat Rogue - Trail Bandit">
                     <img src="assets/images/alley_rat_rogue.jpg" alt="Alley Rat Rogue">
                     <div class="gallery-item-title">Alley Rat Rogue</div>
                 </div>
-                <div class="gallery-item" data-src="assets/images/feral_farm_cat.jpg" data-title="Feral Farm Cat - Rodrigues Minion">
+                <div class="gallery-item" data-src="assets/images/feral_farm_cat.jpg"
+                    data-title="Feral Farm Cat - Rodrigues Minion">
                     <img src="assets/images/feral_farm_cat.jpg" alt="Feral Farm Cat">
                     <div class="gallery-item-title">Feral Farm Cat</div>
                 </div>
 
                 <!-- 6. Grand Finale Victory -->
-                <div class="gallery-item" data-src="assets/images/victory.jpg" data-title="Victory - Princess Elsa Rescued">
+                <div class="gallery-item" data-src="assets/images/victory.jpg"
+                    data-title="Victory - Princess Elsa Rescued">
                     <img src="assets/images/victory.jpg" alt="Victory Triumph">
                     <div class="gallery-item-title">Princess Rescued</div>
                 </div>
@@ -501,16 +564,18 @@
             <div class="audio-settings-body">
                 <div class="audio-setting-section">
                     <h3>STORYTELLER VOICE (NEURAL / HD)</h3>
-                    <p class="audio-setting-desc">Select a high-definition neural voice for cinematic lore narration:</p>
+                    <p class="audio-setting-desc">Select a high-definition neural voice for cinematic lore narration:
+                    </p>
                     <div class="voice-selector-row">
                         <select id="voice-select" class="arcade-select" title="Select Neural Voice"></select>
-                        <button id="test-voice-btn" class="arcade-btn-sm primary" title="Preview selected voice">🔊 PREVIEW</button>
+                        <button id="test-voice-btn" class="arcade-btn-sm primary" title="Preview selected voice">🔊
+                            PREVIEW</button>
                     </div>
                 </div>
 
                 <div class="audio-setting-section">
                     <h3>MASTER & CATEGORY VOLUMES</h3>
-                    
+
                     <div class="audio-slider-row">
                         <label for="master-vol">MASTER VOLUME</label>
                         <input type="range" id="master-vol" min="0" max="100" value="80" class="audio-slider">
@@ -563,7 +628,8 @@
                 </div>
                 <div class="credits-section special-thanks">
                     <h3>SPECIAL THANKS</h3>
-                    <p class="credits-name">Retro RPG Enthusiasts, Betatesters, Princess Elsa, and the Citizens of East Grevie</p>
+                    <p class="credits-name">Retro RPG Enthusiasts, Betatesters, Princess Elsa, and the Citizens of East
+                        Grevie</p>
                 </div>
             </div>
         </div>
@@ -571,7 +637,8 @@
 
     <!-- Fullscreen Artwork Lightbox Modal with Left/Right Gallery Navigation -->
     <div id="lightbox-modal" class="modal-overlay hidden">
-        <button id="lightbox-prev-btn" class="lightbox-nav-btn prev-btn" title="Previous Image (Left Arrow Key)">‹</button>
+        <button id="lightbox-prev-btn" class="lightbox-nav-btn prev-btn"
+            title="Previous Image (Left Arrow Key)">‹</button>
         <button id="lightbox-next-btn" class="lightbox-nav-btn next-btn" title="Next Image (Right Arrow Key)">›</button>
         <div class="modal-content crt-box lightbox-box">
             <h2 id="lightbox-location-title" class="lightbox-title">EAST GREVIE VILLAGE</h2>
@@ -630,8 +697,10 @@
             <div id="achievements-grid" class="achievements-grid">
                 <!-- 15 Achievement Cards rendered dynamically -->
             </div>
-            <div class="achievements-footer" style="display: flex; justify-content: flex-end; padding-top: 10px; border-top: 1px solid var(--gold-border);">
-                <button id="reset-achievements-btn" class="arcade-btn-sm warning" title="Reset all unlocked trophies and kill progress">RESET ALL TROPHIES</button>
+            <div class="achievements-footer"
+                style="display: flex; justify-content: flex-end; padding-top: 10px; border-top: 1px solid var(--gold-border);">
+                <button id="reset-achievements-btn" class="arcade-btn-sm warning"
+                    title="Reset all unlocked trophies and kill progress">RESET ALL TROPHIES</button>
             </div>
         </div>
     </div>
@@ -652,7 +721,8 @@
             <div class="confirm-header">
                 <h2 id="confirm-modal-title" class="confirm-title">RESET ALL TROPHIES?</h2>
             </div>
-            <p id="confirm-modal-text" class="confirm-text">Are you sure you want to reset all 15 trophies, kill records, and hero unlocks? This action cannot be undone.</p>
+            <p id="confirm-modal-text" class="confirm-text">Are you sure you want to reset all 15 trophies, kill
+                records, and hero unlocks? This action cannot be undone.</p>
             <div class="confirm-btn-group">
                 <button id="confirm-cancel-btn" class="arcade-btn-sm warning">CANCEL</button>
                 <button id="confirm-ok-btn" class="arcade-btn-sm danger">CONFIRM RESET</button>
@@ -662,4 +732,5 @@
 
     <script src="app.js"></script>
 </body>
+
 </html>

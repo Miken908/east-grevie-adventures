@@ -2926,11 +2926,11 @@ const closeMapModalBtn = document.getElementById("close-map-modal-btn");
 const heroMapTokenEl = document.getElementById("hero-map-token");
 
 const mapWaypoints = {
-    village: { top: "63%", left: "58%" },
-    blacksmith: { top: "63%", left: "58%" },
+    village: { top: "67%", left: "58%" },
+    blacksmith: { top: "67%", left: "58%" },
     forest: { top: "26%", left: "58%" },
     goblin: { top: "26%", left: "58%" },
-    temple: { top: "8%", left: "38%" },
+    temple: { top: "8%", left: "36%" },
     wilderness: { top: "88%", left: "81%" },
     mountain: { top: "79%", left: "12%" },
     cave: { top: "79%", left: "12%" },
