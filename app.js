@@ -2931,7 +2931,7 @@ const mapWaypoints = {
     forest: { top: "26%", left: "58%" },
     goblin: { top: "26%", left: "58%" },
     temple: { top: "8%", left: "38%" },
-    wilderness: { top: "82%", left: "74%" },
+    wilderness: { top: "88%", left: "76%" },
     mountain: { top: "85%", left: "18%" },
     cave: { top: "85%", left: "18%" },
     watchtower: { top: "80%", left: "34%" },

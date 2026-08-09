@@ -174,7 +174,7 @@ check("Map asset dictionary uses map.jpg in JS", jsContent.includes('map: "asset
 check("Village pin centered (50%, 50%) on map", htmlContent.includes('style="top: 50%; left: 50%;" data-location="village"'));
 check("Forest pin located northeast of village (26%, 58%)", htmlContent.includes('style="top: 26%; left: 58%;" data-location="forest"'));
 check("Temple pin located north of forest (8%, 38%)", htmlContent.includes('style="top: 8%; left: 38%;" data-location="temple"'));
-check("Wilderness pin located south field (82%, 74%)", htmlContent.includes('style="top: 82%; left: 74%;" data-location="wilderness"'));
+check("Wilderness pin located south field (88%, 76%)", htmlContent.includes('style="top: 88%; left: 76%;" data-location="wilderness"'));
 check("Mountain pin located at 85%, 18%", htmlContent.includes('style="top: 85%; left: 18%;" data-location="mountain"'));
 check("Watchtower pin located at 80%, 34%", htmlContent.includes('style="top: 80%; left: 34%;" data-location="watchtower"'));
 check("Cat's Hall pin located west/northwest of watchtower (48%, 15%)", htmlContent.includes('style="top: 48%; left: 15%;" data-location="lair"'));
