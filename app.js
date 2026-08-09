@@ -1507,7 +1507,7 @@ function renderForest() {
 
     const choices = [
         { text: "1. Investigate glowing tree stump", action: investigateStump },
-        { text: "2. Fight Goblin Rogue", action: battleGoblin },
+        { text: "2. Track Goblin Rogue", action: battleGoblin },
         { text: "3. Open World Map", action: renderWorldMap }
     ];
 
