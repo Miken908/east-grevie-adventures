@@ -37,20 +37,25 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 20px;
+    padding: 0;
+    margin: 0;
+    overflow: hidden;
     color: var(--text-ivory);
 }
 
 /* CRT Monitor Container */
 .crt-bezel {
-    width: 100%;
+    width: 1240px;
     max-width: 1240px;
+    flex-shrink: 0;
     background: transparent;
     border: none;
     border-radius: 0;
     padding: 0;
     box-shadow: none;
     position: relative;
+    transform-origin: center center;
+    transition: transform 0.1s ease-out;
 }
 
 /* CRT Screen Interior */
@@ -218,12 +223,6 @@ body {
     display: grid;
     grid-template-columns: minmax(500px, 58%) 1fr;
     gap: 18px;
-}
-
-@media (max-width: 900px) {
-    .scene-container {
-        grid-template-columns: 1fr;
-    }
 }
 
 .image-frame {

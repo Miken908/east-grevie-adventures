@@ -3332,6 +3332,33 @@ if (questsModalEl) {
     });
 }
 
+// --- Uniform Scale-to-Fit Viewport Engine ---
+function scaleGameViewport() {
+    if (typeof document === 'undefined' || typeof window === 'undefined') return;
+    const bezel = document.querySelector(".crt-bezel");
+    if (!bezel) return;
+
+    const baseWidth = 1240;
+    const baseHeight = bezel.offsetHeight || 820;
+
+    const availWidth = window.innerWidth - 32;
+    const availHeight = window.innerHeight - 32;
+
+    const scaleX = availWidth / baseWidth;
+    const scaleY = availHeight / baseHeight;
+
+    let scale = Math.min(scaleX, scaleY);
+    scale = Math.max(0.45, Math.min(1.25, scale));
+
+    bezel.style.transform = `scale(${scale})`;
+}
+
+if (typeof window !== 'undefined' && typeof window.addEventListener === 'function') {
+    window.addEventListener("resize", scaleGameViewport);
+    window.addEventListener("DOMContentLoaded", scaleGameViewport);
+    setTimeout(scaleGameViewport, 50);
+}
+
 // Initial achievements load from browser storage
 loadAchievementsFromStorage();
 updateAchievementsUI();
