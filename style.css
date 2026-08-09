@@ -977,8 +977,8 @@ body {
 .map-modal-canvas-frame {
     position: relative;
     width: 100%;
-    height: 64vh;
-    min-height: 520px;
+    aspect-ratio: 16 / 9;
+    max-height: 68vh;
     border: 2px solid var(--gold-border);
     border-radius: 10px;
     overflow: hidden;
@@ -989,7 +989,7 @@ body {
 .map-modal-canvas-frame img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: fill;
     display: block;
 }
 
