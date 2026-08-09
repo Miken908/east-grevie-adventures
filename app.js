@@ -549,11 +549,11 @@ const state = {
     knightAllyUsed: false,
     hasIronShield: false,
     goblinHp: 70,
-    dragonHp: 480,
+    catHp: 480,
     trollHp: 120,
     wilderness: null,
     fairyVisited: false,
-    dragonExposed: false,
+    catExposed: false,
     hasRuneScroll: false,
     hasSunCrystal: false,
     hasHiltOfDawn: false,
@@ -1978,7 +1978,7 @@ function usePotionWilderness() {
     }
 }
 
-function battleDragon() {
+function battleCat() {
     sfx.playClick();
     state.location = "lair";
     state.catEyesGlowing = false;
@@ -1992,19 +1992,19 @@ function battleDragon() {
         addLog("⚠️ WARNING: You do not possess the Sunblade! Your weapons cannot penetrate Rodrigues's fur!", "alert");
     }
 
-    renderDragonTurn();
+    renderCatTurn();
 }
 
-function renderDragonTurn() {
-    addLog(`🐾 RODRIGUES HP: ${state.dragonHp} | YOUR HP: ${state.hp}`);
+function renderCatTurn() {
+    addLog(`🐾 RODRIGUES HP: ${state.catHp} | YOUR HP: ${state.hp}`);
     if (state.catEyesGlowing) {
         addLog("🔴 DANGER! RODRIGUES'S EYES GLOW FIERY CRIMSON! HE IS ABOUT TO EXECUTE A LETHAL SHADOW POUNCE!", "alert");
     }
 
     const choices = [
-        { text: "1. Slash with Weapon", action: attackDragon },
-        { text: "2. Raise Shield to Defend & Block", action: defendDragon },
-        { text: "3. Drink Healing Potion", action: useHealDragon },
+        { text: "1. Slash with Weapon", action: attackCat },
+        { text: "2. Raise Shield to Defend & Block", action: defendCat },
+        { text: "3. Drink Healing Potion", action: useHealCat },
         { text: "4. Retreat to World Map", action: renderWorldMap }
     ];
     if (state.knightFreed && !state.knightAllyUsed) {
@@ -2060,26 +2060,26 @@ function triggerBossDefeatSequence() {
 function callKnightAlly() {
     sfx.playSlash();
     const dmg = Math.floor(Math.random() * 11) + 25;
-    state.dragonHp -= dmg;
+    state.catHp -= dmg;
     state.knightAllyUsed = true;
     addLog(`Sir Johan charges in and strikes Rodrigues for ${dmg} damage - the cat has no chance to retaliate!`, "victory");
 
-    if (state.dragonHp <= 0) {
+    if (state.catHp <= 0) {
         triggerBossDefeatSequence();
         return;
     }
-    renderDragonTurn();
+    renderCatTurn();
 }
 
-function attackDragon() {
+function attackCat() {
     sfx.playSlash();
     let dmg = 0;
     if (state.hasSword) {
         const rolled = rollAttack();
         dmg = rolled.dmg;
-        if (state.dragonExposed) {
+        if (state.catExposed) {
             dmg = Math.floor(dmg * 1.5);
-            state.dragonExposed = false;
+            state.catExposed = false;
             addLog(`WEAK SPOT STRICKEN! You deal ${dmg} EXTRA CRITICAL DAMAGE!`, "victory");
             spawnFloatingText(`🎯 -${dmg} HP!`, "crit", 50, 40);
         } else if (rolled.crit) {
@@ -2089,15 +2089,15 @@ function attackDragon() {
             addLog(`The Sunblade pierces the cat's thick fur for ${dmg} DAMAGE!`, "victory");
             spawnFloatingText(`-${dmg} HP`, "damage", 50, 40);
         }
-        state.dragonHp -= dmg;
+        state.catHp -= dmg;
     } else {
         addLog("YOUR WEAPON REBOUNDS HARMLESSLY OFF RODRIGUES'S THICK FUR! (0 Damage)", "alert");
         addLog("Without the Legendary Sunblade, no mortal weapon can pierce the cat's fur!", "alert");
         spawnFloatingText("🛡️ IMMUNE! (0 HP)", "event", 50, 40);
-        state.dragonExposed = false;
+        state.catExposed = false;
     }
 
-    if (state.dragonHp <= 0) {
+    if (state.catHp <= 0) {
         triggerBossDefeatSequence();
         return;
     }
@@ -2129,10 +2129,10 @@ function attackDragon() {
         }
     }
 
-    renderDragonTurn();
+    renderCatTurn();
 }
 
-function defendDragon() {
+function defendCat() {
     sfx.playClick();
     if (state.catEyesGlowing) {
         state.catEyesGlowing = false;
@@ -2140,7 +2140,7 @@ function defendDragon() {
         addLog("💥 The lethal dark strike shatters harmlessly against your shield guard! Rodrigues is stunned!", "victory");
         addLog("✨ RODRIGUES IS STUNNED & EXPOSES HIS CHEST WEAK SPOT! Your next attack deals +50% BONUS DAMAGE!", "event");
         spawnFloatingText("🛡️ PERFECT BLOCK!", "dodge", 50, 40);
-        state.dragonExposed = true;
+        state.catExposed = true;
         state.hp -= 2; // Minimal chip damage
         unlockAchievement("perfect_guard");
     } else {
@@ -2150,7 +2150,7 @@ function defendDragon() {
         state.hp -= dDmg;
         addLog(`Your shield absorbs 80% of the cat's strike! You take only ${dDmg} damage!`, "event");
         addLog("✨ RODRIGUES EXPOSES A VULNERABLE WEAK SPOT IN ITS CHEST FUR! Your next attack deals +50% EXTRA DAMAGE!", "victory");
-        state.dragonExposed = true;
+        state.catExposed = true;
     }
 
     updateHUD();
@@ -2160,10 +2160,10 @@ function defendDragon() {
         return;
     }
 
-    renderDragonTurn();
+    renderCatTurn();
 }
 
-function useHealDragon() {
+function useHealCat() {
     let idx = state.inventory.indexOf("Elixir of Life");
     if (idx !== -1) {
         state.inventory.splice(idx, 1);
@@ -2175,7 +2175,7 @@ function useHealDragon() {
             healPlayer(getPotionHealAmount());
         } else {
             addLog("You have no healing items left!", "alert");
-            renderDragonTurn();
+            renderCatTurn();
             return;
         }
     }
@@ -2190,7 +2190,7 @@ function useHealDragon() {
         return;
     }
 
-    renderDragonTurn();
+    renderCatTurn();
 }
 
 function gameOver(reason) {
@@ -2283,7 +2283,7 @@ function resetAdventureState() {
     state.fairyVisited = false;
     state.bossDefeated = false;
     state.goblinHp = 35;
-    state.dragonHp = 480;
+    state.catHp = 480;
     state.trollHp = 60;
     state.wilderness = null;
     selectedQuestId = "main_elsa";
@@ -2989,7 +2989,7 @@ function travelTo(loc) {
         else if (loc === "wilderness") goWilderness();
         else if (loc === "mountain") goMountain();
         else if (loc === "watchtower") goWatchtower();
-        else if (loc === "lair") battleDragon();
+        else if (loc === "lair") battleCat();
         else if (loc === "fairy") visitFairyFountain();
     }, 420);
 }

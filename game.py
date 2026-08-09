@@ -185,7 +185,7 @@ def get_hero_rating(score):
     if score >= 1000:
         return "GRAND HERO OF EAST GREVIE"
     elif score >= 700:
-        return "MASTER DRAGON SLAYER"
+        return "MASTER CAT SLAYER"
     elif score >= 400:
         return "VALIANT DEFENDER OF THE REALM"
     else:
@@ -345,7 +345,7 @@ def worldmap_menu(player):
     elif choice == "6":
         old_watchtower(player)
     elif choice == "7":
-        dragons_lair(player)
+        cats_lair(player)
     elif choice == "8":
         fairy_fountain(player)
     else:
@@ -477,7 +477,7 @@ def mountain_pass(player):
 
     choice = input("\nSelect choice (1-4): ").strip()
     if choice == "1":
-        dragons_lair(player)
+        cats_lair(player)
     elif choice == "2":
         if not player.cave_searched:
             mountain_cave(player)
@@ -575,7 +575,7 @@ def old_watchtower(player):
         slow_print("\nYou leave the Knight chained and head back down the mountain path.")
     input("Press Enter to return...")
 
-def dragons_lair(player):
+def cats_lair(player):
     player.location = "lair"
     player.show_status()
     slow_print("🐾 CAT'S HALL")
@@ -585,10 +585,10 @@ def dragons_lair(player):
     if not player.has_sword:
         slow_print(f"\n{RED}⚠️ WARNING: You do not possess the Legendary Sunblade! Your mundane attacks cannot harm Rodrigues!{RESET}")
 
-    dragon_hp = 480
-    while dragon_hp > 0 and player.hp > 0:
+    cat_hp = 480
+    while cat_hp > 0 and player.hp > 0:
         knight_available = player.knight_freed and not player.knight_ally_used
-        print(f"\n{RED}SHADOW CAT RODRIGUES HP: {dragon_hp}{RESET} | {GREEN}YOUR HP: {player.hp}{RESET}")
+        print(f"\n{RED}SHADOW CAT RODRIGUES HP: {cat_hp}{RESET} | {GREEN}YOUR HP: {player.hp}{RESET}")
         print("1. Slash with weapon")
         print("2. Raise Shield to Defend & Charge")
         print("3. Drink Healing Potion")
@@ -600,7 +600,7 @@ def dragons_lair(player):
         if c == "1":
             if player.has_sword:
                 damage, crit = roll_attack(35, 50, player)
-                dragon_hp -= damage
+                cat_hp -= damage
                 if crit:
                     slow_print(f"{YELLOW}💥⚔️ CRITICAL HIT! The Sunblade cleaves through the cat's thick fur for {damage} massive damage!{RESET}")
                 else:
@@ -609,7 +609,7 @@ def dragons_lair(player):
                 slow_print(f"{RED}🛡️ YOUR WEAPON REBOUNDS HARMLESSLY OFF RODRIGUES'S THICK FUR! (0 Damage){RESET}")
                 slow_print(f"{RED}Without the Legendary Sunblade, no mortal weapon can pierce the cat's fur!{RESET}")
 
-            if dragon_hp > 0:
+            if cat_hp > 0:
                 d_dmg = mitigate(random.randint(20, 35), player)
                 player.hp -= d_dmg
                 slow_print(f"{RED}Rodrigues slashes with razor claws! You take {d_dmg} damage!{RESET}")
@@ -635,7 +635,7 @@ def dragons_lair(player):
                 slow_print("Rodrigues blocks the exit! You must finish the battle!")
         elif c == "5" and knight_available:
             dmg = random.randint(25, 35)
-            dragon_hp -= dmg
+            cat_hp -= dmg
             player.knight_ally_used = True
             slow_print(f"{YELLOW}⚔️ Sir Johan charges in and strikes Rodrigues for {dmg} damage - the cat has no chance to retaliate!{RESET}")
         else:
@@ -659,7 +659,7 @@ def main():
         elif player.location == "mountain":
             mountain_pass(player)
         elif player.location == "lair":
-            dragons_lair(player)
+            cats_lair(player)
 
 if __name__ == "__main__":
     try:
