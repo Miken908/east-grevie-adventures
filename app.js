@@ -2930,13 +2930,13 @@ const mapWaypoints = {
     blacksmith: { top: "50%", left: "50%" },
     forest: { top: "32%", left: "50%" },
     goblin: { top: "32%", left: "50%" },
-    temple: { top: "14%", left: "50%" },
+    temple: { top: "8%", left: "38%" },
     wilderness: { top: "70%", left: "78%" },
     mountain: { top: "85%", left: "18%" },
     cave: { top: "85%", left: "18%" },
-    watchtower: { top: "72%", left: "28%" },
+    watchtower: { top: "80%", left: "34%" },
     lair: { top: "48%", left: "15%" },
-    fairy: { top: "15%", left: "82%" }
+    fairy: { top: "25%", left: "82%" }
 };
 
 let isTravelling = false;

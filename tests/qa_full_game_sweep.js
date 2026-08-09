@@ -173,12 +173,12 @@ check("Map modal uses new map.jpg image asset", htmlContent.includes('src="asset
 check("Map asset dictionary uses map.jpg in JS", jsContent.includes('map: "assets/images/map.jpg"'));
 check("Village pin centered (50%, 50%) on map", htmlContent.includes('style="top: 50%; left: 50%;" data-location="village"'));
 check("Forest pin located north of village (32%, 50%)", htmlContent.includes('style="top: 32%; left: 50%;" data-location="forest"'));
-check("Temple pin located north of forest (14%, 50%)", htmlContent.includes('style="top: 14%; left: 50%;" data-location="temple"'));
+check("Temple pin located north of forest (8%, 38%)", htmlContent.includes('style="top: 8%; left: 38%;" data-location="temple"'));
 check("Wilderness pin located southeast of village (70%, 78%)", htmlContent.includes('style="top: 70%; left: 78%;" data-location="wilderness"'));
 check("Mountain pin located at 85%, 18%", htmlContent.includes('style="top: 85%; left: 18%;" data-location="mountain"'));
-check("Watchtower pin located at 72%, 28%", htmlContent.includes('style="top: 72%; left: 28%;" data-location="watchtower"'));
+check("Watchtower pin located at 80%, 34%", htmlContent.includes('style="top: 80%; left: 34%;" data-location="watchtower"'));
 check("Cat's Hall pin located west/northwest of watchtower (48%, 15%)", htmlContent.includes('style="top: 48%; left: 15%;" data-location="lair"'));
-check("Fairy Fountain pin located northeast corner (15%, 82%)", htmlContent.includes('style="top: 15%; left: 82%;" data-location="fairy"'));
+check("Fairy Fountain pin located northeast section (25%, 82%)", htmlContent.includes('style="top: 25%; left: 82%;" data-location="fairy"'));
 
 // 13. AAA Title Screen, Art Gallery, & Credits Modals
 console.log("\n--- TEST GROUP 13: AAA Title Screen, Art Gallery, & Credits Modals ---");
