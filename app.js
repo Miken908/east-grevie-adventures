@@ -2926,8 +2926,8 @@ const closeMapModalBtn = document.getElementById("close-map-modal-btn");
 const heroMapTokenEl = document.getElementById("hero-map-token");
 
 const mapWaypoints = {
-    village: { top: "70%", left: "58%" },
-    blacksmith: { top: "70%", left: "58%" },
+    village: { top: "63%", left: "58%" },
+    blacksmith: { top: "63%", left: "58%" },
     forest: { top: "26%", left: "58%" },
     goblin: { top: "26%", left: "58%" },
     temple: { top: "8%", left: "38%" },
@@ -2935,7 +2935,7 @@ const mapWaypoints = {
     mountain: { top: "79%", left: "12%" },
     cave: { top: "79%", left: "12%" },
     watchtower: { top: "80%", left: "34%" },
-    lair: { top: "42%", left: "20%" },
+    lair: { top: "45%", left: "20%" },
     fairy: { top: "29%", left: "88%" }
 };
 
