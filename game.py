@@ -1,8 +1,7 @@
 """
 ===================================================================
- EAST GREVIE ADVENTURES: THE QUEST FOR THE PRINCESS
+ EAST GREVIE ADVENTURES: THE LEGEND OF THE SUNBLADE
 ===================================================================
- A classic 1980s style interactive text adventure RPG.
 """
 
 import sys
@@ -586,7 +585,7 @@ def dragons_lair(player):
     if not player.has_sword:
         slow_print(f"\n{RED}⚠️ WARNING: You do not possess the Legendary Sunblade! Your mundane attacks cannot harm Rodrigues!{RESET}")
 
-    dragon_hp = 240
+    dragon_hp = 480
     while dragon_hp > 0 and player.hp > 0:
         knight_available = player.knight_freed and not player.knight_ally_used
         print(f"\n{RED}SHADOW CAT RODRIGUES HP: {dragon_hp}{RESET} | {GREEN}YOUR HP: {player.hp}{RESET}")

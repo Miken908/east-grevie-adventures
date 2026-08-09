@@ -1,5 +1,5 @@
 /* ==========================================================================
-   EAST GREVIE ADVENTURES - RETRO GAME ENGINE, HEROIC ATTRIBUTES & AUDIO SYNTHESIZER
+   EAST GREVIE ADVENTURES - GAME ENGINE, HEROIC ATTRIBUTES & AUDIO SYNTHESIZER
    ========================================================================== */
 
 // --- Modern Web Audio Soundscape & Audio Processing Engine ---
@@ -97,27 +97,27 @@ class SoundEffects {
         if (!this.enabled) return;
         this.init();
         if (!this.ctx) return;
-        
+
         const now = this.ctx.currentTime;
         const osc = this.ctx.createOscillator();
         const gain = this.ctx.createGain();
         const filter = this.ctx.createBiquadFilter();
-        
+
         osc.type = 'sine';
         filter.type = 'lowpass';
         filter.frequency.setValueAtTime(2400, now);
-        
+
         osc.frequency.setValueAtTime(800, now);
         osc.frequency.exponentialRampToValueAtTime(400, now + 0.05);
-        
+
         gain.gain.setValueAtTime(0.001, now);
         gain.gain.linearRampToValueAtTime(0.12, now + 0.008);
         gain.gain.exponentialRampToValueAtTime(0.001, now + 0.05);
-        
+
         osc.connect(filter);
         filter.connect(gain);
         gain.connect(this.sfxGain || this.ctx.destination);
-        
+
         osc.start(now);
         osc.stop(now + 0.05);
     }
@@ -126,7 +126,7 @@ class SoundEffects {
         if (!this.enabled) return;
         this.init();
         if (!this.ctx) return;
-        
+
         const now = this.ctx.currentTime;
         const bufferSize = this.ctx.sampleRate * 0.12;
         const buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
@@ -134,24 +134,24 @@ class SoundEffects {
         for (let i = 0; i < bufferSize; i++) {
             output[i] = Math.random() * 2 - 1;
         }
-        
+
         const whiteNoise = this.ctx.createBufferSource();
         whiteNoise.buffer = buffer;
-        
+
         const filter = this.ctx.createBiquadFilter();
         filter.type = 'bandpass';
         filter.frequency.setValueAtTime(1800, now);
         filter.frequency.exponentialRampToValueAtTime(300, now + 0.12);
-        
+
         const noiseGain = this.ctx.createGain();
         noiseGain.gain.setValueAtTime(0.001, now);
         noiseGain.gain.linearRampToValueAtTime(0.2, now + 0.02);
         noiseGain.gain.exponentialRampToValueAtTime(0.001, now + 0.12);
-        
+
         whiteNoise.connect(filter);
         filter.connect(noiseGain);
         noiseGain.connect(this.sfxGain || this.ctx.destination);
-        
+
         whiteNoise.start(now);
 
         const osc = this.ctx.createOscillator();
@@ -159,11 +159,11 @@ class SoundEffects {
         osc.type = 'triangle';
         osc.frequency.setValueAtTime(350, now);
         osc.frequency.exponentialRampToValueAtTime(110, now + 0.10);
-        
+
         oscGain.gain.setValueAtTime(0.001, now);
         oscGain.gain.linearRampToValueAtTime(0.15, now + 0.015);
         oscGain.gain.exponentialRampToValueAtTime(0.001, now + 0.10);
-        
+
         osc.connect(oscGain);
         oscGain.connect(this.sfxGain || this.ctx.destination);
         osc.start(now);
@@ -174,29 +174,29 @@ class SoundEffects {
         if (!this.enabled) return;
         this.init();
         if (!this.ctx) return;
-        
+
         const now = this.ctx.currentTime;
         const chord = [523.25, 659.25, 783.99, 1046.50];
         chord.forEach((freq, idx) => {
             const osc = this.ctx.createOscillator();
             const gain = this.ctx.createGain();
             const filter = this.ctx.createBiquadFilter();
-            
+
             osc.type = 'sine';
             filter.type = 'lowpass';
             filter.frequency.value = 2200;
-            
+
             const noteStart = now + idx * 0.07;
             osc.frequency.setValueAtTime(freq, noteStart);
-            
+
             gain.gain.setValueAtTime(0.001, noteStart);
             gain.gain.linearRampToValueAtTime(0.08, noteStart + 0.03);
             gain.gain.exponentialRampToValueAtTime(0.001, noteStart + 0.35);
-            
+
             osc.connect(filter);
             filter.connect(gain);
             gain.connect(this.sfxGain || this.ctx.destination);
-            
+
             osc.start(noteStart);
             osc.stop(noteStart + 0.35);
         });
@@ -206,24 +206,24 @@ class SoundEffects {
         if (!this.enabled) return;
         this.init();
         if (!this.ctx) return;
-        
+
         const now = this.ctx.currentTime;
         const notes = [587.33, 880.00, 1174.66];
         notes.forEach((freq, idx) => {
             const osc = this.ctx.createOscillator();
             const gain = this.ctx.createGain();
             osc.type = 'sine';
-            
+
             const noteStart = now + idx * 0.06;
             osc.frequency.setValueAtTime(freq, noteStart);
-            
+
             gain.gain.setValueAtTime(0.001, noteStart);
             gain.gain.linearRampToValueAtTime(0.09, noteStart + 0.02);
             gain.gain.exponentialRampToValueAtTime(0.001, noteStart + 0.22);
-            
+
             osc.connect(gain);
             gain.connect(this.sfxGain || this.ctx.destination);
-            
+
             osc.start(noteStart);
             osc.stop(noteStart + 0.22);
         });
@@ -233,7 +233,7 @@ class SoundEffects {
         if (!this.enabled) return;
         this.init();
         if (!this.ctx) return;
-        
+
         this.stopMusic();
         const now = this.ctx.currentTime;
         const melody = [
@@ -244,33 +244,33 @@ class SoundEffects {
             { f: 880.00, d: 0.25 },
             { f: 1046.50, d: 0.60 }
         ];
-        
+
         let timeOffset = 0;
         melody.forEach((note) => {
             const osc = this.ctx.createOscillator();
             const subOsc = this.ctx.createOscillator();
             const gain = this.ctx.createGain();
-            
+
             osc.type = 'triangle';
             subOsc.type = 'sine';
-            
+
             const noteStart = now + timeOffset;
             osc.frequency.setValueAtTime(note.f, noteStart);
             subOsc.frequency.setValueAtTime(note.f * 0.5, noteStart);
-            
+
             gain.gain.setValueAtTime(0.001, noteStart);
             gain.gain.linearRampToValueAtTime(0.12, noteStart + 0.04);
             gain.gain.exponentialRampToValueAtTime(0.001, noteStart + note.d);
-            
+
             osc.connect(gain);
             subOsc.connect(gain);
             gain.connect(this.sfxGain || this.ctx.destination);
-            
+
             osc.start(noteStart);
             subOsc.start(noteStart);
             osc.stop(noteStart + note.d);
             subOsc.stop(noteStart + note.d);
-            
+
             timeOffset += note.d * 0.85;
         });
     }
@@ -384,11 +384,11 @@ class VoiceNarrator {
             this.selectedVoice = voices.find(v => v.lang.startsWith('en') && (
                 v.name.includes('Natural') || v.name.includes('Neural') || v.name.includes('Online') || v.name.includes('HD')
             ) && (v.name.includes('Guy') || v.name.includes('Christopher') || v.name.includes('Male') || v.name.includes('Sonia') || v.name.includes('Jenny') || v.name.includes('UK')))
-            || voices.find(v => v.lang.startsWith('en') && (
-                v.name.includes('Natural') || v.name.includes('Neural') || v.name.includes('Google UK English') || v.name.includes('Oliver') || v.name.includes('Serena') || v.name.includes('Daniel')
-            ))
-            || voices.find(v => v.lang.startsWith('en'))
-            || voices[0];
+                || voices.find(v => v.lang.startsWith('en') && (
+                    v.name.includes('Natural') || v.name.includes('Neural') || v.name.includes('Google UK English') || v.name.includes('Oliver') || v.name.includes('Serena') || v.name.includes('Daniel')
+                ))
+                || voices.find(v => v.lang.startsWith('en'))
+                || voices[0];
 
             if (onReady) onReady();
         };
@@ -450,7 +450,7 @@ class VoiceNarrator {
 
             const sentenceText = sentences[sentenceIndex];
             const utterance = new SpeechSynthesisUtterance(sentenceText);
-            
+
             if (this.selectedVoice) {
                 utterance.voice = this.selectedVoice;
             }
@@ -549,7 +549,7 @@ const state = {
     knightAllyUsed: false,
     hasIronShield: false,
     goblinHp: 70,
-    dragonHp: 240,
+    dragonHp: 480,
     trollHp: 120,
     wilderness: null,
     fairyVisited: false,
@@ -826,7 +826,7 @@ function updateQuestsUI() {
             const isSelected = q.id === selectedQuestId;
             const card = document.createElement("div");
             card.className = `quest-card ${isSelected ? 'selected' : ''}`;
-            
+
             let tagClass = "active";
             let tagText = "ACTIVE";
             if (completed) {
@@ -1355,7 +1355,7 @@ function renderBlacksmith() {
     const ringCost = Math.round(140 * (1 - discount));
     const isPaladinAcc = state.heroClass === "paladin";
     const accDesc = isPaladinAcc ? "(+3 ALL STATS)" : "(+2 LCK, +1 ALL STATS)";
-    const accItem = isPaladinAcc 
+    const accItem = isPaladinAcc
         ? { name: equipNames.accessory, bonusStr: 3, bonusAgi: 3, bonusEnd: 3, bonusLck: 3 }
         : { name: equipNames.accessory, bonusLck: 2, bonusStr: 1, bonusAgi: 1, bonusEnd: 1 };
 
@@ -1448,7 +1448,7 @@ function speakToElder() {
         state.inventory.push("Sunblade Rune Scroll");
         state.hasKey = true;
         addLog("Elder: 'Take this Sunblade Rune Scroll! Seek all 3 relics across the realm. Once gathered, bring them to the Village Blacksmith to reforge the blade!'", "victory");
-        
+
         const count = getRelicCount();
         if (count > 0) {
             addLog(`Elder: 'Ah! I see you already carry ${count}/3 celestial relics in your inventory! Excellent work!'`, "event");
@@ -1540,7 +1540,7 @@ function renderTemple() {
     if (state.hasDormantSunblade) {
         addLog("The pedestal pulses in resonance with the Dormant Sunblade in your inventory!", "event");
         renderChoices([
-            { text: "1. ✨ Consecrate Dormant Sunblade on the Altar of Dawn", action: consecrateSunblade },
+            { text: "1. Consecrate Dormant Sunblade on the Altar of Dawn", action: consecrateSunblade },
             { text: "2. Open World Map", action: renderWorldMap }
         ]);
     } else if (state.hasSunCrystal && state.hasHiltOfDawn && state.hasBlueprint) {
@@ -2016,18 +2016,45 @@ function renderDragonTurn() {
 function triggerBossDefeatSequence() {
     sfx.playVictory();
     renderChoices([
-        { text: "[ VANQUISHING LORD RODRIGUES... ]", action: () => {} }
+        { text: "[ FINAL SUNBLADE STRIKE... ]", action: () => { } }
     ]);
-    spawnFloatingText("FINAL SUNBLADE STRIKE!", "crit", 50, 35);
+
+    spawnFloatingText("FINAL SUNBLADE STRIKE!", "crit", 50, 30);
+    addLog("The Legendary Sunblade strikes Lord Rodrigues with overwhelming holy radiance!", "victory");
+    addLog("Lord Rodrigues staggers backward, his dark aura flickering violently as holy light surges through Cat's Hall!", "alert");
+
+    // Stage 2: Holy explosion and collapse of shadow matrix (t = 2.5s)
     setTimeout(() => {
-        spawnFloatingText("SHADOW CAT DISSOLVES IN SUNFIRE!", "victory", 50, 45);
-    }, 600);
+        renderChoices([
+            { text: "[ SHADOW RECLAMATION... ]", action: () => { } }
+        ]);
+        spawnFloatingText("SHADOW MATRIX SHATTERING!", "crit", 50, 40);
+        addLog("Holy fire erupts from within the Shadow Cat! The vaulted obsidian hall trembles as his power collapses!", "victory");
+    }, 2500);
 
-    addLog("Lord Rodrigues lets out a final roaring hiss as his shadow form dissolves in celestial light! Princess Elsa is freed from her chains!", "victory");
+    // Stage 3: Dissolution into celestial embers & Princess Elsa freed (t = 5.5s)
+    setTimeout(() => {
+        renderChoices([
+            { text: "[ PRINCESS ELSA UNCHAINED... ]", action: () => { } }
+        ]);
+        spawnFloatingText("SHADOW CAT DISSOLVES IN SUNFIRE!", "victory", 50, 48);
+        addLog("Lord Rodrigues lets out a final roaring hiss as his shadowy form dissolves into glowing celestial embers!", "victory");
+        addLog("Princess Elsa's magical binding chains shatter into golden dust! She steps forward, saved at last!", "victory");
+    }, 5500);
 
+    // Stage 4: Realm triumph beat (t = 8.5s)
+    setTimeout(() => {
+        renderChoices([
+            { text: "[ REALM RESTORED... ]", action: () => { } }
+        ]);
+        spawnFloatingText("TRIUMPH OF EAST GREVIE!", "gold", 50, 35);
+        addLog("Peace descends upon the realm of East Grevie. The dark age of the Shadow Cat is brought to an end!", "victory");
+    }, 8500);
+
+    // Stage 5: Victory summary screen transition (t = 11.5s)
     setTimeout(() => {
         winGame();
-    }, 2500);
+    }, 11500);
 }
 
 function callKnightAlly() {
@@ -2256,7 +2283,7 @@ function resetAdventureState() {
     state.fairyVisited = false;
     state.bossDefeated = false;
     state.goblinHp = 35;
-    state.dragonHp = 120;
+    state.dragonHp = 480;
     state.trollHp = 60;
     state.wilderness = null;
     selectedQuestId = "main_elsa";
