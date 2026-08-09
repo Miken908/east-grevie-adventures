@@ -175,10 +175,10 @@ check("Village pin centered (50%, 50%) on map", htmlContent.includes('style="top
 check("Forest pin located northeast of village (26%, 58%)", htmlContent.includes('style="top: 26%; left: 58%;" data-location="forest"'));
 check("Temple pin located north of forest (8%, 38%)", htmlContent.includes('style="top: 8%; left: 38%;" data-location="temple"'));
 check("Wilderness pin located south field (88%, 76%)", htmlContent.includes('style="top: 88%; left: 76%;" data-location="wilderness"'));
-check("Mountain pin located at 85%, 18%", htmlContent.includes('style="top: 85%; left: 18%;" data-location="mountain"'));
+check("Mountain pin located northeast on mountains (79%, 22%)", htmlContent.includes('style="top: 79%; left: 22%;" data-location="mountain"'));
 check("Watchtower pin located at 80%, 34%", htmlContent.includes('style="top: 80%; left: 34%;" data-location="watchtower"'));
 check("Cat's Hall pin located west/northwest of watchtower (48%, 15%)", htmlContent.includes('style="top: 48%; left: 15%;" data-location="lair"'));
-check("Fairy Fountain pin located south tree canopy (36%, 82%)", htmlContent.includes('style="top: 36%; left: 82%;" data-location="fairy"'));
+check("Fairy Fountain pin located north glade (29%, 82%)", htmlContent.includes('style="top: 29%; left: 82%;" data-location="fairy"'));
 
 // 13. AAA Title Screen, Art Gallery, & Credits Modals
 console.log("\n--- TEST GROUP 13: AAA Title Screen, Art Gallery, & Credits Modals ---");
