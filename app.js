@@ -1264,10 +1264,10 @@ function renderVillage() {
     addLog("Charming timber-frame cottages enclose the stone fountain, while distant whispers of Cat Rodrigues's shadowy reign echo through the quiet streets.");
 
     renderChoices([
-        { text: "1. Speak to Wise Elder by fountain", action: speakToElder },
-        { text: "2. Visit the Blacksmith", action: goBlacksmith },
-        { text: "3. Rest at Tavern (Full Rest)", action: restTavern },
-        { text: "4. Open World Map", action: renderWorldMap }
+        { text: "Speak to Wise Elder by fountain", action: speakToElder },
+        { text: "Visit the Blacksmith", action: goBlacksmith },
+        { text: "Rest at Tavern (Full Rest)", action: restTavern },
+        { text: "Open World Map", action: renderWorldMap }
     ]);
 }
 
@@ -1344,21 +1344,21 @@ function renderBlacksmith() {
     const weaponOwned = state.equipment.weapon && state.equipment.weapon.name === equipNames.weapon;
     const weaponCost = Math.round(110 * (1 - discount));
     choices.push({
-        text: weaponOwned ? `1. ⚔️ ${equipNames.weapon} - [ EQUIPPED ]` : `1. ⚔️ Buy ${equipNames.weapon} (+15 Dmg, +2 STR) - 💰 ${weaponCost} Gold`,
+        text: weaponOwned ? `⚔️ ${equipNames.weapon} - [ EQUIPPED ]` : `⚔️ Buy ${equipNames.weapon} (+15 Dmg, +2 STR) - 💰 ${weaponCost} Gold`,
         action: weaponOwned ? () => { sfx.playClick(); addLog(`You already own and have equipped the ${equipNames.weapon}!`); } : () => buyEquipment("weapon", { name: equipNames.weapon, bonusStr: 2, bonusMinDmg: 18, bonusMaxDmg: 28 }, weaponCost)
     });
 
     const shieldOwned = state.equipment.shield && state.equipment.shield.name === equipNames.shield;
     const shieldCost = Math.round(90 * (1 - discount));
     choices.push({
-        text: shieldOwned ? `2. 🛡️ ${equipNames.shield} - [ EQUIPPED ]` : `2. 🛡️ Buy ${equipNames.shield} (+10 Armor, +2 END, +20 HP) - 💰 ${shieldCost} Gold`,
+        text: shieldOwned ? `🛡️ ${equipNames.shield} - [ EQUIPPED ]` : `🛡️ Buy ${equipNames.shield} (+10 Armor, +2 END, +20 HP) - 💰 ${shieldCost} Gold`,
         action: shieldOwned ? () => { sfx.playClick(); addLog(`You already own and have equipped the ${equipNames.shield}!`); } : () => buyEquipment("shield", { name: equipNames.shield, bonusArmor: 10, bonusEnd: 2, bonusMaxHp: 20 }, shieldCost)
     });
 
     const armorOwned = state.equipment.armor && state.equipment.armor.name === equipNames.armor;
     const armorCost = Math.round(100 * (1 - discount));
     choices.push({
-        text: armorOwned ? `3. 🥋 ${equipNames.armor} - [ EQUIPPED ]` : `3. 🥋 Buy ${equipNames.armor} (+8 Armor, +2 AGI, +30 HP) - 💰 ${armorCost} Gold`,
+        text: armorOwned ? `🥋 ${equipNames.armor} - [ EQUIPPED ]` : `🥋 Buy ${equipNames.armor} (+8 Armor, +2 AGI, +30 HP) - 💰 ${armorCost} Gold`,
         action: armorOwned ? () => { sfx.playClick(); addLog(`You already own and have equipped the ${equipNames.armor}!`); } : () => buyEquipment("armor", { name: equipNames.armor, bonusArmor: 8, bonusAgi: 2, bonusMaxHp: 30 }, armorCost)
     });
 
@@ -1371,7 +1371,7 @@ function renderBlacksmith() {
         : { name: equipNames.accessory, bonusLck: 2, bonusStr: 1, bonusAgi: 1, bonusEnd: 1 };
 
     choices.push({
-        text: ringOwned ? `4. 💍 ${equipNames.accessory} - [ EQUIPPED ]` : `4. 💍 Buy ${equipNames.accessory} ${accDesc} - 💰 ${ringCost} Gold`,
+        text: ringOwned ? `💍 ${equipNames.accessory} - [ EQUIPPED ]` : `💍 Buy ${equipNames.accessory} ${accDesc} - 💰 ${ringCost} Gold`,
         action: ringOwned ? () => { sfx.playClick(); addLog(`You already own and have equipped the ${equipNames.accessory}!`); } : () => buyEquipment("accessory", accItem, ringCost)
     });
 
@@ -1506,9 +1506,9 @@ function renderForest() {
     addLog("Ancient mossy monoliths and glowing forest flora line the quiet dirt path leading deep into the ancient woodland.");
 
     const choices = [
-        { text: "1. Investigate glowing tree stump", action: investigateStump },
-        { text: "2. Track Goblin Rogue", action: battleGoblin },
-        { text: "3. Open World Map", action: renderWorldMap }
+        { text: "Investigate glowing tree stump", action: investigateStump },
+        { text: "Track Goblin Rogue", action: battleGoblin },
+        { text: "Open World Map", action: renderWorldMap }
     ];
 
     renderChoices(choices);
@@ -1551,8 +1551,8 @@ function renderTemple() {
     if (state.hasDormantSunblade) {
         addLog("The pedestal pulses in resonance with the Dormant Sunblade in your inventory!", "event");
         renderChoices([
-            { text: "1. Consecrate Dormant Sunblade on the Altar of Dawn", action: consecrateSunblade },
-            { text: "2. Open World Map", action: renderWorldMap }
+            { text: "Consecrate Dormant Sunblade on the Altar of Dawn", action: consecrateSunblade },
+            { text: "Open World Map", action: renderWorldMap }
         ]);
     } else if (state.hasSunCrystal && state.hasHiltOfDawn && state.hasBlueprint) {
         addLog("You have gathered all 3 relics! Take them to the Village Blacksmith to reforge the blade first.", "alert");
@@ -1612,10 +1612,10 @@ function battleGoblin() {
 function renderGoblinTurn() {
     addLog(`Goblin HP: ${state.goblinHp} | Your HP: ${state.hp}`);
     renderChoices([
-        { text: "1. Attack Goblin with weapon", action: attackGoblin },
-        { text: "2. Try to reason with the Goblin (requires Bread)", action: reasonWithGoblin },
-        { text: "3. Drink Healing Potion", action: usePotionGoblin },
-        { text: "4. Flee to forest path", action: renderForest }
+        { text: "Attack Goblin with weapon", action: attackGoblin },
+        { text: "Try to reason with the Goblin (requires Bread)", action: reasonWithGoblin },
+        { text: "Drink Healing Potion", action: usePotionGoblin },
+        { text: "Flee to forest path", action: renderForest }
     ]);
 }
 
@@ -1708,8 +1708,8 @@ function renderMountain() {
     addLog("Jagged granite crags tower into the clouds above, marking the perilous path toward Rodrigues's fortress.");
 
     renderChoices([
-        { text: "1. Search Mountain Cave for supplies", action: searchCave },
-        { text: "2. Open World Map", action: renderWorldMap }
+        { text: "Search Mountain Cave for supplies", action: searchCave },
+        { text: "Open World Map", action: renderWorldMap }
     ]);
 }
 
@@ -1743,9 +1743,9 @@ function renderWatchtower() {
     addLog("Sir Johan: 'Greetings, traveler... Cat Rodrigues's shadowy lieutenants ambushed me and bound me here in dark blood-iron chains.'", "event");
 
     renderChoices([
-        { text: "1. Shatter chains & free Sir Johan", action: freeKnight },
-        { text: "2. Ask Sir Johan why he was chained", action: askKnightLore },
-        { text: "3. Open World Map", action: renderWorldMap }
+        { text: "Shatter chains & free Sir Johan", action: freeKnight },
+        { text: "Ask Sir Johan why he was chained", action: askKnightLore },
+        { text: "Open World Map", action: renderWorldMap }
     ]);
 }
 
@@ -1756,8 +1756,8 @@ function askKnightLore() {
     addLog("Sir Johan reveals a secret tactic: 'Listen carefully! When Rodrigues's eyes glow crimson, raise your shield immediately to deflect his dark pounce!'", "victory");
 
     renderChoices([
-        { text: "1. Shatter chains & free Sir Johan", action: freeKnight },
-        { text: "2. Open World Map", action: renderWorldMap }
+        { text: "Shatter chains & free Sir Johan", action: freeKnight },
+        { text: "Open World Map", action: renderWorldMap }
     ]);
 }
 
@@ -1799,9 +1799,9 @@ function renderMountainCave() {
     addLog("Torches illuminate the damp stone cavern, where a massive Giant Mountain Snake coils over piles of glittering gold!", "alert");
 
     renderChoices([
-        { text: "1. Fight the Mountain Snake", action: startTrollFight },
-        { text: "2. Sneak past while it's resting", action: sneakPastTroll },
-        { text: "3. Open World Map", action: renderWorldMap }
+        { text: "Fight the Mountain Snake", action: startTrollFight },
+        { text: "Sneak past while it's resting", action: sneakPastTroll },
+        { text: "Open World Map", action: renderWorldMap }
     ]);
 }
 
@@ -1834,9 +1834,9 @@ function startTrollFight() {
 function renderTrollTurn() {
     addLog(`Mountain Snake HP: ${state.trollHp} | Your HP: ${state.hp}`);
     renderChoices([
-        { text: "1. Attack Snake with weapon", action: attackTroll },
-        { text: "2. Drink Healing Potion", action: usePotionTroll },
-        { text: "3. Open World Map", action: renderWorldMap }
+        { text: "Attack Snake with weapon", action: attackTroll },
+        { text: "Drink Healing Potion", action: usePotionTroll },
+        { text: "Open World Map", action: renderWorldMap }
     ]);
 }
 
@@ -1916,9 +1916,9 @@ function renderWildernessTurn() {
     const w = state.wilderness;
     addLog(`${w.name} HP: ${w.hp} | Your HP: ${state.hp}`);
     renderChoices([
-        { text: "1. Attack with weapon", action: attackWilderness },
-        { text: "2. Use Healing Potion", action: usePotionWilderness },
-        { text: "3. Open World Map", action: renderWorldMap }
+        { text: "Attack with weapon", action: attackWilderness },
+        { text: "Use Healing Potion", action: usePotionWilderness },
+        { text: "Open World Map", action: renderWorldMap }
     ]);
 }
 
@@ -1944,8 +1944,8 @@ function attackWilderness() {
         unlockAchievement("first_blood");
         recordWildernessKill(w.name);
         renderChoices([
-            { text: "1. Continue deeper on the Trail", action: goWilderness },
-            { text: "2. Open World Map", action: renderWorldMap }
+            { text: "Continue deeper on the Trail", action: goWilderness },
+            { text: "Open World Map", action: renderWorldMap }
         ]);
         return;
     }
@@ -1992,13 +1992,13 @@ function renderCatTurn() {
     }
 
     const choices = [
-        { text: "1. Slash with Weapon", action: attackCat },
-        { text: "2. Raise Shield to Defend & Block", action: defendCat },
-        { text: "3. Drink Healing Potion", action: useHealCat },
-        { text: "4. Retreat to World Map", action: renderWorldMap }
+        { text: "Slash with Weapon", action: attackCat },
+        { text: "Raise Shield to Defend & Block", action: defendCat },
+        { text: "Drink Healing Potion", action: useHealCat },
+        { text: "Retreat to World Map", action: renderWorldMap }
     ];
     if (state.knightFreed && !state.knightAllyUsed) {
-        choices.push({ text: "5. Call upon Sir Johan to strike Rodrigues", action: callKnightAlly });
+        choices.push({ text: "Call upon Sir Johan to strike Rodrigues", action: callKnightAlly });
     }
     renderChoices(choices);
 }
@@ -2011,7 +2011,7 @@ function triggerBossDefeatSequence() {
     addLog("Lord Rodrigues staggers backward, his dark aura flickering violently as holy light surges through Cat's Hall!", "alert");
 
     renderChoices([
-        { text: "1. Deliver the Final Sunblade Strike", action: bossDefeatBeat2 }
+        { text: "Deliver the Final Sunblade Strike", action: bossDefeatBeat2 }
     ]);
 }
 
@@ -2022,7 +2022,7 @@ function bossDefeatBeat2() {
     addLog("Princess Elsa's magical binding chains shatter into golden dust! She steps forward, saved at last!", "victory");
 
     renderChoices([
-        { text: "1. Approach Princess Elsa", action: bossDefeatBeat3 }
+        { text: "Approach Princess Elsa", action: bossDefeatBeat3 }
     ]);
 }
 
@@ -2033,7 +2033,7 @@ function bossDefeatBeat3() {
     addLog("Peace descends upon the realm of East Grevie. The dark age of the Shadow Cat is brought to an end!", "event");
 
     renderChoices([
-        { text: "1. Escort Princess Elsa Back to Village", action: bossDefeatTransition }
+        { text: "Escort Princess Elsa Back to Village", action: bossDefeatTransition }
     ]);
 }
 
