@@ -2038,7 +2038,7 @@ function bossDefeatBeat3() {
 }
 
 function bossDefeatTransition() {
-    sfx.playVictory();
+    sfx.playClick();
     const fadeOverlay = document.getElementById("screen-fade-overlay");
     if (fadeOverlay) {
         fadeOverlay.classList.add("active");
