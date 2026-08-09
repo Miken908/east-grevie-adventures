@@ -2015,46 +2015,53 @@ function renderCatTurn() {
 
 function triggerBossDefeatSequence() {
     sfx.playVictory();
-    renderChoices([
-        { text: "[ FINAL SUNBLADE STRIKE... ]", action: () => { } }
-    ]);
+    clearLog();
 
-    spawnFloatingText("FINAL SUNBLADE STRIKE!", "crit", 50, 30);
     addLog("The Legendary Sunblade strikes Lord Rodrigues with overwhelming holy radiance!", "victory");
     addLog("Lord Rodrigues staggers backward, his dark aura flickering violently as holy light surges through Cat's Hall!", "alert");
 
-    // Stage 2: Holy explosion and collapse of shadow matrix (t = 2.5s)
-    setTimeout(() => {
-        renderChoices([
-            { text: "[ SHADOW RECLAMATION... ]", action: () => { } }
-        ]);
-        spawnFloatingText("SHADOW MATRIX SHATTERING!", "crit", 50, 40);
-        addLog("Holy fire erupts from within the Shadow Cat! The vaulted obsidian hall trembles as his power collapses!", "victory");
-    }, 2500);
+    renderChoices([
+        { text: "1. Deliver the Final Sunblade Strike", action: bossDefeatBeat2 }
+    ]);
+}
 
-    // Stage 3: Dissolution into celestial embers & Princess Elsa freed (t = 5.5s)
-    setTimeout(() => {
-        renderChoices([
-            { text: "[ PRINCESS ELSA UNCHAINED... ]", action: () => { } }
-        ]);
-        spawnFloatingText("SHADOW CAT DISSOLVES IN SUNFIRE!", "victory", 50, 48);
-        addLog("Lord Rodrigues lets out a final roaring hiss as his shadowy form dissolves into glowing celestial embers!", "victory");
-        addLog("Princess Elsa's magical binding chains shatter into golden dust! She steps forward, saved at last!", "victory");
-    }, 5500);
+function bossDefeatBeat2() {
+    sfx.playSlash();
+    clearLog();
+    addLog("Holy fire erupts from within the Shadow Cat! Lord Rodrigues lets out a final roaring hiss as his form dissolves into glowing celestial embers!", "victory");
+    addLog("Princess Elsa's magical binding chains shatter into golden dust! She steps forward, saved at last!", "victory");
 
-    // Stage 4: Realm triumph beat (t = 8.5s)
-    setTimeout(() => {
-        renderChoices([
-            { text: "[ REALM RESTORED... ]", action: () => { } }
-        ]);
-        spawnFloatingText("TRIUMPH OF EAST GREVIE!", "gold", 50, 35);
-        addLog("Peace descends upon the realm of East Grevie. The dark age of the Shadow Cat is brought to an end!", "victory");
-    }, 8500);
+    renderChoices([
+        { text: "1. Approach Princess Elsa", action: bossDefeatBeat3 }
+    ]);
+}
 
-    // Stage 5: Victory summary screen transition (t = 11.5s)
+function bossDefeatBeat3() {
+    sfx.playHeal();
+    clearLog();
+    addLog("Princess Elsa smiles warmly: 'Thank you, brave hero! You have vanquished the darkness and brought light back to East Grevie!'", "victory");
+    addLog("Peace descends upon the realm of East Grevie. The dark age of the Shadow Cat is brought to an end!", "event");
+
+    renderChoices([
+        { text: "1. Escort Princess Elsa Back to Village", action: bossDefeatTransition }
+    ]);
+}
+
+function bossDefeatTransition() {
+    sfx.playVictory();
+    const fadeOverlay = document.getElementById("screen-fade-overlay");
+    if (fadeOverlay) {
+        fadeOverlay.classList.add("active");
+    }
+
     setTimeout(() => {
         winGame();
-    }, 11500);
+        setTimeout(() => {
+            if (fadeOverlay) {
+                fadeOverlay.classList.remove("active");
+            }
+        }, 300);
+    }, 1000);
 }
 
 function callKnightAlly() {

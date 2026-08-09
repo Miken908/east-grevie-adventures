@@ -2595,3 +2595,22 @@ body {
     background: rgba(255, 77, 77, 0.2);
     box-shadow: 0 0 12px rgba(255, 77, 77, 0.5);
 }
+
+/* Golden Cinematic Screen Fade Transition */
+.screen-fade-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: linear-gradient(135deg, rgba(255, 215, 0, 0.35) 0%, rgba(0, 0, 0, 0.95) 75%);
+    z-index: 999999;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.8s ease-in-out;
+}
+
+.screen-fade-overlay.active {
+    opacity: 1;
+    pointer-events: all;
+}
