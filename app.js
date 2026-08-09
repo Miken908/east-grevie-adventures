@@ -2936,7 +2936,7 @@ const mapWaypoints = {
     cave: { top: "85%", left: "18%" },
     watchtower: { top: "80%", left: "34%" },
     lair: { top: "48%", left: "15%" },
-    fairy: { top: "25%", left: "82%" }
+    fairy: { top: "36%", left: "82%" }
 };
 
 let isTravelling = false;

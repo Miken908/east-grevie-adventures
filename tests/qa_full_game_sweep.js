@@ -178,7 +178,7 @@ check("Wilderness pin located south field (88%, 76%)", htmlContent.includes('sty
 check("Mountain pin located at 85%, 18%", htmlContent.includes('style="top: 85%; left: 18%;" data-location="mountain"'));
 check("Watchtower pin located at 80%, 34%", htmlContent.includes('style="top: 80%; left: 34%;" data-location="watchtower"'));
 check("Cat's Hall pin located west/northwest of watchtower (48%, 15%)", htmlContent.includes('style="top: 48%; left: 15%;" data-location="lair"'));
-check("Fairy Fountain pin located northeast section (25%, 82%)", htmlContent.includes('style="top: 25%; left: 82%;" data-location="fairy"'));
+check("Fairy Fountain pin located south tree canopy (36%, 82%)", htmlContent.includes('style="top: 36%; left: 82%;" data-location="fairy"'));
 
 // 13. AAA Title Screen, Art Gallery, & Credits Modals
 console.log("\n--- TEST GROUP 13: AAA Title Screen, Art Gallery, & Credits Modals ---");
