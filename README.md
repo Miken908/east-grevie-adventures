@@ -48,7 +48,7 @@ An immersive retro Web RPG featuring **24 Vanillaware-style hand-drawn 2D illust
 ### Quest Journal System
 - Fail-proof 3 core long-form quests:
   1. **MAIN QUEST**: *Rescue Princess Elsa*
-  2. **CELESTIAL SUBQUEST**: *Trial of Three Relics (Sunblade)*
+  2. **CELESTIAL SUBQUEST**: *Reforging the Sunblade*
   3. **BLACKSMITH SUBQUEST**: *Stolen Mastercraft Blueprint*
 - Real-time status badges, objective tracking, and clean slate UI aligned with the game's dark blue/cyan design system.
 
@@ -58,7 +58,7 @@ An immersive retro Web RPG featuring **24 Vanillaware-style hand-drawn 2D illust
 - **New Game+ Unlock**: Reaching 15 trophies awakens the legendary Sunblade Paladin on the hero selection screen.
 
 ### Neural Voice Narration & Web Audio Synthesizer
-- **HD Neural Voice Synthesis**: Web Speech API integration with voice selector dropdown and preview button.
+- **Smart Voice Auto-Selection**: Asynchronous Web Speech API integration that automatically detects and locks onto the highest-quality HD/Neural voice on the player's OS.
 - **Audio Ducking Engine**: Music automatically ducks volume during voiceover lines for cinematic clarity.
 - **Audio Control Center**: Independent volume sliders for Master, Music, SFX, and Narration Voice.
 

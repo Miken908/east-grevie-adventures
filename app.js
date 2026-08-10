@@ -768,7 +768,7 @@ const QUESTS_DATA = [
     },
     {
         id: "celestial_sunblade",
-        title: "Trial of Three Relics",
+        title: "Reforging the Sunblade",
         type: "subquest",
         discovered: false,
         giver: "Village Elder",
