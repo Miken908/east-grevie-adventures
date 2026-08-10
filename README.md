@@ -41,11 +41,9 @@ An immersive retro Web RPG featuring **25 painterly Vanillaware-style 2D illustr
 - **Spacious Dialog Overlay System**: Standardized 1080px widescreen modal boxes with high-contrast HD typography (`1.05rem - 1.5rem`), padded controls, and unified dark blue/cyan styling across all dialogs.
 - **Interactive Hero Status Screen**: 3-column overview displaying hero portrait, attribute point allocation, equipment slots, and derived combat metrics.
 
-### Playable Hero Archetypes & Class Perks
-- **Royal Knight**: Defensive warrior starter class with the `Bastion Shield` perk (-2 damage taken).
-- **Woodland Ranger**: High agility starter class featuring `Eagle Eye` (+10% Crit Chance & +10% Dodge).
-- **Royal Alchemist**: Resource master class featuring `Elixir Master` (+60 HP potions & extra merchant gold).
-- **Sunblade Paladin**: Exclusive **New Game+** hero class unlocked by claiming all 15 Achievement Trophies (`Holy Guard` & `Sunfire Cleave`).
+### Playable Hero Archetypes & Meta-Progression
+- **Diverse Hero Archetypes**: Select from distinct starter classes (Royal Knight, Woodland Ranger, Royal Alchemist) each equipped with unique attribute spreads and passive combat perks.
+- **New Game+ Class Unlocks**: Completing realm achievement milestones permanently unlocks legendary hero classes (such as the Sunblade Paladin) equipped with specialized holy combat abilities.
 
 ### Dynamic Combat & Visual Feedback
 - **Multi-Tiered Floating Combat Text**: Real-time animated indicators for damage dealt, critical strikes, damage mitigation, dodges, and healing.
