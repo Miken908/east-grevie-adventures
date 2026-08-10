@@ -51,12 +51,9 @@ An immersive retro Web RPG featuring **25 painterly Vanillaware-style 2D illustr
 - **Multi-Tiered Floating Combat Text**: Real-time animated indicators for damage dealt, critical strikes, damage mitigation, dodges, and healing.
 - **Real-Time Combat Log**: Event feed tracking strike outcomes, turn states, and passive class perk triggers.
 
-### Quest Journal & Flexible Progression Logic
-- **Structured Quest Tracking**: Interactive journal managing 3 core storylines with objective checkmarks:
-  1. **MAIN QUEST**: *Rescue Princess Elsa* (4 explicit milestones: Wise Elder -> Sunblade Reforging & Consecration -> Boss Defeat -> Escort Elsa).
-  2. **CELESTIAL SUBQUEST**: *Reforging the Sunblade* (Collect 3 ancient relics across the realm & consecrate at Temple Sanctum).
-  3. **BLACKSMITH SUBQUEST**: *Stolen Mastercraft Blueprint* (Locate Goblin Rogue & recover stolen forge blueprint).
-- **Flexible Reforging Logic**: Ancient relic reforging at the Blacksmith operates independently of commercial shop unlocks to prevent progression gating.
+### Interactive Quest Journal & Progression System
+- **Multi-Tiered Quest Tracking**: In-game journal featuring dynamic status badges (Active, Completed), milestone progress checkmarks, and background lore for primary quests and regional subquests.
+- **Non-Linear Quest Architecture**: Modular state engine enabling players to discover rumors, gather ancient relics, and fulfill subquests in any order without progression bottlenecks.
 
 ### Achievement Trophy Room & Meta-Progression
 - **15 Persistent Trophies**: Tracks combat milestones, lore discoveries, secret encounters, and wilderness monster kills saved in `localStorage`.
