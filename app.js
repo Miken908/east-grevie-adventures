@@ -3135,10 +3135,7 @@ function closeStatsModal() {
 }
 
 function allocateAP(attr) {
-    if (state.ap <= 0) {
-        addLog("No Attribute Points (AP) available! Level up to earn more.", "alert");
-        return;
-    }
+    if (state.ap <= 0) return;
     state.ap -= 1;
     state[attr] += 1;
     if (attr === "end") {
@@ -3149,7 +3146,6 @@ function allocateAP(attr) {
     sfx.playItem();
     updateHUD();
     updateStatsModalUI();
-    addLog(`💪 Allocated +1 to ${attr.toUpperCase()}! (Current ${attr.toUpperCase()}: ${state[attr]})`, "event");
 }
 
 if (statsBtnEl) {
