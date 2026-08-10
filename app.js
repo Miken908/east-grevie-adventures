@@ -1991,6 +1991,7 @@ function battleCat() {
     sfx.playClick();
     state.location = "lair";
     state.catEyesGlowing = false;
+    state.knightAllyUsed = false;
     sfx.playMusic("battle");
     setScene("lair", "CAT'S HALL");
     clearLog();
