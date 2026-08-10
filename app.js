@@ -2228,9 +2228,9 @@ function gameOver(reason) {
 }
 
 function getHeroRating(score) {
-    if (score >= 1800) return "GRAND HERO OF THE REALM";
-    if (score >= 1400) return "MASTER CAT SLAYER";
-    if (score >= 1100) return "VALIANT DEFENDER OF THE REALM";
+    if (score >= 3200) return "GRAND HERO OF THE REALM";
+    if (score >= 2600) return "MASTER CAT SLAYER";
+    if (score >= 2000) return "VALIANT DEFENDER OF THE REALM";
     return "NOVICE ADVENTURER OF THE REALM";
 }
 

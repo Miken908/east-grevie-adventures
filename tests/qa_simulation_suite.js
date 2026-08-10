@@ -121,10 +121,10 @@ checkSim("Blacksmith subquest returns to undiscovered after reset", !isQuestDisc
 checkSim("Active quests badge resets back to 1", document.getElementById("quests-badge").textContent == "1");
 
 console.log("\n--- SIMULATION STEP 6: Hero Rating Thresholds & MASTER CAT SLAYER ---");
-checkSim("Score 1850 grants GRAND HERO OF THE REALM", getHeroRating(1850) === "GRAND HERO OF THE REALM");
-checkSim("Score 1500 grants MASTER CAT SLAYER", getHeroRating(1500) === "MASTER CAT SLAYER");
-checkSim("Score 1200 grants VALIANT DEFENDER OF THE REALM", getHeroRating(1200) === "VALIANT DEFENDER OF THE REALM");
-checkSim("Score 900 grants NOVICE ADVENTURER OF THE REALM", getHeroRating(900) === "NOVICE ADVENTURER OF THE REALM");
+checkSim("Score 3300 grants GRAND HERO OF THE REALM", getHeroRating(3300) === "GRAND HERO OF THE REALM");
+checkSim("Score 2700 grants MASTER CAT SLAYER", getHeroRating(2700) === "MASTER CAT SLAYER");
+checkSim("Score 2100 grants VALIANT DEFENDER OF THE REALM", getHeroRating(2100) === "VALIANT DEFENDER OF THE REALM");
+checkSim("Score 1500 grants NOVICE ADVENTURER OF THE REALM", getHeroRating(1500) === "NOVICE ADVENTURER OF THE REALM");
 
 console.log("\n==================================================");
 console.log("📊 SUMMARY OF DYNAMIC SIMULATION RESULTS");
