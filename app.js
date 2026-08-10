@@ -2079,10 +2079,11 @@ function bossDefeatTransition() {
 
 function callKnightAlly() {
     sfx.playSlash();
-    const dmg = Math.floor(Math.random() * 11) + 25;
+    const dmg = (Math.floor(Math.random() * 11) + 25) * 3;
     state.catHp -= dmg;
     state.knightAllyUsed = true;
-    addLog(`Sir Johan charges in and strikes Rodrigues for ${dmg} damage - the cat has no chance to retaliate!`, "victory");
+    addLog(`Sir Johan charges in with his broadsword and strikes Rodrigues for ${dmg} massive damage - the cat has no chance to retaliate!`, "victory");
+    spawnFloatingText(`⚔️ -${dmg} HP`, "crit", 50, 40);
 
     if (state.catHp <= 0) {
         triggerBossDefeatSequence();
