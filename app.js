@@ -791,8 +791,8 @@ const QUESTS_DATA = [
         summary: "Track down the Goblin Rogue in the Whispering Forest to recover the Blacksmith's stolen blueprint.",
         lore: "\"A sly Goblin Rogue robbed my forge and fled into the misty forest. Recover my stolen blueprint so I can open my mastercraft shop!\"",
         objectives: [
-            { text: "Locate the Goblin Rogue in the Whispering Forest", check: (s) => Boolean(s.goblinEncountered || s.goblinDefeated || s.goblinSpared || s.hasBlueprint || s.blueprintReturned) },
-            { text: "Return the Stolen Blueprint to the Village Blacksmith", check: (s) => Boolean(s.blueprintReturned || s.hasBlueprint) }
+            { text: "Locate the Goblin Rogue in the Whispering Forest", check: (s) => Boolean(s.goblinEncountered || s.goblinDefeated || s.goblinSpared || s.blueprintReturned || (s.inventory && s.inventory.includes("Stolen Blacksmith Blueprint"))) },
+            { text: "Return the Stolen Blueprint to the Village Blacksmith", check: (s) => Boolean(s.blueprintReturned) }
         ]
     }
 ];
@@ -802,7 +802,7 @@ let selectedQuestId = "main_elsa";
 function isQuestDiscovered(q) {
     if (q.discovered) return true;
     if (q.id === "celestial_sunblade" && (state.elderTalked || state.hasRuneScroll || state.hasSunCrystal || state.hasHiltOfDawn || state.hasBlueprint || state.hasDormantSunblade || state.hasSword)) return true;
-    if (q.id === "blacksmith_blueprint" && (state.blacksmithTalked || state.blueprintReturned || state.hasBlueprint || state.goblinDefeated || state.goblinSpared || (state.inventory && state.inventory.includes("Stolen Blacksmith Blueprint")))) return true;
+    if (q.id === "blacksmith_blueprint" && (state.blacksmithTalked || state.blueprintReturned || state.goblinEncountered || state.goblinDefeated || state.goblinSpared || (state.inventory && state.inventory.includes("Stolen Blacksmith Blueprint")))) return true;
     return q.objectives.some(obj => obj.check(state));
 }
 
