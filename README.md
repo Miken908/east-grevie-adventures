@@ -6,7 +6,7 @@
 [![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=flat&logo=javascript&logoColor=black)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
 [![Tests: 201 Passed](https://img.shields.io/badge/QA%20Tests-201%20Passed-success.svg)](tests/qa_full_game_sweep.js)
 
-An immersive retro Web RPG featuring **25 Vanillaware-style hand-drawn 2D illustrations**, **neural storyteller voice narration**, an interactive **overworld map**, **4 playable hero classes**, **15 unlockable achievement trophies**, and a **headless 200+ automated simulation test suite**.
+An immersive retro Web RPG featuring **25 Vanillaware-style hand-drawn 2D illustrations**, **neural storyteller voice narration**, an interactive **overworld map**, **4 playable hero classes**, **15 unlockable achievement trophies**, and a **headless automated simulation test suite**.
 
 <p align="center">
   <img src="assets/images/map.jpg" width="49%" alt="Overworld Map" />
@@ -15,84 +15,75 @@ An immersive retro Web RPG featuring **25 Vanillaware-style hand-drawn 2D illust
 
 ---
 
-### [Play Game Live in Browser](https://miken908.github.io/east-grevie-adventures/)
+### 🎮 [Play Game Live in Browser](https://miken908.github.io/east-grevie-adventures/)
 
 ---
 
-## Production & Engineering Retrospective
+## Technical & Architecture Overview
 
-* **Delivery Sprint**: Rapid pre-production & delivery sprint.
-* **Production Workflow**: Executed with a Lead Producer & Product Owner mindset, harnessing GenAI tools (Antigravity & Gemini) as an accelerated virtual engineering and art pipeline across 100+ iterative commits.
-* **Architecture Strategy**: Zero-dependency vanilla ES6+ stack ensuring instant zero-config browser loading with zero build-step overhead.
-* **Scope & Risk Management**: Designed a modular state machine with a fail-proof quest state tree and `localStorage` meta-progression to guarantee zero softlocks or state corruption.
+* **Zero-Dependency Architecture**: Built entirely with vanilla HTML5, CSS3, and ES6+ JavaScript, requiring zero build steps, transpilers, or third-party framework overhead for instant browser execution.
+* **Deterministic State Machine**: Employs a fail-proof state engine managing hero stats, inventory items, quest flags, and location transitions with `localStorage` meta-progression persistence.
+* **Audio Engineering**: Features a custom Web Audio API synthesizer for retro soundscapes and asynchronous Web Speech API integration for storyteller voice narration.
+* **Responsive 16:9 Display Frame**: Designed inside a widescreen 1240px arcade bezel container scaled dynamically for desktop and high-DPI displays.
 
 ---
 
-## Core Features
+## Core Game Features
 
-### Vanillaware-Style 2D Artworks & Lightbox Gallery
-- **25 2D Illustrations**: Custom hand-drawn style artwork (inspired by *Odin Sphere* and *GrimGrimoire*) for every location, character, enemy encounter, boss defeat stage, and key story beat.
-- **Dynamic Defeat Cutscene Stage**: When Lord Rodrigues hits 0 HP, scene artwork dynamically transitions to `rodrigues_defeated.jpg`, depicting the Shadow Cat staggering in defeat as holy sunfire embers dissolve his form across a multi-beat narrative finale.
-- **Widescreen 1240px Layout**: High-definition display container purged of legacy CRT distortion or pixelation blur.
-- **Interactive Lightbox**: Fullscreen artwork modal with arrow key navigation (`◄` / `►`) and active image counter (`1 / 25`).
+### 🎨 Vanillaware-Style 2D Artworks & Interactive Lightbox
+- **25 Hand-Drawn 2D Illustrations**: Detailed painterly artwork (inspired by *Odin Sphere* and *GrimGrimoire*) for every location, key character, monster encounter, and multi-beat boss defeat sequence.
+- **Dynamic Finale Scene Transitions**: Boss combat transitions into unique defeated-boss artwork (`rodrigues_defeated.jpg`) as Lord Rodrigues staggers in defeat while holy sunlight surges through Cat's Hall.
+- **Interactive Lightbox Gallery**: Fullscreen image viewer accessible from the main menu featuring keyboard arrow navigation (`◄` / `►`) and card indexing (`1 / 25`).
 
-### Playable Hero Archetypes & Passive Perks
-- **Royal Knight**: Starter class featuring the `Bastion Shield` perk (-2 damage taken).
+### 🔤 Widescreen Modal UI & HD Typography
+- **Spacious Dialog Overlay System**: Standardized 1080px widescreen modal boxes with high-contrast HD typography (`1.05rem - 1.5rem`), padded controls, and unified dark blue/cyan styling across all dialogs.
+- **Interactive Hero Status Screen**: 3-column overview displaying hero portrait, attribute point allocation, equipment slots, and derived combat metrics.
+
+### 🛡️ Playable Hero Archetypes & Class Perks
+- **Royal Knight**: Defensive warrior starter class with the `Bastion Shield` perk (-2 damage taken).
 - **Woodland Ranger**: High agility starter class featuring `Eagle Eye` (+10% Crit Chance & +10% Dodge).
 - **Royal Alchemist**: Resource master class featuring `Elixir Master` (+60 HP potions & extra merchant gold).
-- **Sunblade Paladin**: Exclusive **New Game+** hero unlocked by claiming all 15 Achievement Trophies (`Holy Guard` & `Sunfire Cleave`).
+- **Sunblade Paladin**: Exclusive **New Game+** hero class unlocked by claiming all 15 Achievement Trophies (`Holy Guard` & `Sunfire Cleave`).
 
-### Dynamic Combat & Real-Time Feedback
-- Multi-tiered floating combat text for critical hits, damage mitigation, dodging, and healing.
-- Dynamic combat log with real-time class passive perk activation notifications.
+### ⚔️ Dynamic Combat & Visual Feedback
+- **Multi-Tiered Floating Combat Text**: Real-time animated indicators for damage dealt, critical strikes (`💥`), damage mitigation, dodges (`⚡`), and healing (`✨`).
+- **Real-Time Combat Log**: Event feed tracking strike outcomes, turn states, and passive class perk triggers.
 
-### Quest Journal & Non-Blocking Progression Engine
-- Fail-proof 3 core long-form quests with explicit milestone tracking:
-  1. **MAIN QUEST**: *Rescue Princess Elsa* (4 milestones: Speak with Wise Elder -> Reforge & Consecrate Sunblade -> Vanquish Lord Rodrigues -> Escort Princess Elsa back to East Grevie).
+### 📜 Quest Journal & Flexible Progression Logic
+- **Structured Quest Tracking**: Interactive journal managing 3 core storylines with objective checkmarks:
+  1. **MAIN QUEST**: *Rescue Princess Elsa* (4 explicit milestones: Wise Elder -> Sunblade Reforging & Consecration -> Boss Defeat -> Escort Elsa).
   2. **CELESTIAL SUBQUEST**: *Reforging the Sunblade* (Collect 3 ancient relics across the realm & consecrate at Temple Sanctum).
   3. **BLACKSMITH SUBQUEST**: *Stolen Mastercraft Blueprint* (Locate Goblin Rogue & recover stolen forge blueprint).
-- **Independent Blacksmith Reforging**: Players possessing all 3 relics can reforge the Sunblade immediately even if the stolen shop blueprint has not yet been returned.
+- **Flexible Reforging Logic**: Ancient relic reforging at the Blacksmith operates independently of commercial shop unlocks to prevent progression gating.
 
-### Widescreen Modal & HD Typography System
-- Redesigned all game dialog popups (Quest Log, Hero Creation, Audio Settings, Hero Stats, Trophies) to 1080px widescreen framing with scaled-up HD typography (`1.05rem - 1.5rem`), padded controls, and high-contrast readability.
+### 🏆 Achievement Trophy Room & Meta-Progression
+- **15 Persistent Trophies**: Tracks combat milestones, lore discoveries, secret encounters, and wilderness monster kills saved in `localStorage`.
+- **Animated Toast Banners**: Sliding notification banners when achievements trigger during gameplay.
+- **New Game+ Unlock**: Completing all 15 trophies permanently awakens the Sunblade Paladin on the hero creation screen.
 
-### Achievement Trophy Room & Meta-Progression
-- **15 Unlockable Trophies**: Persistent progress saved across sessions in browser `localStorage`.
-- **Animated Toast Banners**: Real-time sliding notification banners when achievements trigger.
-- **New Game+ Unlock**: Reaching 15 trophies awakens the legendary Sunblade Paladin on the hero selection screen.
-
-### Neural Voice Narration & Web Audio Synthesizer
-- **Smart Voice Auto-Selection**: Asynchronous Web Speech API integration that automatically detects and locks onto the highest-quality HD/Neural voice on the player's OS without user configuration.
-- **Audio Ducking Engine**: Music automatically ducks volume during voiceover lines for cinematic clarity.
-- **Audio Control Center**: Independent volume sliders for Master, Music, SFX, and Narration Voice.
-
----
-
-## Technology Stack
-
-- **Frontend**: Vanilla HTML5, CSS3 (Modern Flexbox & CSS Grid), JavaScript (ES6+).
-- **Audio Engine**: Web Audio API Synthesizer & SpeechSynthesis Neural Voice Engine.
-- **State Management**: Clean modular JavaScript `state` object with `localStorage` persistence.
-- **Testing**: Zero-dependency Headless Node.js DOM Simulation Engine (`qa_simulation_suite.js`).
+### 🎙️ Neural Voice Narration & Audio Bus
+- **Smart Voice Auto-Selection**: Asynchronous Web Speech API integration that automatically detects and locks onto the highest-quality HD/Neural voice on the player's operating system without manual setup.
+- **Dynamic Audio Ducking**: Background music automatically lowers volume during narrator audio lines for voiceover clarity.
+- **Audio Control Center**: Independent volume controls for Master, Music, Sound Effects, and Voiceover Narration.
 
 ---
 
 ## Automated Testing & QA Suite
 
-This repository includes a comprehensive 2-tier automated testing suite in Node.js:
+This repository features a zero-dependency automated testing suite written in Node.js:
 
 ```bash
-# Run full static check + headless dynamic state simulation test suite
+# Run full static system check and dynamic state simulation suite
 node tests/qa_full_game_sweep.js
 ```
 
-### QA Test Coverage (201/201 Passed - 100.0% Success Rate)
-- **177 Static System Checks**: Validates HTML element bindings, CSS layout definitions, function signatures, and event listeners.
-- **24 Headless Dynamic Simulations**: Mocks player actions step-by-step in Node.js (game start clean slate, quest discovery, combat rolls, encounter objective progress, and playthrough state resets).
+### QA Test Suite Summary (201 / 201 Passed - 100% Success Rate)
+- **177 Static System Checks**: Verifies HTML DOM bindings, CSS layout definitions, function signatures, and event handlers.
+- **24 Headless Dynamic Simulations**: Mocks player actions step-by-step in Node.js (clean slate initialization, quest discovery, combat calculations, objective tracking, and playthrough resets).
 
 ---
 
-## Getting Started Locally
+## Local Development & Setup
 
 1. **Clone the Repository**:
    ```bash
@@ -100,19 +91,19 @@ node tests/qa_full_game_sweep.js
    cd east-grevie-adventures
    ```
 
-2. **Open in Browser**:
-   - Double-click `index.html` or serve with Live Server in VS Code.
+2. **Run in Browser**:
+   - Open `index.html` directly in any web browser or use VS Code Live Server.
 
-3. **Run Test Suite**:
+3. **Execute Test Suite**:
    ```bash
    node tests/qa_full_game_sweep.js
    ```
 
 ---
 
-## License & Credits
+## Credits & License
 
-- **Game Creator & Lead Director**: Miken908
+- **Game Director & Producer**: Miken908
 - **AI Development Partner**: Antigravity (Google DeepMind)
-- **Visual Art & Soundscapes**: Created with Google Gemini AI (Vanillaware 2D Illustration Style) & Web Audio Engine
+- **Visual Art & Audio Production**: Created with Google Gemini AI (Vanillaware 2D Illustration Style) & Web Audio Synthesizer
 - **License**: [MIT](LICENSE)
