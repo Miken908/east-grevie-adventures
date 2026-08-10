@@ -548,8 +548,8 @@ const state = {
     knightFreed: false,
     knightAllyUsed: false,
     hasIronShield: false,
-    goblinHp: 70,
-    catHp: 480,
+    goblinHp: 140,
+    catHp: 960,
     trollHp: 120,
     wilderness: null,
     fairyVisited: false,
@@ -1021,11 +1021,11 @@ function gainExp(amount) {
 }
 
 const ENEMY_POOL = [
-    { name: "Wild Weasel", hp: 76, dmgLow: 12, dmgHigh: 20, image: "assets/images/wild_weasel.jpg" },
-    { name: "Barn Owl", hp: 90, dmgLow: 14, dmgHigh: 24, image: "assets/images/barn_owl.jpg" },
-    { name: "Giant Garden Toad", hp: 70, dmgLow: 10, dmgHigh: 18, image: "assets/images/giant_garden_toad.jpg" },
-    { name: "Alley Rat Rogue", hp: 100, dmgLow: 15, dmgHigh: 26, image: "assets/images/alley_rat_rogue.jpg" },
-    { name: "Feral Farm Cat", hp: 120, dmgLow: 18, dmgHigh: 30, image: "assets/images/feral_farm_cat.jpg" }
+    { name: "Wild Weasel", hp: 152, dmgLow: 12, dmgHigh: 20, image: "assets/images/wild_weasel.jpg" },
+    { name: "Barn Owl", hp: 180, dmgLow: 14, dmgHigh: 24, image: "assets/images/barn_owl.jpg" },
+    { name: "Giant Garden Toad", hp: 140, dmgLow: 10, dmgHigh: 18, image: "assets/images/giant_garden_toad.jpg" },
+    { name: "Alley Rat Rogue", hp: 200, dmgLow: 15, dmgHigh: 26, image: "assets/images/alley_rat_rogue.jpg" },
+    { name: "Feral Farm Cat", hp: 240, dmgLow: 18, dmgHigh: 30, image: "assets/images/feral_farm_cat.jpg" }
 ];
 
 // Image assets mapping
@@ -1849,7 +1849,7 @@ function startTrollFight() {
     sfx.playClick();
     sfx.playMusic("battle");
     addLog("The Mountain Snake rattles its tail and strikes forward!", "alert");
-    state.trollHp = 60;
+    state.trollHp = 120;
     renderTrollTurn();
 }
 
@@ -2303,9 +2303,9 @@ function resetAdventureState() {
     state.hasIronShield = false;
     state.fairyVisited = false;
     state.bossDefeated = false;
-    state.goblinHp = 35;
-    state.catHp = 480;
-    state.trollHp = 60;
+    state.goblinHp = 140;
+    state.catHp = 960;
+    state.trollHp = 120;
     state.wilderness = null;
     selectedQuestId = "main_elsa";
 }
