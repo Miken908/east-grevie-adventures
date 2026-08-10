@@ -43,7 +43,7 @@ An immersive retro Web RPG featuring **25 painterly Vanillaware-style 2D illustr
 
 ### Playable Hero Archetypes & Meta-Progression
 - **Diverse Hero Archetypes**: Select from distinct starter classes (Royal Knight, Woodland Ranger, Royal Alchemist) each equipped with unique attribute spreads and passive combat perks.
-- **New Game+ Class Unlocks**: Completing realm achievement milestones permanently unlocks legendary hero classes (such as the Sunblade Paladin) equipped with specialized holy combat abilities.
+- **New Game+ Class Unlocks**: Completing realm achievement milestones permanently unlocks a legendary hero class (the Sunblade Paladin) equipped with specialized holy combat abilities.
 
 ### Dynamic Combat & Visual Feedback
 - **Multi-Tiered Floating Combat Text**: Real-time animated indicators for damage dealt, critical strikes, damage mitigation, dodges, and healing.
