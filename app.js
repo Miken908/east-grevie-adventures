@@ -1327,7 +1327,7 @@ function renderBlacksmith() {
     const hasAllRelics = state.hasSunCrystal && state.hasHiltOfDawn && state.hasBlueprint;
 
     if (!state.blueprintReturned && !hasAllRelics) {
-        addLog("Blacksmith: 'A treacherous Goblin Rogue stole my Mastercraft Blueprint in the Whispering Forest!'", "alert");
+        addLog("Blacksmith: 'A treacherous Goblin Rogue stole my Mastercraft Blueprint in the Whispering Forest!'");
         addLog("Blacksmith: 'Track down that rogue to open my forge shop, or bring me the 3 Sacred Relics of Dawn to reforge the legendary Sunblade!'");
         updateHUD();
         renderChoices([{ text: "Return to Village Square", action: renderVillage }]);
@@ -1573,12 +1573,12 @@ function renderTemple() {
             { text: "Open World Map", action: renderWorldMap }
         ]);
     } else if (state.hasSunCrystal && state.hasHiltOfDawn && state.hasBlueprint) {
-        addLog("You have gathered all 3 relics! Take them to the Village Blacksmith to reforge the blade first.", "alert");
+        addLog("You have gathered all 3 relics! Take them to the Village Blacksmith to reforge the blade first.");
         renderChoices([
             { text: "Open World Map", action: renderWorldMap }
         ]);
     } else {
-        addLog("The Altar of Dawn awaits the Dormant Sunblade. Speak to the Wise Elder in East Grevie Village to learn of the 3 scattered relics.", "alert");
+        addLog("The Altar of Dawn awaits the Dormant Sunblade. Speak to the Wise Elder in East Grevie Village to learn of the 3 scattered relics.");
         renderChoices([
             { text: "Open World Map", action: renderWorldMap }
         ]);
@@ -1622,7 +1622,7 @@ function battleGoblin() {
     sfx.playMusic("battle");
     setScene("goblin", "GOBLIN ROGUE ENCOUNTER");
     clearLog();
-    addLog("A sly, green-skinned Goblin Rogue emerges from the shadows of the brush, clutching stolen scrolls and baring sharp daggers!", "alert");
+    addLog("A sly, green-skinned Goblin Rogue emerges from the shadows of the brush, clutching stolen scrolls and baring sharp daggers!");
 
     renderGoblinTurn();
 }
@@ -1757,7 +1757,7 @@ function renderWatchtower() {
         return;
     }
 
-    addLog("Inside, bound in heavy blood-iron chains against a stone pillar, stands Sir Johan, former Commander of the Royal Guard.", "alert");
+    addLog("Inside, bound in heavy blood-iron chains against a stone pillar, stands Sir Johan, former Commander of the Royal Guard.");
     addLog("Sir Johan: 'Greetings, traveler... Cat Rodrigues's shadowy lieutenants ambushed me and bound me here in dark blood-iron chains.'", "event");
 
     renderChoices([
@@ -1814,7 +1814,7 @@ function renderMountainCave() {
     state.location = "cave";
     setScene("troll", "MOUNTAIN CAVE");
     clearLog();
-    addLog("Torches illuminate the damp stone cavern, where a massive Giant Mountain Snake coils over piles of glittering gold!", "alert");
+    addLog("Torches illuminate the damp stone cavern, where a massive Giant Mountain Snake coils over piles of glittering gold!");
 
     renderChoices([
         { text: "Fight the Mountain Snake", action: startTrollFight },
@@ -1844,7 +1844,7 @@ function sneakPastTroll() {
 function startTrollFight() {
     sfx.playClick();
     sfx.playMusic("battle");
-    addLog("The Mountain Snake rattles its tail and strikes forward!", "alert");
+    addLog("The Mountain Snake rattles its tail and strikes forward!");
     state.trollHp = 120;
     renderTrollTurn();
 }
@@ -1926,7 +1926,7 @@ function goWilderness() {
     setScene("wilderness", `WILDERNESS TRAIL - ${base.name.toUpperCase()}`, base.image);
     sfx.playMusic("battle");
     clearLog();
-    addLog(`The wild trail winds through dense brush, where a ferocious ${state.wilderness.name} springs forth!`, "alert");
+    addLog(`The wild trail winds through dense brush, where a ferocious ${state.wilderness.name} springs forth!`);
     renderWildernessTurn();
 }
 
@@ -2027,7 +2027,7 @@ function triggerBossDefeatSequence() {
     clearLog();
 
     addLog("The Legendary Sunblade strikes Lord Rodrigues with overwhelming holy radiance!", "victory");
-    addLog("Lord Rodrigues staggers backward, his dark aura flickering violently as holy light surges through Cat's Hall!", "alert");
+    addLog("Lord Rodrigues staggers backward, his dark aura flickering violently as holy light surges through Cat's Hall!", "event");
 
     renderChoices([
         { text: "Deliver the Final Sunblade Strike", action: bossDefeatBeat2 }
