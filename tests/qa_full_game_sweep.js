@@ -187,7 +187,7 @@ check("Main menu start game button present (#menu-start-btn)", htmlContent.inclu
 check("Main menu art gallery button present (#menu-gallery-btn)", htmlContent.includes('id="menu-gallery-btn"'));
 check("Main menu credits button present (#menu-credits-btn)", htmlContent.includes('id="menu-credits-btn"'));
 check("Art gallery modal present in HTML (#gallery-modal)", htmlContent.includes('id="gallery-modal"'));
-check("Art gallery grid contains 25 artwork cards", (htmlContent.match(/class="gallery-item"/g) || []).length === 25);
+check("Art gallery grid contains 26 artwork cards", (htmlContent.match(/class="gallery-item"/g) || []).length === 26);
 check("Credits modal present in HTML (#credits-modal)", htmlContent.includes('id="credits-modal"'));
 check("Main menu start button click listener bound in JS", jsContent.includes('menuStartBtnEl.addEventListener'));
 check("Main menu gallery button click listener bound in JS", jsContent.includes('menuGalleryBtnEl.addEventListener'));

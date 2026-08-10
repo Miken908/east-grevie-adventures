@@ -1043,7 +1043,8 @@ const sceneImages = {
     cave: "assets/images/snake_cave_treasure_draft.jpg",
     map: "assets/images/map.jpg",
     fairy: "assets/images/secret_fairy_fountain.jpg",
-    victory: "assets/images/final_boss_rodrigues.jpg"
+    victory: "assets/images/final_boss_rodrigues.jpg",
+    elsa_rescued: "assets/images/elsa_rescued.jpg"
 };
 
 // UI Elements
@@ -2030,29 +2031,21 @@ function triggerBossDefeatSequence() {
     addLog("Lord Rodrigues staggers backward, his dark aura flickering violently as holy light surges through Cat's Hall!", "event");
 
     renderChoices([
-        { text: "Deliver the Final Sunblade Strike", action: bossDefeatBeat2 }
+        { text: "Deliver Final Strike & Free Princess Elsa", action: bossDefeatBeat2 }
     ]);
 }
 
 function bossDefeatBeat2() {
     sfx.playSlash();
+    setScene("lair", "CAT'S HALL - RESCUE OF PRINCESS ELSA", "assets/images/elsa_rescued.jpg");
     clearLog();
-    addLog("Holy fire erupts from within the Shadow Cat! Lord Rodrigues lets out a final roaring hiss as his form dissolves into glowing celestial embers!", "victory");
+
+    addLog("Holy fire erupts from within the Shadow Cat as Lord Rodrigues dissolves into glowing celestial embers!", "victory");
     addLog("Princess Elsa's magical binding chains shatter into golden dust! She steps forward, saved at last!", "victory");
+    addLog("Princess Elsa smiles warmly: 'Thank you, brave hero! You have vanquished the darkness and brought light back to East Grevie!'", "event");
 
     renderChoices([
-        { text: "Approach Princess Elsa", action: bossDefeatBeat3 }
-    ]);
-}
-
-function bossDefeatBeat3() {
-    sfx.playHeal();
-    clearLog();
-    addLog("Princess Elsa smiles warmly: 'Thank you, brave hero! You have vanquished the darkness and brought light back to East Grevie!'", "victory");
-    addLog("Peace descends upon the realm of East Grevie. The dark age of the Shadow Cat is brought to an end!", "event");
-
-    renderChoices([
-        { text: "Escort Princess Elsa Back to Village", action: bossDefeatTransition }
+        { text: "Return Triumphant to Village Square", action: bossDefeatTransition }
     ]);
 }
 
