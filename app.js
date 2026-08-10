@@ -1349,7 +1349,7 @@ function renderBlacksmith() {
 
     if (hasAllRelics && !state.hasDormantSunblade && !state.hasSword) {
         choices.push({
-            text: "🔥 REFORGE THE SUNBLADE (Use 3 Relics)",
+            text: "REFORGE THE SUNBLADE (Use 3 Relics)",
             action: reforgeSunblade
         });
     }
@@ -2015,6 +2015,7 @@ function renderCatTurn() {
 
 function triggerBossDefeatSequence() {
     sfx.playVictory();
+    setScene("lair", "CAT'S HALL - VICTORY", "assets/images/rodrigues_defeated.jpg");
     clearLog();
 
     addLog("The Legendary Sunblade strikes Lord Rodrigues with overwhelming holy radiance!", "victory");
