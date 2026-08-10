@@ -1126,7 +1126,7 @@ body {
 
 .stats-modal-title {
     font-family: var(--font-display);
-    font-size: 1.35rem;
+    font-size: 1.5rem;
     color: var(--gold-bright);
     letter-spacing: 0.5px;
     margin: 0;
@@ -1135,7 +1135,7 @@ body {
 }
 
 .stats-modal-subtitle {
-    font-size: 0.85rem;
+    font-size: 0.95rem;
     color: var(--text-muted);
     margin: 0;
     padding: 0;
@@ -1144,8 +1144,8 @@ body {
 
 .stats-layout-columns {
     display: grid;
-    grid-template-columns: 260px 1.2fr 1fr;
-    gap: 20px;
+    grid-template-columns: 280px 1.2fr 1fr;
+    gap: 24px;
 }
 
 @media (max-width: 900px) {
@@ -1156,23 +1156,23 @@ body {
 
 .stats-col-heading {
     font-family: var(--font-display);
-    font-size: 0.85rem;
+    font-size: 1.1rem;
     color: var(--gold-bright);
     letter-spacing: 0.5px;
     border-bottom: 1px solid var(--gold-border);
     padding-bottom: 8px;
-    margin-bottom: 12px;
+    margin-bottom: 14px;
 }
 
 /* Column 1: Hero Identity */
 .hero-identity-col {
     display: flex;
     flex-direction: column;
-    gap: 14px;
+    gap: 16px;
     background: var(--panel-bg);
     border: 2px solid var(--gold-border);
     border-radius: 8px;
-    padding: 18px;
+    padding: 20px;
     text-align: center;
 }
 
@@ -1180,12 +1180,12 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 6px;
+    gap: 8px;
 }
 
 .hero-portrait-frame {
-    width: 140px;
-    height: 140px;
+    width: 150px;
+    height: 150px;
     border-radius: 50%;
     border: 3px solid var(--gold-primary);
     box-shadow: 0 0 20px var(--gold-glow);
@@ -1217,8 +1217,8 @@ body {
     background: rgba(18, 20, 29, 0.9);
     border: 1px solid var(--gold-primary);
     color: var(--gold-bright);
-    font-size: 0.65rem;
-    padding: 2px 8px;
+    font-size: 0.72rem;
+    padding: 2px 10px;
     border-radius: 10px;
     pointer-events: none;
     opacity: 0;
@@ -1231,12 +1231,12 @@ body {
 
 .hero-identity-name {
     font-family: var(--font-display);
-    font-size: 1.2rem;
+    font-size: 1.35rem;
     color: var(--text-ivory);
 }
 
 .hero-identity-title {
-    font-size: 0.8rem;
+    font-size: 0.95rem;
     color: var(--gold-bright);
 }
 
@@ -1244,11 +1244,11 @@ body {
     background: rgba(12, 14, 22, 0.8);
     border: 1px solid rgba(90, 138, 158, 0.3);
     border-radius: 6px;
-    padding: 12px;
+    padding: 14px;
     display: flex;
     flex-direction: column;
-    gap: 8px;
-    font-size: 0.85rem;
+    gap: 10px;
+    font-size: 0.95rem;
     text-align: left;
 }
 
@@ -1261,21 +1261,21 @@ body {
     background: linear-gradient(135deg, rgba(230, 57, 70, 0.25), rgba(255, 200, 59, 0.2));
     border: 2px solid var(--amber-event);
     border-radius: 6px;
-    padding: 12px;
+    padding: 14px;
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
 .ap-banner-lbl {
-    font-size: 0.8rem;
+    font-size: 0.95rem;
     color: var(--amber-event);
     font-weight: 700;
 }
 
 .ap-banner-val {
     font-family: var(--font-display);
-    font-size: 1.3rem;
+    font-size: 1.45rem;
     color: #fff;
     text-shadow: 0 0 10px var(--amber-event);
 }
@@ -1285,20 +1285,20 @@ body {
     background: var(--panel-bg);
     border: 2px solid var(--gold-border);
     border-radius: 8px;
-    padding: 18px;
+    padding: 20px;
 }
 
 .attributes-stack {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 12px;
 }
 
 .attribute-card {
     background: rgba(12, 14, 22, 0.7);
     border: 1px solid var(--gold-border);
     border-radius: 6px;
-    padding: 12px;
+    padding: 14px;
     display: flex;
     flex-direction: column;
     gap: 6px;
@@ -1318,21 +1318,21 @@ body {
 
 .attr-name {
     font-family: var(--font-display);
-    font-size: 0.85rem;
+    font-size: 1.05rem;
     color: var(--text-ivory);
 }
 
 .attr-val {
     font-family: var(--font-display);
-    font-size: 1.1rem;
+    font-size: 1.25rem;
     color: var(--gold-bright);
     margin-right: 8px;
 }
 
 .attr-desc {
-    font-size: 0.78rem;
+    font-size: 0.88rem;
     color: var(--text-muted);
-    line-height: 1.35;
+    line-height: 1.4;
     margin: 0;
 }
 
@@ -1340,7 +1340,7 @@ body {
 .combat-gear-col {
     display: flex;
     flex-direction: column;
-    gap: 14px;
+    gap: 16px;
 }
 
 .combat-stats-block,
@@ -1348,15 +1348,15 @@ body {
     background: var(--panel-bg);
     border: 2px solid var(--gold-border);
     border-radius: 8px;
-    padding: 18px;
+    padding: 20px;
 }
 
 .derived-list,
 .equipment-list {
     display: flex;
     flex-direction: column;
-    gap: 10px;
-    font-size: 0.85rem;
+    gap: 12px;
+    font-size: 0.95rem;
 }
 
 .derived-row,
@@ -1691,11 +1691,12 @@ body {
    Modern Audio & Voice Settings Modal Styles
    ========================================================================== */
 .audio-settings-box {
-    max-width: 620px;
-    width: 90vw;
+    max-width: 680px;
+    width: 92vw;
     background: rgba(14, 18, 28, 0.95);
-    border: 1px solid var(--gold-border);
+    border: 2px solid var(--gold-border);
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8), 0 0 25px rgba(0, 243, 255, 0.15);
+    padding: 24px 28px;
 }
 
 .audio-settings-header {
@@ -1709,7 +1710,7 @@ body {
 
 .audio-settings-title {
     font-family: var(--font-display);
-    font-size: 1.15rem;
+    font-size: 1.45rem;
     color: var(--gold-bright);
     letter-spacing: 0.5px;
 }
@@ -1724,19 +1725,19 @@ body {
     background: rgba(10, 14, 22, 0.85);
     border: 1px solid rgba(90, 138, 158, 0.25);
     border-radius: 8px;
-    padding: 16px;
+    padding: 20px;
 }
 
 .audio-setting-section h3 {
     font-family: var(--font-display);
-    font-size: 0.85rem;
+    font-size: 1.15rem;
     color: var(--cyan-accent);
-    margin-bottom: 6px;
+    margin-bottom: 12px;
     letter-spacing: 0.5px;
 }
 
 .audio-setting-desc {
-    font-size: 0.8rem;
+    font-size: 0.95rem;
     color: #a0aec0;
     margin-bottom: 12px;
 }
@@ -1755,7 +1756,7 @@ body {
     border-radius: 6px;
     padding: 8px 12px;
     font-family: var(--font-body);
-    font-size: 0.88rem;
+    font-size: 0.95rem;
     outline: none;
     cursor: pointer;
     transition: all 0.2s ease;
@@ -1770,8 +1771,8 @@ body {
 .audio-slider-row {
     display: flex;
     align-items: center;
-    gap: 12px;
-    margin-bottom: 12px;
+    gap: 16px;
+    margin-bottom: 14px;
 }
 
 .audio-slider-row:last-child {
@@ -1779,9 +1780,9 @@ body {
 }
 
 .audio-slider-row label {
-    width: 150px;
+    width: 180px;
     font-family: var(--font-display);
-    font-size: 0.72rem;
+    font-size: 0.95rem;
     color: var(--text-ivory);
     letter-spacing: 0.3px;
 }
@@ -1790,9 +1791,9 @@ body {
     flex: 1;
     -webkit-appearance: none;
     appearance: none;
-    height: 6px;
+    height: 10px;
     background: #1a2233;
-    border-radius: 3px;
+    border-radius: 5px;
     outline: none;
     cursor: pointer;
 }
@@ -1800,11 +1801,11 @@ body {
 .audio-slider::-webkit-slider-thumb {
     -webkit-appearance: none;
     appearance: none;
-    width: 16px;
-    height: 16px;
+    width: 22px;
+    height: 22px;
     border-radius: 50%;
     background: var(--cyan-accent);
-    box-shadow: 0 0 8px var(--cyan-accent);
+    box-shadow: 0 0 10px var(--cyan-accent);
     cursor: pointer;
     transition: transform 0.15s ease;
 }
@@ -1815,11 +1816,12 @@ body {
 }
 
 .audio-val-badge {
-    width: 45px;
+    width: 55px;
     font-family: var(--font-mono);
-    font-size: 0.78rem;
+    font-size: 0.95rem;
     color: var(--gold-bright);
     text-align: right;
+    font-weight: bold;
 }
 
 .sentence-highlight {
@@ -2170,54 +2172,58 @@ body {
 .quests-box {
     max-width: 1080px;
     width: 95vw;
+    min-height: 520px;
     max-height: 92vh;
     overflow-y: auto;
     border: 2px solid var(--gold-border);
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.8), 0 0 20px rgba(90, 138, 158, 0.2);
+    padding: 24px 28px;
 }
 
 .quests-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding-bottom: 8px;
-    margin-bottom: 16px;
+    padding-bottom: 12px;
+    margin-bottom: 20px;
+    border-bottom: 2px solid var(--gold-border);
 }
 
 .quests-title {
     font-family: var(--font-display);
     font-weight: 700;
-    font-size: 1.3rem;
+    font-size: 1.5rem;
     color: var(--gold-bright);
     letter-spacing: 0.5px;
 }
 
 .quests-layout-grid {
     display: grid;
-    grid-template-columns: 360px 1fr;
-    gap: 20px;
+    grid-template-columns: 380px 1fr;
+    gap: 24px;
 }
 
 .quests-col-heading {
     font-family: var(--font-display);
-    font-size: 0.95rem;
+    font-size: 1.15rem;
     color: var(--gold-bright);
-    padding-bottom: 4px;
-    margin-bottom: 12px;
+    padding-bottom: 6px;
+    margin-bottom: 14px;
     letter-spacing: 1px;
+    border-bottom: 1px solid var(--gold-border);
 }
 
 .quests-list {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 12px;
 }
 
 .quest-card {
     background: rgba(18, 22, 32, 0.85);
     border: 1px solid var(--gold-border);
     border-radius: 6px;
-    padding: 12px;
+    padding: 14px 16px;
     cursor: pointer;
     transition: all 0.2s ease;
 }
@@ -2237,20 +2243,20 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 4px;
+    margin-bottom: 6px;
 }
 
 .quest-card-title {
     font-family: var(--font-display);
-    font-size: 0.9rem;
+    font-size: 1.1rem;
     color: var(--gold-bright);
     font-weight: 700;
 }
 
 .quest-tag {
-    font-size: 0.7rem;
+    font-size: 0.76rem;
     font-weight: 800;
-    padding: 2px 6px;
+    padding: 3px 8px;
     border-radius: 4px;
     text-transform: uppercase;
 }
@@ -2274,57 +2280,57 @@ body {
 }
 
 .quest-card-desc {
-    font-size: 0.8rem;
+    font-size: 0.95rem;
     color: var(--text-muted);
-    line-height: 1.35;
+    line-height: 1.45;
 }
 
 .quest-detail-box {
     background: rgba(18, 22, 32, 0.85);
     border: 1px solid var(--gold-border);
     border-radius: 8px;
-    padding: 20px;
+    padding: 24px;
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: 18px;
 }
 
 .quest-detail-title {
     font-family: var(--font-display);
-    font-size: 1.2rem;
+    font-size: 1.4rem;
     color: var(--gold-bright);
     margin-bottom: 4px;
 }
 
 .quest-detail-giver {
-    font-size: 0.85rem;
+    font-size: 1.0rem;
     color: var(--cyan-accent);
     margin-bottom: 8px;
 }
 
 .quest-detail-lore {
-    font-size: 0.9rem;
+    font-size: 1.08rem;
     color: #d1d5db;
-    line-height: 1.5;
+    line-height: 1.55;
     font-style: italic;
     background: rgba(10, 14, 22, 0.6);
-    padding: 12px 14px;
-    border-left: 3px solid var(--cyan-accent);
+    padding: 14px 18px;
+    border-left: 4px solid var(--cyan-accent);
     border-radius: 4px;
 }
 
 .quest-objectives-list {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 12px;
     margin-top: 8px;
 }
 
 .objective-item {
     display: flex;
     align-items: center;
-    gap: 10px;
-    font-size: 0.92rem;
+    gap: 12px;
+    font-size: 1.08rem;
     color: #e5e7eb;
 }
 
@@ -2335,7 +2341,7 @@ body {
 }
 
 .objective-icon {
-    font-size: 1rem;
+    font-size: 1.25rem;
 }
 
 /* ==========================================================================

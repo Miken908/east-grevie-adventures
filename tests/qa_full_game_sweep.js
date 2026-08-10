@@ -206,7 +206,7 @@ check("Intro banner frame height expanded to 480px", cssContent.includes("max-he
 // 15. Modernized Widescreen Hero Status Screen
 console.log("\n--- TEST GROUP 15: Modernized Widescreen Hero Status Screen ---");
 check("Stats modal box expanded max-width to 1080px in CSS", cssContent.includes("max-width: 1080px;"));
-check("Stats layout columns 3-column grid defined in CSS", cssContent.includes("grid-template-columns: 260px 1.2fr 1fr;"));
+check("Stats layout columns 3-column grid defined in CSS", cssContent.includes("grid-template-columns: 280px 1.2fr 1fr;"));
 check("Hero avatar badge present in HTML (.hero-avatar-badge)", htmlContent.includes('class="hero-avatar-badge"'));
 check("Hero portrait frame present in HTML (#hero-portrait-frame)", htmlContent.includes('id="hero-portrait-frame"'));
 check("Hero portrait image uses portrait_knight.jpg asset", htmlContent.includes('assets/images/portrait_knight.jpg'));
