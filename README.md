@@ -4,9 +4,9 @@
 [![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=flat&logo=html5&logoColor=white)](https://developer.mozilla.org/en-US/docs/Web/HTML)
 [![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=flat&logo=css3&logoColor=white)](https://developer.mozilla.org/en-US/docs/Web/CSS)
 [![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=flat&logo=javascript&logoColor=black)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
-[![Tests: 203 Passed](https://img.shields.io/badge/QA%20Tests-203%20Passed-success.svg)](tests/qa_full_game_sweep.js)
+[![Tests: 201 Passed](https://img.shields.io/badge/QA%20Tests-201%20Passed-success.svg)](tests/qa_full_game_sweep.js)
 
-An immersive retro Web RPG featuring **24 Vanillaware-style hand-drawn 2D illustrations**, **neural storyteller voice narration**, an interactive **overworld map**, **4 playable hero classes**, **15 unlockable achievement trophies**, and a **headless 200+ automated simulation test suite**.
+An immersive retro Web RPG featuring **25 Vanillaware-style hand-drawn 2D illustrations**, **neural storyteller voice narration**, an interactive **overworld map**, **4 playable hero classes**, **15 unlockable achievement trophies**, and a **headless 200+ automated simulation test suite**.
 
 <p align="center">
   <img src="assets/images/map.jpg" width="49%" alt="Overworld Map" />
@@ -31,7 +31,8 @@ An immersive retro Web RPG featuring **24 Vanillaware-style hand-drawn 2D illust
 ## Core Features
 
 ### Vanillaware-Style 2D Artworks & Lightbox Gallery
-- **24 2D Illustrations**: Custom hand-drawn style artwork (inspired by *Odin Sphere* and *GrimGrimoire*) for every location, character, enemy encounter, and key story beat.
+- **25 2D Illustrations**: Custom hand-drawn style artwork (inspired by *Odin Sphere* and *GrimGrimoire*) for every location, character, enemy encounter, boss defeat stage, and key story beat.
+- **Dynamic Defeat Cutscene Stage**: When Lord Rodrigues hits 0 HP, scene artwork dynamically transitions to `rodrigues_defeated.jpg`, depicting the Shadow Cat staggering in defeat as holy sunfire embers dissolve his form across a multi-beat narrative finale.
 - **Widescreen 1240px Layout**: High-definition display container purged of legacy CRT distortion or pixelation blur.
 - **Interactive Lightbox**: Fullscreen artwork modal with arrow key navigation (`◄` / `►`) and active image counter (`1 / 25`).
 
@@ -45,12 +46,15 @@ An immersive retro Web RPG featuring **24 Vanillaware-style hand-drawn 2D illust
 - Multi-tiered floating combat text for critical hits, damage mitigation, dodging, and healing.
 - Dynamic combat log with real-time class passive perk activation notifications.
 
-### Quest Journal System
-- Fail-proof 3 core long-form quests:
-  1. **MAIN QUEST**: *Rescue Princess Elsa*
-  2. **CELESTIAL SUBQUEST**: *Reforging the Sunblade*
-  3. **BLACKSMITH SUBQUEST**: *Stolen Mastercraft Blueprint*
-- Real-time status badges, objective tracking, and clean slate UI aligned with the game's dark blue/cyan design system.
+### Quest Journal & Non-Blocking Progression Engine
+- Fail-proof 3 core long-form quests with explicit milestone tracking:
+  1. **MAIN QUEST**: *Rescue Princess Elsa* (4 milestones: Speak with Wise Elder -> Reforge & Consecrate Sunblade -> Vanquish Lord Rodrigues -> Escort Princess Elsa back to East Grevie).
+  2. **CELESTIAL SUBQUEST**: *Reforging the Sunblade* (Collect 3 ancient relics across the realm & consecrate at Temple Sanctum).
+  3. **BLACKSMITH SUBQUEST**: *Stolen Mastercraft Blueprint* (Locate Goblin Rogue & recover stolen forge blueprint).
+- **Independent Blacksmith Reforging**: Players possessing all 3 relics can reforge the Sunblade immediately even if the stolen shop blueprint has not yet been returned.
+
+### Widescreen Modal & HD Typography System
+- Redesigned all game dialog popups (Quest Log, Hero Creation, Audio Settings, Hero Stats, Trophies) to 1080px widescreen framing with scaled-up HD typography (`1.05rem - 1.5rem`), padded controls, and high-contrast readability.
 
 ### Achievement Trophy Room & Meta-Progression
 - **15 Unlockable Trophies**: Persistent progress saved across sessions in browser `localStorage`.
@@ -58,7 +62,7 @@ An immersive retro Web RPG featuring **24 Vanillaware-style hand-drawn 2D illust
 - **New Game+ Unlock**: Reaching 15 trophies awakens the legendary Sunblade Paladin on the hero selection screen.
 
 ### Neural Voice Narration & Web Audio Synthesizer
-- **Smart Voice Auto-Selection**: Asynchronous Web Speech API integration that automatically detects and locks onto the highest-quality HD/Neural voice on the player's OS.
+- **Smart Voice Auto-Selection**: Asynchronous Web Speech API integration that automatically detects and locks onto the highest-quality HD/Neural voice on the player's OS without user configuration.
 - **Audio Ducking Engine**: Music automatically ducks volume during voiceover lines for cinematic clarity.
 - **Audio Control Center**: Independent volume sliders for Master, Music, SFX, and Narration Voice.
 
@@ -82,8 +86,8 @@ This repository includes a comprehensive 2-tier automated testing suite in Node.
 node tests/qa_full_game_sweep.js
 ```
 
-### QA Test Coverage (203/203 Passed - 100.0% Success Rate)
-- **179 Static System Checks**: Validates HTML element bindings, CSS layout definitions, function signatures, and event listeners.
+### QA Test Coverage (201/201 Passed - 100.0% Success Rate)
+- **177 Static System Checks**: Validates HTML element bindings, CSS layout definitions, function signatures, and event listeners.
 - **24 Headless Dynamic Simulations**: Mocks player actions step-by-step in Node.js (game start clean slate, quest discovery, combat rolls, encounter objective progress, and playthrough state resets).
 
 ---
