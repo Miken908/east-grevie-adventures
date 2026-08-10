@@ -1994,8 +1994,8 @@ function battleCat() {
     sfx.playMusic("battle");
     setScene("lair", "CAT'S HALL");
     clearLog();
-    addLog("Crimson braziers cast dramatic shadows across the vaulted obsidian hall of Cat's Hall.", "alert");
-    addLog("Atop the high cushion throne, Lord Rodrigues the Shadow Cat uncoils his dark fur with a terrifying roar!", "alert");
+    addLog("Crimson braziers cast dramatic shadows across the vaulted obsidian hall of Cat's Hall.");
+    addLog("Atop the high cushion throne, Lord Rodrigues the Shadow Cat uncoils his dark fur with a terrifying roar!");
 
     if (!state.hasSword) {
         addLog("⚠️ WARNING: You do not possess the Sunblade! Your weapons cannot penetrate Rodrigues's fur!", "alert");
