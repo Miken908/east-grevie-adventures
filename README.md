@@ -6,7 +6,7 @@
 [![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=flat&logo=javascript&logoColor=black)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
 [![Tests: 201 Passed](https://img.shields.io/badge/QA%20Tests-201%20Passed-success.svg)](tests/qa_full_game_sweep.js)
 
-An immersive retro Web RPG featuring **25 Vanillaware-style hand-drawn 2D illustrations**, **neural storyteller voice narration**, an interactive **overworld map**, **4 playable hero classes**, **15 unlockable achievement trophies**, and a **headless automated simulation test suite**.
+An immersive retro Web RPG featuring **25 painterly Vanillaware-style 2D illustrations**, **neural storyteller voice narration**, an interactive **overworld map**, **4 playable hero classes**, **15 unlockable achievement trophies**, and a **headless automated simulation test suite**.
 
 <p align="center">
   <img src="assets/images/map.jpg" width="49%" alt="Overworld Map" />
@@ -32,9 +32,9 @@ An immersive retro Web RPG featuring **25 Vanillaware-style hand-drawn 2D illust
 
 ## Core Game Features
 
-### Vanillaware-Style 2D Artworks & Interactive Lightbox
-- **25 Hand-Drawn 2D Illustrations**: Detailed painterly artwork (inspired by *Odin Sphere* and *GrimGrimoire*) for every location, key character, monster encounter, and multi-beat boss defeat sequence.
-- **Dynamic Finale Scene Transitions**: Boss combat transitions into unique defeated-boss artwork (`rodrigues_defeated.jpg`) as Lord Rodrigues staggers in defeat while holy sunlight surges through Cat's Hall.
+### Vanillaware-Style 2D Artwork & Interactive Lightbox
+- **25 Painterly 2D Illustrations**: High-definition digital artwork featuring a hand-drawn Vanillaware aesthetic (inspired by *Odin Sphere* and *GrimGrimoire*) for every location, character, and encounter.
+- **Dynamic Storytelling Scenes**: Location and combat artwork dynamically transition to reflect story progression and key narrative beats.
 - **Interactive Lightbox Gallery**: Fullscreen image viewer accessible from the main menu featuring keyboard arrow navigation (`◄` / `►`) and card indexing (`1 / 25`).
 
 ### Widescreen Modal UI & HD Typography
