@@ -6,7 +6,7 @@
 [![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=flat&logo=javascript&logoColor=black)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
 [![Tests: 201 Passed](https://img.shields.io/badge/QA%20Tests-201%20Passed-success.svg)](tests/qa_full_game_sweep.js)
 
-An immersive retro Web RPG featuring **26 painterly Vanillaware-style 2D illustrations**, **neural storyteller voice narration**, an interactive **overworld map**, **4 playable hero classes**, **15 unlockable achievement trophies**, and a **headless automated simulation test suite**.
+An immersive retro Web RPG featuring **27 painterly Vanillaware-style 2D illustrations**, **neural storyteller voice narration**, an interactive **overworld map**, **4 playable hero classes**, **15 unlockable achievement trophies**, and a **headless automated simulation test suite**.
 
 <p align="center">
   <img src="assets/images/map.jpg" width="49%" alt="Overworld Map" />
@@ -33,9 +33,9 @@ An immersive retro Web RPG featuring **26 painterly Vanillaware-style 2D illustr
 ## Core Game Features
 
 ### Vanillaware-Style 2D Artwork & Interactive Lightbox
-- **26 Painterly 2D Illustrations**: High-definition digital artwork featuring a hand-drawn Vanillaware aesthetic (inspired by *Odin Sphere* and *GrimGrimoire*) for every location, character, and encounter.
+- **27 Painterly 2D Illustrations**: High-definition digital artwork featuring a hand-drawn Vanillaware aesthetic (inspired by *Odin Sphere* and *GrimGrimoire*) for every location, character, and encounter.
 - **Dynamic Storytelling Scenes**: Location and combat artwork dynamically transition to reflect story progression and key narrative beats.
-- **Interactive Lightbox Gallery**: Fullscreen image viewer accessible from the main menu featuring keyboard arrow navigation (`◄` / `►`) and card indexing (`1 / 26`).
+- **Interactive Lightbox Gallery**: Fullscreen image viewer accessible from the main menu featuring keyboard arrow navigation (`◄` / `►`) and card indexing (`1 / 27`).
 
 ### Widescreen Modal UI & HD Typography
 - **Spacious Dialog Overlay System**: Standardized 1080px widescreen modal boxes with high-contrast HD typography (`1.05rem - 1.5rem`), padded controls, and unified dark blue/cyan styling across all dialogs.

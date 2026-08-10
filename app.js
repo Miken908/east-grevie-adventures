@@ -1044,7 +1044,8 @@ const sceneImages = {
     map: "assets/images/map.jpg",
     fairy: "assets/images/secret_fairy_fountain.jpg",
     victory: "assets/images/final_boss_rodrigues.jpg",
-    elsa_rescued: "assets/images/elsa_rescued.jpg"
+    elsa_rescued: "assets/images/elsa_rescued.jpg",
+    rodrigues_crimson: "assets/images/rodrigues_crimson_eyes.jpg"
 };
 
 // UI Elements
@@ -2006,9 +2007,13 @@ function battleCat() {
 }
 
 function renderCatTurn() {
-    addLog(`🐾 RODRIGUES HP: ${state.catHp} | YOUR HP: ${state.hp}`);
     if (state.catEyesGlowing) {
+        setScene("lair", "CAT'S HALL - CRIMSON POUNCE WARNING!", "assets/images/rodrigues_crimson_eyes.jpg");
+        addLog(`🐾 RODRIGUES HP: ${state.catHp} | YOUR HP: ${state.hp}`);
         addLog("🔴 DANGER! RODRIGUES'S EYES GLOW FIERY CRIMSON! HE IS ABOUT TO EXECUTE A LETHAL SHADOW POUNCE!", "alert");
+    } else {
+        setScene("lair", "CAT'S HALL");
+        addLog(`🐾 RODRIGUES HP: ${state.catHp} | YOUR HP: ${state.hp}`);
     }
 
     const choices = [
