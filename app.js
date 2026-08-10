@@ -1318,14 +1318,6 @@ function renderBlacksmith() {
     addLog("The intense heat of the forge hearth radiates through the stone smithy.");
     addLog("Racks of polished steel and glowing embers surround the anvil, waiting for the master smith's craft.");
 
-    if (!state.blueprintReturned && !state.inventory.includes("Stolen Blacksmith Blueprint")) {
-        addLog("Blacksmith: 'A treacherous Goblin Rogue stole my Mastercraft Blueprint in the Whispering Forest!'", "alert");
-        addLog("Blacksmith: 'Track down that rogue, recover my blueprint, and return it to me so I can open my forge and craft equipment for you!'");
-        updateHUD();
-        renderChoices([{ text: "Return to Village Square", action: renderVillage }]);
-        return;
-    }
-
     if (state.inventory.includes("Stolen Blacksmith Blueprint")) {
         addLog("Blacksmith: 'By the gods! You recovered my Stolen Mastercraft Blueprint!'", "victory");
         addLog("Blacksmith: 'Here is 100 Gold for your bravery! My Mastercraft Forge is now open to you.'", "event");
@@ -1336,59 +1328,76 @@ function renderBlacksmith() {
         addScore(100);
     }
 
-    addLog(`💰 Current Gold: ${state.gold} | Merchant Discount: -${Math.min(30, state.lck * 2)}%`);
+    const hasAllRelics = state.hasSunCrystal && state.hasHiltOfDawn && state.hasBlueprint;
+
+    if (!state.blueprintReturned && !hasAllRelics) {
+        addLog("Blacksmith: 'A treacherous Goblin Rogue stole my Mastercraft Blueprint in the Whispering Forest!'", "alert");
+        addLog("Blacksmith: 'Track down that rogue to open my forge shop, or bring me the 3 Sacred Relics of Dawn to reforge the legendary Sunblade!'");
+        updateHUD();
+        renderChoices([{ text: "Return to Village Square", action: renderVillage }]);
+        return;
+    }
+
+    if (!state.blueprintReturned && hasAllRelics && !state.hasDormantSunblade && !state.hasSword) {
+        addLog("Blacksmith: 'By the gods! You possess all 3 Sacred Relics of Dawn!'", "victory");
+        addLog("Blacksmith: 'Though my commercial equipment shop remains closed until my stolen shop blueprint is recovered from the Goblin Rogue, for the legendary Sunblade I shall fire up the anvil immediately!'", "event");
+    } else if (state.blueprintReturned) {
+        addLog(`💰 Current Gold: ${state.gold} | Merchant Discount: -${Math.min(30, state.lck * 2)}%`);
+    }
 
     const choices = [];
-    const discount = Math.min(0.30, state.lck * 0.02);
-    const equipNames = getClassEquipNames();
 
-    const weaponOwned = state.equipment.weapon && state.equipment.weapon.name === equipNames.weapon;
-    const weaponCost = Math.round(110 * (1 - discount));
-    choices.push({
-        text: weaponOwned ? `⚔️ ${equipNames.weapon} - [ EQUIPPED ]` : `⚔️ Buy ${equipNames.weapon} (+15 Dmg, +2 STR) - 💰 ${weaponCost} Gold`,
-        action: weaponOwned ? () => { sfx.playClick(); addLog(`You already own and have equipped the ${equipNames.weapon}!`); } : () => buyEquipment("weapon", { name: equipNames.weapon, bonusStr: 2, bonusMinDmg: 18, bonusMaxDmg: 28 }, weaponCost)
-    });
-
-    const shieldOwned = state.equipment.shield && state.equipment.shield.name === equipNames.shield;
-    const shieldCost = Math.round(90 * (1 - discount));
-    choices.push({
-        text: shieldOwned ? `🛡️ ${equipNames.shield} - [ EQUIPPED ]` : `🛡️ Buy ${equipNames.shield} (+10 Armor, +2 END, +20 HP) - 💰 ${shieldCost} Gold`,
-        action: shieldOwned ? () => { sfx.playClick(); addLog(`You already own and have equipped the ${equipNames.shield}!`); } : () => buyEquipment("shield", { name: equipNames.shield, bonusArmor: 10, bonusEnd: 2, bonusMaxHp: 20 }, shieldCost)
-    });
-
-    const armorOwned = state.equipment.armor && state.equipment.armor.name === equipNames.armor;
-    const armorCost = Math.round(100 * (1 - discount));
-    choices.push({
-        text: armorOwned ? `🥋 ${equipNames.armor} - [ EQUIPPED ]` : `🥋 Buy ${equipNames.armor} (+8 Armor, +2 AGI, +30 HP) - 💰 ${armorCost} Gold`,
-        action: armorOwned ? () => { sfx.playClick(); addLog(`You already own and have equipped the ${equipNames.armor}!`); } : () => buyEquipment("armor", { name: equipNames.armor, bonusArmor: 8, bonusAgi: 2, bonusMaxHp: 30 }, armorCost)
-    });
-
-    const ringOwned = state.equipment.accessory && state.equipment.accessory.name === equipNames.accessory;
-    const ringCost = Math.round(140 * (1 - discount));
-    const isPaladinAcc = state.heroClass === "paladin";
-    const accDesc = isPaladinAcc ? "(+3 ALL STATS)" : "(+2 LCK, +1 ALL STATS)";
-    const accItem = isPaladinAcc
-        ? { name: equipNames.accessory, bonusStr: 3, bonusAgi: 3, bonusEnd: 3, bonusLck: 3 }
-        : { name: equipNames.accessory, bonusLck: 2, bonusStr: 1, bonusAgi: 1, bonusEnd: 1 };
-
-    choices.push({
-        text: ringOwned ? `💍 ${equipNames.accessory} - [ EQUIPPED ]` : `💍 Buy ${equipNames.accessory} ${accDesc} - 💰 ${ringCost} Gold`,
-        action: ringOwned ? () => { sfx.playClick(); addLog(`You already own and have equipped the ${equipNames.accessory}!`); } : () => buyEquipment("accessory", accItem, ringCost)
-    });
-
-    const hasAllRelics = state.hasSunCrystal && state.hasHiltOfDawn && state.hasBlueprint;
     if (hasAllRelics && !state.hasDormantSunblade && !state.hasSword) {
-        choices.unshift({
+        choices.push({
             text: "🔥 REFORGE THE SUNBLADE (Use 3 Relics)",
             action: reforgeSunblade
         });
     }
 
-    const potionCost = Math.round(35 * (1 - discount));
-    choices.push({
-        text: `🧪 Buy Healing Potion (+40 HP) - 💰 ${potionCost} Gold`,
-        action: () => buyPotion(potionCost)
-    });
+    if (state.blueprintReturned) {
+        const discount = Math.min(0.30, state.lck * 0.02);
+        const equipNames = getClassEquipNames();
+
+        const weaponOwned = state.equipment.weapon && state.equipment.weapon.name === equipNames.weapon;
+        const weaponCost = Math.round(110 * (1 - discount));
+        choices.push({
+            text: weaponOwned ? `⚔️ ${equipNames.weapon} - [ EQUIPPED ]` : `⚔️ Buy ${equipNames.weapon} (+15 Dmg, +2 STR) - 💰 ${weaponCost} Gold`,
+            action: weaponOwned ? () => { sfx.playClick(); addLog(`You already own and have equipped the ${equipNames.weapon}!`); } : () => buyEquipment("weapon", { name: equipNames.weapon, bonusStr: 2, bonusMinDmg: 18, bonusMaxDmg: 28 }, weaponCost)
+        });
+
+        const shieldOwned = state.equipment.shield && state.equipment.shield.name === equipNames.shield;
+        const shieldCost = Math.round(90 * (1 - discount));
+        choices.push({
+            text: shieldOwned ? `🛡️ ${equipNames.shield} - [ EQUIPPED ]` : `🛡️ Buy ${equipNames.shield} (+10 Armor, +2 END, +20 HP) - 💰 ${shieldCost} Gold`,
+            action: shieldOwned ? () => { sfx.playClick(); addLog(`You already own and have equipped the ${equipNames.shield}!`); } : () => buyEquipment("shield", { name: equipNames.shield, bonusArmor: 10, bonusEnd: 2, bonusMaxHp: 20 }, shieldCost)
+        });
+
+        const armorOwned = state.equipment.armor && state.equipment.armor.name === equipNames.armor;
+        const armorCost = Math.round(100 * (1 - discount));
+        choices.push({
+            text: armorOwned ? `🥋 ${equipNames.armor} - [ EQUIPPED ]` : `🥋 Buy ${equipNames.armor} (+8 Armor, +2 AGI, +30 HP) - 💰 ${armorCost} Gold`,
+            action: armorOwned ? () => { sfx.playClick(); addLog(`You already own and have equipped the ${equipNames.armor}!`); } : () => buyEquipment("armor", { name: equipNames.armor, bonusArmor: 8, bonusAgi: 2, bonusMaxHp: 30 }, armorCost)
+        });
+
+        const ringOwned = state.equipment.accessory && state.equipment.accessory.name === equipNames.accessory;
+        const ringCost = Math.round(140 * (1 - discount));
+        const isPaladinAcc = state.heroClass === "paladin";
+        const accDesc = isPaladinAcc ? "(+3 ALL STATS)" : "(+2 LCK, +1 ALL STATS)";
+        const accItem = isPaladinAcc
+            ? { name: equipNames.accessory, bonusStr: 3, bonusAgi: 3, bonusEnd: 3, bonusLck: 3 }
+            : { name: equipNames.accessory, bonusLck: 2, bonusStr: 1, bonusAgi: 1, bonusEnd: 1 };
+
+        choices.push({
+            text: ringOwned ? `💍 ${equipNames.accessory} - [ EQUIPPED ]` : `💍 Buy ${equipNames.accessory} ${accDesc} - 💰 ${ringCost} Gold`,
+            action: ringOwned ? () => { sfx.playClick(); addLog(`You already own and have equipped the ${equipNames.accessory}!`); } : () => buyEquipment("accessory", accItem, ringCost)
+        });
+
+        const potionCost = Math.round(35 * (1 - discount));
+        choices.push({
+            text: `🧪 Buy Healing Potion (+40 HP) - 💰 ${potionCost} Gold`,
+            action: () => buyPotion(potionCost)
+        });
+    }
 
     choices.push({ text: "Return to Village Square", action: renderVillage });
 
