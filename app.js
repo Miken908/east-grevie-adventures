@@ -2804,8 +2804,6 @@ if (victoryRestartBtnEl) {
 const audioSettingsBtnEl = document.getElementById("audio-settings-btn");
 const audioSettingsModalEl = document.getElementById("audio-settings-modal");
 const closeAudioSettingsModalBtn = document.getElementById("close-audio-settings-modal-btn");
-const voiceSelectEl = document.getElementById("voice-select");
-const testVoiceBtnEl = document.getElementById("test-voice-btn");
 
 const masterVolEl = document.getElementById("master-vol");
 const musicVolEl = document.getElementById("music-vol");
@@ -2817,25 +2815,8 @@ const musicVolValEl = document.getElementById("music-vol-val");
 const sfxVolValEl = document.getElementById("sfx-vol-val");
 const voiceVolValEl = document.getElementById("voice-vol-val");
 
-function populateVoiceDropdown() {
-    if (!voiceSelectEl) return;
-    const voices = narrator.getAvailableVoices();
-    voiceSelectEl.innerHTML = "";
-    voices.forEach(v => {
-        const option = document.createElement("option");
-        option.value = v.name;
-        const isNeural = v.name.includes("Natural") || v.name.includes("Neural") || v.name.includes("Online") || v.name.includes("HD");
-        option.textContent = `${v.name} (${v.lang})${isNeural ? " ✨ [HD NEURAL]" : ""}`;
-        if (narrator.selectedVoice && (v.name === narrator.selectedVoice.name || v.voiceURI === narrator.selectedVoice.voiceURI)) {
-            option.selected = true;
-        }
-        voiceSelectEl.appendChild(option);
-    });
-}
-
 if (audioSettingsBtnEl && audioSettingsModalEl) {
     audioSettingsBtnEl.addEventListener("click", () => {
-        populateVoiceDropdown();
         audioSettingsModalEl.classList.remove("hidden");
         sfx.playClick();
     });
@@ -2845,18 +2826,6 @@ if (closeAudioSettingsModalBtn && audioSettingsModalEl) {
     closeAudioSettingsModalBtn.addEventListener("click", () => {
         audioSettingsModalEl.classList.add("hidden");
         sfx.playClick();
-    });
-}
-
-if (voiceSelectEl) {
-    voiceSelectEl.addEventListener("change", () => {
-        narrator.setVoiceByName(voiceSelectEl.value);
-    });
-}
-
-if (testVoiceBtnEl) {
-    testVoiceBtnEl.addEventListener("click", () => {
-        narrator.speak("Welcome, brave adventurer! This is your storyteller voice speaking in modern natural audio.");
     });
 }
 

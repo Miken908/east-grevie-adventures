@@ -215,12 +215,10 @@ check("AP status banner present in HTML (.ap-status-banner)", htmlContent.includ
 check("Derived combat stats block present in HTML (.combat-stats-block)", htmlContent.includes('class="combat-stats-block"'));
 check("Equipped gear block present in HTML (.equipment-block)", htmlContent.includes('class="equipment-block"'));
 
-// 16. Modern Audio & Neural Voice Synthesis Engine Verification
-console.log("\n--- TEST GROUP 16: Modern Audio & Neural Voice Synthesis Engine Verification ---");
+// 16. Modern Audio & Smart Voice Auto-Selection Engine Verification
+console.log("\n--- TEST GROUP 16: Modern Audio & Smart Voice Auto-Selection Engine Verification ---");
 check("Audio Settings button present in HTML (#audio-settings-btn)", htmlContent.includes('id="audio-settings-btn"'));
 check("Audio Settings modal present in HTML (#audio-settings-modal)", htmlContent.includes('id="audio-settings-modal"'));
-check("Voice selector dropdown present in HTML (#voice-select)", htmlContent.includes('id="voice-select"'));
-check("Voice test button present in HTML (#test-voice-btn)", htmlContent.includes('id="test-voice-btn"'));
 check("Master volume slider present in HTML (#master-vol)", htmlContent.includes('id="master-vol"'));
 check("Music volume slider present in HTML (#music-vol)", htmlContent.includes('id="music-vol"'));
 check("SFX volume slider present in HTML (#sfx-vol)", htmlContent.includes('id="sfx-vol"'));
@@ -228,7 +226,7 @@ check("Voice volume slider present in HTML (#voice-vol)", htmlContent.includes('
 check("SoundEffects master/music/sfx volume gains defined in JS", jsContent.includes("this.masterGain") && jsContent.includes("this.musicGain"));
 check("Audio ducking implementation present in JS", jsContent.includes("setDucking(active)"));
 check("VoiceNarrator sentence splitting implementation present in JS", jsContent.includes("split(/(?<=[.!?])\\s+/)"));
-check("VoiceNarrator getAvailableVoices method defined in JS", jsContent.includes("getAvailableVoices()"));
+check("VoiceNarrator smart voice fallback selection defined in JS", jsContent.includes("this.selectedVoice = voices.find("));
 // 17. Trial of Three Celestial Relics Subquest Verification
 console.log("\n--- TEST GROUP 17: Trial of Three Celestial Relics Subquest Verification ---");
 check("Elder grants Sunblade Rune Scroll and explains 3 relics", jsContent.includes("Sunblade Rune Scroll") && jsContent.includes("hasRuneScroll"));
