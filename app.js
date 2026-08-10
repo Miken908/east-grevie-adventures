@@ -1071,14 +1071,10 @@ function addLog(text, type = "normal") {
         .trim();
 
     const p = document.createElement("p");
-    if (type === "dialogue" || type === "event") {
-        p.className = "log-dialogue";
-    } else if (type === "alert" || type === "enemy" || type === "warning") {
+    if (type === "alert" || type === "enemy" || type === "warning") {
         p.className = "log-alert";
-    } else if (type === "victory" || type === "milestone") {
+    } else if (type === "victory" || type === "milestone" || type === "event" || type === "reward") {
         p.className = "log-victory";
-    } else if (type === "action" || type === "player") {
-        p.className = "log-action";
     } else {
         p.className = "log-lore";
     }

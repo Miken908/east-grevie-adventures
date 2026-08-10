@@ -312,28 +312,26 @@ body {
     margin: 0;
 }
 
-.log-lore {
-    color: #e2e8f0;
-}
-
+.log-lore,
 .log-dialogue,
-.log-event {
-    color: #fef08a;
-    font-weight: 500;
-}
-
 .log-action {
-    color: #38bdf8;
+    color: #e2e8f0;
+    font-weight: 400;
 }
 
-.log-alert {
-    color: #f87171;
-}
-
+.log-event,
 .log-victory,
-.log-milestone {
-    color: #34d399;
+.log-milestone,
+.log-reward {
+    color: #fbbf24;
     font-weight: 600;
+}
+
+.log-alert,
+.log-warning,
+.log-enemy {
+    color: #f87171;
+    font-weight: 500;
 }
 
 /* Inventory Bar */
