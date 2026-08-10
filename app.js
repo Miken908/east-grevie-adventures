@@ -760,9 +760,10 @@ const QUESTS_DATA = [
         summary: "Lord Rodrigues the Shadow Cat abducted Princess Elsa. Journey across the realm to Cat's Hall to save her.",
         lore: "\"Shadows fall over the realm. Cat Rodrigues holds Princess Elsa captive in his fortress. Prepare your weapons and bring an end to his terror!\"",
         objectives: [
-            { text: "Speak with the Village Elder in East Grevie Square", check: (s) => Boolean(s.elderTalked) },
-            { text: "Locate Cat's Hall on the Kingdom World Map", check: (s) => Boolean(s.visitedLocations && s.visitedLocations.includes("lair")) },
-            { text: "Vanquish Lord Rodrigues & rescue Princess Elsa", check: (s) => Boolean(s.bossDefeated) }
+            { text: "Speak with the Wise Elder in East Grevie Square", check: (s) => Boolean(s.elderTalked) },
+            { text: "Reforge & Consecrate the Legendary Sunblade", check: (s) => Boolean(s.hasSword) },
+            { text: "Breach Cat's Hall & Vanquish Lord Rodrigues", check: (s) => Boolean(s.catHp <= 0) },
+            { text: "Escort Princess Elsa back to East Grevie Village", check: (s) => Boolean(s.bossDefeated) }
         ]
     },
     {
@@ -2221,6 +2222,7 @@ function winGame() {
     addLog("           VICTORY! THE KINGDOM IS SAVED!", "victory");
     addLog("============================================================", "victory");
     addLog("You vanquished Rodrigues the Shadow Cat, rescued Princess Elsa, and saved the kingdom!", "event");
+    state.bossDefeated = true;
     unlockAchievement("savior_of_realm");
 
     let speechText = `Sunlight breaks as ${state.name} returns triumphant! With Princess Elsa rescued and Lord Rodrigues vanquished, peace is restored to the realm.`;
