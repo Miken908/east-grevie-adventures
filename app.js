@@ -1470,19 +1470,31 @@ function speakToElder() {
         state.hasKey = true;
         addLog("Elder: 'Take this Sunblade Rune Scroll! Seek all 3 relics across the realm. Once gathered, bring them to the Village Blacksmith to reforge the blade!'", "victory");
 
-        const count = getRelicCount();
-        if (count > 0) {
-            addLog(`Elder: 'Ah! I see you already carry ${count}/3 celestial relics in your inventory! Excellent work!'`, "event");
+        if (state.hasSword) {
+            addLog("Elder: 'By the light! You have already awakened the Legendary Sunblade with holy sunfire at the Temple Sanctum! You are ready to vanquish Lord Rodrigues!'", "victory");
+        } else if (state.hasDormantSunblade) {
+            addLog("Elder: 'Splendid work! The Blacksmith has reforged the Dormant Sunblade! Now, take it to the Altar of Dawn at the Temple Sanctum to ignite its holy sunfire!'", "event");
+        } else {
+            const count = getRelicCount();
+            if (count > 0) {
+                addLog(`Elder: 'Ah! I see you already carry ${count}/3 celestial relics in your inventory! Excellent work!'`, "event");
+            }
         }
         addScore(100);
         updateHUD();
         unlockAchievement("sunblade_scroll");
     } else {
-        const count = getRelicCount();
-        if (count === 3) {
-            addLog("Elder: 'Magnificent! You carry all 3 celestial relics! Take them to the Village Blacksmith right here in East Grevie to reforge the Sunblade!'", "victory");
+        if (state.hasSword) {
+            addLog("Elder: 'By the light! You hold the awakened Legendary Sunblade! Breach Cat's Hall and bring peace back to East Grevie!'", "victory");
+        } else if (state.hasDormantSunblade) {
+            addLog("Elder: 'Splendid work! The Blacksmith has reforged the Dormant Sunblade! Now, take it to the Altar of Dawn at the Temple Sanctum to ignite its holy sunfire!'", "event");
         } else {
-            addLog(`Elder: 'You carry ${count}/3 relics in your inventory. Find the rest, then bring them to the Village Blacksmith to reforge the blade!'`, "event");
+            const count = getRelicCount();
+            if (count === 3) {
+                addLog("Elder: 'Magnificent! You carry all 3 celestial relics! Take them to the Village Blacksmith right here in East Grevie to reforge the Sunblade!'", "victory");
+            } else {
+                addLog(`Elder: 'You carry ${count}/3 relics in your inventory. Find the rest, then bring them to the Village Blacksmith to reforge the blade!'`, "event");
+            }
         }
         updateHUD();
     }
